@@ -1,0 +1,433 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="Character" showinui="1" id="#(0x3c70b5c1, 0x2a715fa0)" deprecated="1" >
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" bonecount="6"/>
+
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="TwoSided" type="bool" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorClamp" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV1" type="int" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="DiffuseTexture2" type="sampler2D" tilingName="DiffuseTiling2" UvName="DiffuseUV2" uvTilingName="DiffuseUVTiling2" />
+    <parameter name="DiffuseTexture2State" type="samplerState" defaultvalue="ColorClamp" />
+    <parameter name="DiffuseTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV2" type="int" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseTexture2BlendingType" type="int" defaultvalue="1" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" />
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="NormalTexture2" type="sampler2D" tilingName="NormalTiling2" UvName="NormalUV2" uvTilingName="NormalUVTiling2" />
+    <parameter name="NormalTexture2State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="NormalTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV2" type="int" />
+    <parameter name="NormalIntensity2" type="float" defaultvalue="1" />
+
+    <parameter name="DynamicWrinkles" type="bool" />
+    <parameter name="NormalDynamicWrinklesTexture1A" oldnames="NormalDynamicWrinklesTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" />
+    <parameter name="NormalDynamicWrinklesTexture1B" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" />
+    <parameter name="NormalDynamicWrinklesTexture2A" oldnames="NormalDynamicWrinklesTexture2" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" />
+    <parameter name="NormalDynamicWrinklesTexture2B" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" />
+    <parameter name="NormalDynamicWrinklesTexture3A" oldnames="NormalDynamicWrinklesTexture3" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" />
+    <parameter name="NormalDynamicWrinklesTexture3B" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" />
+    <parameter name="NormalDynamicWrinklesTexture4A" oldnames="NormalDynamicWrinklesTexture4" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" />
+    <parameter name="NormalDynamicWrinklesTexture4B" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" />
+    <parameter name="NormalDynamicWrinklesSamplerState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="NormalDynamicWrinklesIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="SpecularTexture1" type="sampler2D" tilingName="SpecularTiling1" UvName="SpecularUV1" uvTilingName="SpecularUVTiling1" />
+    <parameter name="SpecularTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SpecularTexture1State" type="samplerState" defaultvalue="ColorClamp" />
+    <parameter name="SpecularUV1" type="int" />
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.04" />
+
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseUVTiling2" type="float4" provideronly="1" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="NormalUVTiling2" type="float4" provideronly="1" />
+    <parameter name="SpecularUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="RimlightColor" type="color3" defaultvalue="0,0,0" />
+    <parameter name="RimlightPower" type="float" defaultvalue="3" />
+    <parameter name="SSSColor" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="ReflectionIntensity" type="float4" div="3" />
+    <parameter name="ReflectionType" type="int" defaultvalue="1" />
+
+    <parameter name="UseSkinSSS" type="bool" defaultvalue="0" />
+    <parameter name="SkinSSSStrength" type="float" defaultvalue="1" />
+
+    <parameter name="MaskGreenChannelMode" type="int" defaultvalue="0" />
+
+    <parameter name="WetSpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="WetReflectance" type="float" defaultvalue="0.04" />
+    <parameter name="WetDiffuseMultiplier" type="float" defaultvalue="1" />
+    <parameter name="LocalWetness" type="bool" defaultvalue="0" />
+
+    <parameterprovider parametersfilename="Mesh_Character.fx">
+        <parameter name="DiffuseTexture1">
+            <alias name="DiffuseTexture1Point" />
+        </parameter>
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseUVTiling2" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseTexture2" />
+        <parameter name="DiffuseTexture2State" />
+        <parameter name="DiffuseTexture2BlendingType" />
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTexture2" />
+        <parameter name="DynamicWrinkles" />
+        <parameter name="NormalDynamicWrinklesTexture1A" />
+        <parameter name="NormalDynamicWrinklesTexture1B" />
+        <parameter name="NormalDynamicWrinklesTexture2A" />
+        <parameter name="NormalDynamicWrinklesTexture2B" />
+        <parameter name="NormalDynamicWrinklesTexture3A" />
+        <parameter name="NormalDynamicWrinklesTexture3B" />
+        <parameter name="NormalDynamicWrinklesTexture4A" />
+        <parameter name="NormalDynamicWrinklesTexture4B" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalUVTiling2" />
+        <parameter name="NormalTexture1State" />
+        <parameter name="NormalTexture2State" />
+        <parameter name="NormalDynamicWrinklesSamplerState" />
+        <parameter name="SpecularTexture1" />
+        <parameter name="SpecularUVTiling1" />
+        <parameter name="SpecularTexture1State" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+        <parameter name="NormalIntensity" />
+        <parameter name="NormalIntensity2" />
+        <parameter name="NormalDynamicWrinklesIntensity" />
+        <parameter name="ReflectionIntensity" />
+        <parameter name="ReflectionType" />
+        <parameter name="RimlightColor" />
+        <parameter name="RimlightPower" />
+        <parameter name="SSSColor" />
+        <parameter name="UseSkinSSS" />
+        <parameter name="SkinSSSStrength" />
+        <parameter name="MaskGreenChannelMode" />
+        <parameter name="WetSpecularPower" />
+        <parameter name="WetReflectance" />
+        <parameter name="WetDiffuseMultiplier" />
+        <parameter name="LocalWetness" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Information -->
+        <group label="Information">
+            <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/driver/Character+%28skin%29">Character material online help</label>
+            <label> </label>
+            <label>Vertex color mappings:</label>
+            <group horizontal="1">
+                <label color="BB0000">    R:</label>
+                <label>Local Wetness mask</label>
+            </group>
+            <group horizontal="1" >
+                <label color="00BB00">    G:</label>
+                <group enable_if="DiffuseTexture2" >
+                    <label>Diffuse2 intensity scale</label>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label color="0000AA">    B:</label>
+                <group enable_if="NormalTexture1" >
+                    <label>NormalMap2 intensity scale</label>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label color="000000">    A:</label>
+                <label>Rimlight intensity scale</label>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <group>
+                <checkbox label="Two sided" dataBindings="TwoSided" />
+                <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Diffuse -->
+        <group label="Diffuse" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <textbox dataBindings="DiffuseUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Diffuse 2 -->
+        <group label="Diffuse2">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor2" />
+                <button dataBindings="DiffuseTexture2" fill="1" />
+                <textbox dataBindings="DiffuseUV2">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTiling2.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling2.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture2State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+                </combobox>
+            </group>
+            <group enable_if="DiffuseTexture2">
+                <group horizontal="1">
+                    <label>      Blending Type</label>
+                    <combobox dataBindings="DiffuseTexture2BlendingType">
+                        <comboboxitem value="0">Overlay</comboboxitem>
+                        <comboboxitem value="1">Multiply</comboboxitem>
+                    </combobox>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Specular -->
+        <group label="Specular">
+            <group horizontal="1">
+                <button dataBindings="SpecularTexture1" fill="1" />
+                <textbox dataBindings="SpecularUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="SpecularTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SpecularTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="SpecularTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+                </combobox>
+            </group>
+            <group vertical="1" enable_if="SpecularTexture1">
+                <group horizontal="1">
+                    <label color="BB0000">    R:</label>
+                    <label>Specular Gloss  OR  Specular Mask (*deprecated*)</label>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00">    G:</label>
+                    <combobox dataBindings="MaskGreenChannelMode">
+                        <comboboxitem value="0">Selective Colorization</comboboxitem>
+                        <comboboxitem value="1">Reflectance Values</comboboxitem>
+                    </combobox>
+                </group>
+                <group horizontal="1">
+                    <label color="0000AA">    B:</label>
+                    <label>Specular Occlusion  OR  Specular Mask (*deprecated*)</label>
+                </group>
+                <group horizontal="1">
+                    <label color="000000">    A:</label>
+                    <group horizontal="1" enable_if="UseSkinSSS">
+                        <label>Screen-Space Skin Sub-Surface Scattering intensity scale</label>
+                    </group>
+                </group>
+            </group>
+            <group>
+                <group disable_if="MaskGreenChannelMode==1">
+                    <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+                    <xi:include href="UI/ReflectanceGroup.xml" />
+                </group>
+
+                <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+                <xi:include href="UI/SpecularPowerGroup.xml" />
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Reflection -->
+        <group label="Reflection" horizontal="0">
+            <xi:include href="UI/ReflectionGroup.xml" />
+        </group>
+        <label> </label>
+
+        <!-- Normal -->
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>Intensity</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Normal 2 -->
+        <group label="Normal2  -  NORMALMAP OVERLAY profile, with blue channel set to 128">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture2" fill="1" />
+                <textbox dataBindings="NormalUV2">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling2.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling2.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture2State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>Intensity</label>
+                <slider dataBindings="NormalIntensity2">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Dynamic wrinkles -->
+        <group label="Normal Dynamic Wrinkles  -  NORMALMAP OVERLAY profile, with blue channel set to 128">
+            <group horizontal="1">
+                <checkbox label="Enable Dynamic Wrinkles" dataBindings="DynamicWrinkles" />
+            </group>
+            <group horizontal="1">
+                <button dataBindings="NormalDynamicWrinklesTexture1A" fill="1" />
+                <button dataBindings="NormalDynamicWrinklesTexture1B" fill="1" />
+            </group>
+            <group horizontal="1">
+                <button dataBindings="NormalDynamicWrinklesTexture2A" fill="1" />
+                <button dataBindings="NormalDynamicWrinklesTexture2B" fill="1" />
+            </group>
+            <group horizontal="1">
+                <button dataBindings="NormalDynamicWrinklesTexture3A" fill="1" />
+                <button dataBindings="NormalDynamicWrinklesTexture3B" fill="1" />
+            </group>
+            <group horizontal="1">
+                <button dataBindings="NormalDynamicWrinklesTexture4A" fill="1" />
+                <button dataBindings="NormalDynamicWrinklesTexture4B" fill="1" />
+            </group>
+            <group horizontal="1">
+                <combobox dataBindings="NormalDynamicWrinklesSamplerState">
+                  <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                  <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                  <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>Intensity</label>
+                <slider dataBindings="NormalDynamicWrinklesIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Rimlight -->
+        <group label="Rimlight" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="RimlightColor" />
+                <label>Power</label>
+                <textbox databindings="RimlightPower" minvalue="0.0" maxvalue="20.0" />
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Subsurface scattering -->
+        <group label="Fake Subsurface Scattering" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="SSSColor" />
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Screen-Space Subsurface Scattering" >
+            <group horizontal="1">
+                <checkbox label="Enabled" dataBindings="UseSkinSSS" />
+                <group horizontal="1" enable_if="UseSkinSSS">
+                    <label>Strength</label>
+                    <slider dataBindings="SkinSSSStrength">
+                        <dataBindings increment="0.01" minvalue="0.1" maxvalue="2.0" />
+                    </slider>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <group horizontal="0" label="Wet version" complexity="1" >
+            <checkbox label="Local Wetness" dataBindings="LocalWetness" />
+            <group  horizontal="1">
+                <label>      Diffuse multiplier               </label>
+                <label>0</label>
+                <slider dataBindings="WetDiffuseMultiplier">
+                    <dataBindings minvalue="0.0" maxvalue="1.0"/>
+                </slider>
+                <label>1</label>
+            </group>
+
+            <dataBindingsAlias name="@ReflectanceAlias" dataBindings="WetReflectance" />
+            <xi:include href="UI/ReflectanceGroup.xml" />
+
+            <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="WetSpecularPower" />
+            <xi:include href="UI/SpecularPowerGroup.xml" />
+        </group>
+
+    </ui>
+</materialdescriptor>

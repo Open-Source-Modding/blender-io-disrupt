@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2EyeDecal" displayname="WD2EyeDecal" showinui="1" id="#(0x55c0263c, 0x3f2136d1)">
+    <geometryInputs normal="1" tangent="1" binormal="1" uvChannels="1" bonecount="8" />
+
+    <parameter name="WetnessAndAOTexture" type="sampler2D" tilingName="WetnessAndAOTextureTiling" maxdisplayname="Wetness and AO Texture" optional="0" />
+    <parameter name="WetnessAndAOTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="WetnessAndAOTextureTiling" type="float2" defaultvalue="1,1" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" maxdisplayname="Normal texture" normalmap="1" optional="0" />
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalIntensity1" type="float" defaultvalue="1" />
+  
+    <parameter name="BlendingType" type="int" defaultvalue ="1" />
+    <parameter name="BlendOcclusion" type="float" defaultvalue="1" />
+    <parameter name="BlendWetness" type="float" defaultvalue="1" />
+    <parameter name="BlendShadow" type="float" defaultvalue="0" />
+    <parameter name="OcclusionTint" type="color3" defaultvalue="0,0,0" />
+    <parameter name="WetnessRoughness" type="float" defaultvalue="0" />
+
+    <!-- Shader parameters -->
+    <parameterprovider parametersfilename="Mesh_WD2EyeDecal.fx">
+        <parameter name="WetnessAndAOTexture" />
+        <parameter name="WetnessAndAOTextureState" />
+        <parameter name="WetnessAndAOTextureTiling" />
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTexture1State" />
+        <parameter name="NormalTiling1" />
+        <parameter name="NormalIntensity1" />
+        <parameter name="BlendOcclusion" />
+        <parameter name="BlendWetness" />
+        <parameter name="BlendShadow" />
+        <parameter name="OcclusionTint" />
+        <parameter name="WetnessRoughness" />
+    </parameterprovider>
+
+    <shaderoptions>
+    </shaderoptions>
+
+      <!-- Material UI definition -->
+    <ui defaultFilePath="graphics/Characters/wd3" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group label="Wetness and Ambient Occlusion Mask">
+            <group horizontal="1">
+                <button dataBindings="WetnessAndAOTexture" fill="1" />
+                <group>
+                    <textbox dataBindings="WetnessAndAOTextureTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="WetnessAndAOTextureTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="WetnessAndAOTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Wetness Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture1State">
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>Intensity:</label>
+                <textbox databindings="NormalIntensity1">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity1">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Settings -->
+        <group label="Settings">
+            <label>Ambient Occlusion: </label>
+            <label>(masked with Red channel)</label>
+            <group horizontal="1">
+                <textbox databindings="BlendOcclusion">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="BlendOcclusion">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+            <label>Wetness Strength: </label>
+            <label>(masked with Green channel)</label>
+            <group horizontal="1">
+                <textbox databindings="BlendWetness">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="BlendWetness">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+            <label>Wetness Roughness: </label>
+            <group horizontal="1">
+                <textbox databindings="WetnessRoughness">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="WetnessRoughness">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+            <label>Shadow: </label>
+            <label>(masked with Blue channel)</label>
+            <group horizontal="1">
+                <textbox databindings="BlendShadow">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="BlendShadow">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+            <label>Occlusion Tint</label>
+            <button dataBindings="OcclusionTint" />
+        </group>
+    </ui>
+</materialdescriptor>

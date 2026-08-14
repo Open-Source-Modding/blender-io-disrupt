@@ -1,0 +1,424 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2Confetti" displayname="WD2Confetti" showinui="1" id="#(0x25c4f31a, 0x408a2831)" generateshaderids="1">
+    <geometryInputs normal="0" tangent="0" binormal="0" color="0" uvChannels="0" />
+
+    <!-- Settings -->
+    <parameter name="AlphaTestEnabled" type="bool" defaultvalue="0" />
+    <parameter name="AlphaTestValue" type="float" defaultvalue="128" div="255"/>
+    <parameter name="BlendingType" type="int" defaultvalue="0" />
+    <parameter name="TransparencyAlpha" type="float" defaultvalue="1" />
+    <parameter name="AlphaFadeInEnabled" oldnames="AlphaFadeEnabled" type="bool" defaultvalue="1" />
+    <parameter name="AlphaFadeOutEnabled" oldnames="AlphaFadeEnabled" type="bool" defaultvalue="1" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0" />
+    <parameter name="BendDisplacement" type="float" defaultvalue="0" />
+    <parameter name="VisualSizeScale" oldnames="ParticleSize" type="float2" defaultvalue="1,1" div="2"/>
+    <parameter name="VelocitySizeFactor" type="float" defaultvalue="0"/>
+    <parameter name="Translucency" type="float" defaultvalue="1" />
+    <parameter name="GeometryOrientation" oldnames="RenderAsBillboard" type="int" defaultvalue="0" />
+    <parameter name="EmissiveIntensity" type="float3" defaultvalue="10,10,1" op_z="irradiance"/>
+    <parameter name="IsLit" type="bool" defaultvalue="0" />
+    <parameter name="SunLightAttenuation" type="float" defaultvalue="1" />
+    <parameter name="OmniSpotAttenuation" type="float" defaultvalue="1" />
+    <parameter name="TestParam" type="float" defaultvalue="1" />
+
+    <!-- BaseColor -->
+    <parameter name="DiffuseTexture" type="sampler2DArray" tilingName="DiffuseTextureTiling" maxdisplayname="Base texture" optional="0" />
+    <parameter name="DiffuseTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseColorCount" type="float" defaultvalue="1" />
+    <parameter name="DiffuseColors" type="color4" defaultvalue="1,1,1,1" arraysize="10" />
+    <parameter name="TextureAtlasSize" type="float4" defaultvalue="1,1,1,1" op_z="1/x" op_w="1/y" />
+    <parameter name="TextureAtlasMode" oldnames="TextureAtlasRandom" type="int" defaultvalue="1" />
+    <parameter name="TextureAtlasSelection" type="float" defaultvalue="0" />
+    <parameter name="TextureAtlasAnimFrames" type="float" defaultvalue="1" />
+    <parameter name="RandomTextureRotation" type="bool" defaultvalue="0" />
+
+    <!-- Normal -->
+    <parameter name="NormalTexture" type="sampler2DArray" maxdisplayname="Normal texture" normalmap="1">
+        <use_if parameter="BlendingType" value="0" />
+    </parameter>
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+
+    <!-- SurfaceParams -->
+    <parameter name="Reflectance" type="float" defaultvalue="0.5" />
+    <parameter name="Roughness" type="float" defaultvalue="0.5" />
+    <parameter name="Metalness" type="float" defaultvalue="0" />
+
+    <!-- Responsive AA -->
+    <parameter name="ResponsiveAAStrength" type="float" defaultvalue="1.0">
+        <use_if parameter="BlendingType" value="1" />
+        <use_if parameter="BlendingType" value="2" />
+    </parameter>
+  
+    <!-- MSAA Optimization -->
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1">
+        <use_if parameter="BlendingType" value="1" />
+        <use_if parameter="BlendingType" value="2" />
+    </parameter>
+
+    <parameterprovider parametersfilename="WD2Confetti.fx">
+        <parameter name="AlphaTestEnabled" />
+        <parameter name="AlphaTestValue" />
+        <parameter name="BlendingType" />
+        <parameter name="TransparencyAlpha" />
+        <parameter name="AlphaFadeInEnabled" />
+        <parameter name="AlphaFadeOutEnabled" />
+        <parameter name="SortingLayerBias" />
+        <parameter name="BendDisplacement" />
+        <parameter name="VisualSizeScale" />
+        <parameter name="VelocitySizeFactor" />
+        <parameter name="Translucency" />
+        <parameter name="GeometryOrientation" />
+        <parameter name="EmissiveIntensity" />
+        <parameter name="IsLit" />
+        <parameter name="SunLightAttenuation" />
+        <parameter name="OmniSpotAttenuation" />
+
+        <parameter name="DiffuseTexture" />
+        <parameter name="DiffuseTextureState" />
+        <parameter name="DiffuseColorCount" />
+        <parameter name="DiffuseColors" />
+        <parameter name="TextureAtlasSize" />
+        <parameter name="TextureAtlasMode" />
+        <parameter name="TextureAtlasSelection" />
+        <parameter name="TextureAtlasAnimFrames" />
+        <parameter name="RandomTextureRotation" />
+
+        <parameter name="NormalTexture" />
+        <parameter name="NormalIntensity" />
+
+        <parameter name="Reflectance" />
+        <parameter name="Roughness" />
+        <parameter name="Metalness" />
+
+        <parameter name="ResponsiveAAStrength" />
+
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="BLENDED">
+            <condition parameter="BlendingType" op="equal" value="1" />
+        </shaderoption>
+        <shaderoption name="ADDITIVE">
+            <condition parameter="BlendingType" op="equal" value="2" />
+        </shaderoption>
+        <shaderoption name="ISLIT">
+            <condition parameter="BlendingType" op="notequal" value="0" />
+            <condition parameter="IsLit" />
+        </shaderoption>
+        <shaderoption name="NORMALMAP">
+            <condition parameter="NormalTexture" />
+            <condition parameter="NormalIntensity" op="greater" value="0"/>
+            <condition parameter="BlendingType" op="equal" value="0" />
+        </shaderoption>
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/_Texture/">
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <group horizontal="1">
+                <label alignright="1" width="120">Alpha Test</label>
+                <checkbox label="Enable" dataBindings="AlphaTestEnabled" />
+                <group horizontal="1" enable_if="AlphaTestEnabled">
+                    <label alignright="1" width="60">Value</label>
+                    <textbox dataBindings="AlphaTestValue">
+                        <dataBindings increment="1" minvalue="0" maxvalue="255"/>
+                    </textbox>
+                </group>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="1" width="120">Blending Type</label>
+                <combobox dataBindings="BlendingType">
+                    <comboboxitem value="0">Opaque</comboboxitem>
+                    <comboboxitem value="1">Alpha Blend</comboboxitem>
+                    <comboboxitem value="2">Additive</comboboxitem>
+                </combobox>
+            </group>
+
+            <group horizontal="1" show_if="BlendingType!=0">
+                <label alignright="1" width="120">Sorting Layer Bias</label>
+                <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order of the mesh.  Materials with smaller values are drawn first.">
+                    <dataBindings increment="1" minvalue="-10" maxvalue="10" />
+                </textbox>
+
+                <!-- Responsive AA -->
+                <label alignright="1" width="120">Responsive AA Strength</label>
+                <textbox dataBindings="ResponsiveAAStrength">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                </textbox>
+
+                <!-- MSAA Optimization -->
+                <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+            </group>
+
+            <group horizontal="1" show_if="BlendingType!=0">
+                <label alignright="1" width="120">Transparency Alpha</label>
+                <textbox dataBindings="TransparencyAlpha">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1"/>
+                </textbox>
+                <label>   0</label>
+                <slider dataBindings="TransparencyAlpha">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </slider>
+                <label>1  </label>
+            </group>
+
+            <group horizontal="1" show_if="BlendingType!=0">
+                <label alignright="1" width="120">Alpha Fade</label>
+                <checkbox label="Fade in" dataBindings="AlphaFadeInEnabled" />
+                <checkbox label="Fade out" dataBindings="AlphaFadeOutEnabled" />
+            </group>
+        </group>
+
+        <!-- Lighting -->
+        <group horizontal="0" label="Lighting" >
+            <group horizontal="1" show_if="BlendingType==0">
+                <label alignright="1" width="140">Translucency</label>
+                <textbox dataBindings="Translucency">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1"/>
+                </textbox>
+                <label>   0</label>
+                <slider dataBindings="Translucency">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </slider>
+                <label>1  </label>
+            </group>
+
+            <group horizontal="1" show_if="BlendingType!=0">
+                <label alignright="1" width="140">Lighting Type</label>
+                <combobox dataBindings="IsLit">
+                    <comboboxitem value="0">Emissive</comboboxitem>
+                    <comboboxitem value="1">Dynamic Lighting</comboboxitem>
+                </combobox>
+            </group>
+
+            <group horizontal="1" show_if="BlendingType!=0,IsLit!=0">
+                <label alignright="1" width="140">Sun Light Attenuation</label>
+                <textbox dataBindings="SunLightAttenuation">
+                    <dataBindings increment="0.0001" minvalue="0" maxvalue="1"/>
+                </textbox>
+                <label>   0</label>
+                <slider dataBindings="SunLightAttenuation">
+                    <dataBindings increment="0.0001" minvalue="0" maxvalue="1" />
+                </slider>
+                <label>1  </label>
+            </group>
+
+            <group horizontal="1" show_if="BlendingType!=0,IsLit!=0">
+                <label alignright="1" width="140">Omni/Spot/GI Attenuation</label>
+                <textbox dataBindings="OmniSpotAttenuation">
+                    <dataBindings increment="0.0001" minvalue="0" maxvalue="1"/>
+                </textbox>
+                <label>   0</label>
+                <slider dataBindings="OmniSpotAttenuation">
+                    <dataBindings increment="0.0001" minvalue="0" maxvalue="1" />
+                </slider>
+                <label>1  </label>
+            </group>
+
+            <group label="Irradiance">
+                <group horizontal="1" show_if="BlendingType!=0,IsLit==0">
+                    <group>
+                        <label>Power</label>
+                        <textbox dataBindings="EmissiveIntensity.x" tooltip="Power.">
+                            <dataBindings increment="0.1" minvalue="0.1" maxvalue="100000.0" />
+                        </textbox>
+                    </group>
+                    <group>
+                        <label>Area cm2</label>
+                        <textbox dataBindings="EmissiveIntensity.y" tooltip="Area.">
+                            <dataBindings increment="0.1" minvalue="0.1" maxvalue="100000.0" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <!-- Geometry -->
+        <group horizontal="0" label="Geometry">
+            <group horizontal="1">
+                <label alignright="1" width="140">Geometry Orientation</label>
+                <combobox dataBindings="GeometryOrientation">
+                    <comboboxitem value="0">Automatic</comboboxitem>
+                    <comboboxitem value="1">Billboard</comboboxitem>
+                    <comboboxitem value="2">Billboard aligned on velocity</comboboxitem>
+                </combobox>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="1" width="140">Geometry Bending</label>
+                <textbox dataBindings="BendDisplacement">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1"/>
+                </textbox>
+                <label>   0</label>
+                <slider dataBindings="BendDisplacement">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </slider>
+                <label>1  </label>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="1" width="140">Visual Size Scale</label>
+                <textbox dataBindings="VisualSizeScale.x">
+                    <dataBindings increment="0.001" minvalue="0.001"/>
+                </textbox>
+                <textbox dataBindings="VisualSizeScale.y">
+                    <dataBindings increment="0.001" minvalue="0.001"/>
+                </textbox>
+            </group>
+            <group horizontal="1" show_if="GeometryOrientation==2">
+                <label alignright="1" width="140">Velocity Size Factor</label>
+                <textbox dataBindings="VelocitySizeFactor.x">
+                    <dataBindings increment="0.001" minvalue="0"/>
+                </textbox>
+            </group>
+
+        </group>
+
+        <!-- Base Color -->
+        <group horizontal="0" label="Base Color" >
+            <group horizontal="1">
+                <button dataBindings="DiffuseTexture" fill="1" />
+            </group>
+            <group horizontal="1" >
+                <label alignright="1" width="140">Random diffuse colors:</label>
+                <textbox dataBindings="DiffuseColorCount">
+                    <dataBindings increment="1" minvalue="1" maxvalue="10" />
+                </textbox>
+                <group show_if="DiffuseColorCount>0" >
+                    <button dataBindings="DiffuseColors[0]" />
+                </group>
+                <group show_if="DiffuseColorCount>1" >
+                    <button dataBindings="DiffuseColors[1]" />
+                </group>
+                <group show_if="DiffuseColorCount>2" >
+                    <button dataBindings="DiffuseColors[2]" />
+                </group>
+                <group show_if="DiffuseColorCount>3" >
+                    <button dataBindings="DiffuseColors[3]" />
+                </group>
+                <group show_if="DiffuseColorCount>4" >
+                    <button dataBindings="DiffuseColors[4]" />
+                </group>
+                <group show_if="DiffuseColorCount>5" >
+                    <button dataBindings="DiffuseColors[5]" />
+                </group>
+                <group show_if="DiffuseColorCount>6" >
+                    <button dataBindings="DiffuseColors[6]" />
+                </group>
+                <group show_if="DiffuseColorCount>7" >
+                    <button dataBindings="DiffuseColors[7]" />
+                </group>
+                <group show_if="DiffuseColorCount>8" >
+                    <button dataBindings="DiffuseColors[8]" />
+                </group>
+                <group show_if="DiffuseColorCount>9" >
+                    <button dataBindings="DiffuseColors[9]" />
+                </group>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="140">Texture atlas size  U:</label>
+                <textbox dataBindings="TextureAtlasSize.x">
+                    <dataBindings increment="1" minvalue="1" />
+                </textbox>
+                <label>  V:</label>
+                <textbox dataBindings="TextureAtlasSize.y">
+                    <dataBindings increment="1" minvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="140">Texture Atlas Mode</label>
+                <combobox dataBindings="TextureAtlasMode">
+                    <comboboxitem value="0">Single Frame</comboboxitem>
+                    <comboboxitem value="1">Random Frame</comboboxitem>
+                    <comboboxitem value="2">Fade Out Animation</comboboxitem>
+                    <comboboxitem value="3">Fade In Animation</comboboxitem>
+                    <comboboxitem value="4">Fade In and Out Animations</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1" show_if="TextureAtlasMode==0" >
+                <label alignright="1" width="140">Frame Selection</label>
+                <textbox dataBindings="TextureAtlasSelection">
+                    <dataBindings increment="1" minvalue="0" maxvalue="1024" />
+                </textbox>
+            </group>
+            <group horizontal="1" show_if="TextureAtlasMode==2|TextureAtlasMode==3|TextureAtlasMode==4" >
+                <label alignright="1" width="140">Start Frame</label>
+                <textbox dataBindings="TextureAtlasSelection">
+                    <dataBindings increment="1" minvalue="0" maxvalue="1024" />
+                </textbox>
+                <label alignright="1" width="40">Num Frames</label>
+                <textbox dataBindings="TextureAtlasAnimFrames">
+                    <dataBindings increment="1" minvalue="1" maxvalue="1024" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="140">Random texture rotation:</label>
+                <checkbox label="Enable" dataBindings="RandomTextureRotation" />
+            </group>
+        </group>
+
+        <!-- Normal Map -->
+        <group horizontal="0" label="Normal" show_if="BlendingType==0">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture" fill="1" />
+            </group>
+            <group horizontal="1" enable_if="NormalTexture">
+                <label>Intensity: </label>
+                <textbox databindings="NormalIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+
+        <!-- SurfaceParams -->
+        <group label="Surface Parameters" show_if="BlendingType==0">
+            <group horizontal="1">
+                <label alignright="1" width="90">Reflectance</label>
+                <label> 0</label>
+                <slider dataBindings="Reflectance">
+                    <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                    <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="Reflectance">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="90">Roughness</label>
+                <label> 0</label>
+                <slider dataBindings="Roughness">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="Roughness">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="90">Metal Mask</label>
+                <label> 0</label>
+                <slider dataBindings="Metalness">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="Metalness">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

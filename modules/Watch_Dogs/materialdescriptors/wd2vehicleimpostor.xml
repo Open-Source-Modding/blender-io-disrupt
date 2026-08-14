@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2VehicleImpostor" displayname="WD2VehicleImpostor" showinui="1" id="#(0x25f4c31d, 0x7A9a2a33)">
+    <geometryInputs normal="1" color="1" />
+
+    <!-- Settings -->
+    <parameter name="CastShadow" type="bool" defaultvalue="1" />
+
+    <!-- Surface -->
+    <parameter name="Reflectance" oldnames="MaskParameters.x" type="float" defaultvalue="0.5" />
+    <parameter name="Roughness" oldnames="MaskParameters.y" type="float" defaultvalue="0.5" />
+    <parameter name="Metalness" oldnames="MaskParameters.z" type="float" defaultvalue="0.75" />
+
+    <!-- Provider -->
+    <parameterprovider parametersfilename="Mesh_WD2VehicleImpostor.fx">
+        <parameter name="CastShadow" />
+        <parameter name="Reflectance" />
+        <parameter name="Roughness" />
+        <parameter name="Metalness" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/">
+        <xi:include href="UI/DataClasses.xml" />
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <group>
+                <group horizontal="1">
+                    <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+                </group>
+            </group>
+        </group>
+
+        <!-- SurfaceParams -->
+        <group label="Surface Parameters">
+            <group horizontal="1">
+                <group vertical="1">
+                    <group horizontal="1">
+                        <label alignright="1" width="90">Reflectance</label>
+                        <label> 0</label>
+                        <slider dataBindings="Reflectance">
+                            <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                            <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Reflectance">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1">
+                        <label alignright="1" width="90">Roughness</label>
+                        <label> 0</label>
+                        <slider dataBindings="Roughness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Roughness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1">
+                        <label alignright="1" width="90">Metal Mask</label>
+                        <label> 0</label>
+                        <slider dataBindings="Metalness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Metalness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

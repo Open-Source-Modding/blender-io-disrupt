@@ -1,0 +1,400 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="DriverCarGeneric" displayname="CarGeneric" showinui="1" id="#(0x480b9cc7, 0x163a7fb0)" deprecated="1" >
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" packedFirstUV="1" bonecount="1" reduceMatrixPerDrawCallBy="14" packedUChannel="10" />
+
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="BlendingType" type="int" />
+    <parameter name="HalfLambert" type="bool" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Diffuse texture 1" optional="0" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV1" type="int" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="DiffuseTexture2" type="sampler2D" tilingName="DiffuseTiling2" UvName="DiffuseUV2" uvTilingName="DiffuseUVTiling2" maxdisplayname="Diffuse texture 2" />
+    <parameter name="DiffuseTexture2State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV2" type="int" />
+    <parameter name="Diffuse2Color1" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalIntensity" type="float2" defaultvalue="1,0" />
+
+    <parameter name="SpecularTexture1" type="sampler2D" tilingName="SpecularTiling1" UvName="SpecularUV1" uvTilingName="SpecularUVTiling1" maxdisplayname="Mask texture" />
+    <parameter name="SpecularTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SpecularUV1" type="int" />
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.04" />
+
+    <parameter name="AlphaTexture1" type="sampler2D" tilingName="AlphaTiling1" UvName="AlphaUV1" uvTilingName="AlphaUVTiling1" maxdisplayname="Alpha texture" />
+    <parameter name="AlphaTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="AlphaUV1" type="int" />
+
+    <parameter name="AlphaUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseUVTiling2" type="float4" provideronly="1" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="SpecularUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="ReflectionIntensity" type="float4" div="3" />
+    <parameter name="ReflectionType" type="int" defaultvalue="0" />
+    <!--<parameter name="ReflectionTexture" type="samplerCUBE" />-->
+
+    <parameter name="ReflectionTexture" type="samplerCUBE">
+        <use_if parameter="ReflectionType" value="2" />
+    </parameter>
+
+    <parameter name="EmissiveMeshLights" type="bool" defaultvalue="0"/>
+    <parameter name="EmissiveTexture" type="sampler2D" tilingName="EmissiveTiling" UvName="EmissiveUV" uvTilingName="EmissiveUVTiling" maxdisplayname="Emissive texture" />
+    <parameter name="EmissiveTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="EmissiveUV" type="int" />
+    <parameter name="EmissiveUVTiling" type="float4" provideronly="1" />
+    <parameter name="AffectedByExposure" type="bool" defaultvalue="1" />
+
+    <parameter name="LicensePlate" type="bool" defaultvalue="0"/>
+    <parameter name="LicensePlateFontInfo" type="float4" defaultvalue="0,0,2048,2048"/>
+    <parameter name="LicensePlateCharInfo" type="float3" defaultvalue="1,1,1"/>
+    <parameter name="LicensePlateCharSize" type="float4" provideronly="1" />
+    <parameter name="LicensePlateFontOrigin" type="float3" provideronly="1" />
+    <parameter name="LicensePlateFontAreaUvScaleBias" type="float4" provideronly="1" />
+
+    <parameter name="Dust" type="color4" defaultvalue="0.5,0.5,0.5,0" />
+
+    <parameterprovider parametersfilename="Mesh_DriverCarGeneric.fx">
+        <parameter name="DiffuseTexture1">
+            <alias name="DiffuseTexture1Point" />
+        </parameter>
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseColor1" />
+
+        <parameter name="DiffuseTexture2" />
+        <parameter name="DiffuseTexture2State" />
+        <parameter name="DiffuseUVTiling2" />
+        <parameter name="Diffuse2Color1" />
+
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="SpecularTexture1" />
+        <parameter name="SpecularUVTiling1" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+        <parameter name="HalfLambert" />
+        <parameter name="NormalIntensity" />
+        <parameter name="AlphaTexture1" />
+        <parameter name="AlphaUVTiling1" />
+        <parameter name="ReflectionIntensity" />
+        <parameter name="ReflectionType" />
+        <parameter name="ReflectionTexture" />
+
+        <parameter name="EmissiveMeshLights" />
+        <parameter name="EmissiveTexture" />
+        <parameter name="EmissiveUVTiling" />
+        <parameter name="AffectedByExposure" />
+
+        <parameter name="LicensePlate" />
+        <parameter name="LicensePlateCharSize" />
+        <parameter name="LicensePlateFontOrigin" />
+        <parameter name="LicensePlateFontAreaUvScaleBias" />
+
+        <parameter name="Dust" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group horizontal="0" label="Settings">
+            <group>
+                <checkbox label="Two sided" dataBindings="TwoSided" />
+                <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+                <!--<checkbox label="Half lambert" dataBindings="HalfLambert" />-->
+                <group horizontal="1">
+                    <checkbox label="Decal" dataBindings="BlendingType" />
+                    <group horizontal="1" show_if="BlendingType!=0">
+                        <label>Sorting Layer Bias</label>
+                        <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order of the decal.  Materials with smaller values are drawn first.">
+                            <dataBindings increment="1" minvalue="-4" maxvalue="4" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <label></label>
+        
+        <group label="Diffuse" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <textbox dataBindings="DiffuseUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+        <label></label>
+
+        <group label="Diffuse 2" vertical="1" show_if="ReflectionType!=3">
+            <group vertical="1">
+                <group horizontal="1">
+                    <button dataBindings="Diffuse2Color1" />
+                    <button dataBindings="DiffuseTexture2" fill="1" />
+
+                    <group show_if="DiffuseTexture2" horizontal="1">
+                        <textbox dataBindings="DiffuseUV2">
+                            <dataBindings class="UVChannel" />
+                        </textbox>
+                        <group>
+                            <textbox dataBindings="DiffuseTiling2.x">
+                                <dataBindings class="Tiling" />
+                            </textbox>
+                            <textbox dataBindings="DiffuseTiling2.y">
+                                <dataBindings class="Tiling" />
+                            </textbox>
+                        </group>
+                        <combobox dataBindings="DiffuseTexture2State">
+                            <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                            <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                            <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                            <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+            </group>
+            <group hide_if="SpecularTexture1">
+                <group show_if="DiffuseTexture2">
+                    <label color="FF0000">Diffuse texture 2 will need a mask texture</label>
+                </group>
+            </group>
+        </group>
+        <label></label>
+
+        <group label="Mask">
+            <group horizontal="1">
+                <button dataBindings="SpecularTexture1" fill="1"/>
+                <textbox dataBindings="SpecularUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="SpecularTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SpecularTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group vertical="1" enable_if="SpecularTexture1">
+                <group horizontal="1">
+                    <label color="BB0000">          R:</label>
+                    <label>Specular Gloss  OR  Specular Mask (*deprecated*)</label>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00">          G:</label>
+                    <group enable_if="DiffuseTexture2" horizontal="1">
+                        <label>Dust intensity</label>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="0000AA">          B:</label>
+                    <label>Blending mask for diffuse textures</label>
+                </group>
+                <group horizontal="1">
+                    <label color="404040">          A:</label>
+                    <label>Specular occlusion (optional - only works with gloss)</label>
+                </group>
+                <group horizontal="1">
+                    <label> Dust color v</label>
+                    <button dataBindings="Dust.xyz" />
+                    <group horizontal="1">
+                        <label> Dust opacity </label>
+                        <textbox databindings="Dust.w" >
+                            <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </textbox>
+                        <label>  0</label>
+                        <slider dataBindings="Dust.w">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0"/>
+                        </slider>
+                        <label>1</label>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <label></label>
+
+        <group label="Specular">
+			<group>
+                <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+	        	<xi:include href="UI/ReflectanceGroup.xml" />
+    
+                <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+	            <xi:include href="UI/SpecularPowerGroup.xml" />
+            </group>            
+        </group>
+        <label></label>
+
+        <group label="Reflection" horizontal="0">
+            <group horizontal="1">
+                <label>Type</label>
+                <group horizontal="1">
+                    <combobox dataBindings="ReflectionType">
+                        <comboboxitem value="0">World Static</comboboxitem>
+                        <comboboxitem value="1">World Dynamic</comboboxitem>
+                        <comboboxitem value="2">Custom (EXPENSIVE)</comboboxitem>
+                        <comboboxitem value="3">Matcap (EXPENSIVE)</comboboxitem>
+                    </combobox>
+                    <group horizontal="1" show_if="ReflectionType==2">
+                        <button dataBindings="ReflectionTexture" fill="1" />
+                    </group>
+                </group>
+            </group>
+
+            <group horizontal="1" show_if="ReflectionType==3">
+                <label>Matcap</label>
+                <button dataBindings="Diffuse2Color1" />
+                <button dataBindings="DiffuseTexture2" fill="1" />
+            </group>
+            <!--<group>
+                <label>Custom reflection texture (interior only)</label>
+                <button dataBindings="ReflectionTexture" fill="1" />
+            </group>-->
+        </group>
+        <label></label>
+
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>          Intensity    </label>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+        <label></label>
+
+        <group label="Alpha">
+            <group horizontal="1" enable_if="AlphaTestEnabled || AlphaTexture1 || BlendingType!=0">
+                <button dataBindings="AlphaTexture1" fill="1" />
+                <textbox dataBindings="AlphaUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="AlphaTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="AlphaTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group show_if="AlphaTexture1">
+                <group hide_if="AlphaTestEnabled">
+                    <group hide_if="BlendingType!=0">
+                        <label color="FF0000">Do not put an alpha texture if material is not a decal and is not alpha tested</label>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <label></label>
+
+        <!-- Emissive Mesh Lights -->
+        <group label="Emissive Mesh Lights" complexity="1">
+            <checkbox label="Enabled" dataBindings="EmissiveMeshLights" />
+            <group enable_if="EmissiveMeshLights">
+                <checkbox label="Affected by Exposure " dataBindings="AffectedByExposure" />
+            </group>
+            <group horizontal="1" enable_if="EmissiveMeshLights">
+                <button dataBindings="EmissiveTexture" fill="1" />
+                <textbox dataBindings="EmissiveUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="EmissiveTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="EmissiveTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+        <label></label>
+
+        <!-- License plate -->
+        <group label="Dynamic License Plate" complexity="1">
+            <checkbox label="Enabled" dataBindings="LicensePlate" />
+            <group enable_if="LicensePlate">
+                <label color="0000AA">  All sizes and coordinates are specified in PIXELS, based on the source PNG texture.</label>
+                <label> </label>
+                <group horizontal="1" enable_if="LicensePlate">
+                    <label>  Font upper-left coordinate   U:</label>
+                    <textbox dataBindings="LicensePlateFontInfo.x">
+                        <dataBindings increment="1" minvalue="0" maxvalue="4095" />
+                    </textbox>
+                    <label>   V:</label>
+                    <textbox dataBindings="LicensePlateFontInfo.y">
+                        <dataBindings increment="1" minvalue="0" maxvalue="4095" />
+                    </textbox>
+                </group>
+                <group horizontal="1" enable_if="LicensePlate">
+                    <label>  Font character size   U:</label>
+                    <textbox dataBindings="LicensePlateCharInfo.x">
+                        <dataBindings increment="1" minvalue="1" maxvalue="4096" />
+                    </textbox>
+                    <label>   V:</label>
+                    <textbox dataBindings="LicensePlateCharInfo.y">
+                        <dataBindings increment="1" minvalue="1" maxvalue="4096" />
+                    </textbox>
+                </group>
+                <group horizontal="1" enable_if="LicensePlate">
+                    <label>  Source texture size   U:</label>
+                    <textbox dataBindings="LicensePlateFontInfo.z" tooltip="Width of the source PNG texture.">
+                        <dataBindings increment="1" minvalue="1" maxvalue="4096" />
+                    </textbox>
+                    <label>   V:</label>
+                    <textbox dataBindings="LicensePlateFontInfo.w" tooltip="Height of the source PNG texture.">
+                        <dataBindings increment="1" minvalue="1" maxvalue="4096" />
+                    </textbox>
+                </group>
+                <group horizontal="1" enable_if="LicensePlate">
+                    <label>  Number of characters per row:</label>
+                    <textbox dataBindings="LicensePlateCharInfo.z">
+                        <dataBindings increment="1" minvalue="1" maxvalue="256" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

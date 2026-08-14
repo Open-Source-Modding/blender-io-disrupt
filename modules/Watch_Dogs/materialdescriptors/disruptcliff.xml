@@ -1,0 +1,316 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="DisruptCliff" displayname="CliffPrototype" showinui="1" id="#(0x75d9743e, 0x29df7d01)" deprecated="1" >
+  <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" />
+  <parameter name="TwoSided" type="bool" />
+
+  <parameter name="TextureTiling" type="float4" defaultvalue="1,1,1,1" />
+
+
+  <!-- Layer 1 parameters -->
+  <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTextureTiling1" UvName="DiffuseTextureUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Base texture 1" optional="1" />
+  <parameter name="DiffuseTextureTiling1" type="float2" defaultvalue="1,1" />
+  <parameter name="DiffuseTextureUV1" type="int" />
+  <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+  <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+  <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture 1" normalmap="1" />
+  <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+  <parameter name="NormalUV1" type="int" />
+  <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+  <parameter name="NormalIntensity1" type="float" defaultvalue="1" />
+
+  <!-- Layer 2 parameters -->
+  <parameter name="DiffuseTexture2" type="sampler2D" tilingName="DiffuseTextureTiling2" UvName="DiffuseTextureUV2" uvTilingName="DiffuseUVTiling2" maxdisplayname="Base texture 2" optional="0" />
+  <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+  <parameter name="DiffuseTextureTiling2" type="float2" defaultvalue="1,1" />
+  <parameter name="DiffuseTextureUV2" type="int" />
+  <parameter name="DiffuseUVTiling2" type="float4" provideronly="1" />
+  <parameter name="NormalTexture2" type="sampler2D" tilingName="NormalTiling2" UvName="NormalUV2" uvTilingName="NormalUVTiling2" maxdisplayname="Normal texture 2" normalmap="0" />
+  <parameter name="NormalTiling2" type="float2" defaultvalue="1,1" />
+  <parameter name="NormalUV2" type="int" />
+  <parameter name="NormalUVTiling2" type="float4" provideronly="1" />
+  <parameter name="NormalIntensity2" type="float" defaultvalue="1" />
+
+  <parameter name="WorldSpaceCover" type="bool"/>
+
+  <parameter name="WorldColorTexture" type="sampler2D" maxdisplayname="World Color texture" optional="1" />
+  <parameter name="WorldColorTextureTiling" type="float2" defaultvalue="1,1" />
+  <parameter name="WorldColorTextureBlending" type="float" defaultvalue="1" />
+  <parameter name="WorldColorTextureOverlay" type="bool" />
+
+  <parameter name="NormalsInfluence" type="float" defaultvalue="0" />
+  <parameter name="NormalmapInfluence" type="float" defaultvalue="0" />
+
+  <parameter name="RoughnessInNormalZ" type="bool"/>
+  <parameter name="Reflectance1" type="float" defaultvalue="0" />
+  <parameter name="Metalness1" type="float" defaultvalue="0" />
+
+  <parameter name="Reflectance2" type="float" defaultvalue="0" />
+  <parameter name="Metalness2" type="float" defaultvalue="0" />
+
+  <parameter name="NormalBlendMode" type="int" defaultvalue="0" />
+
+  <parameter name="BaseDarkeningParameters" type="float2" defaultvalue="0,0" />
+  <parameter name="BaseDarkeningColor" type="color3" defaultvalue="1,1,1" />
+
+  <parameter name="DetailMapIntensity" type="float" defaultvalue="0" />
+  <parameter name="DetailMapNoise" type="float" defaultvalue="0" />
+
+  <shaderoptions>
+    <shaderoption name="SEA_LEVEL_NORMALMAP">
+      <condition parameter="DiffuseTexture1" op="notequal" value="0" />
+    </shaderoption>
+  </shaderoptions>
+
+  <parameterprovider parametersfilename="Mesh_DisruptCliff.fx">
+    <parameter name="DiffuseUVTiling1" />
+    <parameter name="DiffuseTexture1" />
+    <parameter name="DiffuseColor1" />
+    <parameter name="NormalTexture1" />
+    <parameter name="NormalUVTiling1" />
+    <parameter name="NormalIntensity1" />
+    <parameter name="DiffuseTexture2" />
+    <parameter name="DiffuseUVTiling2" />
+    <parameter name="DiffuseColor2" />
+    <parameter name="NormalTexture2" />
+    <parameter name="NormalUVTiling2" />
+    <parameter name="NormalIntensity2" />
+    <parameter name="RoughnessInNormalZ" />
+    <parameter name="Reflectance1" />
+    <parameter name="Metalness1" />
+    <parameter name="Reflectance2" />
+    <parameter name="Metalness2" />
+    <parameter name="WorldSpaceCover" />
+    <parameter name="NormalBlendMode" />
+
+    <parameter name="WorldColorTexture" />
+    <parameter name="WorldColorTextureTiling" />
+    <parameter name="WorldColorTextureBlending" />
+    <parameter name="WorldColorTextureOverlay" />
+
+    <parameter name="NormalsInfluence" />
+    <parameter name="NormalmapInfluence" />
+
+    <parameter name="BaseDarkeningParameters"/>
+    <parameter name="BaseDarkeningColor"/>
+
+    <parameter name="DetailMapIntensity" />
+    <parameter name="DetailMapNoise" />
+
+  </parameterprovider>
+
+  <ui defaultFilePath="graphics/_Texture/">
+    <xi:include href="UI/DataClasses.xml" />
+
+    <group horizontal="0" label="" hide_if="TwoSided==0">
+      <label />
+    </group>
+    <!-- Spacing hack -->
+    <group horizontal="0">
+      <group horizontal="1" label="Base Color">
+        <button dataBindings="DiffuseColor2" />
+        <button dataBindings="DiffuseTexture2" fill="1" />
+        <textbox dataBindings="DiffuseTextureUV2">
+          <dataBindings class="UVChannel" />
+        </textbox>
+        <group>
+          <textbox dataBindings="DiffuseTextureTiling2.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="DiffuseTextureTiling2.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+      </group>
+
+      <group horizontal="0" label="" hide_if="TwoSided==0">
+        <label />
+      </group>
+      <!-- Spacing hack -->
+            <group label="Normal (global)">
+        <group horizontal="1">
+          <button dataBindings="NormalTexture2" fill="1" />
+          <textbox dataBindings="NormalUV2">
+            <dataBindings class="UVChannel" />
+          </textbox>
+          <group>
+            <textbox dataBindings="NormalTiling2.x">
+              <dataBindings class="Tiling" />
+            </textbox>
+            <textbox dataBindings="NormalTiling2.y">
+              <dataBindings class="Tiling" />
+            </textbox>
+          </group>
+        </group>
+        <group horizontal="1">
+          <label>     Intensity:   </label>
+          <textbox databindings="NormalIntensity2">
+            <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+          </textbox>
+          <label> 0</label>
+          <slider dataBindings="NormalIntensity2">
+            <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+          </slider>
+          <label>2</label>
+        </group>
+        <combobox dataBindings="NormalBlendMode">
+          <comboboxitem value="0">Blend lineaire avec poids</comboboxitem>
+          <comboboxitem value="1">mix du site avec poids</comboboxitem>
+          <comboboxitem value="2">ajout avec poids</comboboxitem>
+          <comboboxitem value="3">mix du site sans poids</comboboxitem>
+          <comboboxitem value="4">ajout sans poids</comboboxitem>
+          <comboboxitem value="5">Methode Stephen Hill</comboboxitem>
+        </combobox>
+      </group>
+      <checkbox label="Roughness in Normal's Blue Channel" dataBindings="RoughnessInNormalZ" />
+    </group>
+        
+      <group label="Normal (detail)">
+        <group horizontal="1">
+          <button dataBindings="NormalTexture1" fill="1" />
+          <textbox dataBindings="NormalUV1">
+            <dataBindings class="UVChannel" />
+          </textbox>
+          <group>
+            <textbox dataBindings="NormalTiling1.x">
+              <dataBindings class="Tiling" />
+            </textbox>
+            <textbox dataBindings="NormalTiling1.y">
+              <dataBindings class="Tiling" />
+            </textbox>
+          </group>
+        </group>
+        <group horizontal="1">
+          <label>     Intensity:   </label>
+          <textbox databindings="NormalIntensity1">
+            <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+          </textbox>
+          <label> 0</label>
+          <slider dataBindings="NormalIntensity1">
+            <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+          </slider>
+          <label>2</label>
+        </group>
+      </group>
+     <group horizontal="0" label="Normal Water Lever">
+        <group horizontal="1" >
+          <button dataBindings="DiffuseColor1" />
+          <button dataBindings="DiffuseTexture1" fill="1" />
+          <textbox dataBindings="DiffuseTextureUV1">
+            <dataBindings class="UVChannel" />
+          </textbox>
+          <group>
+            <textbox dataBindings="DiffuseTextureTiling1.x">
+              <dataBindings class="Tiling" />
+            </textbox>
+            <textbox dataBindings="DiffuseTextureTiling1.y">
+              <dataBindings class="Tiling" />
+            </textbox>
+          </group>
+        </group>
+        <group horizontal="1">
+          <label>Detail Map Intensity</label>
+          <textbox databindings="DetailMapIntensity">
+            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+          </textbox>
+          <label> 0</label>
+          <slider dataBindings="DetailMapIntensity">
+            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+          </slider>
+          <label>1</label>
+        </group>
+
+        <group horizontal="1">
+          <label>Detail Map Noise</label>
+          <textbox databindings="DetailMapNoise">
+            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+          </textbox>
+          <label> 0</label>
+          <slider dataBindings="DetailMapNoise">
+            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+          </slider>
+          <label>1</label>
+        </group>
+      </group>  
+    
+    <group horizontal="0" label="" hide_if="TwoSided==0">
+      <label />
+    </group>
+    <!-- Spacing hack -->
+    <group horizontal="0" label="World Color Texture">
+      <group horizontal="1">
+        <button dataBindings="WorldColorTexture" fill="1" />
+        <group>
+          <textbox dataBindings="WorldColorTextureTiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>     Normals Influence</label>
+        <textbox databindings="NormalsInfluence">
+          <databindings increment="0.1" minvalue="0.1" maxvalue="200" />
+        </textbox>
+        <label> 0</label>
+        <slider dataBindings="NormalsInfluence">
+          <dataBindings increment="0.1" minvalue="0.1" maxvalue="200" />
+        </slider>
+        <label>200</label>
+      </group>
+      <group horizontal="1">
+        <label>Normalmap Influence</label>
+        <textbox databindings="NormalmapInfluence">
+          <databindings increment="0.1" minvalue="0.1" maxvalue="200" />
+        </textbox>
+        <label> 0</label>
+        <slider dataBindings="NormalmapInfluence">
+          <dataBindings increment="0.1" minvalue="0.1" maxvalue="200" />
+        </slider>
+        <label>200</label>
+      </group>
+      <group horizontal="1">
+        <label> Colorization Intensity</label>
+        <textbox databindings="WorldColorTextureBlending">
+          <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+        </textbox>
+        <label> 0</label>
+        <slider dataBindings="WorldColorTextureBlending">
+          <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+        </slider>
+        <label>1</label>
+      </group>
+      <checkbox label="Overlay" dataBindings="WorldColorTextureOverlay" />
+    </group>
+    <group horizontal="0" label="" hide_if="TwoSided==0">
+      <label />
+    </group>
+    <!-- Spacing hack -->
+    <group horizontal="0" label="Base darkening">
+      <group horizontal="1">
+        <label>Color</label>
+        <button dataBindings="BaseDarkeningColor" />
+      </group>
+      <group horizontal="1">
+        <label>Height</label>
+        <textbox databindings="BaseDarkeningParameters.x">
+          <databindings increment="0.01" minvalue="0" maxvalue="50" />
+        </textbox>
+        <label> 0</label>
+        <slider dataBindings="BaseDarkeningParameters.x">
+          <dataBindings increment="0.01" minvalue="0" maxvalue="50" />
+        </slider>
+        <label>50</label>
+      </group>
+      <group horizontal="1">
+        <label>Fade Distance</label>
+        <textbox databindings="BaseDarkeningParameters.y">
+          <databindings increment="0.01" minvalue="0" maxvalue="10" />
+        </textbox>
+        <label> 0</label>
+        <slider dataBindings="BaseDarkeningParameters.y">
+          <dataBindings increment="0.01" minvalue="0.0" maxvalue="10" />
+        </slider>
+        <label>10</label>
+      </group>
+    </group>
+  </ui>
+</materialdescriptor>

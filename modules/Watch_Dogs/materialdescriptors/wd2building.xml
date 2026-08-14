@@ -1,0 +1,1013 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2Building" displayname="WD2Building" showinui="1" id="#(0x37bd2be6, 0x584a0971)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="1" packedUVChannel="2" />
+
+    <!-- Settings -->
+    <parameter name="SubFamily" type="int" defaultvalue="0" />
+    <parameter name="CastShadow" type="bool" defaultvalue="1" />
+    <parameter name="StaticMeshWindowLightSpecialMode" type="bool" defaultvalue="0" />
+    <parameter name="WindowCoordsBakedInUV" type="bool" defaultvalue="0" />
+
+<parameter 
+    name="MultiLayer" 
+    type="bool" 
+/>
+<parameter 
+    name="MultiLayerMode" 
+    type="int" 
+    defaultvalue="3" 
+/>
+
+<parameter 
+    name="WindowDressingParallax" 
+    type="bool" 
+    defaultvalue="1" 
+/>
+
+    <!-- BaseColor -->
+    <parameter name="DiffuseTexture1" type="sampler2D" maxdisplayname="Base texture 1" optional="0" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor3" type="color3" defaultvalue="1,1,1" />
+    <parameter name="Colorize" type="bool"/>
+    <parameter name="ColorizeParams" type="float4" defaultvalue="0,0,0,0" />
+
+    <parameter name="Colorize2" type="bool"/>
+    <parameter name="ColorizeParams2" type="float4" defaultvalue="0,0,0,0" />
+
+    <!-- Windows -->
+    <parameter name="DiffuseTexture2" type="sampler2DArray" maxdisplayname="Window texture" optional="1" />
+    <parameter name="DiffuseTexture2State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTextureTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseColorWindow" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseTexture2ArrayIndex" type="int" defaultvalue="0" />
+    <parameter name="LightIntensityCurveSel" type="float4" defaultvalue="1,0,0,0" />
+    <parameter name="AmountOfUnlitWindows" type="float" defaultvalue="0.2" />
+    <parameter name="WindowLightMaskTexture1" type="sampler2DArray" UvName="WindowLightMaskUV1" />
+    <parameter name="WindowLightIntensity" type="float3" defaultvalue="10,10,1" op_z="irradiance"/>
+    <parameter name="WindowLightMaskTextureArrayIndex" type="int" defaultvalue="0" />
+    <parameter name="WindowLightMaskWindowsCount" type="float2" defaultvalue="1,1" />
+
+    <!-- Fake interior -->
+    <parameter name="FakeInteriorTexture" oldnames="CeilingTexture" type="sampler2DArray" />
+    <parameter name="FakeInteriorTiling" oldnames="CeilingTiling" type="float" defaultvalue="1" />
+    <parameter name="FakeInteriorHeightParams" oldnames="CeilingHeightParams" type="float3" defaultvalue="0,0,0" />
+    <parameter name="FakeInteriorSpacing" oldnames="CeilingHeightSpacing" type="float2" defaultvalue="4,0.25" op_y="1/x" />
+    <parameter name="FakeInteriorRandomUvOffset" oldnames="CeilingRandomUvOffset" type="float" defaultvalue="0" />
+    <parameter name="FakeInteriorUseRandomRotation" type="bool" defaultvalue="0" />
+    <parameter name="FakeInteriorRotationAngle" type="float" defaultvalue="0" op_x="x/360"/>
+    <parameter name="FakeInteriorUseRandomTexture" type="bool" defaultvalue="0" />
+    <parameter name="FakeInteriorTextureIndex" type="int" defaultvalue="0" />
+
+    <parameter name="FakeCeilingIntensity" oldnames="CeilingIntensity" type="float3" defaultvalue="10,10,1" op_z="irradiance"/>
+    <parameter name="FakeCeilingLightIntensity" type="float3" defaultvalue="0,10,0" op_z="irradiance"/>
+    <parameter name="FakeFloorIntensity" type="float3" defaultvalue="0,10,0" op_z="irradiance"/>
+
+    <parameter name="FakeCeilingFadeDistance" oldnames="CeilingFadeDistance" type="float2" defaultvalue="1,1" op_y="1/x"/>
+    <parameter name="FakeFloorFadeDistance" type="float2" defaultvalue="10,0.1" op_y="1/x"/>
+
+    <parameter name="FakeInteriorPerBuildingRandom" type="float" defaultvalue="1" />
+
+    <!-- SurfaceParams -->
+    <parameter name="MaskTexture1" type="sampler2D" maxdisplayname="Mask texture" />
+    <parameter name="MaskTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="MaskChannelUsageRed" oldnames="MaskChannelsContent.x" type="float" defaultvalue="0" />
+    <parameter name="MaskChannelUsageGreen" oldnames="MaskChannelsContent.y" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageBlue" oldnames="MaskChannelsContent.z" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageAlpha" oldnames="MaskChannelsContent.w" type="float" defaultvalue="0" />
+    <parameter name="AlbedoChannelUsageAlpha" type="int" defaultvalue="0" />
+    <parameter name="Roughness" oldnames="MaskParameters.y" type="float" defaultvalue="0.5" />
+    <parameter name="Metalness" oldnames="MaskParameters.z" type="float" defaultvalue="0" />
+
+    <!-- Normal -->
+    <parameter name="NormalTexture1" type="sampler2D" maxdisplayname="Normal texture" normalmap="1" default__value="graphics\_Texture\_Default\base_normal.png"/>
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+
+
+  <!-- Multi-layered Material -->
+  <parameter name="LayerMaskTexture1" type="sampler2D" tilingName="LayerMaskTextureTiling1" UvName="LayerMaskTextureUV1" uvTilingName="LayerMaskUVTiling1" maxdisplayname="Layer Mask" optional="1">
+    <use_if parameter="MultiLayer" value="1" />
+  </parameter >
+  <parameter name="LayerMaskTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+  <parameter name="LayerMaskTextureTiling1" type="float2" defaultvalue="1,1" />
+  <parameter name="LayerMaskTextureUV1" type="int" />
+  <parameter name="LayerMaskUVTiling1" type="float4" provideronly="1" />
+  <parameter name="LayerMaskReliefIntensity1" type="float" defaultvalue="0" />
+
+  <parameter name="LayerMaskNoiseTexture1" type="sampler2D" tilingName="LayerMaskNoiseTextureTiling1" UvName="LayerMaskNoiseTextureUV1" uvTilingName="LayerMaskNoiseUVTiling1" maxdisplayname="Layer Mask" optional="1">
+    <use_if parameter="MultiLayer" value="1" />
+  </parameter >
+  <parameter name="LayerMaskNoiseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+  <parameter name="LayerMaskNoiseTextureTiling1" type="float2" defaultvalue="1,1" />
+  <parameter name="LayerMaskNoiseTextureUV1" type="int" />
+  <parameter name="LayerMaskNoiseUVTiling1" type="float4" provideronly="1" />
+  <parameter name="LayerMaskNoiseIntensity1" type="float" defaultvalue="0" />
+
+  <parameter name="DiffuseTextureLayer2" type="sampler2D" maxdisplayname="Base texture 2" optional="1">
+    <use_if parameter="MultiLayer" value="1" />
+  </parameter >  
+
+  <parameter name="MaskTexture2" type="sampler2D" maxdisplayname="Mask texture 2">
+    <use_if parameter="MultiLayer" value="1" />
+  </parameter>
+  <parameter name="MaskTexture2State" type="samplerState" defaultvalue="ColorWrap" />
+  <parameter name="MaskChannelUsageRed2" type="float" defaultvalue="0" />
+  <parameter name="MaskChannelUsageGreen2" type="float" defaultvalue="1" />
+  <parameter name="MaskChannelUsageBlue2" type="float" defaultvalue="1" />  
+  <parameter name="Roughness2" type="float" defaultvalue="0.5" />
+  <parameter name="Metalness2" type="float" defaultvalue="0" />
+  
+  <parameter name="NormalTexture2" type="sampler2D" maxdisplayname="Normal texture 2" normalmap="1">
+    <use_if parameter="MultiLayer" value="1" />
+  </parameter>
+  <parameter name="NormalTexture2State" type="samplerState" defaultvalue="NormalWrap" />
+  <parameter name="NormalIntensity2" type="float" defaultvalue="1" />
+
+    <!-- Dirt -->
+    <parameter name="GrungeTexture" type="sampler2DArray" tilingName="GrungeTiling" maxdisplayname="Grunge texture" />
+    <parameter name="GrungeTiling" type="float2" defaultvalue="0.1,0.1" />
+    <parameter name="GrungeOpacity" type="float" defaultvalue="0.15" />
+    <parameter name="GrungeNewMode" type="bool" defaultvalue="0" />
+    <parameter name="GrungeTextureArrayIndex" type="int" defaultvalue="0" />
+
+    <parameter name="RoundedCornersParameters" type="float3" defaultvalue="0,90,0" />
+    <!-- 114.6 = 360/pi => yz = (0.5 * DegToRad(yz)) -->
+    <parameter name="RoundedCornersParameters2" type="float4" defaultvalue="0,35,60,60" op_y="y/114.6" op_z="z/114.6"/>
+
+    <parameter name="ManualOffsetUV" type="float2" defaultvalue="0,0" />
+    <parameter name="ColorizeTexture1" type="sampler2D" />
+
+    <parameter name="WindowLightVariationTexture" type="sampler2D" maxdisplayname="WindowLight Variation texture" />
+    <parameter name="WindowLightVariationTextureState" type="samplerState" defaultvalue="ColorWrap" />
+
+    <parameter name="HeightTexture1" type="sampler2D" maxdisplayname="Height texture 1" optional="1">
+        <use_if parameter="SubFamily" value="1" />
+    </parameter>
+    <parameter name="HeightTexture1State" type="samplerState" defaultvalue="ColorWrap">
+        <use_if parameter="SubFamily" value="1" />
+    </parameter>  
+
+    <parameter name="UseParallaxMapping" type="bool" defaultvalue="0" />
+    <parameter name="ParallaxHeightIntensity" type="float" defaultvalue="0.25" />
+    <parameter name="ParallaxHeightValueMin" type="float" defaultvalue="0" />
+    <parameter name="ParallaxHeightValueMax" type="float" defaultvalue="1" />
+
+    <parameterprovider parametersfilename="Mesh_WD2Building.fx">
+        <parameter name="SubFamily" />
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="Colorize"/>
+        <parameter name="ColorizeParams" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseColor3" />
+        <parameter name="DiffuseTexture2" />
+        <parameter name="Colorize2"/>
+        <parameter name="ColorizeParams2" />
+        <parameter name="DiffuseTexture2ArrayIndex" />
+        <parameter name="DiffuseTexture2State" />    
+        <parameter name="DiffuseTextureTiling2" />
+        <parameter name="DiffuseColorWindow" />
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTexture1State" />
+        <parameter name="NormalIntensity" />
+        <parameter name="NormalTexture2" />
+    <parameter name="NormalTexture2State" />
+    <parameter name="NormalIntensity2" />
+    <parameter name="MaskTexture1" />
+        <parameter name="MaskTexture1State" />
+        <parameter name="MaskChannelUsageRed" />
+        <parameter name="MaskChannelUsageGreen" />
+        <parameter name="MaskChannelUsageBlue" />
+        <parameter name="MaskChannelUsageAlpha" />
+        <parameter name="AlbedoChannelUsageAlpha" />
+        <parameter name="DiffuseTextureLayer2" />    
+    <parameter name="MaskTexture2" />
+    <parameter name="MaskTexture2State" />
+    <parameter name="MaskChannelUsageRed2" />
+    <parameter name="MaskChannelUsageGreen2" />
+    <parameter name="MaskChannelUsageBlue2" />    
+        <parameter name="Roughness" />
+        <parameter name="Metalness" />
+    <parameter name="Roughness2" />
+    <parameter name="Metalness2" />
+    <parameter name="MultiLayer"/>
+    <parameter name="MultiLayerMode"/>
+    <parameter name="LayerMaskTexture1" />
+    <parameter name="LayerMaskTexture1State" />
+    <parameter name="LayerMaskReliefIntensity1"/>
+    <parameter name="LayerMaskUVTiling1" />
+    <parameter name="LayerMaskNoiseTexture1" />
+    <parameter name="LayerMaskNoiseTexture1State" />
+    <parameter name="LayerMaskNoiseUVTiling1" />
+    <parameter name="LayerMaskNoiseIntensity1" />
+    <parameter name="RoundedCornersParameters" />
+    <parameter name="RoundedCornersParameters2" />
+        <parameter name="GrungeTexture" />
+        <parameter name="GrungeTextureArrayIndex" />
+        <parameter name="GrungeTiling" />
+        <parameter name="GrungeOpacity" />
+        <parameter name="ManualOffsetUV" />
+        <parameter name="ColorizeTexture1"/>
+        <parameter name="GrungeNewMode"/>
+        <parameter name="LightIntensityCurveSel" />
+        <parameter name="AmountOfUnlitWindows" />
+        <parameter name="FakeInteriorTexture" sizeparameter="1" />
+        <parameter name="FakeInteriorTiling" />
+        <parameter name="FakeCeilingIntensity" />
+        <parameter name="FakeCeilingLightIntensity" />
+        <parameter name="FakeFloorIntensity" />
+        <parameter name="FakeInteriorHeightParams" />
+        <parameter name="FakeInteriorSpacing" />
+        <parameter name="FakeInteriorRandomUvOffset" />
+        <parameter name="FakeInteriorUseRandomRotation" />
+        <parameter name="FakeInteriorRotationAngle" />
+        <parameter name="FakeInteriorUseRandomTexture" />
+        <parameter name="FakeInteriorTextureIndex" />
+        <parameter name="FakeCeilingFadeDistance" />
+        <parameter name="FakeFloorFadeDistance" />
+        <parameter name="FakeInteriorPerBuildingRandom" />
+        <parameter name="WindowLightMaskTexture1" sizeparameter="1" />
+        <parameter name="WindowLightMaskTextureArrayIndex" />
+        <parameter name="WindowLightMaskWindowsCount" />
+        <parameter name="WindowLightIntensity" />
+        <parameter name="WindowLightVariationTexture" />
+        <parameter name="WindowLightVariationTextureState" />
+        <parameter name="StaticMeshWindowLightSpecialMode" />
+        <parameter name="WindowCoordsBakedInUV" />
+        <parameter name="WindowDressingParallax" />
+
+        <parameter name="UseParallaxMapping" />
+        <parameter name="HeightTexture1" />
+        <parameter name="HeightTexture1State" />
+        <parameter name="ParallaxHeightIntensity" />
+        <parameter name="ParallaxHeightValueMin" />
+        <parameter name="ParallaxHeightValueMax" />
+
+    </parameterprovider>
+
+
+  <shaderoptions>
+    <shaderoption name="STANDARD_BUILDING">
+      <condition parameter="SubFamily" op="equal" value="1"/>
+    </shaderoption>
+    <shaderoption name="PARALLAX_MAPPING">
+      <condition parameter="UseParallaxMapping" op="equal" value="1"/>
+    </shaderoption>
+    <shaderoption name="MULTILAYER_VERTEX">
+      <condition parameter="MultiLayer"/>
+      <condition parameter="MultiLayerMode" op="equal" value="1"/>
+    </shaderoption>
+    <shaderoption name="MULTILAYER_VERTEX">
+      <condition parameter="MultiLayer"/>
+      <condition parameter="MultiLayerMode" op="equal" value="3"/>
+    </shaderoption>
+    <shaderoption name="MULTILAYER_MASK">
+      <condition parameter="MultiLayer"/>
+      <condition parameter="MultiLayerMode" op="equal" value="2"/>
+    </shaderoption>
+    <shaderoption name="MULTILAYER_MASK">
+      <condition parameter="MultiLayer"/>
+      <condition parameter="MultiLayerMode" op="equal" value="3"/>
+    </shaderoption>
+    <shaderoption name="MULTILAYER_NOISE">
+      <condition parameter="MultiLayer"/>
+      <condition parameter="LayerMaskNoiseTexture1"/>
+    </shaderoption>
+  </shaderoptions>
+
+  
+    <ui defaultFilePath="graphics/_Texture/">
+        <xi:include href="UI/DataClasses.xml" />
+        <!-- Settings -->
+
+    <group horizontal="1">
+      <label>Shader Mode</label>
+      <combobox dataBindings="SubFamily">
+        <comboboxitem value="0">Building</comboboxitem>
+        <comboboxitem value="1">Standard building</comboboxitem>
+      </combobox>
+    </group>
+
+    <!-- Building material -->
+    <group horizontal="1" label="Settings" show_if="SubFamily==0">
+        <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+        <checkbox label="Bakedwindowdressing mode" dataBindings="StaticMeshWindowLightSpecialMode" />
+        <checkbox label="Window coords baked in UVs" dataBindings="WindowCoordsBakedInUV" />
+        <checkbox label="Layered Blend" dataBindings="MultiLayer" />
+    </group>
+
+    <!-- Standard building material -->
+    <group horizontal="1" label="Settings" show_if="SubFamily==1">
+      <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+      <checkbox label="Parallax Mapping" dataBindings="UseParallaxMapping" />
+    </group>
+
+    <group horizontal="1" show_if="MultiLayer">
+      <label>Multi Layer Mode</label>
+      <combobox dataBindings="MultiLayerMode">
+        <comboboxitem value="0">None</comboboxitem>
+        <comboboxitem value="1">Vertex Blend</comboboxitem>
+        <comboboxitem value="2">Mask Blend</comboboxitem>
+        <comboboxitem value="3">Vertex and Mask Blend</comboboxitem>
+      </combobox>
+    </group>
+            <!-- Base Color -->
+        <group horizontal="0" label="Base Color">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+
+            <group horizontal="1" show_If="SubFamily==1">
+              <label color="000000">   A:</label>
+              <group horizontal="1">
+                <group horizontal="1">
+                  <combobox dataBindings="AlbedoChannelUsageAlpha">
+                    <comboboxitem value="0">None</comboboxitem>
+                    <comboboxitem value="1">Window mask</comboboxitem>
+                    <comboboxitem value="2">Colorize Mask (3rd color)</comboboxitem>
+                  </combobox>
+                </group>
+              </group>
+            </group>
+          
+        </group>
+
+        <group horizontal="0" label="Windows">
+            <!-- Window Dressing-->
+            <group label="Window Dressing">
+                <group horizontal="1">
+                    <button dataBindings="DiffuseColorWindow" />
+                    <button dataBindings="DiffuseTexture2" fill="1" />
+                    <group>
+                        <textbox dataBindings="DiffuseTextureTiling2.x">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                        <textbox dataBindings="DiffuseTextureTiling2.y">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+                    <combobox dataBindings="DiffuseTexture2State">
+                        <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                        <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                        <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                        <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                    </combobox>
+                    <label> Index:</label>
+                    <textbox dataBindings="DiffuseTexture2ArrayIndex" tooltip="Index of the window dressing texture in the texture array">
+                        <dataBindings increment="1" minvalue="0" maxvalue="8" />
+                    </textbox>
+                </group>
+                <group horizontal="1">
+                    <label>Animation Pattern: </label>
+                    <button dataBindings="WindowLightVariationTexture" fill="1" />
+                <checkbox label="Window Dressing Parallax" dataBindings="WindowDressingParallax" />
+                </group>
+            </group>
+
+            <!-- Window Lights-->
+            <group label="Window Lights">
+                <group horizontal="1">
+                    <button dataBindings="WindowLightMaskTexture1" fill="1" />
+                    <label> Index:</label>
+                    <textbox dataBindings="WindowLightMaskTextureArrayIndex" tooltip="Index of the windowlight texture in the texture array">
+                        <dataBindings increment="1" minvalue="0" maxvalue="8" />
+                    </textbox>
+                </group>
+
+                <group show_if="WindowLightMaskTexture1" label="Irradiance" >
+                    <group horizontal="1">
+                        <group>
+                            <label>Power</label>
+                            <textbox dataBindings="WindowLightIntensity.x" tooltip="Power of the window light.">
+                                <dataBindings increment="0.1" minvalue="0.1" maxvalue="1000000.0" />
+                            </textbox>
+                        </group>
+                        <group>
+                            <label>Area cm2</label>
+                            <textbox dataBindings="WindowLightIntensity.y" tooltip="Area">
+                                <dataBindings increment="0.1" minvalue="0.1" maxvalue="1000000.0" />
+                            </textbox>
+                        </group>
+                        <group>
+                            <label>WCount X</label>
+                            <textbox dataBindings="WindowLightMaskWindowsCount.x" tooltip="Windows count X">
+                                <dataBindings increment="1" minvalue="1" maxvalue="16" />
+                            </textbox>
+                        </group>
+                        <group>
+                            <label>WCount Y</label>
+                            <textbox dataBindings="WindowLightMaskWindowsCount.y" tooltip="Windows count Y">
+                                <dataBindings increment="1" minvalue="1" maxvalue="16" />
+                            </textbox>
+                        </group>
+                    </group>
+                </group>
+
+                <!-- Light Animation Settings -->
+                <group label="Light Animation" show_if="WindowLightMaskTexture1">
+                    <group horizontal="1">
+                        <label>Global Light Probability Curve Index</label>
+                        <combobox dataBindings="LightIntensityCurveSel" tooltip="Light intensity curve that will be used with time of day.">
+                            <comboboxitem value="1,0,0,0">Curve 0</comboboxitem>
+                            <comboboxitem value="0,1,0,0">Curve 1</comboboxitem>
+                            <comboboxitem value="0,0,1,0">Curve 2</comboboxitem>
+                            <comboboxitem value="0,0,0,1">Curve 3</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1">
+                        <label>Amount of Unlit Windows</label>
+                        <textbox dataBindings="AmountOfUnlitWindows" tooltip="Percentage of windows that will remain unlit." >
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+
+            <!-- Fake interior -->
+            <group label="Fake Interior">
+                <group horizontal="1">
+                    <button dataBindings="FakeInteriorTexture" fill="1"/>
+                    <group show_if="FakeInteriorTexture">
+                        <label tooltip="Amount of tiling for the interior texture.">Tiling</label>
+                        <textbox dataBindings="FakeInteriorTiling" tooltip="Amount of tiling for the interior texture.">
+                            <dataBindings increment="0.01" minvalue="0.01" maxvalue="10.0" />
+                        </textbox>
+                    </group>
+                    <group show_if="FakeInteriorTexture">
+                        <label tooltip="Random UV offset on each floor.">Random Offset</label>
+                        <textbox dataBindings="FakeInteriorRandomUvOffset" tooltip="Random UV offset on each floor.">
+                            <dataBindings increment="0.1" minvalue="0.0" maxvalue="100.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group show_if="FakeInteriorTexture">
+                    <group horizontal="1">
+                        <checkbox label="Random texture per floor" tooltip="Random texture from array on each floor." dataBindings="FakeInteriorUseRandomTexture" />
+                        <group horizontal="1" hide_if="FakeInteriorUseRandomTexture">
+                            <label>Texture index</label>
+                            <textbox dataBindings="FakeInteriorTextureIndex" tooltip="Texture array index to use.">
+                                <dataBindings increment="1" minvalue="0" maxvalue="15" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group horizontal="1">
+                        <checkbox label="Random rotation per floor" tooltip="Random rotation on each floor." dataBindings="FakeInteriorUseRandomRotation" />
+                        <group horizontal="1" hide_if="FakeInteriorUseRandomRotation">
+                            <label>Rotation angle</label>
+                            <textbox dataBindings="FakeInteriorRotationAngle" tooltip="Manual rotation angle for fake interiors.">
+                                <dataBindings increment="0.1" minvalue="0" maxvalue="360" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group horizontal="1">
+                        <checkbox label="Align fake interior with building, and use different texture/rotation for each building instance." dataBindings="FakeInteriorPerBuildingRandom" />
+                    </group>
+                    <group horizontal="1">
+                        <label alignright="1" width="20" color="BB0000">R:</label>
+                        <label alignright="0" width="140">Floor surface irradiance: </label>
+                        <dataBindingsAlias name="@IrradianceAlias" dataBindings="FakeFloorIntensity" />
+                        <xi:include href="UI/IrradianceGroup.xml" />
+                        <label alignright="1" width="140">Floor fade distance: </label>
+                        <textbox dataBindings="FakeFloorFadeDistance.x" tooltip="Fade distance for the floor, measured from the window plane (in meters).">
+                            <dataBindings increment="0.1" minvalue="0.1" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1">
+                        <label alignright="1" width="20" color="00BB00">G:</label>
+                        <label alignright="0" width="140">Ceiling surface irradiance: </label>
+                        <dataBindingsAlias name="@IrradianceAlias" dataBindings="FakeCeilingIntensity" />
+                        <xi:include href="UI/IrradianceGroup.xml" />
+                        <label alignright="1" width="140">Ceiling fade distance: </label>
+                        <textbox dataBindings="FakeCeilingFadeDistance.x" tooltip="Fade distance for the ceiling, measured from the window plane (in meters).">
+                            <dataBindings increment="0.1" minvalue="0.1" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1">
+                        <label alignright="1" width="20" color="0000BB">B:</label>
+                        <label alignright="0" width="140">Ceiling lights irradiance: </label>
+                        <dataBindingsAlias name="@IrradianceAlias" dataBindings="FakeCeilingLightIntensity" />
+                        <xi:include href="UI/IrradianceGroup.xml" />
+                    </group>
+                </group>
+                <group horizontal="1" show_if="FakeInteriorTexture">
+                    <label tooltip="Height offset of the floors.">Floor Offset</label>
+                    <textbox dataBindings="FakeInteriorHeightParams.x" tooltip="Height offset of the fake floors.">
+                        <dataBindings increment="0.01" minvalue="-100.00" maxvalue="100.0" />
+                    </textbox>
+                    <label tooltip="Distance between two floors.">    Floor Spacing</label>
+                    <textbox dataBindings="FakeInteriorSpacing.x" tooltip="Distance between two floors.">
+                        <dataBindings increment="0.01" minvalue="0.01" maxvalue="100.0" />
+                    </textbox>
+                    <label tooltip="Floor base position when offset is zero.">    Base floor height</label>
+                    <combobox dataBindings="FakeInteriorHeightParams.yz" tooltip="Floor base position when offset is zero.">
+                        <comboboxitem value="0,0">Pivot height</comboboxitem>
+                        <comboboxitem value="1,0">Bottom of facade</comboboxitem>
+                        <comboboxitem value="0,1">Top of facade</comboboxitem>
+                    </combobox>
+                </group>
+            </group>
+        </group>
+
+        <!-- Colorize -->
+        <group horizontal="0" label="Colorize Mask" show_if="MaskChannelUsageRed==2 || MaskChannelUsageAlpha==2">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor2" />
+                <group show_if="MaskChannelUsageBlue==2 || AlbedoChannelUsageAlpha==2">
+                    <button dataBindings="DiffuseColor3" />
+                </group>
+                <checkbox label="Invert Colorization Mask" dataBindings="ColorizeParams.w" />
+            </group>
+            <group horizontal="1" hide_if="Colorize==0">
+                <label>  Colorized Roughness:      -1 </label>
+                <slider dataBindings="ColorizeParams.y">
+                    <dataBindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </slider>
+                <label>1     </label>
+                <textbox databindings="ColorizeParams.y">
+                    <databindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1" hide_if="Colorize==0">
+                <label>  Colorized Metal Mask:      -1 </label>
+                <slider dataBindings="ColorizeParams.z">
+                    <dataBindings increment="1.0" minvalue="-1.0" maxvalue="1.0" />
+                </slider>
+                <label>1     </label>
+                <textbox databindings="ColorizeParams.z">
+                    <databindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+        <!-- SurfaceParams -->
+        <group label="Surface Parameters" show_if="SubFamily==0">
+            <group horizontal="1">
+                <button dataBindings="MaskTexture1" fill="1" />
+            </group>
+            <group vertical="1">
+              <group horizontal="1">
+                <label color="BB0000">   R:</label>
+                <group horizontal="1" enable_if="MaskTexture1==1">
+                  <group horizontal="1" enable_if="Colorize==0">
+                    <combobox dataBindings="MaskChannelUsageRed">
+                      <comboboxitem value="0">None</comboboxitem>
+                      <comboboxitem value="2">Colorize Mask</comboboxitem>
+                    </combobox>
+                  </group>
+                </group>
+              </group>
+                <group horizontal="1">
+                    <label color="00BB00">   G:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelUsageGreen">
+                            <comboboxitem value="1">Roughness</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelUsageGreen==0">
+                        <label>    Roughness: </label>
+                        <label>  0</label>
+                        <slider dataBindings="Roughness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Roughness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="0000BB">   B:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelUsageBlue">
+                            <comboboxitem value="1">Metal Mask</comboboxitem>
+                            <comboboxitem value="2">Colorize Mask (3rd color)</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelUsageBlue!=1">
+                        <label>    Metal Mask:  </label>
+                        <label> 0</label>
+                        <slider dataBindings="Metalness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Metalness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <group horizontal="0" label="BRDF" show_if="SubFamily==1">
+          <group horizontal="1">
+            <button dataBindings="MaskTexture1" fill="1" />
+          </group>
+          <group horizontal="1">
+            <label color="000000">   A:</label>
+            <group horizontal="1" enable_if="MaskTexture1==1">
+              <group horizontal="1" enable_if="Colorize==0">
+                <combobox dataBindings="MaskChannelUsageAlpha">
+                  <comboboxitem value="0">None</comboboxitem>
+                  <comboboxitem value="1">Metal mask</comboboxitem>
+                  <comboboxitem value="2">Colorize Mask</comboboxitem>
+                </combobox>
+              </group>
+              <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelUsageAlpha==0 || MaskChannelUsageAlpha==2">
+                <label>    Metalness: </label>
+                <label>  0</label>
+                <slider dataBindings="Metalness">
+                  <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="Metalness">
+                  <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+              </group>
+            </group>
+          </group>
+
+          <group horizontal="1">
+            <label>Normal Strength: </label>
+            <textbox databindings="NormalIntensity">
+              <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+            </textbox>
+            <label> 0</label>
+            <slider dataBindings="NormalIntensity">
+              <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+            </slider>
+            <label>2</label>
+          </group>
+
+        </group>
+
+      <group horizontal="0" label="Height" show_if="SubFamily==1,UseParallaxMapping==1">
+        
+        <group horizontal="1">
+          <group horizontal="1">
+            <button dataBindings="HeightTexture1" fill="1" />
+          </group>
+        </group>
+
+        <group horizontal="1" label="Parallax Mapping" enable_if="HeightTexture1==1">
+          <label alignright="1" width="180">Parallax Height Intensity:</label>
+          <textbox databindings="ParallaxHeightIntensity">
+            <databindings increment="0.001" minvalue="0" maxvalue="2.0" />
+          </textbox>
+          <label alignright="1" width="180">Parallax Height Value Min:</label>
+          <textbox databindings="ParallaxHeightValueMin">
+            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+          </textbox>
+          <group horizontal="1">
+            <label alignright="1" width="80">Parallax Height Value Max:</label>
+            <textbox databindings="ParallaxHeightValueMax">
+              <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+            </textbox>
+          </group>
+        </group>
+      </group>
+      
+      
+      
+        <!-- NormalMap -->
+        <group label="Normal" show_if="SubFamily==0">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <combobox dataBindings="NormalTexture1State">
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>     Intensity:   </label>
+                <textbox databindings="NormalIntensity">
+                    <databindings increment="0.01" minvalue="0.01" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.01" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+
+
+
+    <!-- Layered Blending -->
+    <group label="Multi Layer" show_if="MultiLayer==1">
+
+      <!-- Layer Mask -->
+      <group label="Layer Mask">
+        <group horizontal="1">
+          <group horizontal="1">
+            <button dataBindings="LayerMaskTexture1" fill="1" />
+          </group>
+          <textbox dataBindings="LayerMaskTextureUV1">
+            <dataBindings class="UVChannel" />
+          </textbox>
+          <group>
+            <textbox dataBindings="LayerMaskTextureTiling1.x">
+              <dataBindings class="Tiling" />
+            </textbox>
+            <textbox dataBindings="LayerMaskTextureTiling1.y">
+              <dataBindings class="Tiling" />
+            </textbox>
+          </group>
+          <combobox dataBindings="LayerMaskTexture1State">
+            <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+            <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+            <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+            <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+          </combobox>
+        </group>
+
+        <group horizontal="1">
+          <label>    Relief Intensity:   </label>
+          <textbox databindings="LayerMaskReliefIntensity1">
+            <databindings increment="0.01" minvalue="-4.0" maxvalue="4.0" />
+          </textbox>
+          <label>-4</label>
+          <slider dataBindings="LayerMaskReliefIntensity1">
+            <dataBindings increment="0.01" minvalue="-4.0" maxvalue="4.0" />
+          </slider>
+          <label>4</label>
+        </group>
+
+        <group horizontal="1">
+            <group horizontal="1">
+              <button dataBindings="LayerMaskNoiseTexture1" fill="1" />
+            </group>
+            <textbox dataBindings="LayerMaskNoiseTextureUV1">
+              <dataBindings class="UVChannel" />
+            </textbox>
+            <group>
+              <textbox dataBindings="LayerMaskNoiseTextureTiling1.x">
+                <dataBindings class="Tiling" />
+              </textbox>
+              <textbox dataBindings="LayerMaskNoiseTextureTiling1.y">
+                <dataBindings class="Tiling" />
+              </textbox>
+            </group>
+            <combobox dataBindings="LayerMaskNoiseTexture1State">
+              <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+              <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+              <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+              <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+            </combobox>
+        </group>
+
+        <group horizontal="1">
+          <label>     Noise Intensity:   </label>
+          <textbox databindings="LayerMaskNoiseIntensity1">
+            <databindings increment="0.01" minvalue="-5.0" maxvalue="5.0" />
+          </textbox>
+          <label>-5</label>
+          <slider dataBindings="LayerMaskNoiseIntensity1">
+            <dataBindings increment="0.01" minvalue="-5.0" maxvalue="5.0" />
+          </slider>
+          <label>5</label>
+        </group>
+      </group>
+      
+       <!-- Base Color 2 -->
+        <group label="Base Color 2">
+          <group horizontal="1">
+            <group horizontal="1">
+              <button dataBindings="DiffuseTextureLayer2" fill="1" />
+            </group>
+          </group>
+        </group>
+
+
+        <!-- Colorize -->
+        <group horizontal="0" label="Colorize Mask 2" show_if="MaskChannelUsageRed2==2">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor3" />
+                <checkbox label="Invert Colorization Mask" dataBindings="ColorizeParams2.w" />
+            </group>
+            <group horizontal="1" hide_if="Colorize2==0">
+                <label>  Colorized Roughness:      -1 </label>
+                <slider dataBindings="ColorizeParams2.y">
+                    <dataBindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </slider>
+                <label>1     </label>
+                <textbox databindings="ColorizeParams2.y">
+                    <databindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1" hide_if="Colorize2==0">
+                <label>  Colorized Metal Mask:      -1 </label>
+                <slider dataBindings="ColorizeParams2.z">
+                    <dataBindings increment="1.0" minvalue="-1.0" maxvalue="1.0" />
+                </slider>
+                <label>1     </label>
+                <textbox databindings="ColorizeParams2.z">
+                    <databindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+
+        <!-- Surface Parameters 2 -->
+        <group label="Surface Parameters 2">
+          <group horizontal="1">
+            <group horizontal="1">
+              <button dataBindings="MaskTexture2" fill="1" />
+            </group>
+          </group>
+          <group vertical="1">
+            <group horizontal="1">
+              <label alignright="1" width="40" color="BB0000">R:</label>
+              <group horizontal="1" enable_if="Colorize2==0">
+                <group horizontal="1" enable_if="UseAsMask==0">
+                  <combobox dataBindings="MaskChannelUsageRed2">
+                    <comboboxitem value="0">None</comboboxitem>
+                    <comboboxitem value="2">Colorize Mask</comboboxitem>
+                  </combobox>
+                    <group show_if="MaskChannelUsageRed2==2">
+                        <label color="BB0000">Interiors Only!</label>
+                    </group>
+                </group>
+              </group>
+            </group>
+            <group horizontal="1">
+              <label alignright="1" width="40" color="00BB00">G:</label>
+              <group horizontal="1" enable_if="MaskTexture2==1">
+                <group horizontal="1" enable_if="UseAsMask==0">
+                  <combobox dataBindings="MaskChannelUsageGreen2">
+                    <comboboxitem value="1">Roughness</comboboxitem>
+                    <comboboxitem value="0">None</comboboxitem>
+                  </combobox>
+                </group>
+              </group>
+              <group horizontal="1" enable_if="MaskTexture2==0 || MaskChannelUsageGreen2==0  || UseAsMask==1">
+                <label alignright="1" width="90">Roughness</label>
+                <label> 0</label>
+                <slider dataBindings="Roughness2">
+                  <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="Roughness2">
+                  <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+              </group>
+            </group>
+            <group horizontal="1">
+              <label alignright="1" width="40" color="0000BB">B:</label>
+              <group horizontal="1" enable_if="MaskTexture2==1">
+                <group horizontal="1" enable_if="UseAsMask==0">
+                  <combobox dataBindings="MaskChannelUsageBlue2">
+                    <comboboxitem value="1">Metal Mask</comboboxitem>
+                    <comboboxitem value="0">None</comboboxitem>
+                  </combobox>
+                </group>
+              </group>
+              <group horizontal="1" enable_if="MaskTexture2==0 || MaskChannelUsageBlue2==0 || UseAsMask==1">
+                <label alignright="1" width="90">Metal Mask</label>
+                <label> 0</label>
+                <slider dataBindings="Metalness2">
+                  <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="Metalness2">
+                  <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+              </group>
+            </group>
+          </group>
+        </group>
+
+        <!-- Normal Map 2 -->
+        <group label="Normal 2">
+          <group horizontal="1">
+            <group horizontal="1">
+              <button dataBindings="NormalTexture2" fill="1" />
+            </group>
+          </group>
+
+          <group horizontal="1">
+            <label>     Intensity:   </label>
+            <textbox databindings="NormalIntensity2">
+              <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+            </textbox>
+            <label> 0</label>
+            <slider dataBindings="NormalIntensity2">
+              <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+            </slider>
+            <label>2</label>
+          </group>
+        </group>
+      </group>
+    
+        <group label="Smooth corners" horizontal="0" complexity="1">
+            <group horizontal="1"> 
+                <checkbox label="Enabled" dataBindings="RoundedCornersParameters.x" />
+                <checkbox label="Scale sharpness using angle with neighbor facade" dataBindings="RoundedCornersParameters2.x" />
+            </group>
+            <group horizontal="1"> 
+                <group horizontal="0">
+                    <group horizontal="1">
+                        <label  alignright="0" width="100" >Sharpness:</label>
+                        <textbox databindings="RoundedCornersParameters.y" >
+                            <databindings increment="0.001" minvalue="1.0" maxvalue="100.0" />
+                        </textbox>
+                        <slider dataBindings="RoundedCornersParameters.y">
+                            <dataBindings increment="0.001" minvalue="1.0" maxvalue="100.0" />
+                        </slider>
+                    </group>
+                    <group show_if="RoundedCornersParameters2.x!=0" horizontal="1">
+                        <label  alignright="0" width="100" >Max Sharpness:</label>
+                        <textbox databindings="RoundedCornersParameters2.w" >
+                            <databindings increment="0.001" minvalue="1.0" maxvalue="100.0" />
+                        </textbox>
+                        <slider dataBindings="RoundedCornersParameters2.w">
+                            <dataBindings increment="0.001" minvalue="1.0" maxvalue="100.0" />
+                        </slider>
+                    </group>
+                </group>
+                <group show_if="RoundedCornersParameters2.x!=0" horizontal="0"> 
+                    <group label="Min angle (degrees):" horizontal="1">
+                        <textbox databindings="RoundedCornersParameters2.y" >
+                            <databindings increment="0.001" minvalue="0.0" maxvalue="180.0" />
+                        </textbox>
+                        <slider dataBindings="RoundedCornersParameters2.y">
+                            <dataBindings increment="0.001" minvalue="0.0" maxvalue="180.0" />
+                        </slider>
+                    </group>
+                    <group label="Max angle (degrees):" horizontal="1">
+                        <textbox databindings="RoundedCornersParameters2.z" >
+                            <databindings increment="0.001" minvalue="0.0" maxvalue="180.0" />
+                        </textbox>
+                        <slider dataBindings="RoundedCornersParameters2.z">
+                            <dataBindings increment="0.001" minvalue="0.0" maxvalue="180.0" />
+                        </slider>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <group label="Dirt / dust (building facades)" complexity="1" >
+            <group horizontal="1">
+                <button dataBindings="GrungeTexture" fill="1" />
+                <group show_if="GrungeTexture" horizontal="1">
+                    <group>
+                        <textbox dataBindings="GrungeTiling.x">
+                            <dataBindings increment="0.0001" minvalue="0.0001" displayvaluemul="10"/>
+                        </textbox>
+                        <textbox dataBindings="GrungeTiling.y">
+                            <dataBindings increment="0.0001" minvalue="0.0001" displayvaluemul="10"/>
+                        </textbox>
+                    </group>
+                    <label>Manual offset</label>
+                    <group>
+                        <textbox dataBindings="ManualOffsetUV.x">
+                            <dataBindings increment="0.0001" minvalue="0.0001" displayvaluemul="10"/>
+                        </textbox>
+                        <textbox dataBindings="ManualOffsetUV.y">
+                            <dataBindings increment="0.0001" minvalue="0.0001" displayvaluemul="10"/>
+                        </textbox>
+                    </group>
+                    <label> Index:</label>
+                    <textbox dataBindings="GrungeTextureArrayIndex" tooltip="Index of the dirt texture in the texture array">
+                        <dataBindings increment="1" minvalue="0" maxvalue="8" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1" show_if="GrungeTexture">
+                <label>     Intensity:   </label>
+                <textbox databindings="GrungeOpacity" >
+                    <databindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>0</label>
+                <slider dataBindings="GrungeOpacity">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <checkbox label="New mode" dataBindings="GrungeNewMode" />
+
+            </group>
+
+            <group label="UV stretch fix" horizontal="0" complexity="1">
+                <group horizontal="1">
+                    <label>          UV scale    -1</label>
+                    <slider dataBindings="RoundedCornersParameters.z">
+                        <dataBindings increment="0.001" minvalue="-1.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1 </label>
+                    <textbox databindings="RoundedCornersParameters.z" >
+                        <databindings increment="0.001" minvalue="-1.0" maxvalue="1.0" />
+                    </textbox>
+                </group>
+            </group>
+
+        </group>
+    </ui>
+</materialdescriptor>

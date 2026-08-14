@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="DriverWire" showinui="1" id="#(0x11D4FAFA, 0x08D3717C)">
+    <geometryInputs normal="1" color="0" uvChannels="1" />
+
+    <parameter name="BlendingType" type="int" defaultvalue="8" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="-1" />
+    
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" maxdisplayname="Diffuse texture 1" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+<!--
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float3" defaultvalue="0.04,0,1" />
+-->
+    <parameter name="WireRadius" type="float" defaultvalue="2" />
+    <parameter name="ShadowRadiusScalingType" type="int" defaultvalue="1" />
+    <parameter name="WaveParams" type="float3" defaultvalue="0.01,1.0,1.0" />
+    <parameter name="BendingWeight" type="float" defaultvalue="1" />
+
+    <parameter name="PointNormalsTowardsCamera" type="bool" defaultvalue="1" />
+
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+    <parameterprovider parametersfilename="Mesh_DriverWire.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTiling1" />
+        <parameter name="DiffuseColor1" />
+<!--
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+-->
+        <parameter name="WireRadius" />
+        <parameter name="ShadowRadiusScalingType" />
+        <parameter name="WaveParams" />
+        <parameter name="BendingWeight" />
+
+        <parameter name="PointNormalsTowardsCamera" />
+
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <shaderoptions>
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Base settings">
+            <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+        </group>
+
+        <group label="Wire settings">
+            <group horizontal="1">
+                <label>Radius (in centimeters)</label>
+                <textbox dataBindings="WireRadius">
+                    <dataBindings increment="0.001" minvalue="0.001" maxvalue="1" displayvaluemul="100" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>Bending</label>
+                <textbox dataBindings="BendingWeight">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </textbox>
+                <label>0</label>
+                <slider dataBindings="BendingWeight">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </slider>
+                <label>1</label>
+            </group>
+            <checkbox label="Point normals towards camera" dataBindings="PointNormalsTowardsCamera" />
+            <group horizontal="1">
+                <label>Shadow radius scaling</label>
+                <combobox dataBindings="ShadowRadiusScalingType">
+                    <comboboxitem value="0">Standard</comboboxitem>
+                    <comboboxitem value="1">Nothing under 1 pixel</comboboxitem>
+                    <comboboxitem value="2">Expand to 1 pixel</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Waving">
+            <group horizontal="1">
+                <label>Intensity</label>
+                <textbox dataBindings="WaveParams.x">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </textbox>
+                <label>0</label>
+                <slider dataBindings="WaveParams.x">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </slider>
+                <label>1</label>
+            </group>
+            <group horizontal="1">
+                <label>   Speed</label>
+                <textbox dataBindings="WaveParams.y">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="10" />
+                </textbox>
+                <label>0</label>
+                <slider dataBindings="WaveParams.y">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="10" />
+                </slider>
+                <label>10</label>
+            </group>
+            <group horizontal="1">
+                <label>    Noise</label>
+                <textbox dataBindings="WaveParams.z">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </textbox>
+                <label>0</label>
+                <slider dataBindings="WaveParams.z">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Diffuse" horizontal="0">
+        	<group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <group>
+                    <textbox dataBindings="DiffuseTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+        	</group>
+        </group>
+<!--
+        <label> </label>
+        <group label="Specular">
+            <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+        	<xi:include href="UI/SpecularPowerGroup.xml" />
+            <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+			<xi:include href="UI/ReflectanceGroup.xml" />
+        </group>            
+-->
+    </ui>
+</materialdescriptor>

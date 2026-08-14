@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor name="RealTreeDriverTrunk" showinui="1" id="#(0x8ca41874, 0x7cc04bb6)" xmlns:xi="#" deprecated="1" >
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="1" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseTexture2" type="sampler2D" tilingName="DiffuseTiling2" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="BurntDiffuseTexture" type="sampler2D" tilingName="BurntDiffuseTiling" />
+    <parameter name="BurntDiffuseColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="BurntDiffuseTiling" type="float2" defaultvalue="1,1" />
+
+    <parameter name="SpecularTexture1" type="sampler2D" tilingName="SpecularTiling1" />
+    <parameter name="SpecularTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.04" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+
+    <parameter name="OcclusionIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="VegetationAnim" type="bool" defaultvalue="0" />
+    <parameter name="VegetationAnimParams" type="float" defaultvalue="0" />
+    <parameter name="TrunkAnimParams" oldnames="VegetationTrunkAnimParams" type="float4" defaultvalue="1,1,1,1" />
+    <parameter name="VegetationTrunkNoiseTexture" type="sampler2D" maxdisplayname="Trunk Anim Noise Texture" />
+
+    <parameterprovider parametersfilename="RealTree_DriverTrunk.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseTiling1" />
+        <parameter name="DiffuseTexture2" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseTiling2" />
+        <parameter name="BurntDiffuseTexture" />
+        <parameter name="BurntDiffuseColor" />
+        <parameter name="BurntDiffuseTiling" />
+        <parameter name="SpecularTexture1" />
+        <parameter name="SpecularTiling1" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTiling1" />
+        <parameter name="OcclusionIntensity" />
+        <parameter name="VegetationAnim" />
+        <parameter name="VegetationAnimParams" />
+        <parameter name="TrunkAnimParams" />
+        <parameter name="VegetationTrunkNoiseTexture" />
+    </parameterprovider>
+    
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group horizontal="1" label="Settings">
+            <label>Occlusion Intensity</label>
+            <textbox dataBindings="OcclusionIntensity">
+                <dataBindings maxValue="1" />
+            </textbox>
+        </group>
+
+        <group label="Diffuse">
+			<group>
+				<label>Texture 2</label>
+				<group horizontal="1">
+					<button dataBindings="DiffuseColor2" />
+					<button dataBindings="DiffuseTexture2" fill="1" />
+					<group>
+						<textbox dataBindings="DiffuseTiling2.x">
+							<dataBindings type="int" />
+						</textbox>
+						<textbox dataBindings="DiffuseTiling2.y">
+							<dataBindings type="int" />
+						</textbox>
+					</group>
+				</group>
+			</group>
+
+            <group>
+				<label>Texture 1</label>
+				<group horizontal="1">
+					<button dataBindings="DiffuseColor1" />
+					<button dataBindings="DiffuseTexture1" fill="1" />
+					<group>
+						<textbox dataBindings="DiffuseTiling1.x">
+							<dataBindings type="int" />
+						</textbox>
+						<textbox dataBindings="DiffuseTiling1.y">
+							<dataBindings type="int" />
+						</textbox>
+					</group>
+				</group>
+            </group>
+        </group>
+
+        <group label="Specular">
+            <group horizontal="1">
+                <button dataBindings="SpecularTexture1" fill="1" />
+                <group>
+                    <textbox dataBindings="SpecularTiling1.x">
+                        <dataBindings type="int" />
+                    </textbox>
+                    <textbox dataBindings="SpecularTiling1.y">
+                        <dataBindings type="int" />
+                    </textbox>
+                </group>
+            </group>
+            
+            <group vertical="1">
+                <group horizontal="1">
+                    <label color="BB0000">          R:</label>
+                    <label>Specular Gloss  OR  Specular Mask (*deprecated*)</label>
+                </group>      
+                <group horizontal="1">
+                    <label color="00BB00">          G:</label>
+                    <label>Specular occlusion (optional - only works with gloss)</label>
+                </group>
+                <group horizontal="1">
+                    <label color="0000AA">          B:</label>
+                    <label>tbd</label>
+                </group>
+            </group>
+        </group>
+
+		<group label="Normal">
+			<group horizontal="1">
+				<button dataBindings="NormalTexture1" fill="1" />
+				<group>
+					<textbox dataBindings="NormalTiling1.x">
+						<dataBindings type="int" />
+					</textbox>
+					<textbox dataBindings="NormalTiling1.y">
+						<dataBindings type="int" />
+					</textbox>
+				</group>
+			</group>
+		</group>
+
+        <!-- Vegetation Anim -->
+        <group label="Vegetation Animation" complexity="1">
+            <xi:include href="UI/VegetationAnimationGroup.xml" />
+
+            <group horizontal="1" enable_if="VegetationAnim" >
+                <label>  Wind source  </label>
+                <textbox dataBindings="VegetationAnimParams.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>       Global</label>
+                <slider dataBindings="VegetationAnimParams.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>Simulation</label>
+            </group>
+
+        </group>
+  </ui>
+</materialdescriptor>

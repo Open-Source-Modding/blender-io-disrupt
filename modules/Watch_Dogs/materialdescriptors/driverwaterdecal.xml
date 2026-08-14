@@ -1,0 +1,197 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="DriverWaterDecal" displayname="WaterDecal" showinui="1" id="#(0x4c80b9c8, 0x3a716fb1)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="0" uvChannels="2" />
+
+    <parameter name="AlphaTestEnabled" type="bool" defaultvalue="0" />
+    <parameter name="BlendingType" type="int" defaultvalue="1" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="5" />
+
+    <parameter name="OpacityTexture1" type="sampler2D" tilingName="OpacityTiling1" UvName="OpacityUV1" uvTilingName="OpacityUVTiling1" maxdisplayname="Opacity texture 1" optional="0" />
+    <parameter name="OpacityTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="OpacityTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="OpacityUV1" type="int" />
+    <parameter name="OpacityUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalIntensity" type="float2" defaultvalue="1,0" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="SpecularTexture1" type="sampler2D" tilingName="SpecularTiling1" UvName="SpecularUV1" uvTilingName="SpecularUVTiling1" maxdisplayname="Mask texture" />
+    <parameter name="SpecularTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SpecularUV1" type="int" />
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.04" />
+    <parameter name="SpecularUVTiling1" type="float4" provideronly="1" />
+    <parameter name="UseBaseSurfaceNormal" type="bool" defaultvalue="0" />
+
+    <parameter name="ReflectionIntensity" type="float2" defaultvalue="2.5,3.0" div="3" />
+
+    <parameter name="FresnelPower" type="float" defaultvalue="2" />
+    <parameter name="FresnelMinimum" type="float2" defaultvalue="0.06,0.94" op_y="1-x" />
+
+    <parameter name="RaindropSplashesTexture" type="sampler2D" />
+    <parameter name="RaindropRippleType" type="int" defaultvalue="0" />
+
+    <parameter name="AlwaysVisible" type="bool" defaultvalue="0" />
+    <parameterprovider parametersfilename="Mesh_DriverWaterDecal.fx">
+        <parameter name="OpacityTexture1" />
+        <parameter name="OpacityTexture1State" />
+        <parameter name="OpacityUVTiling1" />
+
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalIntensity" />
+
+        <parameter name="SpecularTexture1" />
+        <parameter name="SpecularUVTiling1" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+
+        <parameter name="RaindropSplashesTexture" />
+        <parameter name="RaindropRippleType" />
+
+        <parameter name="UseBaseSurfaceNormal" />
+
+        <parameter name="ReflectionIntensity" />
+
+        <parameter name="FresnelPower" />
+        <parameter name="FresnelMinimum" />
+        <parameter name="AlwaysVisible" />
+    </parameterprovider>
+
+    <ui>
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <group horizontal="1">
+                <label>Sorting Layer Bias</label>
+                <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order of the decal.  Materials with smaller values are drawn first.">
+                    <dataBindings increment="1" minvalue="-10" maxvalue="10" />
+                </textbox>
+            </group>
+            <checkbox label="Always visible (does not depend on rain)" dataBindings="AlwaysVisible" tooltip="Does not depend on rain"/>
+        </group>
+        <label> </label>
+
+        <!-- Opacity -->
+        <group label="Opacity" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="OpacityTexture1" fill="1" />
+                <textbox dataBindings="OpacityUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="OpacityTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="OpacityTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="OpacityTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Specular -->
+        <group label="Mask">
+            <group horizontal="1">
+                <button dataBindings="SpecularTexture1" fill="1"/>
+                <textbox dataBindings="SpecularUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="SpecularTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SpecularTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label color="BB0000">          R:</label>
+                    <label>Specular Occlusion (optional)</label>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00">          G:</label>
+                    <label>Specular Gloss</label>
+                </group>
+                <group horizontal="1">
+                    <label color="0000AA">          B:</label>
+                    <label>not used</label>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Specular">
+            <group>
+                <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+                <xi:include href="UI/ReflectanceGroup.xml" />
+
+                <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+                <xi:include href="UI/SpecularPowerGroup.xml" />
+                <!-- Reflection -->
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Normal -->
+        <group label="Normal">
+            <checkbox label="Use base surface normal" dataBindings="UseBaseSurfaceNormal" tooltip="Makes the decal use the same normal as the underlying surface."/>
+            <group horizontal="1" disable_if="UseBaseSurfaceNormal">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1" disable_if="NormalTexture1==0 || UseBaseSurfaceNormal">
+                <label>Intensity  </label>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Ripples -->
+        <group label="Ripples">
+            <group horizontal="1">
+                <combobox dataBindings="RaindropRippleType" horizontal="1">
+                    <comboboxitem value="0">Disabled</comboboxitem>
+                    <comboboxitem value="1">Standard</comboboxitem>
+                    <comboboxitem value="2">Puddle</comboboxitem>
+                </combobox>
+            </group>
+
+            <group horizontal="1" disable_if="RaindropRippleType==0">
+                <label>Intensity  </label>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity.y">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

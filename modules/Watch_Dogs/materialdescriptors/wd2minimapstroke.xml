@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2MinimapStroke" displayname="WD2MinimapStroke" showinui="1" id="#(0xe555516, 0x4aa64a2b)" version="1.0">
+    <geometryInputs uvChannels="1" normal="1" tangent="1" binormal="1" />
+
+    <parameter name="BlendingType" type="int" defaultvalue="8" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="-1" />
+    
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="Radius" type="float" defaultvalue="2" />
+
+    <parameterprovider parametersfilename="Mesh_WD2MinimapStroke.fx">
+        <parameter name="DiffuseColor1" />
+        <parameter name="Radius" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group>
+            <group horizontal="1">
+                <label>Radius</label>
+                <textbox dataBindings="Radius">
+                    <dataBindings increment="0.001" minvalue="0.001" maxvalue="10" />
+                </textbox>
+            </group>
+
+            <group horizontal="1">
+                <label>Color</label>
+                <button dataBindings="DiffuseColor1" />
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

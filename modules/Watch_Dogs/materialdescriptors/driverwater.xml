@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="DriverWater" displayname="Water" showinui="1" id="#(0x4c50a1b7, 0x1a8166ba)" deprecated="1" >
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" />
+
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="BlendingType" type="int" defaultvalue="1" />
+
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="WaterFogColor" type="color3" defaultvalue="0.12,0.14,0.07" />
+    <parameter name="WaterFogFar" type="float" defaultvalue="1.5" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="SpecularTexture1" type="sampler2D" tilingName="SpecularTiling1" UvName="SpecularUV1" uvTilingName="SpecularUVTiling1" maxdisplayname="Mask texture" />
+    <parameter name="SpecularTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SpecularUV1" type="int" />
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.04" />
+
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="SpecularUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="FresnelPower" type="float" defaultvalue="2" />
+    <parameter name="FresnelMinimum" type="float2" defaultvalue="0.06,0.94" op_y="1-x" />
+
+    <parameter name="ReflectionIntensity" type="float4" div="3" />
+    <parameter name="ReflectionType" type="int" defaultvalue="0" />
+
+    <parameter name="ReflectionTexture" type="samplerCUBE">
+        <use_if parameter="ReflectionType" value="2" />
+    </parameter>
+
+    <parameter name="SortingLayerBias" type="int" defaultvalue="1"/>
+
+    <parameter name="RaindropSplashesTexture" type="sampler2D" />
+    <parameter name="RaindropRippleType" type="int" defaultvalue="0" />
+
+    <parameter name="WaterParameters1" type="float4" defaultvalue="0.01,0.8,2.0,0.15" />
+    <parameter name="WaterParameters2" type="float4" defaultvalue="1.0,0.0,0.0,0.0" />
+
+    <parameterprovider parametersfilename="Mesh_DriverWater.fx">
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="WaterFogColor" />
+        <parameter name="WaterFogFar" />
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="SpecularTexture1" />
+        <parameter name="SpecularUVTiling1" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+        <parameter name="NormalIntensity" />
+        <parameter name="ReflectionIntensity" />
+        <parameter name="ReflectionType" />
+        <parameter name="ReflectionTexture" />
+        <parameter name="FresnelPower" />
+        <parameter name="FresnelMinimum" />
+        <parameter name="RaindropSplashesTexture" />
+        <parameter name="RaindropRippleType" />
+        <parameter name="WaterParameters1" />
+        <parameter name="WaterParameters2" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group horizontal="0" label="Settings">
+            <group>
+                <checkbox label="Two sided" dataBindings="TwoSided" />
+                <group horizontal="1">
+                    <label>Sorting Layer Bias</label>
+                    <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order.  Materials with smaller values are drawn first.">
+                        <dataBindings increment="1" minvalue="-10" maxvalue="10" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Diffuse" horizontal="0">
+            <group horizontal="1">
+                <label>          Water color</label>
+                <button dataBindings="DiffuseColor1" />
+            </group>
+            <group horizontal="1">
+                <label> Dirt / Foam color</label>
+                <button dataBindings="DiffuseColor2" />
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Water Fog" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="WaterFogColor" />
+                <label> Water fog color </label>
+            </group>
+            <group horizontal="1">
+                <label>  Opacity</label>
+                <textbox databindings="WaterParameters2.x" />
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Mask">
+            <group horizontal="1" >
+                <button dataBindings="SpecularTexture1" fill="1"/>
+                <textbox dataBindings="SpecularUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="SpecularTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SpecularTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label color="BB0000">          R:</label>
+                    <label>Specular Gloss  OR  SpecularMask (*deprecated*)</label>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00">          G:</label>
+                    <label>?</label>
+                </group>
+                <group horizontal="1">
+                    <label color="0000AA">          B:</label>
+                    <label>not used</label>
+                </group>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label>Intensity</label>
+                    <slider databindings="WaterParameters2.y">
+                        <dataBindings increment="0.001" minvalue="0.001" maxvalue="1" />
+                    </slider>
+                </group>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label>   Speed</label>
+                    <slider databindings="WaterParameters2.z">
+                        <dataBindings increment="0.001" minvalue="0.001" maxvalue="3" />
+                    </slider>
+                </group>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Specular">
+            <group>
+                <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+                <xi:include href="UI/ReflectanceGroup.xml" />
+
+                <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+                <xi:include href="UI/SpecularPowerGroup.xml" />
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Reflection" horizontal="0">
+            <group horizontal="1">
+                <label>Type</label>
+                <group horizontal="1">
+                    <combobox dataBindings="ReflectionType">
+                        <comboboxitem value="0">World Static</comboboxitem>
+                        <comboboxitem value="1">World Dynamic</comboboxitem>
+                        <comboboxitem value="2">Custom (EXPENSIVE)</comboboxitem>
+                    </combobox>
+                    <group horizontal="1" show_if="ReflectionType==2">
+                        <button dataBindings="ReflectionTexture" fill="1" />
+                    </group>
+                </group>
+            </group>
+            <!--<group>
+                <label>Custom reflection texture (interior only)</label>
+                <button dataBindings="ReflectionTexture" fill="1" />
+            </group>-->
+        </group>
+
+        <label> </label>
+        <group label="Fresnel" horizontal="0">
+            <group horizontal="1">
+                <label>Power</label>
+                <textbox databindings="FresnelPower" />
+            </group>
+            <group horizontal="1">
+                <label>Minimum</label>
+                <slider databindings="FresnelMinimum.x">
+                    <dataBindings increment="0.001" minvalue="0.001" maxvalue="1" />
+                </slider>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>          Intensity    </label>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Raindrop ripples normal" >
+            <combobox dataBindings="RaindropRippleType" horizontal="1">
+                <comboboxitem value="0">Disabled</comboboxitem>
+                <comboboxitem value="1">Standard</comboboxitem>
+                <comboboxitem value="2">Puddle</comboboxitem>
+            </combobox>
+        </group>
+
+
+        <label> </label>
+        <group label="Animation" horizontal="0" complexity="1">
+            <group horizontal="1">
+                <label>Amplitude</label>
+                <textbox databindings="WaterParameters1.x">
+                    <dataBindings increment="0.001" />
+                </textbox>
+                <label>Wave speed</label>
+                <textbox databindings="WaterParameters1.y" />
+                <label>Ripples</label>
+                <textbox databindings="WaterParameters1.z" />
+                <label>Normalmap speed</label>
+                <textbox databindings="WaterParameters1.w" />
+            </group>
+        </group>
+
+    </ui>
+</materialdescriptor>

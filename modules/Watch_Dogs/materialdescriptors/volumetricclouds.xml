@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="VolumetricClouds" family="VolumetricClouds" showinui="1" version="1">
+  <geometryInputs/>
+
+  <parameter name="WorldOffset" type="float" defaultvalue="0"/>
+
+  <parameter name="CloudLayerHeightMin" type="int" defaultvalue="600"/>
+  <parameter name="CloudLayerHeightMax" type="int" defaultvalue="6400"/>
+
+  <parameter name="GroundAvgAlbedo" type="float" defaultvalue="0.5"/>
+
+  <parameterprovider parametersfilename="VolumetricClouds.fx">
+    <parameter name="WorldOffset" />
+
+    <parameter name="CloudLayerHeightMin" />
+    <parameter name="CloudLayerHeightMax" />
+
+    <parameter name="GroundAvgAlbedo" />
+  </parameterprovider>
+
+  <ui>
+    <xi:include href="UI/DataClasses.xml" />
+
+    <group label="Cloud Layer Height" horizontal="0">
+      <group horizontal="1">
+        <label>Min   </label>
+        <textbox dataBindings="CloudLayerHeightMin">
+          <dataBindings type="int" minvalue="0" maxvalue="10000" defaultvalue="600" />
+        </textbox>
+        <slider dataBindings="CloudLayerHeightMin">
+          <dataBindings increment="1" minvalue="0" maxvalue="10000" />
+        </slider>
+      </group>
+      <group horizontal="1">
+        <label>Max  </label>
+        <textbox dataBindings="CloudLayerHeightMax">
+          <dataBindings type="int" minvalue="10" maxvalue="10000" defaultvalue="6400" />
+        </textbox>
+        <slider dataBindings="CloudLayerHeightMax">
+          <dataBindings increment="1" minvalue="0" maxvalue="10000" />
+        </slider>
+      </group>
+    </group>
+
+    <group label="World Offset" horizontal="1">
+      <label>Value</label>
+      <textbox dataBindings="WorldOffset">
+        <dataBindings type="float" minvalue="-10000.0" maxvalue="10000.0" defaultvalue="0.0" />
+      </textbox>
+      <slider dataBindings="WorldOffset">
+        <dataBindings increment="1" minvalue="-1000.0" maxvalue="1000.0" />
+      </slider>
+    </group>
+
+    <group label="Average ground albedo" horizontal="1">      
+      <textbox dataBindings="GroundAvgAlbedo">
+        <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0.5" />
+      </textbox>
+      <slider dataBindings="GroundAvgAlbedo">
+        <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+      </slider>
+    </group>
+  </ui>
+</materialdescriptor>

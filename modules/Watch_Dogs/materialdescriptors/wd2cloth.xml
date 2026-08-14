@@ -1,0 +1,1693 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2Cloth" displayname="WD2Cloth" showinui="1" id="#(0x1e65090f, 0x59231ae0)">
+    <geometryInputs normal="1" tangent="1" binormal="1" uvChannels="2" bonecount="8" packedUVChannel="10" />
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="CastShadow" type="bool" defaultvalue="1" />
+
+    <!-- BaseColor -->
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTextureTiling1" UvName="DiffuseTextureUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Base texture 1">
+        <use_if parameter="DetailColorType" value="1" />
+        <use_if parameter="DetailColorType" value="2" />
+    </parameter>
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTextureTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseTextureUV1" type="int" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseUVRotation1" type="float" defaultvalue="0" />
+    <parameter name="DiffuseTexture1Offset" type="float2" defaultvalue="0,0" />
+
+    <!-- Per-zone motif parameters -->
+    <parameter name="DetailColorChannel1" oldnames="DetailColorChannel" type="int" defaultvalue="0" />
+    <parameter name="DetailColorAlpha1" oldnames="DetailColorAlpha" type="float" defaultvalue="1" />
+
+    <parameter name="DiffuseTextureTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUVRotation2" type="float" defaultvalue="0" />
+    <parameter name="DiffuseTexture2Offset" type="float2" defaultvalue="0,0" />
+    <parameter name="DetailColorChannel2" type="int" defaultvalue="0" />
+    <parameter name="DetailColorAlpha2" type="float" defaultvalue="1" />
+
+    <parameter name="DiffuseTextureTiling3" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUVRotation3" type="float" defaultvalue="0" />
+    <parameter name="DiffuseTexture3Offset" type="float2" defaultvalue="0,0" />
+    <parameter name="DetailColorChannel3" type="int" defaultvalue="0" />
+    <parameter name="DetailColorAlpha3" type="float" defaultvalue="1" />
+    
+    <parameter name="DiffuseTextureTiling4" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUVRotation4" type="float" defaultvalue="0" />
+    <parameter name="DiffuseTexture4Offset" type="float2" defaultvalue="0,0" />
+    <parameter name="DetailColorChannel4" type="int" defaultvalue="0" />
+    <parameter name="DetailColorAlpha4" type="float" defaultvalue="1" />
+
+    <parameter name="DetailDiffuseMask" type="float4" defaultvalue="1,0,0,0" />
+    <parameter name="DetailEmissiveMask" type="float4" defaultvalue="1,1,1,1" />
+
+    <!-- Colors -->
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor3" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor4" type="color3" defaultvalue="1,1,1" />
+    <parameter name="PatternColor1" oldnames="PatternColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="PatternColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="PatternColor3" type="color3" defaultvalue="1,1,1" />
+    <parameter name="PatternColor4" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DetailColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DetailColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DetailColor3" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DetailColor4" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DetailColorType" type="int" defaultvalue="0" />
+    <parameter name="SeparatePatternPerZone" type="bool" defaultvalue="0">
+        <use_if parameter="DetailColorType" value="1" />
+    </parameter>
+
+    <!-- Variance -->
+    <parameter name="VarianceColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="VarianceColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="VarianceColor3" type="color3" defaultvalue="1,1,1" />
+    <parameter name="VarianceColor4" type="color3" defaultvalue="1,1,1" />
+    <parameter name="VarianceRoughness1" type="float" defaultvalue="1" />
+    <parameter name="VarianceRoughness2" type="float" defaultvalue="1" />
+    <parameter name="VarianceRoughness3" type="float" defaultvalue="1" />
+    <parameter name="VarianceRoughness4" type="float" defaultvalue="1" />
+    <parameter name="VarianceMaskInvert" type="bool" defaultvalue="1" />
+    <parameter name="VarianceColorStrength" type="float" defaultvalue="0" />
+    <parameter name="VarianceRoughnessStrength" type="float" defaultvalue="0" />
+    <parameter name="VarianceMask1" type="bool" defaultvalue="1" />
+    <parameter name="VarianceMask2" type="bool" defaultvalue="1" />
+    <parameter name="VarianceMask3" type="bool" defaultvalue="1" />
+    <parameter name="VarianceMask4" oldnames="MetalVariance" type="bool" defaultvalue="0" />
+
+    <!-- Zone parameters -->
+    <parameter name="WrapLighting1" type="float" defaultvalue="0.0" />
+    <parameter name="WrapLighting2" type="float" defaultvalue="0.0" />
+    <parameter name="WrapLighting3" type="float" defaultvalue="0.0" />
+    <parameter name="WrapLighting4" type="float" defaultvalue="0.0" />
+    <parameter name="IsTextile" type="float4" defaultvalue="1,1,1,0" />
+    <parameter name="VelvetColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="VelvetColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="VelvetColor3" type="color3" defaultvalue="1,1,1" />
+    <parameter name="VelvetColor4" type="color3" defaultvalue="1,1,1" />
+    <parameter name="Metalness1" type="float" defaultvalue="0" />
+    <parameter name="Metalness2" type="float" defaultvalue="0" />
+    <parameter name="Metalness3" type="float" defaultvalue="0" />
+    <parameter name="Metalness4" oldnames="Metalness,MaskParameters.z" type="float" defaultvalue="1" />
+    <parameter name="Reflectance1" oldnames="GlobalReflectance" type="float" defaultvalue="0.5" />
+    <parameter name="Reflectance2" oldnames="GlobalReflectance" type="float" defaultvalue="0.5" />
+    <parameter name="Reflectance3" oldnames="GlobalReflectance" type="float" defaultvalue="0.5" />
+    <parameter name="Reflectance4" oldnames="Reflectance,MaskParameters.x" type="float" defaultvalue="0.5" />
+    <parameter name="WetSurfaceTypeIndex1" oldnames="WetSurfaceTypeIndex" type="int" defaultvalue="0" />
+    <parameter name="WetSurfaceTypeIndex2" oldnames="WetSurfaceTypeIndex" type="int" defaultvalue="0" />
+    <parameter name="WetSurfaceTypeIndex3" oldnames="WetSurfaceTypeIndex" type="int" defaultvalue="0" />
+    <parameter name="WetSurfaceTypeIndex4" oldnames="WetSurfaceTypeIndex" type="int" defaultvalue="0" />
+
+    <!-- Details -->
+    <parameter name="DetailTexture1" type="sampler2D" tilingName="DetailTiling1" UvName="DetailUV1" uvTilingName="DetailUVTiling1" maxdisplayname="Detail texture 1" optional="0" />
+    <parameter name="DetailTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DetailTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DetailUV1" type="int" />
+    <parameter name="DetailUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DetailUVRotation1" type="float" defaultvalue="0" />
+    <parameter name="DetailIntensity1" type="float" defaultvalue="1" />
+    <parameter name="DetailRoughness1" type="float" defaultvalue="1" />
+    <parameter name="DetailTexture2" type="sampler2D" tilingName="DetailTiling2" UvName="DetailUV2" uvTilingName="DetailUVTiling2" maxdisplayname="Detail texture 2" />
+    <parameter name="DetailTexture2State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DetailTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="DetailUVRotation2" type="float" defaultvalue="0" />
+    <parameter name="DetailUV2" type="int" />
+    <parameter name="DetailUVTiling2" type="float4" provideronly="1" />
+    <parameter name="DetailIntensity2" type="float" defaultvalue="1" />
+    <parameter name="DetailRoughness2" type="float" defaultvalue="1" />
+    <parameter name="DetailTexture3" type="sampler2D" tilingName="DetailTiling3" UvName="DetailUV3" uvTilingName="DetailUVTiling3" maxdisplayname="Detail texture 3" />
+    <parameter name="DetailTexture3State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DetailTiling3" type="float2" defaultvalue="1,1" />
+    <parameter name="DetailUVRotation3" type="float" defaultvalue="0" />
+    <parameter name="DetailUV3" type="int" />
+    <parameter name="DetailUVTiling3" type="float4" provideronly="1" />
+    <parameter name="DetailIntensity3" type="float" defaultvalue="1" />
+    <parameter name="DetailRoughness3" type="float" defaultvalue="1" />
+    <parameter name="DetailTexture4" type="sampler2D" tilingName="DetailTiling4" UvName="DetailUV4" uvTilingName="DetailUVTiling4" maxdisplayname="Detail texture 4" />
+    <parameter name="DetailTexture4State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DetailTiling4" type="float2" defaultvalue="1,1" />
+    <parameter name="DetailUVRotation4" type="float" defaultvalue="0" />
+    <parameter name="DetailUV4" type="int" />
+    <parameter name="DetailUVTiling4" type="float4" provideronly="1" />
+    <parameter name="DetailIntensity4" type="float" defaultvalue="1" />
+    <parameter name="DetailRoughness4" type="float" defaultvalue="1" />
+
+    <!-- SurfaceParams -->
+    <parameter name="MaskTexture1" type="sampler2D" tilingName="MaskTiling1" UvName="MaskUV1" uvTilingName="MaskTextureUVTiling1" maxdisplayname="Mask texture" optional="0" />
+    <parameter name="MaskTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="MaskTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="MaskUV1" type="int" />
+    <parameter name="MaskTextureUVTiling1" type="float4" provideronly="1" />
+    <parameter name="Roughness" oldnames="MaskParameters.y" type="float" defaultvalue="0.5" />
+    <parameter name="ZoneMaskSharpening" type="float" defaultvalue="1" />
+    <parameter name="PatternRoughness" type="float" defaultvalue="1" />
+    <parameter name="PatternNormalIntensity" type="float" defaultvalue="1" />
+
+    <!-- Normal -->
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" optional="0" />
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="NormalIntensity1" oldnames="NormalIntensity" type="float" defaultvalue="1" />
+
+    <!-- Emissive -->
+    <parameter name="EmissiveTexture" type="sampler2D" tilingName="EmissiveTextureTiling" UvName="EmissiveTextureUV" uvTilingName="EmissiveUVTiling" maxdisplayname="Emissive Texture" optional="1"/>
+    <parameter name="EmissiveTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="EmissiveTextureTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="EmissiveTextureUV" type="int" />
+    <parameter name="EmissiveUVTiling" type="float4" provideronly="1" />
+    <parameter name="EmissiveUVRotation" type="float" defaultvalue="0" />
+    <parameter name="EmissiveTextureOffset" type="float2" defaultvalue="0,0" />
+    <parameter name="EmissiveColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="EmissiveIntensity" type="float2" defaultvalue="9,-99" op_x="ev100" op_y="ev100"/>
+    <parameter name="EmissiveFadeoutParams" type="float2" defaultvalue="4096,4096" />
+    <parameter name="EmissiveColorChannel" type="int" defaultvalue="0" />
+
+    <!-- Emissive Mask -->
+    <parameter name="MaskTexture2" type="sampler2D" tilingName="MaskTextureTiling2" UvName="MaskTextureUV2" uvTilingName="MaskUVTiling2" maxdisplayname="Scrolling Mask texture" optional="1" />
+    <parameter name="MaskTexture2State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="MaskTextureTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="MaskTextureUV2" type="int" />
+    <parameter name="MaskUVTiling2" type="float4" provideronly="1" />
+    <parameter name="MaskUVRotation2" type="float" defaultvalue="0" />
+    <parameter name="MaskTextureOffset2" type="float2" defaultvalue="0,0" />
+    <parameter name="MaskIntensity2" type="float" defaultvalue="1" />
+    <parameter name="Mask2ColorChannel" type="int" defaultvalue="0" />
+
+    <!-- Texture animation -->
+    <parameter name="AnimType" type="int" defaultvalue="0" />
+    <parameter name="EmissiveUVSpeed" type="float2" />
+    <parameter name="NbFramesX" type="int" />
+    <parameter name="NbFramesY" type="int" />
+    <parameter name="Framerate" type="float" />
+    <parameter name="RandomAnimationTime" type="bool" />
+    <parameter name="BlendFrames" type="bool">
+        <use_if parameter="AnimType" value="2" />
+        <use_if parameter="AnimType" value="5" />
+    </parameter>
+    <parameter name="BlendDelay" type="float" />
+
+    <parameterprovider parametersfilename="Mesh_WD2Cloth.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseUVRotation1" />
+        <parameter name="DiffuseTexture1Offset" />
+        <parameter name="DetailColorChannel1" />
+        <parameter name="DetailColorAlpha1" />
+        <parameter name="DiffuseTextureTiling2" />
+        <parameter name="DiffuseUVRotation2" />
+        <parameter name="DiffuseTexture2Offset" />
+        <parameter name="DetailColorChannel2" />
+        <parameter name="DetailColorAlpha2" />
+        <parameter name="DiffuseTextureTiling3" />
+        <parameter name="DiffuseUVRotation3" />
+        <parameter name="DiffuseTexture3Offset" />
+        <parameter name="DetailColorChannel3" />
+        <parameter name="DetailColorAlpha3" />
+        <parameter name="DiffuseTextureTiling4" />
+        <parameter name="DiffuseUVRotation4" />
+        <parameter name="DiffuseTexture4Offset" />
+        <parameter name="DetailColorChannel4" />
+        <parameter name="DetailColorAlpha4" />
+        <parameter name="DetailDiffuseMask" />
+        <parameter name="DetailEmissiveMask" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseColor3" />
+        <parameter name="DiffuseColor4" />
+        <parameter name="PatternColor1" />
+        <parameter name="PatternColor2" />
+        <parameter name="PatternColor3" />
+        <parameter name="PatternColor4" />
+        <parameter name="DetailColor1" />
+        <parameter name="DetailColor2" />
+        <parameter name="DetailColor3" />
+        <parameter name="DetailColor4" />
+        <parameter name="SeparatePatternPerZone" />
+        <parameter name="DetailColorType" />
+        <parameter name="VarianceColor1" />
+        <parameter name="VarianceColor2" />
+        <parameter name="VarianceColor3" />
+        <parameter name="VarianceColor4" />
+        <parameter name="VarianceRoughness1" />
+        <parameter name="VarianceRoughness2" />
+        <parameter name="VarianceRoughness3" />
+        <parameter name="VarianceRoughness4" />
+        <parameter name="VarianceMaskInvert" />
+        <parameter name="VarianceColorStrength" />
+        <parameter name="VarianceRoughnessStrength" />
+        <parameter name="VarianceMask1" />
+        <parameter name="VarianceMask2" />
+        <parameter name="VarianceMask3" />
+        <parameter name="VarianceMask4" />
+        <parameter name="DetailTexture1" />
+        <parameter name="DetailTexture1State" />
+        <parameter name="DetailUVTiling1" />
+        <parameter name="DetailUVRotation1" />
+        <parameter name="DetailIntensity1" />
+        <parameter name="DetailRoughness1" />
+        <parameter name="DetailTexture2" />
+        <parameter name="DetailTexture2State" />
+        <parameter name="DetailUVTiling2" />
+        <parameter name="DetailUVRotation2" />
+        <parameter name="DetailIntensity2" />
+        <parameter name="DetailRoughness2" />
+        <parameter name="DetailTexture3" />
+        <parameter name="DetailTexture3State" />
+        <parameter name="DetailUVTiling3" />
+        <parameter name="DetailUVRotation3" />
+        <parameter name="DetailIntensity3" />
+        <parameter name="DetailRoughness3" />
+        <parameter name="DetailTexture4" />
+        <parameter name="DetailTexture4State" />
+        <parameter name="DetailUVTiling4" />
+        <parameter name="DetailUVRotation4" />
+        <parameter name="DetailIntensity4" />
+        <parameter name="DetailRoughness4" />
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTexture1State" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalIntensity1" />
+        <parameter name="MaskTexture1" />
+        <parameter name="MaskTexture1State" />
+        <parameter name="MaskTextureUVTiling1" />
+        <parameter name="Roughness" />
+        <parameter name="ZoneMaskSharpening" />
+        <parameter name="PatternRoughness" />
+        <parameter name="PatternNormalIntensity" />
+        <parameter name="WrapLighting1" />
+        <parameter name="WrapLighting2" />
+        <parameter name="WrapLighting3" />
+        <parameter name="WrapLighting4" />
+        <parameter name="IsTextile" />
+        <parameter name="VelvetColor1" />
+        <parameter name="VelvetColor2" />
+        <parameter name="VelvetColor3" />
+        <parameter name="VelvetColor4" />
+        <parameter name="Metalness1" />
+        <parameter name="Metalness2" />
+        <parameter name="Metalness3" />
+        <parameter name="Metalness4" />
+        <parameter name="Reflectance1" />
+        <parameter name="Reflectance2" />
+        <parameter name="Reflectance3" />
+        <parameter name="Reflectance4" />
+        <parameter name="WetSurfaceTypeIndex1" />
+        <parameter name="WetSurfaceTypeIndex2" />
+        <parameter name="WetSurfaceTypeIndex3" />
+        <parameter name="WetSurfaceTypeIndex4" />
+
+        <parameter name="EmissiveTexture" />
+        <parameter name="EmissiveTextureState" />
+        <parameter name="EmissiveTextureTiling" />
+        <parameter name="EmissiveTextureUV" />
+        <parameter name="EmissiveUVTiling" />
+        <parameter name="EmissiveUVRotation" />
+        <parameter name="EmissiveTextureOffset" />
+        <parameter name="EmissiveColor" />
+        <parameter name="EmissiveIntensity" />
+        <parameter name="EmissiveFadeoutParams" />
+        <parameter name="EmissiveColorChannel" />
+
+        <parameter name="MaskTexture2" />
+        <parameter name="MaskTexture2State" />
+        <parameter name="MaskUVTiling2" />
+        <parameter name="MaskUVRotation2" />
+        <parameter name="MaskTextureOffset2" />
+        <parameter name="MaskIntensity2" />
+        <parameter name="Mask2ColorChannel" />
+
+        <parameter name="AnimType" />
+        <parameter name="EmissiveUVSpeed" />
+        <parameter name="NbFramesX" />
+        <parameter name="NbFramesY" />
+        <parameter name="Framerate" />
+        <parameter name="RandomAnimationTime" />
+        <parameter name="BlendFrames" />
+        <parameter name="BlendDelay" />
+    </parameterprovider>
+
+    <!-- Conditional shader options -->
+    <shaderoptions>
+        <shaderoption name="DIFFUSEMAP">
+            <condition parameter="DiffuseTexture1" />
+            <condition parameter="DetailColorType" op="greater" value="0" />
+        </shaderoption>
+        <shaderoption name="SEPARATE_PATTERN_PER_ZONE">
+            <condition parameter="DiffuseTexture1" />
+            <condition parameter="DetailColorType" op="greater" value="0" />
+            <condition parameter="SeparatePatternPerZone" op="equal" value="1" />
+        </shaderoption>
+        <shaderoption name="DETAILMAP2">
+            <condition parameter="DetailTexture2" />
+        </shaderoption>
+        <shaderoption name="DETAILMAP3">
+            <condition parameter="DetailTexture3" />
+        </shaderoption>
+        <shaderoption name="DETAILMAP4">
+            <condition parameter="DetailTexture4" />
+        </shaderoption>
+        <shaderoption name="EMISSIVEMAP">
+            <condition parameter="EmissiveTexture" />
+        </shaderoption>
+        <shaderoption name="MASKMAP2">
+            <condition parameter="EmissiveTexture" />
+            <condition parameter="MaskTexture2" />
+        </shaderoption>
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/Characters/wd3/">
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <group>
+                <group horizontal="1">
+                    <checkbox label="Two sided" dataBindings="TwoSided" />
+                    <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+                    <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+                </group>
+            </group>
+        </group>
+
+
+        <!-- Base Color -->
+        <group horizontal="0" label="Motif">
+            <group horizontal="0">
+                <group horizontal="1">
+                    <label>Colorization Scheme: </label>
+                    <combobox dataBindings="DetailColorType">
+                        <comboboxitem value="0">Simple</comboboxitem>
+                        <comboboxitem value="1">Motif - Multi Blend</comboboxitem>
+                        <comboboxitem value="2">Motif - Color Overlay</comboboxitem>
+                    </combobox>
+                </group>
+                <group show_if="DetailColorType==1">
+                    <checkbox label="Separate Motif Settings Per Zone" dataBindings="SeparatePatternPerZone" />
+                    <group hide_if="SeparatePatternPerZone">
+                        <group horizontal="1">
+                            <label>    Channel Selector: </label>
+                            <combobox dataBindings="DetailColorChannel1">
+                                <comboboxitem value="0">Red</comboboxitem>
+                                <comboboxitem value="1">Green</comboboxitem>
+                                <comboboxitem value="2">Blue</comboboxitem>
+                                <comboboxitem value="3">Alpha</comboboxitem>
+                            </combobox>
+                            <label>    Blend Color:</label>
+                            <button dataBindings="PatternColor1" />
+                        </group>
+
+                        <group horizontal="1">
+                            <label>Alpha: </label>
+                            <label alignright="1" width="30">0 </label>
+                            <slider dataBindings="DetailColorAlpha1">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </slider>
+                            <label alignright="0" width="40">1</label>
+                            <textbox databindings="DetailColorAlpha1">
+                                <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                </group>
+                <!-- Overlay alpha -->
+                <group horizontal="1" show_if="DetailColorType==2" >
+                    <label>Alpha: </label>
+                    <label alignright="1" width="30">0 </label>
+                    <slider dataBindings="DetailColorAlpha1">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label alignright="0" width="40">1</label>
+                    <textbox databindings="DetailColorAlpha1">
+                        <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+                </group>
+            </group>
+
+            <group horizontal="0" hide_if="DetailColorType==0">
+                <group horizontal="1">
+                    <button dataBindings="DiffuseTexture1" fill="1" />
+                    <group horizontal="1" enable_if="DiffuseTexture1">
+                        <textbox dataBindings="DiffuseTextureUV1">
+                            <dataBindings class="UVChannel" />
+                        </textbox>
+                        <group>
+                            <textbox dataBindings="DiffuseTextureTiling1.x">
+                                <dataBindings class="Tiling" />
+                            </textbox>
+                            <textbox dataBindings="DiffuseTextureTiling1.y">
+                                <dataBindings class="Tiling" />
+                            </textbox>
+                        </group>
+                        <combobox dataBindings="DiffuseTexture1State">
+                            <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                            <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                            <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                            <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                            <comboboxitem value="ColorBlackTransparentBorder">Clamp Black Border</comboboxitem>
+                            <comboboxitem value="ColorWhiteOpaqueBorder">Clamp White Border</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+                <group enable_if="DiffuseTexture1">
+                    <group horizontal="1">
+                        <label alignright="1" width="90" >UV Offset -- X:</label>
+                        <textbox dataBindings="DiffuseTexture1Offset.x" />
+                        <label alignright="1" width="30" >Y:</label>
+                        <textbox dataBindings="DiffuseTexture1Offset.y" />
+                    </group>
+                    <group horizontal="1" >
+                        <label>Rotation: </label>
+                        <label alignright="1" width="30">0 </label>
+                        <slider dataBindings="DiffuseUVRotation1">
+                            <dataBindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                        </slider>
+                        <label alignright="0" width="40">360</label>
+                        <textbox databindings="DiffuseUVRotation1">
+                            <databindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1" hide_if="SeparatePatternPerZone">
+                        <label>Roughness Multiplier: </label>
+                        <label alignright="1" width="30">0 </label>
+                        <slider dataBindings="PatternRoughness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                        </slider>
+                        <label alignright="0" width="30">10</label>
+                        <textbox databindings="PatternRoughness">
+                            <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                        </textbox>
+                        <label>      Normal Multiplier: </label>
+                        <label alignright="1" width="30">0 </label>
+                        <slider dataBindings="PatternNormalIntensity">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label alignright="0" width="30">1</label>
+                        <textbox databindings="PatternNormalIntensity">
+                            <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <!-- ZoneID map -->
+        <group label="ZoneID">
+            <group horizontal="1">
+                <button dataBindings="MaskTexture1" fill="1" />
+                <textbox dataBindings="MaskUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="MaskTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="MaskTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="MaskTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>Zone Edge Sharpening: </label>
+                <textbox databindings="ZoneMaskSharpening">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="ZoneMaskSharpening">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+
+        <!-- BRDFMap -->
+        <group label="BRDF">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture1State">
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>Intensity: </label>
+                <textbox databindings="NormalIntensity1">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity1">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+
+        <!-- Variance -->
+        <group label="Variance">
+            <group horizontal="1">
+                <label alignright="1" width="120">Color Strength: </label>
+                <label alignright="1" width="30">0 </label>
+                <slider dataBindings="VarianceColorStrength">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                </slider>
+                <label alignright="0" width="40">10</label>
+                <textbox databindings="VarianceColorStrength">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="120">Roughness Strength: </label>
+                <label alignright="1" width="30">0 </label>
+                <slider dataBindings="VarianceRoughnessStrength">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                </slider>
+                <label alignright="0" width="40">10</label>
+                <textbox databindings="VarianceRoughnessStrength">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                </textbox>
+            </group>
+            <checkbox label="Invert Variance Mask" dataBindings="VarianceMaskInvert" />
+        </group>
+
+        <!-- Details -->
+        <group label="Zone A">
+            <group horizontal="1">
+                <image src="engine/shaders/materialdescriptors/Images/MatIco_Red.png" />
+                <group>
+                    <group horizontal="1">
+                        <button dataBindings="DetailTexture1" fill="1" />
+                        <group horizontal="1" enable_if="DetailTexture1">
+                            <textbox dataBindings="DetailUV1">
+                                <dataBindings class="UVChannel" />
+                            </textbox>
+                            <group>
+                                <textbox dataBindings="DetailTiling1.x">
+                                    <dataBindings class="Tiling" />
+                                </textbox>
+                                <textbox dataBindings="DetailTiling1.y">
+                                    <dataBindings class="Tiling" />
+                                </textbox>
+                            </group>
+                            <combobox dataBindings="DetailTexture1State">
+                                <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                                <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                                <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                                <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <group enable_if="DetailTexture1">
+                        <group horizontal="1" >
+                            <label alignright="1" width="80">Rotation: </label>
+                            <label alignright="1" width="30">0 </label>
+                            <slider dataBindings="DetailUVRotation1">
+                                <dataBindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                            </slider>
+                            <label alignright="0" width="40">360</label>
+                            <textbox databindings="DetailUVRotation1">
+                                <databindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label alignright="1" width="80">Intensity: </label>
+                            <label alignright="1" width="30">0 </label>
+                            <slider dataBindings="DetailIntensity1">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                            </slider>
+                            <label alignright="0" width="40">2</label>
+                            <textbox databindings="DetailIntensity1">
+                                <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                            </textbox>
+
+                            <label alignright="1" width="120">Roughness Multiplier: </label>
+                            <label alignright="1" width="20">0 </label>
+                            <slider dataBindings="DetailRoughness1">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                            </slider>
+                            <label alignright="0" width="20">10</label>
+                            <textbox databindings="DetailRoughness1">
+                                <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group label="Surface">
+                        <checkbox label="Is Textile" dataBindings="IsTextile.x" />
+                        <group horizontal="1">
+                            <label alignright="1" width="140">Base Color: </label>
+                            <button dataBindings="DiffuseColor1" />
+                        </group>
+                        <group horizontal="1" enable_if="DetailTexture1">
+                            <label alignright="1" width="140">Mask Color: </label>
+                            <button dataBindings="DetailColor1" />
+                        </group>
+                        <group horizontal="1" show_if="IsTextile.x">
+                            <label alignright="1" width="140">Sheen Color: </label>
+                            <button dataBindings="VelvetColor1" />
+                        </group>
+                        <group horizontal="1" hide_if="IsTextile.x">
+                            <label alignright="1" width="80">Wrap Lighting: </label>
+                            <label alignright="1" width="30">0 </label>
+                            <slider dataBindings="WrapLighting1">
+                                <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </slider>
+                            <label alignright="0" width="40">1</label>
+                            <textbox databindings="WrapLighting1">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <group horizontal="1" hide_if="IsTextile.x">
+                                <label alignright="1" width="80">Metallic:</label>
+                            </group>
+                            <group horizontal="1" show_if="IsTextile.x">
+                                <label alignright="1" width="80">Sheen:</label>
+                            </group>
+                            <label alignright="1" width="30">0</label>
+                            <slider dataBindings="Metalness1">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </slider>
+                            <label alignright="0" width="40">1</label>
+                            <textbox databindings="Metalness1">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label alignright="1" width="80">Reflectance:</label>
+                            <label alignright="1" width="30">0</label>
+                            <slider dataBindings="Reflectance1">
+                                <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                                <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                            </slider>
+                            <label alignright="0" width="40">1</label>
+                            <textbox databindings="Reflectance1">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label>Wet Surface Type: </label>
+                            <combobox dataBindings="WetSurfaceTypeIndex1">
+                                <comboboxitem value="0">Default</comboboxitem>
+                                <comboboxitem value="-1">Never Wet</comboboxitem>
+                                <comboboxitem value="1">Impermeable (nylon, leather)</comboboxitem>
+                                <comboboxitem value="2">Permeable (cotton, linen)</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <group label="Variance">
+                        <checkbox label="Enable Variance" dataBindings="VarianceMask1" />
+                        <group enable_if="VarianceMask1">
+                            <group horizontal="1">
+                                <label alignright="1" width="140">Variance Color: </label>
+                                <button dataBindings="VarianceColor1" />
+                            </group>
+                            <group horizontal="1">
+                                <label alignright="1" width="140">Variance Roughness: </label>
+                                <label alignright="1" width="30">0 </label>
+                                <slider dataBindings="VarianceRoughness1">
+                                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                </slider>
+                                <label alignright="0" width="40">1</label>
+                                <textbox databindings="VarianceRoughness1">
+                                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                        </group>
+                    </group>
+                    <group label="Motif" hide_if="DetailColorType==0">
+                        <checkbox label="Show Motif" dataBindings="DetailDiffuseMask.x" />
+                        <group enable_if="DetailDiffuseMask.x">
+                            <group show_if="SeparatePatternPerZone&amp;&amp;DetailColorType==1">
+                                <group horizontal="1">
+                                    <label>Channel Selector:</label>
+                                    <combobox dataBindings="DetailColorChannel1">
+                                        <comboboxitem value="0">Red</comboboxitem>
+                                        <comboboxitem value="1">Green</comboboxitem>
+                                        <comboboxitem value="2">Blue</comboboxitem>
+                                        <comboboxitem value="3">Alpha</comboboxitem>
+                                    </combobox>
+                                    <label>    Blend Color:</label>
+                                    <button dataBindings="PatternColor1" />
+                                </group>
+
+                                <group horizontal="1">
+                                    <label alignright="1" width="90" >Tiling -- X:</label>
+                                    <textbox dataBindings="DiffuseTextureTiling1.x">
+                                        <dataBindings class="Tiling" />
+                                    </textbox>
+                                    <label alignright="1" width="30" >Y:</label>
+                                    <textbox dataBindings="DiffuseTextureTiling1.y">
+                                        <dataBindings class="Tiling" />
+                                    </textbox>
+                                </group>
+
+                                <group horizontal="1">
+                                    <label alignright="1" width="90" >UV Offset -- X:</label>
+                                    <textbox dataBindings="DiffuseTexture1Offset.x" />
+                                    <label alignright="1" width="30" >Y:</label>
+                                    <textbox dataBindings="DiffuseTexture1Offset.y" />
+                                </group>
+
+                                <group horizontal="1">
+                                    <label>Rotation:</label>
+                                    <textbox databindings="DiffuseUVRotation1">
+                                        <databindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                                    </textbox>
+                                    <label>0</label>
+                                    <slider dataBindings="DiffuseUVRotation1">
+                                        <dataBindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                                    </slider>
+                                    <label>360</label>
+                                </group>
+
+                                <group horizontal="1">
+                                    <label>Alpha: </label>
+                                    <label alignright="1" width="30">0 </label>
+                                    <slider dataBindings="DetailColorAlpha1">
+                                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                    </slider>
+                                    <label alignright="0" width="40">1</label>
+                                    <textbox databindings="DetailColorAlpha1">
+                                        <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                    </textbox>
+                                </group>
+                            </group>
+                        </group>
+                    </group>
+                    <group label="Emissive" show_if="EmissiveTexture">
+                        <group horizontal="1">
+                            <label>Emissive Alpha:</label>
+                            <textbox databindings="DetailEmissiveMask.x">
+                                <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </textbox>
+                            <label>0</label>
+                            <slider dataBindings="DetailEmissiveMask.x">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </slider>
+                            <label>1</label>
+                        </group>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+
+        <group label="Zone B">
+            <group horizontal="1">
+                <image src="engine/shaders/materialdescriptors/Images/MatIco_Green.png" />
+                <group>
+                    <group horizontal="1">                
+                        <button dataBindings="DetailTexture2" fill="1" />
+                        <group enable_if="DetailTexture2">
+                            <textbox dataBindings="DetailUV2">
+                                <dataBindings class="UVChannel" />
+                            </textbox>
+                            <group>
+                                <textbox dataBindings="DetailTiling2.x">
+                                    <dataBindings class="Tiling" />
+                                </textbox>
+                                <textbox dataBindings="DetailTiling2.y">
+                                    <dataBindings class="Tiling" />
+                                </textbox>
+                            </group>
+                            <combobox dataBindings="DetailTexture2State">
+                                <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                                <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                                <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                                <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <group enable_if="DetailTexture2">
+                        <group horizontal="1">
+                            <label alignright="1" width="80">Rotation: </label>
+                            <label alignright="1" width="30">0 </label>
+                            <slider dataBindings="DetailUVRotation2">
+                                <dataBindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                            </slider>
+                            <label alignright="0" width="40">360</label>
+                            <textbox databindings="DetailUVRotation2">
+                                <databindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label alignright="1" width="80">Intensity: </label>
+                            <label alignright="1" width="30">0 </label>
+                            <slider dataBindings="DetailIntensity2">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                            </slider>
+                            <label alignright="0" width="40">2</label>
+                            <textbox databindings="DetailIntensity2">
+                                <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                            </textbox>
+
+                            <label alignright="1" width="120">Roughness Multiplier: </label>
+                            <label alignright="1" width="20">0 </label>
+                            <slider dataBindings="DetailRoughness2">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                            </slider>
+                            <label alignright="0" width="20">10</label>
+                            <textbox databindings="DetailRoughness2">
+                                <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group label="Surface">
+                        <checkbox label="Is Textile" dataBindings="IsTextile.y" />
+                        <group horizontal="1">
+                            <label alignright="1" width="140">Base Color: </label>
+                            <button dataBindings="DiffuseColor2" />
+                        </group>
+                        <group horizontal="1" enable_if="DetailTexture2||DetailTexture1">
+                            <label alignright="1" width="140">Mask Color: </label>
+                            <button dataBindings="DetailColor2" />
+                        </group>
+                        <group horizontal="1" show_if="IsTextile.y">
+                            <label alignright="1" width="140">Sheen Color: </label>
+                            <button dataBindings="VelvetColor2" />
+                        </group>
+                        <group enable_if="DetailTexture2||DetailTexture1">
+                            <group horizontal="1" hide_if="IsTextile.y">
+                                <label alignright="1" width="80">Wrap Lighting: </label>
+                                <label alignright="1" width="30">0 </label>
+                                <slider dataBindings="WrapLighting2">
+                                    <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                                </slider>
+                                <label alignright="0" width="40">1</label>
+                                <textbox databindings="WrapLighting2">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                            <group horizontal="1">
+                                <group horizontal="1" hide_if="IsTextile.y">
+                                    <label alignright="1" width="80">Metallic:</label>
+                                </group>
+                                <group horizontal="1" show_if="IsTextile.y">
+                                    <label alignright="1" width="80">Sheen:</label>
+                                </group>
+                                <label alignright="1" width="30">0</label>
+                                <slider dataBindings="Metalness2">
+                                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                </slider>
+                                <label alignright="0" width="40">1</label>
+                                <textbox databindings="Metalness2">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                            <group horizontal="1">
+                                <label alignright="1" width="80">Reflectance:</label>
+                                <label alignright="1" width="30">0</label>
+                                <slider dataBindings="Reflectance2">
+                                    <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                                    <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                                </slider>
+                                <label alignright="0" width="40">1</label>
+                                <textbox databindings="Reflectance2">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                            <group horizontal="1">
+                                <label>Wet Surface Type: </label>
+                                <combobox dataBindings="WetSurfaceTypeIndex2">
+                                    <comboboxitem value="0">Default</comboboxitem>
+                                    <comboboxitem value="-1">Never Wet</comboboxitem>
+                                    <comboboxitem value="1">Impermeable (nylon, leather)</comboboxitem>
+                                    <comboboxitem value="2">Permeable (cotton, linen)</comboboxitem>
+                                </combobox>
+                            </group>
+                        </group>
+                    </group>
+                    <group label="Variance">
+                        <checkbox label="Enable Variance" dataBindings="VarianceMask2" />
+                        <group enable_if="VarianceMask2">
+                            <group horizontal="1">
+                                <label alignright="1" width="140">Variance Color: </label>
+                                <button dataBindings="VarianceColor2" />
+                            </group>
+                            <group horizontal="1">
+                                <label alignright="1" width="140">Variance Roughness: </label>
+                                <label alignright="1" width="30">0 </label>
+                                <slider dataBindings="VarianceRoughness2">
+                                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                </slider>
+                                <label alignright="0" width="40">1</label>
+                                <textbox databindings="VarianceRoughness2">
+                                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                        </group>
+                    </group>
+                    <group label="Motif" hide_if="DetailColorType==0">
+                        <checkbox label="Show Motif" dataBindings="DetailDiffuseMask.y" />
+                        <group enable_if="DetailDiffuseMask.y">
+                            <group show_if="SeparatePatternPerZone&amp;&amp;DetailColorType==1">
+                                <group horizontal="1">
+                                    <label>Channel Selector:</label>
+                                    <combobox dataBindings="DetailColorChannel2">
+                                        <comboboxitem value="0">Red</comboboxitem>
+                                        <comboboxitem value="1">Green</comboboxitem>
+                                        <comboboxitem value="2">Blue</comboboxitem>
+                                        <comboboxitem value="3">Alpha</comboboxitem>
+                                    </combobox>
+                                    <label>    Blend Color:</label>
+                                    <button dataBindings="PatternColor2" />
+                                </group>
+
+                                <group horizontal="1">
+                                    <label alignright="1" width="90" >Tiling -- X:</label>
+                                    <textbox dataBindings="DiffuseTextureTiling2.x">
+                                        <dataBindings class="Tiling" />
+                                    </textbox>
+                                    <label alignright="1" width="30" >Y:</label>
+                                    <textbox dataBindings="DiffuseTextureTiling2.y">
+                                        <dataBindings class="Tiling" />
+                                    </textbox>
+                                </group>
+
+                                <group horizontal="1">
+                                    <label alignright="1" width="90" >UV Offset -- X:</label>
+                                    <textbox dataBindings="DiffuseTexture2Offset.x" />
+                                    <label alignright="1" width="30" >Y:</label>
+                                    <textbox dataBindings="DiffuseTexture2Offset.y" />
+                                </group>
+
+                                <group horizontal="1">
+                                    <label>Rotation:</label>
+                                    <textbox databindings="DiffuseUVRotation2">
+                                        <databindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                                    </textbox>
+                                    <label>0</label>
+                                    <slider dataBindings="DiffuseUVRotation2">
+                                        <dataBindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                                    </slider>
+                                    <label>360</label>
+                                </group>
+
+                                <group horizontal="1">
+                                    <label>Alpha: </label>
+                                    <label alignright="1" width="30">0 </label>
+                                    <slider dataBindings="DetailColorAlpha2">
+                                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                    </slider>
+                                    <label alignright="0" width="40">1</label>
+                                    <textbox databindings="DetailColorAlpha2">
+                                        <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                    </textbox>
+                                </group>
+                            </group>
+                        </group>
+                    </group>
+                    <group label="Emissive" show_if="EmissiveTexture">
+                        <group horizontal="1">
+                            <label>Emissive Alpha:</label>
+                            <textbox databindings="DetailEmissiveMask.y">
+                                <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </textbox>
+                            <label>0</label>
+                            <slider dataBindings="DetailEmissiveMask.y">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </slider>
+                            <label>1</label>
+                        </group>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+
+        <group label="Zone C"> 
+            <group horizontal="1"> 
+                <image src="engine/shaders/materialdescriptors/Images/MatIco_Blue.png" />
+                <group>
+                    <group horizontal="1">
+                        <button dataBindings="DetailTexture3" fill="1" />
+                        <group horizontal="1" enable_if="DetailTexture3">
+                            <textbox dataBindings="DetailUV3">
+                                <dataBindings class="UVChannel" />
+                            </textbox>
+                            <group>
+                                <textbox dataBindings="DetailTiling3.x">
+                                    <dataBindings class="Tiling" />
+                                </textbox>
+                                <textbox dataBindings="DetailTiling3.y">
+                                    <dataBindings class="Tiling" />
+                                </textbox>
+                            </group>
+                            <combobox dataBindings="DetailTexture3State">
+                                <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                                <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                                <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                                <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <group enable_if="DetailTexture3">
+                        <group horizontal="1">
+                            <label alignright="1" width="80">Rotation: </label>
+                            <label alignright="1" width="30">0 </label>
+                            <slider dataBindings="DetailUVRotation3">
+                                <dataBindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                            </slider>
+                            <label alignright="0" width="40">360</label>
+                            <textbox databindings="DetailUVRotation3">
+                                <databindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label alignright="1" width="80">Intensity: </label>
+                            <label alignright="1" width="30">0 </label>
+                            <slider dataBindings="DetailIntensity3">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                            </slider>
+                            <label alignright="0" width="40">2</label>
+                            <textbox databindings="DetailIntensity3">
+                                <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                            </textbox>
+
+                            <label alignright="1" width="120">Roughness Multiplier: </label>
+                            <label alignright="1" width="20">0 </label>
+                            <slider dataBindings="DetailRoughness3">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                            </slider>
+                            <label alignright="0" width="20">10</label>
+                            <textbox databindings="DetailRoughness3">
+                                <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group label="Surface">
+                        <checkbox label="Is Textile" dataBindings="IsTextile.z" />
+                        <group horizontal="1">
+                            <label alignright="1" width="140">Base Color: </label>
+                            <button dataBindings="DiffuseColor3" />
+                        </group>
+                        <group horizontal="1" enable_if="DetailTexture3||DetailTexture1">
+                            <label alignright="1" width="140">Mask Color: </label>
+                            <button dataBindings="DetailColor3" />
+                        </group>
+                        <group horizontal="1" show_if="IsTextile.z">
+                            <label alignright="1" width="140">Sheen Color: </label>
+                            <button dataBindings="VelvetColor3" />
+                        </group>
+                        <group enable_if="DetailTexture3||DetailTexture1">
+                            <group horizontal="1" hide_if="IsTextile.z">
+                                <label alignright="1" width="80">Wrap Lighting: </label>
+                                <label alignright="1" width="30">0 </label>
+                                <slider dataBindings="WrapLighting3">
+                                    <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                                </slider>
+                                <label alignright="0" width="40">1</label>
+                                <textbox databindings="WrapLighting3">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                            <group horizontal="1">
+                                <group horizontal="1" hide_if="IsTextile.z">
+                                    <label alignright="1" width="80">Metallic:</label>
+                                </group>
+                                <group horizontal="1" show_if="IsTextile.z">
+                                    <label alignright="1" width="80">Sheen:</label>
+                                </group>
+                                <label alignright="1" width="30">0</label>
+                                <slider dataBindings="Metalness3">
+                                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                </slider>
+                                <label alignright="0" width="40">1</label>
+                                <textbox databindings="Metalness3">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                            <group horizontal="1">
+                                <label alignright="1" width="80">Reflectance:</label>
+                                <label alignright="1" width="30">0</label>
+                                <slider dataBindings="Reflectance3">
+                                    <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                                    <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                                </slider>
+                                <label alignright="0" width="40">1</label>
+                                <textbox databindings="Reflectance3">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                            <group horizontal="1">
+                                <label>Wet Surface Type: </label>
+                                <combobox dataBindings="WetSurfaceTypeIndex3">
+                                    <comboboxitem value="0">Default</comboboxitem>
+                                    <comboboxitem value="-1">Never Wet</comboboxitem>
+                                    <comboboxitem value="1">Impermeable (nylon, leather)</comboboxitem>
+                                    <comboboxitem value="2">Permeable (cotton, linen)</comboboxitem>
+                                </combobox>
+                            </group>
+                        </group>
+                    </group>
+                    <group label="Variance">
+                        <checkbox label="Enable Variance" dataBindings="VarianceMask3" />
+                        <group enable_if="VarianceMask3">
+                            <group horizontal="1">
+                                <label alignright="1" width="140">Variance Color: </label>
+                                <button dataBindings="VarianceColor3" />
+                            </group>
+                            <group horizontal="1">
+                                <label alignright="1" width="140">Variance Roughness: </label>
+                                <label alignright="1" width="30">0 </label>
+                                <slider dataBindings="VarianceRoughness3">
+                                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                </slider>
+                                <label alignright="0" width="40">1</label>
+                                <textbox databindings="VarianceRoughness3">
+                                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                        </group>
+                    </group>
+                    <group label="Motif" hide_if="DetailColorType==0">
+                        <checkbox label="Show Motif" dataBindings="DetailDiffuseMask.z" />
+                        <group enable_if="DetailDiffuseMask.z">
+                            <group show_if="SeparatePatternPerZone&amp;&amp;DetailColorType==1">
+                                <group horizontal="1">
+                                    <label>Channel Selector:</label>
+                                    <combobox dataBindings="DetailColorChannel3">
+                                        <comboboxitem value="0">Red</comboboxitem>
+                                        <comboboxitem value="1">Green</comboboxitem>
+                                        <comboboxitem value="2">Blue</comboboxitem>
+                                        <comboboxitem value="3">Alpha</comboboxitem>
+                                    </combobox>
+                                    <label>    Blend Color:</label>
+                                    <button dataBindings="PatternColor3" />
+                                </group>
+
+                                <group horizontal="1">
+                                    <label alignright="1" width="90" >Tiling -- X:</label>
+                                    <textbox dataBindings="DiffuseTextureTiling3.x">
+                                        <dataBindings class="Tiling" />
+                                    </textbox>
+                                    <label alignright="1" width="30" >Y:</label>
+                                    <textbox dataBindings="DiffuseTextureTiling3.y">
+                                        <dataBindings class="Tiling" />
+                                    </textbox>
+                                </group>
+
+                                <group horizontal="1">
+                                    <label alignright="1" width="90" >UV Offset -- X:</label>
+                                    <textbox dataBindings="DiffuseTexture3Offset.x" />
+                                    <label alignright="1" width="30" >Y:</label>
+                                    <textbox dataBindings="DiffuseTexture3Offset.y" />
+                                </group>
+
+                                <group horizontal="1">
+                                    <label>Rotation:</label>
+                                    <textbox databindings="DiffuseUVRotation3">
+                                        <databindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                                    </textbox>
+                                    <label>0</label>
+                                    <slider dataBindings="DiffuseUVRotation3">
+                                        <dataBindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                                    </slider>
+                                    <label>360</label>
+                                </group>
+
+                                <group horizontal="1">
+                                    <label>Alpha: </label>
+                                    <label alignright="1" width="30">0 </label>
+                                    <slider dataBindings="DetailColorAlpha3">
+                                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                    </slider>
+                                    <label alignright="0" width="40">1</label>
+                                    <textbox databindings="DetailColorAlpha3">
+                                        <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                    </textbox>
+                                </group>
+                            </group>
+                        </group>
+                    </group>
+                    <group label="Emissive" show_if="EmissiveTexture">
+                        <group horizontal="1">
+                            <label>Emissive Alpha:</label>
+                            <textbox databindings="DetailEmissiveMask.z">
+                                <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </textbox>
+                            <label>0</label>
+                            <slider dataBindings="DetailEmissiveMask.z">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </slider>
+                            <label>1</label>
+                        </group>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <!-- Metal parameters -->
+        <group label="Zone D (Metal)">
+            <group horizontal="1">
+                <image src="engine/shaders/materialdescriptors/Images/MatIco_Metal.png" />
+                <group>
+                    <group horizontal="1">
+                        <button dataBindings="DetailTexture4" fill="1" />
+                        <group horizontal="1" enable_if="DetailTexture4">
+                            <textbox dataBindings="DetailUV4">
+                                <dataBindings class="UVChannel" />
+                            </textbox>
+                            <group>
+                                <textbox dataBindings="DetailTiling4.x">
+                                    <dataBindings class="Tiling" />
+                                </textbox>
+                                <textbox dataBindings="DetailTiling4.y">
+                                    <dataBindings class="Tiling" />
+                                </textbox>
+                            </group>
+                            <combobox dataBindings="DetailTexture4State">
+                                <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                                <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                                <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                                <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <group enable_if="DetailTexture4">
+                        <group horizontal="1">
+                            <label alignright="1" width="80">Rotation:</label>
+                            <label alignright="1" width="30">0</label>
+                            <slider dataBindings="DetailUVRotation4">
+                                <dataBindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                            </slider>
+                            <label alignright="0" width="40">360</label>
+                            <textbox databindings="DetailUVRotation4">
+                                <databindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label alignright="1" width="80">Intensity:</label>
+                            <label alignright="1" width="30">0</label>
+                            <slider dataBindings="DetailIntensity4">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                            </slider>
+                            <label alignright="0" width="40">2</label>
+                            <textbox databindings="DetailIntensity4">
+                                <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                            </textbox>
+
+                            <label alignright="1" width="120">Roughness Multiplier: </label>
+                            <label alignright="1" width="20">0 </label>
+                            <slider dataBindings="DetailRoughness4">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                            </slider>
+                            <label alignright="0" width="20">10</label>
+                            <textbox databindings="DetailRoughness4">
+                                <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group label="Surface">
+                        <checkbox label="Is Textile" dataBindings="IsTextile.w" />
+                        <group horizontal="1">
+                            <label alignright="1" width="140">Base Color: </label>
+                            <button dataBindings="DiffuseColor4" />
+                        </group>
+                        <group horizontal="1" enable_if="DetailTexture4">
+                            <label alignright="1" width="140">Mask Color: </label>
+                            <button dataBindings="DetailColor4" />
+                        </group>
+                        <group horizontal="1" show_if="IsTextile.w">
+                            <label alignright="1" width="140">Sheen Color: </label>
+                            <button dataBindings="VelvetColor4" />
+                        </group>
+                        <group horizontal="1" hide_if="IsTextile.w">
+                            <label alignright="1" width="80">Wrap Lighting: </label>
+                            <label alignright="1" width="30">0 </label>
+                            <slider dataBindings="WrapLighting4">
+                                <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </slider>
+                            <label alignright="0" width="40">1</label>
+                            <textbox databindings="WrapLighting4">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1" hide_if="DetailTexture4">
+                            <label alignright="1" width="80">Roughness:</label>
+                            <label alignright="1" width="30">0</label>
+                            <slider dataBindings="Roughness">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </slider>
+                            <label alignright="0" width="40">1</label>
+                            <textbox databindings="Roughness">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <group horizontal="1" hide_if="IsTextile.w">
+                                <label alignright="1" width="80">Metallic:</label>
+                            </group>
+                            <group horizontal="1" show_if="IsTextile.w">
+                                <label alignright="1" width="80">Sheen:</label>
+                            </group>
+                            <label alignright="1" width="30">0</label>
+                            <slider dataBindings="Metalness4">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </slider>
+                            <label alignright="0" width="40">1</label>
+                            <textbox databindings="Metalness4">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label alignright="1" width="80">Reflectance:</label>
+                            <label alignright="1" width="30">0</label>
+                            <slider dataBindings="Reflectance4">
+                                <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                                <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                            </slider>
+                            <label alignright="0" width="40">1</label>
+                            <textbox databindings="Reflectance4">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label>Wet Surface Type: </label>
+                            <combobox dataBindings="WetSurfaceTypeIndex4">
+                                <comboboxitem value="0">Default</comboboxitem>
+                                <comboboxitem value="-1">Never Wet</comboboxitem>
+                                <comboboxitem value="1">Impermeable (nylon, leather)</comboboxitem>
+                                <comboboxitem value="2">Permeable (cotton, linen)</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <group label="Variance">
+                        <checkbox label="Enable Variance" dataBindings="VarianceMask4" />
+                        <group enable_if="VarianceMask4">
+                            <group horizontal="1">
+                                <label alignright="1" width="140">Variance Color: </label>
+                                <button dataBindings="VarianceColor4" />
+                            </group>
+                            <group horizontal="1">
+                                <label alignright="1" width="140">Variance Roughness: </label>
+                                <label alignright="1" width="30">0 </label>
+                                <slider dataBindings="VarianceRoughness4">
+                                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                </slider>
+                                <label alignright="0" width="40">1</label>
+                                <textbox databindings="VarianceRoughness4">
+                                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                        </group>                    
+                    </group>
+                    <group label="Motif" hide_if="DetailColorType==0">
+                        <checkbox label="Show Motif" dataBindings="DetailDiffuseMask.w" />
+                        <group enable_if="DetailDiffuseMask.w">
+                            <group show_if="SeparatePatternPerZone&amp;&amp;DetailColorType==1">
+                                <group horizontal="1">
+                                    <label>Channel Selector:</label>
+                                    <combobox dataBindings="DetailColorChannel4">
+                                        <comboboxitem value="0">Red</comboboxitem>
+                                        <comboboxitem value="1">Green</comboboxitem>
+                                        <comboboxitem value="2">Blue</comboboxitem>
+                                        <comboboxitem value="3">Alpha</comboboxitem>
+                                    </combobox>
+                                    <label>    Blend Color:</label>
+                                    <button dataBindings="PatternColor4" />
+                                </group>
+
+                                <group horizontal="1">
+                                    <label alignright="1" width="90" >Tiling -- X:</label>
+                                    <textbox dataBindings="DiffuseTextureTiling4.x">
+                                        <dataBindings class="Tiling" />
+                                    </textbox>
+                                    <label alignright="1" width="30" >Y:</label>
+                                    <textbox dataBindings="DiffuseTextureTiling4.y">
+                                        <dataBindings class="Tiling" />
+                                    </textbox>
+                                </group>
+
+                                <group horizontal="1">
+                                    <label alignright="1" width="90" >UV Offset -- X:</label>
+                                    <textbox dataBindings="DiffuseTexture4Offset.x" />
+                                    <label alignright="1" width="30" >Y:</label>
+                                    <textbox dataBindings="DiffuseTexture4Offset.y" />
+                                </group>
+
+                                <group horizontal="1">
+                                    <label>Rotation:</label>
+                                    <textbox databindings="DiffuseUVRotation4">
+                                        <databindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                                    </textbox>
+                                    <label>0</label>
+                                    <slider dataBindings="DiffuseUVRotation4">
+                                        <dataBindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                                    </slider>
+                                    <label>360</label>
+                                </group>
+
+                                <group horizontal="1">
+                                    <label>Alpha: </label>
+                                    <label alignright="1" width="30">0 </label>
+                                    <slider dataBindings="DetailColorAlpha4">
+                                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                    </slider>
+                                    <label alignright="0" width="40">1</label>
+                                    <textbox databindings="DetailColorAlpha4">
+                                        <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                    </textbox>
+                                </group>
+                            </group>
+                        </group>
+                    </group>
+                    <group label="Emissive" show_if="EmissiveTexture">
+                        <group horizontal="1">
+                            <label>Emissive Alpha:</label>
+                            <textbox databindings="DetailEmissiveMask.w">
+                                <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </textbox>
+                            <label>0</label>
+                            <slider dataBindings="DetailEmissiveMask.w">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </slider>
+                            <label>1</label>
+                        </group>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <group horizontal="0" label="Emissive">
+            <group horizontal="1">
+                <button dataBindings="EmissiveTexture" fill="1" />
+                <group horizontal="1" enable_if="EmissiveTexture">
+                    <textbox dataBindings="EmissiveTextureUV">
+                        <dataBindings class="UVChannel" />
+                    </textbox>
+                    <group>
+                        <textbox dataBindings="EmissiveTextureTiling.x">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                        <textbox dataBindings="EmissiveTextureTiling.y">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+                    <combobox dataBindings="EmissiveTextureState">
+                        <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                        <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                        <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                        <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                        <comboboxitem value="ColorBlackTransparentBorder">Clamp Black Border</comboboxitem>
+                        <comboboxitem value="ColorWhiteOpaqueBorder">Clamp White Border</comboboxitem>
+                    </combobox>
+                </group>
+            </group>
+            <group enable_if="EmissiveTexture">
+                <group horizontal="1">
+                    <label alignright="1" width="90" >UV Offset -- X:</label>
+                    <textbox dataBindings="EmissiveTextureOffset.x" />
+                    <label alignright="1" width="30" >Y:</label>
+                    <textbox dataBindings="EmissiveTextureOffset.y" />
+                </group>
+                <group horizontal="1" >
+                    <label>Rotation: </label>
+                    <label alignright="1" width="30">0 </label>
+                    <slider dataBindings="EmissiveUVRotation">
+                        <dataBindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                    </slider>
+                    <label alignright="0" width="40">360</label>
+                    <textbox databindings="EmissiveUVRotation">
+                        <databindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                    </textbox>
+                </group>
+                <group horizontal="1">
+                    <label>Channel Selector:</label>
+                    <combobox dataBindings="EmissiveColorChannel">
+                        <comboboxitem value="0">RGB</comboboxitem>
+                        <comboboxitem value="1">Red</comboboxitem>
+                        <comboboxitem value="2">Green</comboboxitem>
+                        <comboboxitem value="3">Blue</comboboxitem>
+                        <comboboxitem value="4">Alpha</comboboxitem>
+                    </combobox>
+                </group>
+                <group horizontal="1">
+                    <label>Emissive Color:</label>
+                    <button dataBindings="EmissiveColor" />                    
+                    <label>EV</label>
+                    <textbox dataBindings="EmissiveIntensity.x">
+                        <databindings increment="0.01" minvalue="-99.0" maxvalue="99.0" />
+                    </textbox>
+                    <label>Relative EV</label>
+                    <textbox dataBindings="EmissiveIntensity.y">
+                        <databindings increment="0.01" minvalue="-99.0" maxvalue="99.0" />
+                    </textbox>
+                </group>
+                <group label="Distance Fade">
+                    <group horizontal="1">
+                        <label>Start</label>
+                        <textbox dataBindings="EmissiveFadeoutParams.x">
+                            <dataBindings increment="0.1" maxvalue="4096" />
+                        </textbox>
+                        <label>    End</label>
+                        <textbox dataBindings="EmissiveFadeoutParams.y">
+                            <dataBindings increment="0.1" maxvalue="4096" />
+                        </textbox>
+                    </group>
+                </group>
+
+                <group horizontal="0" label="Emissive Mask">
+                    <group horizontal="1">
+                        <button dataBindings="MaskTexture2" fill="1" />
+                        <group horizontal="1" enable_if="MaskTexture2">
+                            <textbox dataBindings="MaskTextureUV2">
+                                <dataBindings class="UVChannel" />
+                            </textbox>
+                            <group>
+                                <textbox dataBindings="MaskTextureTiling2.x">
+                                    <dataBindings class="Tiling" />
+                                </textbox>
+                                <textbox dataBindings="MaskTextureTiling2.y">
+                                    <dataBindings class="Tiling" />
+                                </textbox>
+                            </group>
+                            <combobox dataBindings="MaskTexture2State">
+                                <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                                <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                                <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                                <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                                <comboboxitem value="ColorBlackTransparentBorder">Clamp Black Border</comboboxitem>
+                                <comboboxitem value="ColorWhiteOpaqueBorder">Clamp White Border</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <group enable_if="MaskTexture2">
+                        <group horizontal="1">
+                            <label alignright="1" width="90" >UV Offset -- X:</label>
+                            <textbox dataBindings="MaskTextureOffset2.x" />
+                            <label alignright="1" width="30" >Y:</label>
+                            <textbox dataBindings="MaskTextureOffset2.y" />
+                        </group>
+                        <group horizontal="1" >
+                            <label>Rotation: </label>
+                            <label alignright="1" width="30">0 </label>
+                            <slider dataBindings="MaskUVRotation2">
+                                <dataBindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                            </slider>
+                            <label alignright="0" width="40">360</label>
+                            <textbox databindings="MaskUVRotation2">
+                                <databindings increment="0.1" minvalue="0.0" maxvalue="360.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label>Channel Selector:</label>
+                            <combobox dataBindings="Mask2ColorChannel">
+                                <comboboxitem value="0">Red</comboboxitem>
+                                <comboboxitem value="1">Green</comboboxitem>
+                                <comboboxitem value="2">Blue</comboboxitem>
+                                <comboboxitem value="3">Alpha</comboboxitem>
+                            </combobox>
+                        </group>
+                        <group horizontal="1" enable_if="MaskTexture2">
+                            <label>Mask Alpha:</label>
+                            <textbox databindings="MaskIntensity2">
+                                <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </textbox>
+                            <label>0</label>
+                            <slider dataBindings="MaskIntensity2">
+                                <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                            </slider>
+                            <label>1</label>
+                        </group>
+                    </group>
+                </group>
+
+                <group label="Animation">
+                    <label>Animation type</label>
+                    <group horizontal="1">
+                        <combobox dataBindings="AnimType">
+                            <comboboxitem value="0">None</comboboxitem>
+                            <comboboxitem value="1">UV Scrolling</comboboxitem>
+                            <comboboxitem value="2">Flipbook animation</comboboxitem>
+                            <comboboxitem value="5">Flipbook animation (ping pong)</comboboxitem>
+                            <comboboxitem value="3">UV PingPong Scrolling</comboboxitem>
+                            <comboboxitem value="4">Rotozoom</comboboxitem>
+                        </combobox>
+                    </group>
+
+                    <group show_if="AnimType>0">
+                        <label>Scrolling speed</label>
+                        <group horizontal="1">
+                            <group horizontal="1">
+                                <label>Emissive</label>
+                                <label>U</label>
+                                <textbox dataBindings="EmissiveUVSpeed.x" />
+                                <label>V</label>
+                                <textbox dataBindings="EmissiveUVSpeed.y" />
+                            </group>
+                        </group>
+                    </group>
+
+                    <group show_if="AnimType==2||AnimType==5">
+                        <label>Number of Frames / Framerate</label>
+                        <group horizontal="1">
+                            <label>X</label>
+                            <textbox dataBindings="NbFramesX" />
+                            <label alignright="1" width="30">Y</label>
+                            <textbox dataBindings="NbFramesY" />
+                            <label alignright="1" width="30">FPS</label>
+                            <textbox dataBindings="Framerate">
+                                <dataBindings increment="0.001" />
+                            </textbox>
+                        </group>
+                        <group>
+                            <label>Frames Blending</label>
+                            <checkbox label="Blend" dataBindings="BlendFrames" />
+                            <group horizontal="1" enable_if="BlendFrames" >
+                                <label>Delay: </label>
+                                <slider dataBindings="BlendDelay">
+                                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                                </slider>
+                                <textbox dataBindings="BlendDelay">
+                                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                        </group>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <label></label>
+        <!-- Eat remaining space...-->
+    </ui>
+</materialdescriptor>

@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2FxDistortion" displayname="WD2FxDistortion" showinui="1" category="Particle" id="#(0x632d87cf, 0x5353de01)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="8" />
+
+    <parameter name="AlphaTexture" type="sampler2D" maxdisplayname="Alpha texture" optional="0" />
+    <parameter name="DistortionTexture" type="sampler2D" maxdisplayname="Distortion texture" optional="0" />
+
+    <parameter name="Strength" type="float" defaultvalue="0.0" />
+
+    <parameter name="Speed" type="float2" defaultvalue="0,0" />
+
+    <parameter name="AlphaTestEnabled" type="bool" defaultvalue="1" />
+    <parameter name="AlphaTestValue" type="float" defaultvalue="128" div="255"/>
+  
+    <parameter name="Soft" type="bool" defaultvalue="1" />
+    <parameter name="SoftDistance" type="float" defaultvalue="0.0" op_x="1/x" />
+
+    <parameter name="ParticleFrameJobType" type="int" defaultvalue="1" />
+
+    <parameter name="AnimationTiling" type="float2" defaultvalue="1,1" op_x="1/x" op_y="1/y" />
+    <parameter name="AnimationFramerate" type="float" defaultvalue="1" reloadMaterial="1" />
+    <parameter name="AnimationBlend" type="bool" defaultvalue="0" />
+    <parameter name="AnimationFit" type="bool" defaultvalue="0" reloadMaterial="1" />
+
+    <parameter name="ResponsiveAAStrength" type="float" defaultvalue="2.0"/>
+
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+    <!-- Shader parameters -->
+    <parameterprovider parametersfilename="Particle_WD2FxDistortion.fx">
+        <parameter name="AlphaTexture" />
+        <parameter name="DistortionTexture" />
+        <parameter name="Strength" />
+        <parameter name="Speed" />
+        <parameter name="AlphaTestEnabled" />
+        <parameter name="AlphaTestValue" />
+        <parameter name="Soft" />
+        <parameter name="SoftDistance" />
+        <parameter name="ParticleFrameJobType" />
+        <parameter name="AnimationTiling" />
+        <parameter name="AnimationFramerate" />
+        <parameter name="AnimationBlend" />
+        <parameter name="AnimationFit" />
+        <parameter name="ResponsiveAAStrength" />
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="ALPHA_TEST">
+            <condition parameter="AlphaTestEnabled" />
+        </shaderoption>
+        <shaderoption name="SOFT">
+            <condition parameter="Soft" />
+        </shaderoption>
+        <shaderoption name="TEXANIM_LERP">
+            <condition parameter="AnimationBlend" />
+        </shaderoption>
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+    </shaderoptions>
+  
+    <!-- Material UI definition -->
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Base settings">
+            <!-- Responsive AA -->
+            <label alignright="1" width="120">Responsive AA Strength</label>
+            <textbox dataBindings="ResponsiveAAStrength">
+                <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+            </textbox>
+            <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+        </group>
+        <group label="Textures" >
+            <group horizontal="1">
+                <label>Alpha: </label>
+                <button dataBindings="AlphaTexture" fill="1" />
+            </group>
+            <group horizontal="1">
+                <label>Distortion: </label>
+                <button dataBindings="DistortionTexture" fill="1" />
+            </group>
+        </group>
+        <xi:include href="UI/ParticleAnimationGroup.xml" />
+        <group>
+            <label>Strength: </label>
+            <textbox databindings="Strength">
+                <databindings increment="0.001" minvalue="0" />
+            </textbox>
+        </group>
+        <group horizontal="1">
+            <label>Speed: </label>
+            <textbox dataBindings="Speed.x" />
+            <textbox dataBindings="Speed.y" />
+        </group>
+        <group horizontal="1">
+            <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+            <group horizontal="1" show_if="AlphaTestEnabled">
+                <slider dataBindings="AlphaTestValue">
+                    <dataBindings increment="1" minvalue="0" maxvalue="255"/>
+                </slider>
+            </group>
+        </group>
+        <group label="Soft" horizontal="1">
+            <!--checkbox label="Enable" dataBindings="Soft" /-->
+            <group horizontal="1" show_if="Soft">
+                <label>Distance: </label>
+                <textbox databindings="SoftDistance">
+                    <databindings increment="0.1" minvalue="0" maxvalue="100.0" />
+                </textbox>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

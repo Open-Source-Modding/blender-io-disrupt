@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="Background" showinui="1" id="#(0x49c7c80b, 0x16fb03a7)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="1" />
+
+    <parameter name="BlendingType" type="int" defaultvalue="1" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" normalmap="1" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+
+    <parameterprovider parametersfilename="Mesh_Background.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseTiling1" />
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTiling1" />
+    </parameterprovider>
+
+    <ui>
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group>
+            <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/driver/Shader+-+Background">Help</label>
+        </group>
+
+        <!-- Settings -->
+        <group label="Settings" tooltip="Settings">
+            <group horizontal="1">
+                <label>Blending type</label>
+                <combobox dataBindings="BlendingType">
+                    <comboboxitem value="1">Alpha</comboboxitem>
+                    <comboboxitem value="2">Additive</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <group label="Diffuse" horizontal="1">
+            <button dataBindings="DiffuseColor1" />
+            <button dataBindings="DiffuseTexture1" fill="1" />
+            <group>
+                <textbox dataBindings="DiffuseTiling1.x">
+                    <dataBindings class="Tiling" />
+                </textbox>
+                <textbox dataBindings="DiffuseTiling1.y">
+                    <dataBindings class="Tiling" />
+                </textbox>
+            </group>
+        </group>
+        <group label="Normal" horizontal="1">
+            <button dataBindings="NormalTexture1" fill="1" />
+            <group>
+                <textbox dataBindings="NormalTiling1.x">
+                    <dataBindings class="Tiling" />
+                </textbox>
+                <textbox dataBindings="NormalTiling1.y">
+                    <dataBindings class="Tiling" />
+                </textbox>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

@@ -1,0 +1,180 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2FxFire" displayname="WD2FxFire" showinui="1" category="Particle" id="#(0x17b92ac0, 0x37373299)">
+  <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="8" />
+
+  <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Base texture" optional="0" />
+  <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+  <parameter name="DiffuseUV1" type="int" />
+  <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+
+  <parameter name="PaletteTexture1" type="sampler2D" maxdisplayname="Palette texture" optional="0" />
+
+  <parameter name="AlphaTestValue" type="float" defaultvalue="1" div="255"/>
+  <!-- Not exposed in UI -->
+  <!-- parameter name="Intensity" type="float3" defaultvalue="10,10,1" op_z="irradiance"/> -->
+  <parameter name="BloomIntensity" type="float" defaultvalue="1" div="0.01"/>
+  <parameter name="Brightness" type="float" defaultvalue="1"/>
+
+  <parameter name="Soft" type="bool" defaultvalue="0" />
+  <parameter name="SoftDistance" type="float" defaultvalue="0.0" op_x="1/x" />
+
+  <parameter name="UseEmitterColor" type="bool" defaultvalue="1" />
+
+  <parameter name="AnimationTiling" type="float2" defaultvalue="1,1" op_x="1/x" op_y="1/y" />
+  <parameter name="AnimationFramerate" type="float" defaultvalue="1"  reloadMaterial="1" />
+  <parameter name="AnimationBlend" type="bool" defaultvalue="0" oldnames="Blend" />
+  <parameter name="AnimationFit" type="bool" defaultvalue="0" reloadMaterial="1" />
+  
+  <parameter name="FadeAngle" type="float" defaultvalue="1.57" />
+  <parameter name="Disable_Z" type="bool" defaultvalue="0" />
+
+  <parameter name="ResponsiveAAStrength" type="float" defaultvalue="2.0" />
+
+  <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+  <!-- Shader parameters -->
+  <parameterprovider parametersfilename="Particle_WD2FxFire.fx">
+      <parameter name="DiffuseTexture1" />
+      <parameter name="DiffuseUVTiling1" />
+      <parameter name="PaletteTexture1" />
+      <parameter name="AlphaTestValue" />
+      <parameter name="BloomIntensity" />
+      <parameter name="Brightness" />
+      <parameter name="Soft" />
+      <parameter name="SoftDistance" />
+      <parameter name="UseEmitterColor" />
+      <parameter name="AnimationTiling" />
+      <parameter name="AnimationFramerate" />
+      <parameter name="AnimationBlend" />
+      <parameter name="AnimationFit" />
+      <parameter name="Disable_Z" />
+      <parameter name="FadeAngle"/>
+      <parameter name="ResponsiveAAStrength" />
+      <parameter name="MSAAOptimizationHighQuality" />
+  </parameterprovider>
+
+  <!-- Conditional Shader Options -->
+  <shaderoptions>
+    <shaderoption name="SOFT">
+      <condition parameter="Soft" />
+    </shaderoption>
+    <shaderoption name="TEXANIM_LERP">
+      <condition parameter="AnimationBlend" />
+    </shaderoption>
+    <shaderoption name="USE_EMITTER_COLOR">
+      <condition parameter="UseEmitterColor" />
+    </shaderoption>
+    <shaderoption name="DISABLE_Z">
+        <condition parameter="Disable_Z" />
+    </shaderoption>
+    <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+        <condition parameter="MSAAOptimizationHighQuality" />
+    </shaderoption>
+  </shaderoptions>
+
+  <!-- Material UI definition -->
+  <ui defaultFilePath="graphics/GFX/" >
+    <xi:include href="UI/DataClasses.xml" />
+    <group label="Base settings">
+        <!-- Responsive AA -->
+        <label alignright="1" width="120">Responsive AA Strength</label>
+        <textbox dataBindings="ResponsiveAAStrength">
+            <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+        </textbox>
+        <!-- MSAA Optimization -->
+        <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+    </group>
+    <group label="Texture">
+      <button dataBindings="DiffuseTexture1" fill="1" />
+    </group>
+    <group label="Palette">
+      <button dataBindings="PaletteTexture1" fill="1" />
+    </group>
+    <xi:include href="UI/ParticleAnimationGroup.xml" />
+    <group label="Options">
+      <group horizontal="1" disable_if="Disable_Z">
+        <checkbox label="Soft" dataBindings="Soft" />
+        <group horizontal="1" show_if="Soft">
+          <label>Distance: </label>
+          <textbox databindings="SoftDistance">
+            <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <checkbox label="Use Color From Emitter" dataBindings="UseEmitterColor" />
+      </group>
+      <group horizontal="1">
+        <group disable_if="Soft">
+            <checkbox label="See Through Walls" dataBindings="Disable_Z" />
+        </group>
+      </group>
+      <group horizontal="1">
+            <group horizontal="1">
+                <label>Fade Angle: </label>
+                <textbox databindings="FadeAngle">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.57" />
+                </textbox>
+            </group>
+        </group>
+    </group>
+    <!--<group horizontal="1">
+            <label>Intensity (EV100):  </label>
+            <textbox databindings="Intensity">
+                <databindings increment="0.1" minvalue="0" maxvalue="30.0" />
+            </textbox>
+        </group>-->
+    <!--
+        <group label="Irradiance">
+            <group horizontal="1">
+                <group>
+                    <label alignright="1" width="60">Power</label>
+                    <textbox dataBindings="Intensity.x">
+                        <dataBindings maxvalue="100000000" />
+                    </textbox>
+                </group>
+                <group>
+                    <label alignright="1" width="60">Area cm2</label>
+                    <textbox dataBindings="Intensity.y">
+                        <dataBindings maxvalue="100000000" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+        -->     
+    <group label="Bloom" horizontal="1">
+      <label width="50" alignright="1">0</label>
+      <slider dataBindings="BloomIntensity">
+        <dataBindings increment="0.01" minvalue="0" maxvalue="2"/>
+      </slider>
+      <label width="50" alignright="1">2</label>
+      <textbox databindings="BloomIntensity">
+        <databindings increment="0.01" minvalue="0" maxvalue="10" />
+      </textbox>
+    </group>
+
+    <group label="Brightness" horizontal="1">
+      <label width="50" alignright="1">0</label>
+      <slider dataBindings="Brightness">
+        <dataBindings increment="0.01" minvalue="0" maxvalue="2"/>
+      </slider>
+      <label width="50" alignright="1">2</label>
+      <textbox databindings="Brightness">
+        <databindings increment="0.01" minvalue="0" maxvalue="10" />
+      </textbox>
+    </group>
+    <group label="Custom data over particle lifetime">
+      <label color="BB0000">X: 0 = Palette Left Side // 1 = Palette Right Side</label>
+      <label color="00BB00">Y: (unused)</label>
+      <label color="0000AA">Z: (unused)</label>
+      <label color="404040">W: (unused)</label>
+    </group>
+    <group label="Custom data over emitter lifetime">
+      <label color="BB0000">X: (unused)</label>
+      <label color="00BB00">Y: (unused)</label>
+      <label color="0000AA">Z: (unused)</label>
+      <label color="404040">W: (unused)</label>
+    </group>
+      
+  </ui>
+</materialdescriptor>

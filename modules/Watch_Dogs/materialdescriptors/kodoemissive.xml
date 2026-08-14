@@ -1,0 +1,923 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="KODOEmissive" showinui="1" id="#(0x66e6a108, 0x223b512c)">
+  <geometryInputs normal="1" tangent="0" binormal="0" color="0" uvChannels="3" bonecount="2" vehicleExtraUVChannel1="3" vehicleExtraUVChannel2="4" />
+
+  <parameter name="AlphaTestEnabled" type="bool" />
+  <parameter name="TwoSided" type="bool" />
+  <parameter name="BlendingType" type="int" defaultvalue="0"/>
+  <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+  <parameter name="Translucency" type="float" defaultvalue="0" />
+
+  <parameter name="AnimType" type="int" />
+  <parameter name="UVSpeed" type="float2" />
+  <parameter name="UVSpeed2" type="float2" />
+  <parameter name="NbFramesX" type="int" />
+  <parameter name="NbFramesY" type="int" />
+  <parameter name="Framerate" type="float" />
+  <parameter name="RandomAnimationTime" type="bool" />
+  <parameter name="BlendFrames" type="bool">
+    <use_if parameter="AnimType" value="2" />
+  </parameter>
+  <parameter name="BlendDelay" type="float" />
+
+  <parameter name="DiffuseTextureRemap" type="float3" defaultvalue="1,0,1" />
+  <parameter name="PreMultiplyEmissiveByDiffuseAlpha" type="bool" defaultvalue="0" />
+  <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" optional="1">
+    <use_if parameter="VideoTexture1" value="0" />
+  </parameter>
+  
+  <parameter name="VideoTexture1"   type="bink" tilingName="VideoTiling1" UvName="VideoUV1" optional="1" />
+  <parameter name="VideoPlayOnLoad"   type="bool" defaultvalue="1"/>
+  <parameter name="VideoShareChannel" type="int" defaultvalue="0"/>
+
+  <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+  <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+  <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+  <parameter name="DiffuseUV1" type="int"  />
+  <parameter name="DiffuseOffset1" type="float2" defaultvalue="0,0" />
+  
+ <parameter name="DiffuseTexture2" type="sampler2D" tilingName="DiffuseTiling2" UvName="DiffuseUV2" optional="1">
+	<use_if parameter="VideoTexture1" value="0" />
+ </parameter>
+ 
+  <parameter name="DiffuseTiling2" type="float2" defaultvalue="1,1" />
+  <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+  <parameter name="DiffuseTexture2State" type="samplerState" defaultvalue="ColorWrap" />
+  <parameter name="DiffuseUV2" type="int"  />
+  <parameter name="DiffuseOffset2" type="float2" defaultvalue="0,0" />
+
+  <parameter name="VideoTiling1" type="float2" defaultvalue="1,1" />
+  <parameter name="VideoUV1" type="int"  />
+  <parameter name="VideoOffset1" type="float2" defaultvalue="0,0" />
+
+  <parameter name="NormalAttenuationPower" type="float" />
+  <!-- this is a float so that we can do ALU ops on it -->
+  <parameter name="InverseNormalAttenuation" type="float" />
+
+  <parameter name="EmissiveIntensity" oldnames="IntensityInEV" type="float" defaultvalue="9" op_x="ev100" />
+  <parameter name="EmissiveIntensityOffset" oldnames="IntensityOffsetInEV" type="float" defaultvalue="-99" op_x="ev100" />
+
+    <parameter name="AffectsGI" type="bool" defaultvalue="0" /><!-- Should the material be present/emissive in GI generation renders for the 'local lights' pass. -->
+
+  <parameter name="NeedsElectricPower" type="bool" defaultvalue="1" />
+  <parameter name="IsAffectedByTimeOfDay" type="bool" defaultvalue="0" />
+  <parameter name="LightIntensityCurveSel" type="float4" defaultvalue="1,0,0,0" />
+
+  <!-- BaseColor -->
+  <parameter name="LightOffColor" type="color3" defaultvalue="0.25,0.25,0.25" />
+  <parameter name="UseDiffuseTexture" type="bool"/>
+
+  
+  <!-- SurfaceParams -->
+  <parameter name="Reflectance" type="float" defaultvalue="0.5" />
+  <parameter name="Roughness" type="float" defaultvalue="0.5" />
+
+  <parameter name="FadeoutParams" type="float2" defaultvalue="5000,5000" />
+
+  <!-- Vertex animation -->
+  <parameter name="VertexAnimationType" type="int" defaultvalue="-1" />
+  <parameter name="VertexAnimationAxis" type="int" defaultvalue="0" />
+  <parameter name="VertexAnimationSpeed1" type="float" defaultvalue="1" />
+  <parameter name="VertexAnimationRadius1" type="float" defaultvalue="1" />
+  <parameter name="VertexAnimationFreq1" type="float" defaultvalue="1" />
+  <parameter name="VertexAnimationSpeed2" type="float" defaultvalue="1" />
+  <parameter name="VertexAnimationRadius2" type="float" defaultvalue="1" />
+  <parameter name="VertexAnimationFreq2" type="float" defaultvalue="1" />
+  <parameter name="VertexAnimationSpeed3" type="float" defaultvalue="1" />
+  <parameter name="VertexAnimationRadius3" type="float" defaultvalue="1" />
+  <parameter name="VertexAnimationFreq3" type="float" defaultvalue="1" />
+
+  <parameter name="GenericParameters" type="float4" defaultvalue="0,0,0,0" />
+  
+  <parameter name="UseScreenFX" type="bool" defaultvalue="0" />
+  <parameter name="ScreenFX_Texture1" type="sampler2D" tilingName="ScreenFX_Tiling1" UvName="ScreenFX_UV1" optional="1" />
+  <parameter name="ScreenFX_Tiling1" type="float2" defaultvalue="1,1" />
+  <parameter name="ScreenFX_Color1" type="color3" defaultvalue="0,0,0" />
+  <parameter name="ScreenFX_Texture1State" type="samplerState" defaultvalue="ColorWrap" />
+  <parameter name="ScreenFX_UV1" type="int"  />
+  <parameter name="ScreenFX_Offset1" type="float2" defaultvalue="0,0" />
+  <parameter name="ScreenFX_FadeDist" type="float2" defaultvalue="1,10" />
+  <parameter name="ScreenFX_Smooth" type="float2" defaultvalue="0,1" />
+  <parameter name="ScreenFX_Flicker" type="float2" defaultvalue="10,1" />
+  <parameter name="ScreenFX_MultAlpha" type="bool" defaultvalue="0" />
+  <parameter name="ScreenFX_Noise" type="float3" defaultvalue="10,1,1" op_z="1/z"/>
+  <parameter name="ScreenFX_UseRGBPixel" type="bool" defaultvalue="1"/>
+
+  <!-- Responsive AA -->
+  <parameter name="UseResponsiveAA" type="bool" defaultvalue="0" />
+  <parameter name="ResponsiveAAStrength" type="float" defaultvalue="1.0" />
+
+  <!-- MSAA Optimization -->
+  <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+  <!-- Tech Art Validation Shader options -->
+  <parameter name="isillegal" type="bool" defaultvalue="0"/> <!-- Tag material to be Illegal -->
+  
+  <!-- Parameter provider description -->
+  <parameterprovider parametersfilename="Mesh_KODOEmissive.fx">
+    <parameter name="Translucency" />
+    <parameter name="AffectsGI" />
+    <parameter name="DiffuseTexture1" />
+    <parameter name="DiffuseTexture2" />
+    <parameter name="DiffuseTextureRemap" />
+    <parameter name="PreMultiplyEmissiveByDiffuseAlpha" />
+    <parameter name="VideoTexture1" />
+    <parameter name="DiffuseTiling1" />
+    <parameter name="DiffuseColor1" />
+    <parameter name="DiffuseUV1" />
+    <parameter name="DiffuseOffset1" />
+    <parameter name="DiffuseTiling2" />
+    <parameter name="DiffuseColor2" />
+    <parameter name="DiffuseUV2" />
+    <parameter name="DiffuseOffset2" />
+    <parameter name="VideoTiling1" />
+    <parameter name="VideoUV1" />
+    <parameter name="VideoOffset1" />
+    <parameter name="AnimType" />
+    <parameter name="UVSpeed" />
+    <parameter name="UVSpeed2" />
+    <parameter name="NbFramesX" />
+    <parameter name="NbFramesY" />
+    <parameter name="BlendFrames" />
+    <parameter name="Framerate" />
+    <parameter name="BlendDelay" />
+    <parameter name="NormalAttenuationPower" />
+    <parameter name="InverseNormalAttenuation" />
+    <parameter name="EmissiveIntensity" />
+    <parameter name="EmissiveIntensityOffset" />
+    <parameter name="NeedsElectricPower" />
+    <parameter name="IsAffectedByTimeOfDay" />
+    <parameter name="LightIntensityCurveSel" />
+    <parameter name="DiffuseTexture1State" />
+    <parameter name="DiffuseTexture2State" />
+    <parameter name="LightOffColor" />
+    <parameter name="UseDiffuseTexture" />
+    <parameter name="Reflectance" />
+    <parameter name="Roughness" />
+    <parameter name="FadeoutParams" />
+    <parameter name="AlphaTestEnabled" />
+    <parameter name="VertexAnimationType" />
+    <parameter name="VertexAnimationAxis" />
+    <parameter name="VertexAnimationSpeed1" />
+    <parameter name="VertexAnimationRadius1" />
+    <parameter name="VertexAnimationFreq1" />
+    <parameter name="VertexAnimationSpeed2" />
+    <parameter name="VertexAnimationRadius2" />
+    <parameter name="VertexAnimationFreq2" />
+    <parameter name="VertexAnimationSpeed3" />
+    <parameter name="VertexAnimationRadius3" />
+    <parameter name="VertexAnimationFreq3" />
+    <parameter name="GenericParameters" />
+    <parameter name="RandomAnimationTime" />
+    <parameter name="UseScreenFX" />
+    <parameter name="ScreenFX_Texture1" />
+    <parameter name="ScreenFX_Tiling1" />
+    <parameter name="ScreenFX_Color1" />
+    <parameter name="ScreenFX_Texture1State" />
+    <parameter name="ScreenFX_UV1" />
+    <parameter name="ScreenFX_Offset1" />
+    <parameter name="ScreenFX_FadeDist" />
+    <parameter name="ScreenFX_Smooth" />
+    <parameter name="ScreenFX_Flicker" />
+    <parameter name="ScreenFX_MultAlpha" />
+    <parameter name="ScreenFX_Noise" />
+    <parameter name="ScreenFX_UseRGBPixel" />
+    <parameter name="UseResponsiveAA" />
+    <parameter name="ResponsiveAAStrength" />
+    <parameter name="MSAAOptimizationHighQuality" />
+
+    <!-- Tech Art Validation Shader options -->
+    <parameter name="isillegal"/>  <!-- Tag material to be Illegal -->
+  </parameterprovider>
+
+  <!-- Conditional Shader Options -->
+  <shaderoptions>
+    <shaderoption name="DIFFUSE_MAP_BASE">
+      <condition parameter="DiffuseTexture1" />
+    </shaderoption>
+	<shaderoption name="DIFFUSE_MAP_BASE2">
+      <condition parameter="DiffuseTexture2" />
+    </shaderoption>
+    <shaderoption name="VIDEO_MAP_BASE">
+      <condition parameter="VideoTexture1" />
+    </shaderoption>
+    <shaderoption name="ALPHA_TEST">
+      <condition parameter="AlphaTestEnabled" />
+    </shaderoption>
+    <shaderoption name="VERTEX_ANIMATION">
+      <condition parameter="VertexAnimationType" op="notequal" value="-1"  />
+    </shaderoption>
+    <shaderoption name="BLEND_FRAMES">
+      <condition parameter="BlendFrames" />
+      <condition parameter="DiffuseTexture1" />
+      <condition parameter="VideoTexture1" op="equal" value="0"  />
+    </shaderoption>
+    <shaderoption name="SCREEN_EFFECT">
+        <condition parameter="UseScreenFX" />
+        <condition parameter="DiffuseTexture1" />
+    </shaderoption>
+    <!-- Not sure if this is the correct way to make a "or" -->
+    <shaderoption name="SCREEN_EFFECT">
+        <condition parameter="UseScreenFX" />
+        <condition parameter="VideoTexture1" />
+    </shaderoption>
+    <shaderoption name="RESPONSIVE_AA">
+      <condition parameter="UseResponsiveAA" />
+      <condition parameter="VideoTexture1" />
+    </shaderoption>
+    <shaderoption name="RESPONSIVE_AA">
+      <condition parameter="UseResponsiveAA" />
+      <condition parameter="DiffuseTexture1" />
+    </shaderoption>
+    <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+        <condition parameter="MSAAOptimizationHighQuality" />
+    </shaderoption>
+  </shaderoptions>
+
+  <!-- User interface definition -->
+  <ui>
+    <xi:include href="UI/DataClasses.xml" />
+
+    <!-- Settings -->
+    <group label="Settings" tooltip="Settings">
+      <checkbox label="Two sided" dataBindings="TwoSided" />
+      <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+      <checkbox label="Affects GI" dataBindings="AffectsGI" />
+
+      <!-- MSAA Optimization -->
+      <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+
+      <group horizontal="1">
+        <label>Translucency</label>
+        <label> 0</label>
+        <slider dataBindings="Translucency">
+          <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+        </slider>
+        <label>1</label>
+        <textbox dataBindings="Translucency">
+          <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+        </textbox>
+      </group>
+
+      <group horizontal="1">
+        <label>Blending type</label>
+        <group horizontal="1">
+          <combobox dataBindings="BlendingType">
+            <comboboxitem value="0">Opaque</comboboxitem>
+            <comboboxitem value="2">Additive</comboboxitem>
+            <comboboxitem value="9">WaterMask</comboboxitem>
+          </combobox>
+          <group horizontal="1" show_if="BlendingType!=0">
+            <label>Sorting Layer Bias</label>
+            <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order of the mesh.  Materials with smaller values are drawn first.">
+              <dataBindings increment="1" minvalue="-10" maxvalue="10" />
+            </textbox>
+          </group>
+        </group>
+      </group>
+    </group>
+
+    <group label="Irradiance" horizontal="1">
+      <group horizontal="1">
+        <label>Power (EV)</label>
+        <textbox dataBindings="EmissiveIntensity">
+          <dataBindings minvalue="-100.0f" maxvalue="100.0" />
+        </textbox>
+        <label>Relative power (EV)</label>
+        <textbox dataBindings="EmissiveIntensityOffset">
+          <dataBindings minvalue="-100.0" maxvalue="100.0" />
+        </textbox>
+      </group>
+    </group>
+
+    <!-- Light Animation Settings -->
+    <group label="Light Animation">
+      <checkbox label="Needs Electric Power" dataBindings="NeedsElectricPower" tooltip="Intensity can be affected by electric disturbances." />
+      <checkbox label="Affected By Time Of Day" dataBindings="IsAffectedByTimeOfDay" tooltip="Intensity will be affected by time of day." />
+      <group horizontal="1" show_if="IsAffectedByTimeOfDay">
+        <label>Light Intensity Curve Index</label>
+        <combobox dataBindings="LightIntensityCurveSel" tooltip="Light intensity curve that will be used when affected by time of day.">
+          <comboboxitem value="1,0,0,0">Curve 0</comboboxitem>
+          <comboboxitem value="0,1,0,0">Curve 1</comboboxitem>
+          <comboboxitem value="0,0,1,0">Curve 2</comboboxitem>
+          <comboboxitem value="0,0,0,1">Curve 3</comboboxitem>
+        </combobox>
+      </group>
+    </group>
+    <label> </label>
+
+    <group label="Normal attenuation">
+      <group horizontal="1">
+        <label>Power</label>
+        <textbox dataBindings="NormalAttenuationPower">
+          <dataBindings increment="0.01" minvalue="0.0" />
+        </textbox>
+      </group>
+      <checkbox label="Inverse" dataBindings="InverseNormalAttenuation" tooltip="Inverses normal attenuation so that it fades in the middle and not on the edges" />
+    </group>
+
+    <!-- Emissive texture -->
+    <label> </label>
+    <group label="Emissive Texture">
+      <group horizontal="1">
+        <button dataBindings="DiffuseColor1" />
+        <group horizontal="1" fill="1">
+          <button dataBindings="DiffuseTexture1" fill="1" />
+        </group>
+        <group horizontal="1">
+          <textbox dataBindings="DiffuseUV1">
+            <dataBindings class="UVChannel" />
+          </textbox>
+          <group>
+            <label>Tiling</label>
+            <textbox dataBindings="DiffuseTiling1.x" />
+            <textbox dataBindings="DiffuseTiling1.y" />
+          </group>
+          <group  disable_if="VideoTexture1">
+            <label>Offset</label>
+            <textbox dataBindings="DiffuseOffset1.x" />
+            <textbox dataBindings="DiffuseOffset1.y" />
+          </group>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>Addressing</label>
+        <group horizontal="1" disable_if="VideoTexture1">
+          <combobox dataBindings="DiffuseTexture1State">
+            <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+            <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+            <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+            <comboboxitem value="ColorClampAniso">Clamp Aniso (Expensive)</comboboxitem>
+          </combobox>
+        </group>
+      </group>
+	    <group horizontal="1" enable_if="DiffuseTexture1">
+			<button dataBindings="DiffuseColor2" />
+			<group horizontal="1" fill="1">
+			  <button dataBindings="DiffuseTexture2" fill="1" />
+			</group>
+			<group horizontal="1">
+			  <textbox dataBindings="DiffuseUV2">
+				<dataBindings class="UVChannel" />
+			  </textbox>
+			  <group>
+				<label>Tiling</label>
+				<textbox dataBindings="DiffuseTiling2.x" />
+				<textbox dataBindings="DiffuseTiling2.y" />
+			  </group>
+			  <group  disable_if="VideoTexture1">
+				<label>Offset</label>
+				<textbox dataBindings="DiffuseOffset2.x" />
+				<textbox dataBindings="DiffuseOffset2.y" />
+			  </group>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>Addressing</label>
+        <group horizontal="1" disable_if="VideoTexture1">
+          <combobox dataBindings="DiffuseTexture2State">
+            <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+            <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+            <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+            <comboboxitem value="ColorClampAniso">Clamp Aniso (Expensive)</comboboxitem>
+          </combobox>
+        </group>
+      </group>
+      <group label="Remapping" enable_if="DiffuseTexture1||VideoTexture1">
+        <group horizontal="1">
+          <label alignright="1" width="90">Minimum</label>
+          <label> 0</label>
+          <slider dataBindings="DiffuseTextureRemap.y">
+            <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+          </slider>
+          <label alignright="1" width="20">1</label>
+          <textbox dataBindings="DiffuseTextureRemap.y">
+            <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+          </textbox>
+        </group>
+        <group horizontal="1">
+          <label alignright="1" width="90">Power</label>
+          <label> 0</label>
+          <slider dataBindings="DiffuseTextureRemap.z">
+            <dataBindings increment="0.001" minvalue="0.01" maxvalue="10.0" displayvaluelog2="1" displayvalueaddXX="0.66666666666666666666666666666667" displayvaluemulXX="1" displayvaluedivXX="9.96578428466" />
+          </slider>
+          <label alignright="1" width="20">10</label>
+          <textbox dataBindings="DiffuseTextureRemap.z">
+            <dataBindings increment="0.001" minvalue="0.01" maxvalue="10.0" />
+          </textbox>
+        </group>
+        <group horizontal="1">
+          <label alignright="1" width="90">Maximum</label>
+          <label> 0</label>
+          <slider dataBindings="DiffuseTextureRemap.x">
+            <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+          </slider>
+          <label alignright="1" width="20">1</label>
+          <textbox dataBindings="DiffuseTextureRemap.x">
+            <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+          </textbox>
+        </group>
+        <checkbox label="Pre-multiply emissive by emissive alpha" dataBindings="PreMultiplyEmissiveByDiffuseAlpha" />
+      </group>
+      <label>VideoTexture (replaces DiffuseTexture, always wrapped)</label>
+      <group horizontal="1">
+        <button dataBindings="VideoTexture1" fill="1" />
+        <group horizontal="1">
+          <textbox dataBindings="VideoUV1">
+            <dataBindings class="UVChannel" />
+          </textbox>
+          <group>
+            <label>Tiling</label>
+            <textbox dataBindings="VideoTiling1.x" />
+            <textbox dataBindings="VideoTiling1.y" />
+          </group>
+          <group>
+            <label>Offset</label>
+            <textbox dataBindings="VideoOffset1.x" />
+            <textbox dataBindings="VideoOffset1.y" />
+          </group>
+        </group>
+      </group>
+      <group enable_if="VideoTexture1">
+        <checkbox label="Play on load" dataBindings="VideoPlayOnLoad" />
+      </group>
+      <group horizontal="1" enable_if="VideoTexture1" >
+        <label>Share Channel</label>
+        <textbox dataBindings="VideoShareChannel" tooltip="All videos using same Bink file on the same channel will play in sync. 0 = not shared.">
+          <dataBindings increment="1" minvalue="0" maxvalue="100" />
+        </textbox>
+        <group horizontal="1" show_if="VideoShareChannel>0" >
+          <label color="0000FF">      Video will play in sync with other videos using same Bink file on same channel.</label>
+        </group>
+      </group>
+    </group>
+
+    <!-- Material  -->
+    <label> </label>
+    <group label="Base Material (Non Emissive)" show_if="BlendingType==0">
+      <!-- Base Color -->
+      <group horizontal="1" label="Base Color 1">
+        <button dataBindings="LightOffColor" />
+        <group enable_if="DiffuseTexture1||VideoTexture1">
+          <checkbox label="Use Emissive Texture" dataBindings="UseDiffuseTexture" />
+        </group>
+      </group>
+      <!-- SurfaceParams -->
+      <group label="Surface Parameters">
+
+        <group horizontal="1">
+          <label alignright="1" width="90">Reflectance</label>
+          <label> 0</label>
+          <slider dataBindings="Reflectance">
+            <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+            <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+          </slider>
+          <label>1  </label>
+          <textbox databindings="Reflectance">
+            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+          </textbox>
+        </group>
+
+        <group horizontal="1">
+          <label alignright="1" width="90">Roughness</label>
+          <label> 0</label>
+          <slider dataBindings="Roughness">
+            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+          </slider>
+          <label>1  </label>
+          <textbox databindings="Roughness">
+            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+          </textbox>
+        </group>
+      </group>
+    </group>
+
+    <!-- Texture Animation -->
+    <label> </label>
+    <group label="Animation">
+      <label>Animation type</label>
+      <group horizontal="1">
+        <combobox dataBindings="AnimType">
+          <comboboxitem value="0">None</comboboxitem>
+          <comboboxitem value="1">UV Scrolling</comboboxitem>
+          <comboboxitem value="2">Flipbook animation</comboboxitem>
+          <comboboxitem value="5">Flipbook animation (ping pong)</comboboxitem>
+          <comboboxitem value="6">Flipbook animation (code controled)</comboboxitem>
+          <comboboxitem value="3">UV PingPong Scrolling</comboboxitem>
+          <comboboxitem value="4">Rotozoom</comboboxitem>
+        </combobox>        
+        <group show_if="AnimType==2">
+          <label>Flipbook initial frame set by code for entities (default 0)</label>
+        </group>
+        <group show_if="AnimType==5">
+          <label>Only horizontal flipbooks are supported in ping-pong mode.</label>
+        </group>
+        <group show_if="AnimType==6">
+          <label>The flipbook animation is controled exclusivly by code. Initial frame is 0 by default.</label>
+        </group>
+      </group>
+
+        <group show_if="AnimType!=0">
+          <group show_if="AnimType!=6">
+            <checkbox label="Randomize Time" dataBindings="RandomAnimationTime" />
+          </group>
+        </group>
+
+      <label>Scrolling speed</label>
+      <group horizontal="1" enable_if="AnimType>0">
+        <group horizontal="1" enable_if="AnimType!=6">
+          <label>Diffuse 1</label>
+          <label>U</label>
+          <textbox dataBindings="UVSpeed.x" />
+          <label>V</label>
+          <textbox dataBindings="UVSpeed.y" />
+        </group>
+      </group>
+      <group horizontal ="1" enable_if="AnimType>0">
+        <group horizontal="1" enable_if="AnimType!=6">
+          <label>Diffuse 2</label>
+          <label>U</label>
+          <textbox dataBindings="UVSpeed2.x" />
+          <label>V</label>
+          <textbox dataBindings="UVSpeed2.y" />
+        </group>
+      </group>
+	  
+
+      <label>Number of Frames / Framerate</label>
+      <group horizontal="1" enable_if="AnimType==2||AnimType==5||AnimType==6">
+        <label>X</label>
+        <textbox dataBindings="NbFramesX" />
+        <label alignright="1" width="30">Y</label>
+        <textbox dataBindings="NbFramesY" />
+        <label alignright="1" width="30">FPS</label>
+        <textbox dataBindings="Framerate">
+          <dataBindings increment="0.001" />
+        </textbox>
+      </group>
+
+      <group show_if="AnimType==2||AnimType==5">
+        <group show_if="DiffuseTexture1">
+          <group hide_if="VideoTexture1">
+            <label>Frames Blending</label>
+            <checkbox label="Blend" dataBindings="BlendFrames" />
+            <group enable_if="AnimType==2" >
+              <group horizontal="1" enable_if="BlendFrames" >
+                <label>Delay: </label>
+                <slider dataBindings="BlendDelay">
+                  <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <textbox dataBindings="BlendDelay">
+                  <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+              </group>
+            </group>
+          </group>
+        </group>
+      </group>
+    </group>
+
+    <label> </label>
+    <group label="Distance Fade">
+      <group horizontal="1">
+        <label>Start</label>
+        <textbox dataBindings="FadeoutParams.x">
+          <dataBindings increment="0.1" maxvalue="4096" />
+        </textbox>
+        <label>    End</label>
+        <textbox dataBindings="FadeoutParams.y">
+          <dataBindings increment="0.1" maxvalue="4096" />
+        </textbox>
+      </group>
+    </group>
+
+    <!-- Vertex Animation -->
+    <group horizontal="0" label="Vertex Animation">
+      <group horizontal="1">
+        <label>Type: </label>
+        <combobox dataBindings="VertexAnimationType">
+          <comboboxitem value="-1">None</comboboxitem>
+          <comboboxitem value="0">Rotation</comboboxitem>
+          <comboboxitem value="1">Hanging from a horizontal cable</comboboxitem>
+          <comboboxitem value="2">Hanging from a vertical cable</comboboxitem>
+          <comboboxitem value="3">Hanging cloth</comboboxitem>
+          <comboboxitem value="4">Clock Needles</comboboxitem>
+          <comboboxitem value="5">24h Clock</comboboxitem>
+        </combobox>
+        <group show_if="VertexAnimationType!=-1">
+          <label> Orientation: </label>
+          <combobox dataBindings="VertexAnimationAxis">
+            <comboboxitem value="0">Object Axis 1</comboboxitem>
+            <comboboxitem value="1">Object Axis 2</comboboxitem>
+            <comboboxitem value="2">Object Axis 3</comboboxitem>
+          </combobox>
+        </group>
+      </group>
+      <!-- Rotation -->
+      <group horizontal="0" show_if="VertexAnimationType==0">
+        <group horizontal="1" >
+          <label alignright="1" width="90">Speed</label>
+          <textbox databindings="VertexAnimationSpeed1">
+            <databindings increment="0.1" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationSpeed1">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+        <group horizontal="1" >
+          <label alignright="1" width="90">Noise Speed</label>
+          <textbox databindings="VertexAnimationSpeed2">
+            <databindings increment="0.1" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationSpeed2">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+        <group horizontal="1" >
+          <label alignright="1" width="90">Noise Amplitude</label>
+          <textbox databindings="VertexAnimationRadius2">
+            <databindings increment="0.1" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationRadius2">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+      </group>
+      <!-- Hanging from a vertical cable -->
+      <group horizontal="0" show_if="VertexAnimationType==1">
+        <group horizontal="1" >
+          <label alignright="1" width="180">Cable Motion Speed</label>
+          <textbox databindings="VertexAnimationSpeed1">
+            <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationSpeed1">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+        <group horizontal="1" >
+          <label alignright="1" width="180">Cable Motion Amplitude</label>
+          <textbox databindings="VertexAnimationRadius1">
+            <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationRadius1">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+        <group horizontal="1" >
+          <label alignright="1" width="180">Hanging Object Motion Speed</label>
+          <textbox databindings="VertexAnimationSpeed2">
+            <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationSpeed2">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+        <group horizontal="1" >
+          <label alignright="1" width="180">Hanging Object Motion Amplitude</label>
+          <textbox databindings="VertexAnimationRadius2">
+            <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationRadius2">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+      </group>
+      <!-- Hanging Cloth -->
+      <group horizontal="0" show_if="VertexAnimationType==2">
+        <group horizontal="1" >
+          <label alignright="1" width="180">Cable Motion Speed</label>
+          <textbox databindings="VertexAnimationSpeed1">
+            <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationSpeed1">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+        <group horizontal="1" >
+          <label alignright="1" width="180">Cable Motion Amplitude</label>
+          <textbox databindings="VertexAnimationRadius1">
+            <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationRadius1">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+        <group horizontal="1" >
+          <label alignright="1" width="180">Hanging Object Motion Speed</label>
+          <textbox databindings="VertexAnimationSpeed2">
+            <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationSpeed2">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+        <group horizontal="1" >
+          <label alignright="1" width="180">Hanging Object Motion Amplitude</label>
+          <textbox databindings="VertexAnimationRadius2">
+            <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationRadius2">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+      </group>
+      <!-- Hanging cloth -->
+      <group horizontal="0" show_if="VertexAnimationType==3">
+        <group horizontal="1" >
+          <label alignright="1" width="100">Motion Speed</label>
+          <textbox databindings="VertexAnimationSpeed1">
+            <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationSpeed1">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+        <group horizontal="1" >
+          <label alignright="1" width="100">Motion Amplitude</label>
+          <textbox databindings="VertexAnimationRadius1">
+            <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationRadius1">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+        <group horizontal="1" >
+          <label alignright="1" width="100">Motion Frequency</label>
+          <textbox databindings="VertexAnimationFreq1">
+            <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="VertexAnimationFreq1">
+            <dataBindings increment="0.1" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label>10</label>
+        </group>
+        <group horizontal="1" >
+          <label alignright="1" width="100">Pivot Height Offset</label>
+          <textbox databindings="GenericParameters.x">
+            <databindings increment="0.01" minvalue="-10.0" maxvalue="10.0" />
+          </textbox>
+          <label> -10</label>
+          <slider dataBindings="GenericParameters.x">
+            <dataBindings increment="0.01" minvalue="-10.0" maxvalue="10.0" />
+          </slider>
+          <label> 10</label>
+        </group>
+      </group>
+    </group>
+	
+	<!-- ScreenFX -->
+    <label> </label>
+    <group label="Screen Effect" enable_if="DiffuseTexture1 || VideoTexture1">
+        <checkbox label="Enable Screen Effect" dataBindings="UseScreenFX" tooltip="Parameters to mimick giant LED screens." />
+        <group show_if="UseScreenFX">
+            <group horizontal="1">
+                <button dataBindings="ScreenFX_Color1" />
+                <group horizontal="1" fill="1">
+                  <button dataBindings="ScreenFX_Texture1" fill="1" />
+                </group>
+                <group horizontal="1">
+                  <textbox dataBindings="ScreenFX_UV1">
+                    <dataBindings class="UVChannel" />
+                  </textbox>
+                  <group>
+                    <label>Tiling</label>
+                    <textbox dataBindings="ScreenFX_Tiling1.x" />
+                    <textbox dataBindings="ScreenFX_Tiling1.y" />
+                  </group>
+                  <group>
+                    <label>Offset</label>
+                    <textbox dataBindings="ScreenFX_Offset1.x" />
+                    <textbox dataBindings="ScreenFX_Offset1.y" />
+                  </group>
+                  <group>
+                      <label>Channels</label>
+                      <label color="BB0000">Red: LED Pattern</label>
+                      <label color="00BB00">Green: Noise</label>
+					  <label color="0000AA">Blue: LED Color Pattern</label>
+                  </group>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>Addressing</label>
+                <combobox dataBindings="ScreenFX_Texture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                    <comboboxitem value="ColorClampAniso">Clamp Aniso (Expensive)</comboboxitem>
+                </combobox>
+                <label width="35"> </label>
+				<checkbox label="Use LED RGB Pixels" dataBindings="ScreenFX_UseRGBPixel" tooltip="Parameter to mimick LED RGB pixel pattern." />
+            </group>
+            <label> </label>
+            <group label="Pattern Smoothstep">
+                <group horizontal="1">
+                    <label width="20" alignright="1">Min:</label>
+                      <slider dataBindings="ScreenFX_Smooth.x">
+                        <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                      </slider>
+                    <textbox dataBindings="ScreenFX_Smooth.x">
+                        <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                    </textbox>
+                    <label> </label>
+                </group>
+                <group horizontal="1">
+                    <label width="20" alignright="1">Max:</label>
+                      <slider dataBindings="ScreenFX_Smooth.y">
+                        <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                      </slider>
+                    <textbox dataBindings="ScreenFX_Smooth.y">
+                        <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                    </textbox>
+                    <label> </label>
+                </group>
+            </group>
+            
+            <label> </label>
+            <group label="Fade Distance (meters)" horizontal="1">
+                <label width="50" alignright="1">Min:</label>
+                <textbox dataBindings="ScreenFX_FadeDist.x">
+                    <dataBindings increment="0.1" minvalue="0" maxvalue="1000" />
+                </textbox>
+                <label width="65" alignright="1">Max:</label>
+                <textbox dataBindings="ScreenFX_FadeDist.y">
+                    <dataBindings increment="0.1" minvalue="0" maxvalue="1000" />
+                </textbox>
+                <label> </label>
+            </group>
+            <group label="Flicker" horizontal="1">
+                <label width="50" alignright="1">Speed:</label>
+                <textbox dataBindings="ScreenFX_Flicker.x">
+                    <dataBindings increment="0.1" minvalue="0" maxvalue="100" />
+                </textbox>
+                <label width="65" alignright="1">Intensity:</label>
+                <textbox dataBindings="ScreenFX_Flicker.y">
+                    <dataBindings increment="0.1" minvalue="0" maxvalue="100" />
+                </textbox>
+                <label> </label>
+            </group>
+            <group label="Nosie" horizontal="1" fill="1">
+                <label width="50" alignright="1">Speed:</label>
+                <textbox dataBindings="ScreenFX_Noise.x">
+                    <dataBindings increment="0.1" minvalue="0" maxvalue="30" />
+                </textbox>
+                <label width="65" alignright="1">Intensity:</label>
+                <textbox dataBindings="ScreenFX_Noise.y">
+                    <dataBindings increment="0.1" minvalue="0" maxvalue="100" />
+                </textbox>
+                <label> </label>
+                <label width="35" alignright="1">Size:</label>
+                <textbox dataBindings="ScreenFX_Noise.z">
+                    <dataBindings increment="0.1" minvalue="0" maxvalue="100" />
+                </textbox>
+                <label> </label>
+            </group>
+         </group>
+    </group>
+    <!-- Responsive AA -->
+    <label> </label>
+    <group label="Use Responsive AA" enable_if="DiffuseTexture1 || VideoTexture1">
+        <checkbox label="Enable ResponsiveAA" dataBindings="UseResponsiveAA" tooltip="Parameter to make TAA pass through the emissive material avoiding smudging." />
+        <label width="140">Responsive AA Strength:</label>
+        <textbox dataBindings="ResponsiveAAStrength">
+            <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+        </textbox>
+        <slider dataBindings="ResponsiveAAStrength">
+            <dataBindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+        </slider>
+    </group>
+    <label> </label>
+    <!-- Tech Art Validation Shader options -->
+    <group label="Tag Illegal Material"> <!-- Tag material to be Illegal -->
+        <group horizontal="1">
+            <checkbox label="is Illegal" dataBindings="isillegal"/>
+        </group>
+    </group>
+  </ui>
+</materialdescriptor>

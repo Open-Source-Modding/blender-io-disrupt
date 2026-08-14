@@ -1,0 +1,593 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- If required, BuildingAtlasGenerator.cpp needs to be modified to account for new parameters -->
+<materialdescriptor xmlns:xi="#" name="DriverBuilding" displayname="Building" showinui="1" id="#(0x41b85738, 0x2befa5b8)" deprecated="1" >
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" packedUVChannel="10" />
+
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="BlendingType" type="int" />
+    <parameter name="HalfLambert" type="bool" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Diffuse texture 1" optional="0" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV1" type="int" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="DiffuseTexture2" type="sampler2D" tilingName="DiffuseTiling2" UvName="DiffuseUV2" uvTilingName="DiffuseUVTiling2" maxdisplayname="Diffuse texture 2" />
+    <parameter name="DiffuseTexture2State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV2" type="int" />
+    <parameter name="Diffuse2Color1" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="GrungeTexture" type="sampler2D" tilingName="GrungeTiling" maxdisplayname="Grunge texture" />
+    <parameter name="GrungeTiling" type="float2" defaultvalue="0.01,0.01" />
+    <parameter name="GrungeOpacity" type="float" defaultvalue="1" op_x="1-x"/>
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" />
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalIntensity" type="float2" defaultvalue="1,0" />
+
+    <parameter name="UseReliefMapping" type="bool" />
+    <parameter name="ReliefDepth" type="float" defaultvalue="0" />
+
+    <parameter name="SpecularTexture1" type="sampler2D" tilingName="SpecularTiling1" UvName="SpecularUV1" uvTilingName="SpecularUVTiling1" maxdisplayname="Mask texture" />
+    <parameter name="SpecularTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SpecularUV1" type="int" />
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float3" defaultvalue="0.04,0,1" />
+
+    <parameter name="AlphaTexture1" type="sampler2D" tilingName="AlphaTiling1" UvName="AlphaUV1" uvTilingName="AlphaUVTiling1" maxdisplayname="Alpha texture" />
+    <parameter name="AlphaTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="AlphaUV1" type="int" />
+
+    <parameter name="AlphaUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseUVTiling2" type="float4" provideronly="1" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="SpecularUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="RaindropRippleType" type="int" defaultvalue="0" />
+
+    <parameter name="ReflectionIntensity" type="float4" div="3" />
+    <parameter name="ReflectionType" type="int" defaultvalue="0" />
+    <!--<parameter name="ReflectionTexture" type="samplerCUBE" />-->
+
+    <parameter name="RoundedCornersParameters" type="float3" defaultvalue="0,25,0" />
+    <!-- 114.6 = 360/pi => yz = (0.5 * DegToRad(yz)) -->
+    <parameter name="RoundedCornersParameters2" type="float4" defaultvalue="0,35,60,60" op_y="y/114.6" op_z="z/114.6"/>
+
+    <parameter name="UseColorizeDiffuse1" type="bool" />
+    <parameter name="ColorizeDiffuse1Mode" type="int" defaultvalue="1" />
+    <parameter name="MaskBlueChannelMode" type="int" defaultvalue="0" />
+    <parameter name="MaskRedChannelMode" type="int" defaultvalue="1" />
+    <parameter name="InvertMaskForColorize" type="float" defaultvalue="0"/>
+    <parameter name="SwapSpecularGlossAndOcclusion" type="bool" />
+
+    <parameter name="RaindropSplashesTexture" type="sampler2D" />
+
+    <parameter name="ReflectionTexture" type="samplerCUBE">
+        <use_if parameter="ReflectionType" value="2" />
+    </parameter>
+
+    <parameter name="EmissiveMeshLights" type="bool" defaultvalue="0"/>
+    <parameter name="EmissiveTexture" type="sampler2D" tilingName="EmissiveTiling" UvName="EmissiveUV" uvTilingName="EmissiveUVTiling" maxdisplayname="Emissive texture" />
+    <parameter name="EmissiveTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="EmissiveUV" type="int" />
+    <parameter name="EmissiveUVTiling" type="float4" provideronly="1" />
+
+    <parameter name="WetSpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="WetReflectance" type="float3" defaultvalue="0.04,0,1" />
+    <parameter name="WetDiffuseMultiplier" type="float" defaultvalue="1" />
+    <parameter name="MaterialPaletteTexture" type="sampler2D" />
+
+    <parameterprovider parametersfilename="Mesh_DriverBuilding.fx">
+        <parameter name="DiffuseTexture1">
+            <alias name="DiffuseTexture1Point" />
+        </parameter>
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="InvertMaskForColorize" />
+
+        <parameter name="DiffuseTexture2" />
+        <parameter name="DiffuseTexture2State" />
+        <parameter name="DiffuseUVTiling2" />
+        <parameter name="Diffuse2Color1" />
+
+        <parameter name="GrungeTexture" />
+        <parameter name="GrungeTiling" />
+        <parameter name="GrungeOpacity" />
+
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTexture1State" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="SpecularTexture1" />
+        <parameter name="SpecularUVTiling1" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+        <parameter name="HalfLambert" />
+        <parameter name="NormalIntensity" />
+        <parameter name="AlphaTexture1" />
+        <parameter name="AlphaUVTiling1" />
+        <parameter name="ReflectionIntensity" />
+        <parameter name="ReflectionType" />
+        <!--<parameter name="ReflectionTexture" />-->
+        <parameter name="UseColorizeDiffuse1" />
+        <parameter name="ColorizeDiffuse1Mode" />
+        <parameter name="MaskBlueChannelMode" />
+        <parameter name="SwapSpecularGlossAndOcclusion" />
+        <parameter name="ReflectionTexture" />
+        <parameter name="RaindropSplashesTexture" />
+        <parameter name="RaindropRippleType" />
+        <parameter name="RoundedCornersParameters" />
+        <parameter name="RoundedCornersParameters2" />
+
+        <parameter name="ReliefDepth" />
+
+        <parameter name="EmissiveMeshLights" />
+        <parameter name="EmissiveTexture" />
+        <parameter name="EmissiveUVTiling" />
+
+        <parameter name="MaskRedChannelMode" />
+        <parameter name="WetSpecularPower" />
+        <parameter name="WetReflectance" />
+        <parameter name="WetDiffuseMultiplier" />
+        <parameter name="MaterialPaletteTexture" sizeparameter="1" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group horizontal="0" label="Settings">
+            <group>
+                <checkbox label="Two sided" dataBindings="TwoSided" />
+                <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+                <!--<checkbox label="Half lambert" dataBindings="HalfLambert" />-->
+                <group horizontal="1">
+                    <checkbox label="Decal" dataBindings="BlendingType" />
+                    <group horizontal="1" show_if="BlendingType!=0">
+                        <label>Sorting Layer Bias</label>
+                        <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order of the decal.  Materials with smaller values are drawn first.">
+                            <dataBindings increment="1" minvalue="-10" maxvalue="10" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Diffuse" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <textbox dataBindings="DiffuseUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1" show_if="ReflectionType!=3">
+                <group show_if="UseColorizeDiffuse1!=0">
+                    <button dataBindings="DiffuseColor2"/>
+                </group>
+                <checkbox label="Colorize" dataBindings="UseColorizeDiffuse1" />
+                <group horizontal="1" show_if="UseColorizeDiffuse1!=0">
+                    <combobox dataBindings="ColorizeDiffuse1Mode">
+                        <comboboxitem value="0">with alpha from diffuse texture</comboboxitem>
+                        <comboboxitem value="1">with green channel from mask</comboboxitem>
+                    </combobox>
+                    <group>
+                        <checkbox label="Invert Mask" dataBindings="InvertMaskForColorize" complexity="1"/>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Diffuse 2" vertical="1" show_if="ReflectionType!=3">
+            <group vertical="1">
+                <group horizontal="1" show_if="ColorizeDiffuse1Mode!=1|UseColorizeDiffuse1==0">
+                    <button dataBindings="Diffuse2Color1" />
+                    <button dataBindings="DiffuseTexture2" fill="1" />
+
+                    <group show_if="DiffuseTexture2" horizontal="1">
+                        <textbox dataBindings="DiffuseUV2">
+                            <dataBindings class="UVChannel" />
+                        </textbox>
+                        <group>
+                            <textbox dataBindings="DiffuseTiling2.x">
+                                <dataBindings class="Tiling" />
+                            </textbox>
+                            <textbox dataBindings="DiffuseTiling2.y">
+                                <dataBindings class="Tiling" />
+                            </textbox>
+                        </group>
+                        <combobox dataBindings="DiffuseTexture2State">
+                            <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                            <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                            <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                            <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+            </group>
+            <group hide_if="SpecularTexture1">
+                <group show_if="DiffuseTexture2">
+                    <label color="FF0000">Diffuse texture 2 will need a mask texture</label>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Mask">
+            <group horizontal="1">
+                <button dataBindings="SpecularTexture1" fill="1"/>
+                <textbox dataBindings="SpecularUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="SpecularTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SpecularTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label color="BB0000">          R:</label>
+                    <group horizontal="1">
+                        <combobox dataBindings="MaskRedChannelMode">
+                            <comboboxitem value="0">Unused</comboboxitem>
+                            <comboboxitem value="1">Specular Gloss</comboboxitem>
+                        </combobox>
+                        <group hide_if="SpecularTexture1">
+                            <group show_if="MaskRedChannelMode==1">
+                                <label color="FF0000">Mask texture needed</label>
+                            </group>
+                        </group>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00">          G:</label>
+                    <group enable_if="ColorizeDiffuse1Mode==1" horizontal="1">
+                        <label>colorize diffuse1</label>
+                    </group>
+                    <group horizontal="1">
+                        <label> OR </label>
+                    </group>
+                    <group enable_if="DiffuseTexture2" horizontal="1">
+                        <label>blending mask for diffuse textures</label>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="0000AA">          B:</label>
+                    <combobox dataBindings="MaskBlueChannelMode">
+                        <comboboxitem value="0">Unused</comboboxitem>
+                        <comboboxitem value="1">Reflectance values</comboboxitem>
+                    </combobox>
+                    <group hide_if="SpecularTexture1">
+                        <group show_if="MaskBlueChannelMode==1">
+                            <label color="FF0000">Mask texture needed</label>
+                        </group>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="404040">          A:</label>
+                    <label>Specular occlusion (optional - only works with gloss)</label>
+                </group>
+            </group>
+            <group hide_if="ColorizeDiffuse1Mode==1">
+                <group complexity="1">
+                    <checkbox label="Swap Specular Gloss (red) and Specular Occlusion (alpha) - (for roads only)" dataBindings="SwapSpecularGlossAndOcclusion" />
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Specular">
+            <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+            <xi:include href="UI/SpecularPowerGroup.xml" />
+            <group>
+                <group horizontal="1" enable_if="MaskBlueChannelMode==0 || SpecularTexture1==0">
+                    <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+                    <xi:include href="UI/ReflectanceGroup.xml" />
+                </group>
+
+                <group enable_if="MaskBlueChannelMode==1">
+                    <group horizontal="1">
+                        <label>  Reflectance Level Ouput Min     </label>
+                        <textbox databindings="Reflectance.y" >
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                        <label>  0</label>
+                        <slider dataBindings="Reflectance.y">
+                            <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1</label>
+                    </group>
+
+                    <group horizontal="1">
+                        <label>  Reflectance Level Ouput Max    </label>
+                        <textbox databindings="Reflectance.z" >
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                        <label>  0</label>
+                        <slider dataBindings="Reflectance.z">
+                            <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1</label>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Reflection" horizontal="0">
+            <group horizontal="1">
+                <label>Type</label>
+                <group horizontal="1">
+                    <combobox dataBindings="ReflectionType">
+                        <comboboxitem value="0">World Static</comboboxitem>
+                        <comboboxitem value="1">World Dynamic</comboboxitem>
+                        <comboboxitem value="2">Custom (EXPENSIVE)</comboboxitem>
+                        <comboboxitem value="3">Matcap (EXPENSIVE)</comboboxitem>
+                    </combobox>
+                    <group horizontal="1" show_if="ReflectionType==2">
+                        <button dataBindings="ReflectionTexture" fill="1" />
+                    </group>
+                </group>
+            </group>
+
+            <group horizontal="1" show_if="ReflectionType==3">
+                <label>Matcap</label>
+                <button dataBindings="Diffuse2Color1" />
+                <button dataBindings="DiffuseTexture2" fill="1" />
+            </group>
+            <!--<group>
+                <label>Custom reflection texture (interior only)</label>
+                <button dataBindings="ReflectionTexture" fill="1" />
+            </group>-->
+        </group>
+        <label> </label>
+
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture1State">
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>               Intensity    </label>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+            <group horizontal="1" disable_if="NormalTexture1==0">
+                <checkbox label="Relief Mapping" dataBindings="UseReliefMapping" />
+                <label> 0</label>
+                <group disable_if="UseReliefMapping==0">
+                    <slider dataBindings="ReliefDepth">
+                        <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                </group>
+                <label>1</label>
+                <label>(Alpha channel of NormalMap ReliefMap texture)</label>
+            </group>
+
+        </group>
+        <label> </label>
+
+        <group label="Alpha" complexity="1">
+            <group horizontal="1" enable_if="AlphaTestEnabled || AlphaTexture1 || BlendingType!=0">
+                <button dataBindings="AlphaTexture1" fill="1" />
+                <textbox dataBindings="AlphaUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="AlphaTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="AlphaTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group show_if="AlphaTexture1">
+                <group hide_if="AlphaTestEnabled">
+                    <group hide_if="BlendingType!=0">
+                        <label color="FF0000">Do not put an alpha texture if material is not a decal and is not alpha tested</label>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <group horizontal="0" label="Wet version" complexity="1" >
+            <group  horizontal="1">
+                <label>      Diffuse multiplier               </label>
+                <label>0</label>
+                <slider dataBindings="WetDiffuseMultiplier">
+                    <dataBindings minvalue="0.0" maxvalue="1.0"/>
+                </slider>
+                <label>1</label>
+            </group>
+
+            <group enable_if="GrungeTexture==0" horizontal="1">
+                <label>      Raindrop ripples normal   </label>
+                <combobox dataBindings="RaindropRippleType" horizontal="1">
+                    <comboboxitem value="0">Disabled</comboboxitem>
+                    <comboboxitem value="1">Standard</comboboxitem>
+                    <comboboxitem value="2">Puddle</comboboxitem>
+                </combobox>
+            </group>
+            <group show_if="RaindropRippleType!=0" horizontal="1">
+                <label>                               Intensity  </label>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity.y">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+
+            <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="WetSpecularPower" />
+            <xi:include href="UI/SpecularPowerGroup.xml" />
+
+            <group>
+                <group horizontal="1" enable_if="MaskBlueChannelMode==0 || SpecularTexture1==0">
+                    <dataBindingsAlias name="@ReflectanceAlias" dataBindings="WetReflectance" />
+                    <xi:include href="UI/ReflectanceGroup.xml" />
+                </group>
+
+                <group enable_if="MaskBlueChannelMode==1">
+                    <group horizontal="1">
+                        <label>  Reflectance Level Ouput Min     </label>
+                        <textbox databindings="WetReflectance.y" >
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                        <label>  0</label>
+                        <slider dataBindings="WetReflectance.y">
+                            <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1</label>
+                    </group>
+
+                    <group horizontal="1">
+                        <label>  Reflectance Level Ouput Max    </label>
+                        <textbox databindings="WetReflectance.z" >
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                        <label>  0</label>
+                        <slider dataBindings="WetReflectance.z">
+                            <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1</label>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <group enable_if="RaindropRippleType==0" label="Dirt / dust (building facades)" complexity="1" >
+            <group horizontal="1">
+                <button dataBindings="GrungeTexture" fill="1" />
+
+                <group show_if="GrungeTexture" horizontal="1">
+                    <group>
+                        <textbox dataBindings="GrungeTiling.x">
+                            <dataBindings increment="0.0001" minvalue="0.0001" displayvaluemul="100"/>
+                        </textbox>
+                        <textbox dataBindings="GrungeTiling.y">
+                            <dataBindings increment="0.0001" minvalue="0.0001" displayvaluemul="100"/>
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+            <group horizontal="1" show_if="GrungeTexture">
+                <label>          Intensity   </label>
+                <label>0</label>
+                <slider dataBindings="GrungeOpacity">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+        <label> </label>
+        
+        <group label="Smooth corners" horizontal="0" complexity="1">
+            <group horizontal="1">
+                <checkbox label="Enabled" dataBindings="RoundedCornersParameters.x" />
+                <checkbox label="Scale sharpness using angle with neighbor facade" dataBindings="RoundedCornersParameters2.x" />
+            </group>
+            <group horizontal="1">
+                <group horizontal="0">
+                    <group horizontal="1">
+                        <label  alignright="0" width="100" >Sharpness:</label>
+                        <textbox databindings="RoundedCornersParameters.y" >
+                            <databindings increment="0.001" minvalue="1.0" maxvalue="100.0" />
+                        </textbox>
+                        <slider dataBindings="RoundedCornersParameters.y">
+                            <dataBindings increment="0.001" minvalue="1.0" maxvalue="100.0" />
+                        </slider>
+                    </group>
+                    <group show_if="RoundedCornersParameters2.x!=0" horizontal="1">
+                        <label  alignright="0" width="100" >Max Sharpness:</label>
+                        <textbox databindings="RoundedCornersParameters2.w" >
+                            <databindings increment="0.001" minvalue="1.0" maxvalue="100.0" />
+                        </textbox>
+                        <slider dataBindings="RoundedCornersParameters2.w">
+                            <dataBindings increment="0.001" minvalue="1.0" maxvalue="100.0" />
+                        </slider>
+                    </group>
+                </group>
+                <group show_if="RoundedCornersParameters2.x!=0" horizontal="0">
+                    <group label="Min angle (degrees):" horizontal="1">
+                        <textbox databindings="RoundedCornersParameters2.y" >
+                            <databindings increment="0.001" minvalue="0.0" maxvalue="180.0" />
+                        </textbox>
+                        <slider dataBindings="RoundedCornersParameters2.y">
+                            <dataBindings increment="0.001" minvalue="0.0" maxvalue="180.0" />
+                        </slider>
+                    </group>
+                    <group label="Max angle (degrees):" horizontal="1">
+                        <textbox databindings="RoundedCornersParameters2.z" >
+                            <databindings increment="0.001" minvalue="0.0" maxvalue="180.0" />
+                        </textbox>
+                        <slider dataBindings="RoundedCornersParameters2.z">
+                            <dataBindings increment="0.001" minvalue="0.0" maxvalue="180.0" />
+                        </slider>
+                    </group>
+                </group>
+            </group>
+        </group>
+ 
+        <label> </label>
+
+        <group label="UV stretch fix" horizontal="0" complexity="1">
+            <group horizontal="1">
+                <label>          UV scale    -1</label>
+                <slider dataBindings="RoundedCornersParameters.z">
+                    <dataBindings increment="0.001" minvalue="-1.0" maxvalue="1.0" />
+                </slider>
+                <label>1 </label>
+                <textbox databindings="RoundedCornersParameters.z" >
+                    <databindings increment="0.001" minvalue="-1.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

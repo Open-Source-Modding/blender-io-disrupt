@@ -1,0 +1,304 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2Eye" displayname="WD2Eye" showinui="1" id="#(0xf5e9a0e, 0x3c694f52)">
+    <geometryInputs normal="1" tangent="1" binormal="1" uvChannels="1" bonecount="8" />
+
+    <!-- Settings -->
+    <parameter name="CastShadow" type="bool" defaultvalue="1" />
+
+    <!-- Material parameters -->
+    <parameter name="ColorMask" oldnames="DiffuseTexture1" type="sampler2D" maxdisplayname="Color mask" optional="0"/>
+    <parameter name="ColorMaskState" oldnames="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="0.145301, 0.390729, 0.469596" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="0.015936, 0.029283, 0.099444" />
+    <parameter name="DiffuseColor3" type="color3" defaultvalue="1.000000, 0.952999, 0.800000" />
+    <parameter name="DiffuseColor4" type="color3" defaultvalue="0.100000, 0.020000, 0.020000" />
+    <parameter name="DiffuseColor5" type="color3" defaultvalue="0.0, 0.0, 0.0" />
+    <parameter name="DiffuseColor6" type="color3" defaultvalue="0.145301, 0.390729, 0.469596" />
+    <parameter name="DiffuseColor7" type="color3" defaultvalue="0.015936, 0.029283, 0.099444" />
+    <parameter name="DiffuseColor8" type="color3" defaultvalue="1.000000, 0.952999, 0.800000" />
+    <parameter name="DiffuseColor9" type="color3" defaultvalue="0.100000, 0.020000, 0.020000" />
+    <parameter name="DiffuseColor10" type="color3" defaultvalue="0.0, 0.0, 0.0" />
+
+    <parameter name="Roughness" type="float" defaultvalue="0.2" />
+    <parameter name="Roughness2" type="float" defaultvalue="0.2" />
+
+    <parameter name="NormalTexture1" type="sampler2D" maxdisplayname="Normal texture 1" normalmap="1" optional="0" />
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalIntensity1" oldnames="NormalIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="NormalTexture2" type="sampler2D" maxdisplayname="Normal texture 2" normalmap="1" optional="0" />
+    <parameter name="NormalTexture2State" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalIntensity2" oldnames="Normal2Intensity" type="float" defaultvalue="1" />
+    <parameter name="SeparateNormalIntensity2" type="float" defaultvalue="1" />
+
+    <parameter name="EyePower" type="float" defaultvalue="0.50" />    
+    <parameter name="EyeStrength" type="float" defaultvalue="0.20" />
+    <parameter name="EyeAperture" type="float" defaultvalue="1" />
+    <parameter name="EyeAperture2" type="float" defaultvalue="1" />
+    <parameter name="SeparateEyes" type="bool" defaultvalue="0" />
+    
+    <!-- Shader parameters -->
+    <parameterprovider parametersfilename="Mesh_WD2Eye.fx">
+        <parameter name="ColorMask" />
+        <parameter name="ColorMaskState" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseColor3" />
+        <parameter name="DiffuseColor4" />
+        <parameter name="DiffuseColor5" />
+        <parameter name="DiffuseColor6" />
+        <parameter name="DiffuseColor7" />
+        <parameter name="DiffuseColor8" />
+        <parameter name="DiffuseColor9" />
+        <parameter name="DiffuseColor10" />
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTexture1State" />
+        <parameter name="NormalIntensity1" />
+        <parameter name="NormalTexture2" />
+        <parameter name="NormalTexture2State" />
+        <parameter name="NormalIntensity2" />
+        <parameter name="SeparateNormalIntensity2" />
+        <parameter name="Roughness" />
+        <parameter name="EyePower" />
+        <parameter name="EyeStrength" />
+        <parameter name="EyeAperture" />
+        <parameter name="EyeAperture2" />
+        <parameter name="SeparateEyes" />
+        <parameter name="Roughness2" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+    </shaderoptions>
+
+    <!-- Material UI definition -->
+    <ui defaultFilePath="graphics/Characters/wd3/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+        </group>
+        <label> </label>
+
+        <!-- Diffuse -->
+        <group label="Eye Mask">
+            <group horizontal="1">
+                <button dataBindings="ColorMask" fill="1" />
+                <combobox dataBindings="ColorMaskState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="1" width="20" color="BB0000">R:</label>
+                <label width="120">Sclera Mask</label>
+                <label>0=Iris, 1=Sclera</label>
+            </group>    
+            <group horizontal="1" >
+                <label alignright="1" width="20" color="00BB00">G:</label>
+                <label width="120">Eye Color Selection</label>
+                <label>0=Dark Color, 1=Light Color</label>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="20" color="0000AA">B:</label>
+                <label width="120">Color Intensity</label>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="20" color="000000">A:</label>
+                <label  width="120" color="404040">Refraction Offset Mask</label>
+            </group>
+        </group>
+
+        <label></label>
+        <!-- NormalMap -->
+        <group label="Cornea Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <combobox dataBindings="NormalTexture1State">
+                    <comboboxitem value="NormalClamp">Clamp</comboboxitem>
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="75">Intensity: </label>
+                <textbox databindings="NormalIntensity1">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity1">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+
+        <label></label>
+        <!-- NormalMap 2 -->
+        <group label="Iris Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture2" fill="1" />
+                <combobox dataBindings="NormalTexture2State">
+                    <comboboxitem value="NormalClamp">Clamp</comboboxitem>
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="75">Intensity: </label>
+                <textbox databindings="NormalIntensity2">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity2">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+            <group horizontal="1" show_if="SeparateEyes">
+                <label alignright="1" width="75">Right Intensity: </label>
+                <textbox databindings="SeparateNormalIntensity2">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="SeparateNormalIntensity2">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+
+        <label></label>
+        <!-- Colors -->
+        <group label="Colors">
+            <checkbox label="Separate Left &amp; Right Eyes" dataBindings="SeparateEyes" />
+            <group label="Left/Both">
+                <group horizontal="1">
+                    <label alignright="1" width="50">Iris: </label>
+                    <button dataBindings="DiffuseColor1" />
+                    <label width="60">- Light</label>
+                    <button dataBindings="DiffuseColor2" />
+                    <label>- Dark</label>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="50">Sclera: </label>
+                    <button dataBindings="DiffuseColor3" />
+                    <label width="60">- White</label>
+                    <button dataBindings="DiffuseColor4" />
+                    <label>- Red</label>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="50">Pupil: </label>
+                    <button dataBindings="DiffuseColor5" />
+                </group>
+            </group>
+            <group label="Right" show_if="SeparateEyes">
+                <group horizontal="1">
+                    <label alignright="1" width="50">Iris: </label>
+                    <button dataBindings="DiffuseColor6" />
+                    <label width="60">- Light</label>
+                    <button dataBindings="DiffuseColor7" />
+                    <label>- Dark</label>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="50">Sclera: </label>
+                    <button dataBindings="DiffuseColor8" />
+                    <label width="60">- White</label>
+                    <button dataBindings="DiffuseColor9" />
+                    <label>- Red</label>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="50">Pupil: </label>
+                    <button dataBindings="DiffuseColor10" />
+                </group>
+            </group>
+        </group>
+        
+        <label></label>
+        <!-- SurfaceParams -->
+        <group label="Surface Parameters">
+            <group horizontal="1">
+                <label alignright="1" width="75">Roughness: </label>
+                <textbox databindings="Roughness">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="Roughness">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+            <group label="Right" show_if="SeparateEyes">
+                <group horizontal="1">
+                    <label alignright="1" width="75">Roughness: </label>
+                    <textbox databindings="Roughness2">
+                        <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                    </textbox>
+                    <label> 0</label>
+                    <slider dataBindings="Roughness2">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                </group>
+            </group>
+        </group>
+        
+        <label></label>
+        <!-- Iris Parameters -->
+        <group label="Iris Parameters">
+            <group horizontal="1">
+                <label alignright="1" width="75">Power: </label>
+                <textbox databindings="EyePower" >
+                    <databindings increment="0.01" minvalue="0" maxvalue="2" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="EyePower">
+                    <databindings minvalue="0" maxvalue="2" displayvaluediv="1" />
+                </slider>
+                <label>2</label>
+            </group>
+            
+            <group horizontal="1">
+            <label alignright="1" width="75">Strength: </label>
+                <textbox databindings="EyeStrength" >
+                    <databindings increment="0.01" minvalue="0" maxvalue="0.50" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="EyeStrength">
+                    <databindings minvalue="0" maxvalue="0.50" displayvaluediv="1" />
+                </slider>
+                <label>0.5</label>
+            </group>
+            
+            <group horizontal="1">
+                <label alignright="1" width="75">Aperture: </label>
+                <textbox databindings="EyeAperture" >
+                    <databindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="EyeAperture">
+                    <databindings minvalue="0" maxvalue="1" displayvaluediv="1" />
+                </slider>
+                <label>1</label>
+            </group>
+
+            <group horizontal="1" show_if="SeparateEyes">
+                <label alignright="1" width="75">Right Aperture: </label>
+                <textbox databindings="EyeAperture2" >
+                    <databindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="EyeAperture2">
+                    <databindings minvalue="0" maxvalue="1" displayvaluediv="1" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+        <label></label><!-- Eat remaining space...-->
+    </ui>
+</materialdescriptor>

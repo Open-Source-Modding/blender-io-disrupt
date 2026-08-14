@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="ARCloak" showinui="1" id="#(0x22408e4, 0x71951864)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" packedUVChannel="10" bonecount="1" reduceMatrixPerDrawCallBy="14" />
+
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+
+    <parameter name="Streaker" type="bool"  />
+    <parameter name="StreakerDistance" type="float" defaultvalue="0.1f" op_x="1/x"/>
+    <parameter name="BlurnessLevel" type="int" defaultvalue="3" />
+    
+    <!-- Base color -->
+    <parameter name="BaseColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="BaseColorTexture" type="sampler2D" tilingName="BaseColorTiling" UvName="BaseColorUV" uvTilingName="BaseColorUVTiling" maxdisplayname="Base Color Texture" optional="1" />
+    <parameter name="BaseColorTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="BaseColorUV" type="int" />
+    <parameter name="BaseColorUVTiling" type="float4" provideronly="1" />
+    <parameter name="BaseColorTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    
+    <!-- Glitch Color -->
+    <parameter name="GlitchColor1" type="color3" defaultvalue="0.76052475,0.0137020834,0.0202885587" />
+    <parameter name="GlitchColor2" type="color3" defaultvalue="0.0251868609,0.417885154,0.610495746" />
+    <parameter name="RimSize" type="float" defaultvalue="5" />
+    <parameter name="RefractionOpacity" type="float" defaultvalue="0.5" />
+    
+    <parameter name="FalloffIntensity" type="float" defaultvalue="0.0" />
+
+    <!-- MSAA Optimization -->
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+    <parameterprovider parametersfilename="Mesh_ARCloak.fx">
+        <parameter name="Streaker" />
+        <parameter name="StreakerDistance" />
+        <parameter name="BlurnessLevel" />
+        
+        
+        <parameter name="BaseColor" />
+        <parameter name="BaseColorTexture" />
+        <parameter name="BaseColorTextureState" />
+        <parameter name="BaseColorUVTiling" />
+        
+        <parameter name="GlitchColor1" />
+        <parameter name="GlitchColor2" />
+        
+        <parameter name="RimSize" />
+        
+        <parameter name="RefractionOpacity" />
+        
+        <parameter name="FalloffIntensity" />
+        
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <shaderoptions>
+        <shaderoption name="USE_BASE_COLOR_TEXTURE">
+            <condition parameter="BaseColorTexture" />
+        </shaderoption>
+        
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+        
+        <shaderoption name="STREAKER">
+            <condition parameter="Streaker" />
+        </shaderoption>
+        
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/_Textures/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Settings">
+            <checkbox label="Two sided" dataBindings="TwoSided" />
+
+            <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+
+            <group horizontal="1">
+                <label>Sorting Layer Bias</label>
+                <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order.  Materials with smaller values are drawn first.">
+                    <dataBindings increment="1" minvalue="-4" maxvalue="4" />
+                </textbox>
+            </group>
+            
+        </group>
+        
+        <label> </label>
+        
+        <group label="Base Color">
+            <group horizontal="1">
+                <button dataBindings="BaseColor" />
+                <button dataBindings="BaseColorTexture" />
+                <textbox dataBindings="BaseColorUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="BaseColorTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="BaseColorTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="BaseColorTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                    <comboboxitem value="ColorWrapHClampV">Wrap H - Clamp V</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+        <group label="Glitches Color">
+            <group horizontal="1">
+                <button dataBindings="GlitchColor1" />
+                <button dataBindings="GlitchColor2" />
+            </group>
+        </group>
+        
+        <group label="Rim Size">
+            <group horizontal="1">
+                 <textbox dataBindings="RimSize">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                    </textbox>
+                        
+                    
+            </group>
+        </group>
+        
+        <group label="Refraction">
+            <group horizontal="1">
+                 <textbox dataBindings="RefractionOpacity"/>
+                        
+                    
+            </group>
+        </group>
+        
+         <group label="AR Mask Falloff Intensity">
+            <group horizontal="1">
+                 <textbox dataBindings="FalloffIntensity"/>
+                        
+                    
+            </group>
+        </group>
+        
+        <group label="Streaker">
+            <group horizontal="1">
+                <checkbox label="Enable" dataBindings="Streaker" />
+            </group>BlurnessLevel
+            <group horizontal="1">
+                <label>Distance Fade</label>
+                <textbox dataBindings="StreakerDistance">
+                     <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>Blurness Level</label>
+                <textbox dataBindings="BlurnessLevel">
+                     <dataBindings increment="1" minvalue="1" maxvalue="5" />
+                </textbox>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

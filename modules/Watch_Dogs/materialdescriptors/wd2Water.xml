@@ -1,0 +1,273 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2Water" displayname="WD2Water" pickingid="1" showinui="1" id="#(0x1e644646, 0x15231ae1)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" packedUVChannel="10" />
+    
+    <parameter name="SkyLightFactor" type="float" defaultvalue="1" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalScrolling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="SurfaceTexture1" type="sampler2D" tilingName="SurfaceTiling1" UvName="SurfaceUV1" uvTilingName="SurfaceUVTiling1" maxdisplayname="Surface texture" normalmap="0" />
+    <parameter name="SurfaceTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SurfaceScrolling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SurfaceUV1" type="int" />
+    <parameter name="SurfaceUVTiling1" type="float4" provideronly="1" />
+    <parameter name="SurfaceIntensity" type="float" defaultvalue="1" />
+    <parameter name="SurfaceWaveUVInfluence" type="float" defaultvalue="1" />
+    
+
+<parameter name="WaveTexture" type="sampler2D" tilingName="WaveTiling" UvName="WaveUV" uvTilingName="WaveUVTiling" maxdisplayname="Wave texture" normalmap="0" defaultvalue="graphics\_Texture\GFX\Environment\Water\LittleSwellWaves.png"/>
+    <parameter name="WaveTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="WaveSpeed" type="float" defaultvalue="0.5" />
+    <parameter name="WaveUV" type="int" />
+    <parameter name="WaveUVTiling" type="float4" provideronly="1" />
+    <parameter name="WaveIntensity" type="float" defaultvalue="1" />
+    <parameter name="WaterExtinction" type="float" defaultvalue="1" />
+
+    <parameter name="CausticColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="CausticTextureArray" type="sampler2DArray" tilingName="CausticTiling" UvName="CausticUV" uvTilingName="CausticUVTiling" maxdisplayname="Caustic texture"/>
+    <parameter name="CausticTextureArraySize" type="int" defaultvalue="4" />
+    <parameter name="CausticFPS" type="float" defaultvalue="15" />
+    <parameter name="CausticTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="CausticUV" type="int" />
+    <parameter name="CausticUVTiling" type="float4" provideronly="1" />
+    <parameter name="CausticFadeDistance" type="float" defaultvalue="1" />
+    <parameter name="CausticIntensityScaleBias" type="float2" defaultvalue="2,0" />
+
+    <parameter name="WaterColor" type="color3" defaultvalue="0,0.75,0.5" />
+<parameter name="UseDuDv" type="float" defaultvalue="1"/>
+    
+    
+<parameterprovider parametersfilename="Mesh_WD2Water.fx">
+        <parameter name="SkyLightFactor" />
+
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalScrolling1" />
+        <parameter name="NormalIntensity" />
+
+        <parameter name="SurfaceTexture1" />
+        <parameter name="SurfaceUVTiling1" />
+        <parameter name="SurfaceScrolling1" />
+        <parameter name="SurfaceIntensity" />
+        <parameter name="SurfaceWaveUVInfluence" />
+
+        <parameter name="WaveTexture" />
+        <parameter name="WaveUVTiling" />
+        <parameter name="WaveSpeed" />
+        <parameter name="WaveIntensity" />
+        <parameter name="WaterExtinction" />
+
+        <parameter name="CausticColor" />
+        <parameter name="CausticTextureArray" />
+        <parameter name="CausticTextureArraySize" />
+        <parameter name="CausticFPS" />
+        <parameter name="CausticUVTiling" />
+        <parameter name="CausticFadeDistance" />
+        <parameter name="CausticIntensityScaleBias" />
+
+        <parameter name="WaterColor" />
+        <parameter name="UseDuDv" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="NORMALMAP">
+            <condition parameter="NormalTexture1" />
+        </shaderoption>
+
+        <shaderoption name="SURFACE">
+            <condition parameter="SurfaceTexture1" />
+        </shaderoption>
+    </shaderoptions>
+
+    
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <checkbox label="Refraction dudv" dataBindings="UseDuDv" />
+            <checkbox label="Affected by Sky light" dataBindings="SkyLightFactor" />            
+            <label>    Water color: </label> <button dataBindings="WaterColor" />
+        </group>
+
+        <!-- NormalMap -->
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+
+            <group horizontal="1" >
+                <label alignright="0" width="140">scrolling U</label>
+                <textbox dataBindings="NormalScrolling1.x">
+                    <dataBindings increment="0.001" minvalue="-100.0" maxvalue="100" displayvaluemul="1.0" />
+                </textbox>
+            </group>
+
+            <group horizontal="1" >
+                <label alignright="0" width="140">scrolling V</label>
+                <textbox dataBindings="NormalScrolling1.y">
+                    <dataBindings increment="0.001" minvalue="-100.0" maxvalue="100" displayvaluemul="1.0" />
+                </textbox>
+            </group>
+
+            
+            <group horizontal="1">
+                <label alignright="0" width="140">Intensity</label>
+                <textbox databindings="NormalIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="4.0" />
+                </textbox>
+            </group>
+        </group>
+
+        <!-- SurfaceMap -->
+        <group label="Surface">
+            <group horizontal="1">
+                <button dataBindings="SurfaceTexture1" fill="1" />
+                <textbox dataBindings="SurfaceUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="SurfaceTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SurfaceTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+
+            <group horizontal="1" >
+                <label alignright="0" width="140">Scrolling U</label>
+                <textbox dataBindings="SurfaceScrolling1.x">
+                    <dataBindings increment="0.001" minvalue="-100.0" maxvalue="100" displayvaluemul="1.0" />
+                </textbox>
+            </group>
+
+            <group horizontal="1" >
+                <label alignright="0" width="140">Scrolling V</label>
+                <textbox dataBindings="SurfaceScrolling1.y">
+                    <dataBindings increment="0.001" minvalue="-100.0" maxvalue="100" displayvaluemul="1.0" />
+                </textbox>
+            </group>
+
+
+            <group horizontal="1">
+                <label alignright="0" width="140">Intensity</label>
+                <textbox databindings="SurfaceIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+
+        <!-- Wave -->
+        <group label="Wave">
+            <group horizontal="1">
+                <button dataBindings="WaveTexture" fill="1" />
+                <group>
+                    <textbox dataBindings="WaveTiling.x">
+                        <databindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+
+            <group horizontal="1" >
+                <label alignright="0" width="140">speed</label>
+                <textbox dataBindings="WaveSpeed">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1" displayvaluemul="1.0" />
+                </textbox>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="0" width="140">Intensity</label>
+                <textbox databindings="WaveIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="0" width="140">Surface UV influence</label>
+                <textbox databindings="SurfaceWaveUVInfluence">
+                    <databindings increment="0.001" minvalue="0" maxvalue="10.0" />
+                </textbox>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="0" width="140">Extinction</label>
+                <textbox databindings="WaterExtinction">
+                    <databindings increment="0.001" minvalue="0.2" maxvalue="10.0" />
+                </textbox>
+            </group>
+
+        </group>
+        
+    <!-- Caustic -->
+        <group label="Caustic">
+            <group horizontal="1">
+                <button dataBindings="CausticColor" />
+                <button dataBindings="CausticTextureArray" fill="1" />
+                <group>
+                    <textbox dataBindings="CausticTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="CausticTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+
+            <group horizontal="1">
+                <label> Number Of Textures</label>
+                <textbox dataBindings="CausticTextureArraySize" tooltip="Number of textures put together in Photoshop, saved as a texture array (must be 2, 4, 8 or 16)">
+                    <dataBindings increment="1" minvalue="1" maxvalue="16" />
+                </textbox>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="0" width="140">FPS</label>
+                <textbox databindings="CausticFPS">
+                    <databindings increment="1" minvalue="0"/>
+                </textbox>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="0" width="140">Fade-In Distance</label>
+                <textbox databindings="CausticFadeDistance">
+                    <databindings increment="0.01" minvalue="0"/>
+                </textbox>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="0" width="140">Caustic Intensity Scale</label>
+                <textbox databindings="CausticIntensityScaleBias.x">
+                    <databindings increment="0.01" minvalue="0"/>
+                </textbox>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="0" width="140">Caustic Intensity Bias</label>
+                <textbox databindings="CausticIntensityScaleBias.y">
+                    <databindings increment="0.01"/>
+                </textbox>
+            </group>
+        </group>
+
+    </ui>
+        
+</materialdescriptor>

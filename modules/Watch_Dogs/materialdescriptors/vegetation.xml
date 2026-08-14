@@ -1,0 +1,461 @@
+<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="Vegetation" displayname="WD2Tree" showinui="1" id="#(0x2af2b8c, 0x857b9252)" >
+
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" />
+
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="Translucency" type="float" defaultvalue="0" />
+    <parameter name="Moss" type="bool" />
+    <parameter name="LeafWetSurfaceTypeIndex" type="int" defaultvalue="0" />
+    <parameter name="TrunkWetSurfaceTypeIndex" type="int" defaultvalue="0" />
+
+    <!-- BaseColor -->
+    <parameter name="DiffuseTexture" type="sampler2D" tilingName="DiffuseTextureTiling1" UvName="DiffuseTextureUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Base texture 1" optional="0" />
+    <parameter name="DiffuseTextureTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseTextureUV1" type="int" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColorBack" type="color4" defaultvalue="1,1,1,1" multiplier="1" />
+    <parameter name="DiffuseColors" type="color4" defaultvalue="1,1,1,1" arraysize="8" />
+    <parameter name="ColorizeParams" type="float4" defaultvalue="0,0,0,0" />
+
+    <!-- BaseColor2 -->
+    <parameter name="DiffuseTexture2" type="sampler2D" maxdisplayname="Moss texture" optional="1" >
+        <use_if parameter="NormalTexture" />
+    </parameter>        
+    <parameter name="DiffuseTextureTiling2" type="float2" defaultvalue="1,1" >
+        <use_if parameter="NormalTexture" />
+    </parameter>        
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" >
+        <use_if parameter="NormalTexture" />
+    </parameter>        
+
+    <!-- SurfaceParams -->
+    <parameter name="MaskTexture1" type="sampler2D" tilingName="MaskTiling1" UvName="MaskUV1" uvTilingName="MaskTextureUVTiling1" maxdisplayname="Mask texture" />
+    <parameter name="MaskTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="MaskUV1" type="int" />
+    <parameter name="MaskTextureUVTiling1" type="float4" provideronly="1" />
+    <parameter name="MaskChannelsContent" type="float4" defaultvalue="1,1,1,0" />
+    <parameter name="MaskParameters" type="float4" defaultvalue="0.5,0.5,0,1" />
+
+    <!-- Mask Moss Params 
+    <parameter name="MaskMossTexture" type="sampler2D" maxdisplayname="Mask Moss texture" optional="1" />
+    <parameter name="MossTiling" type="float4" defaultvalue="1,1,1,1" />
+-->
+    <parameter name="MossHeight" type="float" defaultvalue="0" >
+        <use_if parameter="NormalTexture" />
+    </parameter>        
+    <parameter name="MossRoughness" type="float" defaultvalue="0.85" >
+        <use_if parameter="NormalTexture" />
+    </parameter>        
+    
+
+    <!-- Normal -->
+    <parameter name="NormalTexture" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+
+    <!-- Normal -->
+    <parameter name="NormalTexture2" type="sampler2D" maxdisplayname="Normal Moss" normalmap="1" >
+        <use_if parameter="NormalTexture" />
+    </parameter>        
+    <parameter name="NormalIntensity2" type="float" defaultvalue="1" >
+        <use_if parameter="NormalTexture" />
+    </parameter>        
+
+    <!--Global normal 0 to 1, mutiplier on spherical normal before being added to the normal-->
+    <parameter name="GlobalNrm_ReflOcc_SelfShadow" type="float3" defaultvalue="0.8,0.5,0.6" displayInMax="0" />
+    <parameter name="GlobalNrm_StartDistance" type="float" defaultvalue="50" />
+    <parameter name="GlobalNrm_FadeInDistance" type="float2" defaultvalue="50,0.02" op_y="1/x" />
+
+    <!--Leaf animation-->
+    <parameter name="LeafAnimEnabled" type="bool" />
+    <parameter name="LeafAnimWindScale" type="float"  defaultvalue="1.0" />
+    <parameter name="LeafAnimMinStrength" type="float"  defaultvalue="0.5" />
+    <parameter name="LeafAnimMinFrequency" type="float"  defaultvalue="0.5" />
+    <parameter name="LeafAnimMaxStrength" type="float"  defaultvalue="1.0" />
+    <parameter name="LeafAnimMaxFrequency" type="float"  defaultvalue="3.0" />
+
+    <parameter name="TextureSubdivision" type="int" defaultvalue="1" displayInMax="1" />
+
+    <parameter name="LeavesPhysics" type="float4" defaultvalue="0.5,0.5,0.15,1.0" displayInMax="1" />
+
+    <parameter name="AnimationSpeed" type="float" defaultvalue="1.0" displayInMax="1" />
+
+    <parameter name="BranchesPhysics" type="float4" defaultvalue="1.0, 1.0, 1.0, 1.0" displayInMax="1" />
+
+    <parameter name="TaperRatio" type="int" defaultvalue="0" displayInMax="1" />
+
+    <parameterprovider parametersfilename="Mesh_Vegetation.fx">
+        <parameter name="DiffuseTexture" >
+            <alias name="ShadowTexture1" />
+        </parameter>
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColorBack" />
+        <parameter name="DiffuseColors" />
+        <parameter name="ColorizeParams" />
+
+        <parameter name="DiffuseTexture2" />
+        <parameter name="DiffuseColor2" />
+
+        <parameter name="NormalTexture" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalIntensity" />
+
+        <parameter name="NormalTexture2" />
+        <parameter name="NormalIntensity2" />
+
+        <parameter name="MaskTexture1" />
+        <parameter name="MaskTextureUVTiling1" />
+        <parameter name="MaskChannelsContent" />
+        <parameter name="MaskParameters" />
+
+        <parameter name="Moss" />
+        <parameter name="DiffuseTextureTiling2" />
+        <!--
+        <parameter name="MaskMossTexture" />
+        <parameter name="MossTiling" />
+        -->
+        <parameter name="MossHeight" />
+        <parameter name="MossRoughness" />
+
+        <parameter name="GlobalNrm_ReflOcc_SelfShadow" />
+        <parameter name="GlobalNrm_StartDistance" />
+        <parameter name="GlobalNrm_FadeInDistance" />
+
+        <parameter name="LeafAnimEnabled" />
+        <parameter name="LeafAnimWindScale" />
+        <parameter name="LeafAnimMinStrength" />
+        <parameter name="LeafAnimMinFrequency" />
+        <parameter name="LeafAnimMaxStrength" />
+        <parameter name="LeafAnimMaxFrequency" />
+
+        <parameter name="LeafWetSurfaceTypeIndex" />
+        <parameter name="TrunkWetSurfaceTypeIndex" />
+    </parameterprovider>
+
+    <!-- Conditional shader options -->
+    <shaderoptions>
+        <shaderoption name="DISABLE_NOISE">
+            <condition parameter="LeafAnimEnabled" op="equal" value="0" />
+        </shaderoption>
+        <shaderoption name="DISABLE_NOISE">
+            <condition parameter="LeafAnimWindScale" op="equal" value="0" />
+        </shaderoption>
+        <shaderoption name="DISABLE_NOISE">
+            <condition parameter="LeafAnimMinStrength" op="equal" value="0" />
+            <condition parameter="LeafAnimMaxStrength" op="equal" value="0" />
+        </shaderoption>
+        <shaderoption name="MOSS">
+            <condition parameter="Moss" op="notequal" value="0" />
+        </shaderoption>
+        <shaderoption name="USE_GLOBAL_NORMAL">
+            <condition parameter="GlobalNrm_ReflOcc_SelfShadow.x" op="greater" value="0" />
+        </shaderoption>
+    </shaderoptions>
+
+    <xi:include href="UI/DataClasses.xml" />
+
+    <ui defaultFilePath="graphics/_Texture/">
+        <xi:include href="UI/DataClasses.xml" />
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <group>
+                <checkbox label="Two sided" dataBindings="TwoSided" />
+                <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+                <checkbox label="Moss" dataBindings="Moss" />
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="140">Leaf Wet Surface Type:</label>
+                <combobox dataBindings="LeafWetSurfaceTypeIndex">
+                    <comboboxitem value="0">Default</comboboxitem>
+                    <comboboxitem value="1">Leaf</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="140">Trunk Wet Surface Type:</label>
+                <combobox dataBindings="TrunkWetSurfaceTypeIndex">
+                    <comboboxitem value="0">Default</comboboxitem>
+                    <comboboxitem value="2">Trunk</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+        <group horizontal="0" label="" hide_if="TwoSided==0">
+            <label />
+        </group>
+        <!-- Base Color -->
+        <group horizontal="0" label="Base Color">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseColorBack"/>
+                <button dataBindings="DiffuseTexture" fill="1" />
+                <textbox dataBindings="DiffuseTextureUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTextureTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTextureTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+        <!-- SurfaceParams -->
+        <group label="Surface Parameters">
+            <group horizontal="1">
+                <button dataBindings="MaskTexture1" fill="1" />
+                <textbox dataBindings="MaskUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="MaskTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="MaskTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label color="BB0000">   R:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <group horizontal="1" enable_if="Colorize==0">
+                            <combobox dataBindings="MaskChannelsContent.x">
+                                <comboboxitem value="1">Reflectance</comboboxitem>
+                                <comboboxitem value="0">None</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelsContent.x==0 || Colorize==1">
+                        <label>    Reflectance: </label>
+                        <label> 0</label>
+                        <slider dataBindings="MaskParameters.x">
+                            <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                            <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="MaskParameters.x">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00">   G:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelsContent.y">
+                            <comboboxitem value="1">Roughness</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelsContent.y==0">
+                        <label>    Roughness: </label>
+                        <label>  0</label>
+                        <slider dataBindings="MaskParameters.y">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="MaskParameters.y">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="0000BB">   B:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelsContent.z">
+                            <comboboxitem value="1">Translucency</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelsContent.z==0">
+                        <label> Translucency:  </label>
+                        <label> 0</label>
+                        <slider dataBindings="MaskParameters.z">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="MaskParameters.z">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="404040">   A:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelsContent.w">
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <group horizontal="0" label="" hide_if="TwoSided==0">
+            <label />
+        </group>
+
+        <!-- NormalMap -->
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>     Intensity:   </label>
+                <textbox databindings="NormalIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+        <label> </label>
+        <group label="Lighting">
+            <group horizontal="1">
+                <label>Global Normal factor</label>
+                <textbox dataBindings="GlobalNrm_ReflOcc_SelfShadow.x" overridableInDerivation="1">
+                    <dataBindings minvalue="0.0" maxvalue="1.0" defaultvalue="0.8" />
+                </textbox>
+                <label>  Start Distance</label>
+                <textbox dataBindings="GlobalNrm_StartDistance">
+                    <dataBindings minvalue="0.0" />
+                </textbox>
+                <label>  Fade In Distance</label>
+                <textbox dataBindings="GlobalNrm_FadeInDistance.x">
+                    <dataBindings minvalue="1.0" />
+                </textbox>
+            </group>
+            <!-- >group horizontal="1">
+                <label>Reflection occlusion (ambient occ * spec occ * this)</label>
+                <textbox dataBindings="GlobalNrm_ReflOcc_SelfShadow.y" overridableInDerivation="1">
+                    <dataBindings minvalue="0.0" maxvalue="2.0" defaultvalue="1.0" />
+                </textbox>
+            </group-->
+        </group>
+
+        <group label="Leaf Animation" vertical="1">
+            <checkbox label="Enable Leaf Animation" dataBindings="LeafAnimEnabled" />
+            <group show_if="LeafAnimEnabled">
+                <group horizontal="1">
+                    <label alignright="1" width="40">Wind Scale:</label>
+                    <textbox dataBindings="LeafAnimWindScale">
+                        <dataBindings minvalue="0"/>
+                    </textbox>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="130">Light Wind Animation:</label>
+                    <label alignright="1" width="50">Strength</label>
+                    <textbox dataBindings="LeafAnimMinStrength">
+                        <dataBindings minvalue="0"/>
+                    </textbox>
+                    <label alignright="1" width="50">Frequency</label>
+                    <textbox dataBindings="LeafAnimMinFrequency">
+                        <dataBindings minvalue="0"/>
+                    </textbox>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="130">Strong Wind Animation:</label>
+                    <label alignright="1" width="50">Strength</label>
+                    <textbox dataBindings="LeafAnimMaxStrength">
+                        <dataBindings minvalue="0"/>
+                    </textbox>
+                    <label alignright="1" width="50">Frequency</label>
+                    <textbox dataBindings="LeafAnimMaxFrequency">
+                        <dataBindings minvalue="0"/>
+                    </textbox>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+        
+        <!-- Moss -->
+        <group label="Moss" show_if="Moss==1">
+            <!-- Diffuse Moss -->
+            <group label="Diffuse">
+                <group horizontal="1">
+                    <button dataBindings="DiffuseColor2" />
+                    <button dataBindings="DiffuseTexture2" fill="1" />
+                    <group>
+                        <textbox dataBindings="DiffuseTextureTiling2.x">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                        <textbox dataBindings="DiffuseTextureTiling2.y">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+            <!-- Normal Moss -->
+            <group label="Normal Moss">
+                <button dataBindings="NormalTexture2" fill="1" />
+                <group horizontal="1" enable_if="NormalTexture2">
+                    <label>        Intensity    </label>
+                    <textbox databindings="NormalIntensity2">
+                        <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                    </textbox>
+                    <label> 0</label>
+                    <slider dataBindings="NormalIntensity2">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                    </slider>
+                    <label>2</label>
+                </group>
+            </group>
+            <!-- Mask Moss
+            <group label="Mask Moss">
+                <group horizontal="1">
+                    <button dataBindings="MaskMossTexture" fill="1" />
+                    <group>
+                        <textbox dataBindings="MossTiling.z">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                        <textbox dataBindings="MossTiling.w">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+             -->
+            <group horizontal="1">
+                <label alignright="1" width="90">Moss Height</label>
+                <textbox databindings="MossHeight">
+                    <databindings increment="0.01" minvalue="-4.0" maxvalue="4.0" />
+                </textbox>
+                <label> -2</label>
+                <slider dataBindings="MossHeight">
+                    <dataBindings increment="0.01" minvalue="-4.0" maxvalue="4.0" />
+                </slider>
+                <label>2  </label>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="90">Moss Roughness</label>
+                <textbox databindings="MossRoughness">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>  0</label>
+                <slider dataBindings="MossRoughness">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

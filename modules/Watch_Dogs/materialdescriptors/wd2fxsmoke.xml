@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2FxSmoke" displayname="WD2FxSmoke" showinui="1" category="Particle" id="#(0x3ba9257d, 0x1c3c693f)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="8" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Base texture" optional="0" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV1" type="int" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="EmissiveMaskTexture" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Emissive mask" optional="1" />
+    <parameter name="EmissiveMaskColor" type="color4" defaultvalue="1,1,1,1" />
+
+    <parameter name="AlphaTestEnabled" type="bool" defaultvalue="1" />
+    <parameter name="AlphaTestValue" type="float" defaultvalue="128" div="255"/>
+    <parameter name="AlphaBlendEnabled" type="bool" defaultvalue="1" />
+
+    <parameter name="Soft" type="bool" defaultvalue="0" />
+    <parameter name="SoftDistance" type="float" defaultvalue="0.0" op_x="1/x" />
+
+    <parameter name="Blend" type="bool" defaultvalue="0" />
+
+    <parameter name="LightingType" type="int" defaultvalue="2" />
+    <parameter name="Sun" type="bool" defaultvalue="1" />
+
+    <parameter name="SelfShadow" type="float" defaultvalue="0.5" />
+    <parameter name="Transparency" type="float" defaultvalue="0.0" />
+
+    <parameter name="ColorFromSprite" type="float" defaultvalue="1.0" />
+    <parameter name="ColorFromTexture" type="float" defaultvalue="1.0" />
+    <parameter name="AlphaScale" type="float" defaultvalue="1.0" />
+
+    <parameter name="FakeLightScale" type="float" defaultvalue="0.0" />
+    <parameter name="FakeLightColor" type="color4" defaultvalue="1,1,1,1" />
+
+    <parameter name="AnimationTiling" type="float2" defaultvalue="1,1" op_x="1/x" op_y="1/y" />
+    <parameter name="AnimationFramerate" type="float" defaultvalue="1" reloadMaterial="1" />
+    <parameter name="AnimationBlend" type="bool" defaultvalue="0" oldnames="Blend" />
+    <parameter name="AnimationFit" type="bool" defaultvalue="0" reloadMaterial="1" />
+
+    <parameter name="ColorFade" type="bool" defaultvalue="0" />
+    <parameter name="ColorFadeDistance" type="float" defaultvalue="1" />
+    <parameter name="ColorFadeOffset" type="float3" defaultvalue="0,0,0" />
+    <parameter name="ColorFadeSmooth" type="float2" defaultvalue="0,1" />
+    <parameter name="ColorFadeAlpha" type="float" defaultvalue="1" op_x="1-x"  />
+    
+    <parameter name="FadeAngle" type="float" defaultvalue="1.57" />
+
+    <parameter name="ResponsiveAAStrength" type="float" defaultvalue="2.0" />
+
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+    <!-- Shader parameters -->
+    <parameterprovider parametersfilename="Particle_WD2FxSmoke.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="EmissiveMaskTexture" />
+        <parameter name="EmissiveMaskColor" />
+        <parameter name="AlphaTestEnabled" />
+        <parameter name="AlphaTestValue" />
+        <parameter name="Soft" />
+        <parameter name="SoftDistance" />
+        <parameter name="LightingType" />
+        <parameter name="Sun" />        
+        <parameter name="SelfShadow"/>
+        <parameter name="Transparency"/>
+        <parameter name="ColorFromSprite"/>
+        <parameter name="ColorFromTexture"/>
+        <parameter name="AlphaScale"/>
+        <parameter name="FakeLightScale" />
+        <parameter name="FakeLightColor" />
+        <parameter name="AnimationTiling" />
+        <parameter name="AnimationFramerate" />
+        <parameter name="AnimationBlend" />
+        <parameter name="AnimationFit" />
+        <parameter name="ColorFade" />
+        <parameter name="ColorFadeDistance" />
+        <parameter name="ColorFadeOffset" />
+        <parameter name="ColorFadeSmooth" />
+        <parameter name="ColorFadeAlpha" />
+        <parameter name="FadeAngle"/>
+        <parameter name="ResponsiveAAStrength" />
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="ALPHA_TEST">
+            <condition parameter="AlphaTestEnabled" />
+        </shaderoption>
+        <shaderoption name="SOFT">
+            <condition parameter="Soft" />
+        </shaderoption>
+        <shaderoption name="LIGHTING_TYPE" parameter="LightingType">
+            <condition parameter="LightingType" op="greaterequal" value="1"/>
+        </shaderoption>
+        <shaderoption name="SUN">
+            <condition parameter="Sun" />
+        </shaderoption>
+        <shaderoption name="TEXANIM_LERP">
+            <condition parameter="AnimationBlend" />
+        </shaderoption>
+        <shaderoption name="FAKE_LIGHT">
+            <condition parameter="FakeLightScale" op="greater" value="0" />
+        </shaderoption>
+        <shaderoption name="EMISSIVE_MASK">
+            <condition parameter="EmissiveMaskTexture" />
+        </shaderoption>
+        <shaderoption name="COLOR_FADE">
+            <condition parameter="ColorFade" />
+        </shaderoption>
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+    </shaderoptions>
+
+    <!-- Material UI definition -->
+    <ui defaultFilePath="graphics/GFX/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Base settings">
+            <!-- Responsive AA -->
+            <label alignright="1" width="120">Responsive AA Strength</label>
+            <textbox dataBindings="ResponsiveAAStrength">
+                <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+            </textbox>
+            <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+        </group>
+        <group label="Texture" horizontal="1">
+            <button dataBindings="DiffuseTexture1" fill="1" />
+            <!--
+            <combobox dataBindings="DiffuseTexture1State">
+              <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+              <comboboxitem value="ColorClampAniso">Clamp Aniso (Expensive)</comboboxitem>
+            </combobox>
+            -->
+            <label/>
+        </group>
+        <group label="Emissive Mask" horizontal="1">
+            <label>Color:</label>
+            <button dataBindings="EmissiveMaskColor" />
+            <label>Mask:</label>
+            <button dataBindings="EmissiveMaskTexture" fill="1" />
+            <label/>
+        </group>
+        <xi:include href="UI/ParticleAnimationGroup.xml" />
+        <label/>
+        <group label="Options">
+            <group horizontal="1">
+                <checkbox width="80" label="Alpha test" dataBindings="AlphaTestEnabled" />
+                <group horizontal="1" enable_if="AlphaTestEnabled">
+                    <label width="50" alignright="1">0</label>
+                    <slider dataBindings="AlphaTestValue">
+                        <dataBindings increment="1" minvalue="0" maxvalue="255"/>
+                    </slider>
+                    <label width="50" alignright="1">255</label>
+                    <textbox databindings="AlphaTestValue">
+                        <databindings increment="1" minvalue="0" maxvalue="255" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <checkbox width="80" label="Soft" dataBindings="Soft" />
+                <group horizontal="1" enable_if="Soft">
+                    <label width="50">Distance: </label>
+                    <textbox databindings="SoftDistance">
+                        <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <group horizontal="1">
+                <label>Fade Angle: </label>
+                <textbox databindings="FadeAngle">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.57" />
+                </textbox>
+            </group>
+        </group>
+        </group>
+        <label/>
+        <group label="Color">
+            <group horizontal="1">
+                <label width="80">From Emitter:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="ColorFromSprite">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="50">1</label>
+                <textbox databindings="ColorFromSprite">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">From Texture:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="ColorFromTexture">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="50">1</label>
+                <textbox databindings="ColorFromTexture">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Alpha Scale:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="AlphaScale">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label width="50">2</label>
+                <textbox databindings="AlphaScale">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="4.0" />
+                </textbox>
+            </group>
+        </group>
+        <label/>
+        <group label="Lighting">
+            <group horizontal="1">
+                <label width="80">Lighting Type:</label>
+                <label width="50"/>
+                <combobox dataBindings="LightingType">
+                    <comboboxitem value="1">Emitter</comboboxitem>
+                    <comboboxitem value="2">Particle Center</comboboxitem>
+                    <comboboxitem value="3">Vertex</comboboxitem>
+                    <comboboxitem value="4">Pixel</comboboxitem>
+                    <!--<comboboxitem value="5">Pixel Clustered</comboboxitem>-->
+                </combobox>
+            </group>
+            <checkbox label="Affected by sun" dataBindings="Sun" />
+            <group horizontal="1">
+                <group horizontal="1">
+                    <label width="80">Self Shadow:</label>
+                    <label width="50" alignright="1">0.0</label>
+                    <slider dataBindings="SelfShadow">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label width="50">1.0</label>
+                </group>
+                <textbox databindings="SelfShadow">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Transparency:</label>
+                <label width="50" alignright="1">Fade</label>
+                <slider dataBindings="Transparency">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="50">Dissolve</label>
+                <textbox databindings="Transparency">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+        <label/>
+
+        <group label="Fake Lighting">
+            <group horizontal="1">
+                <group horizontal="1" enable_if="Sun">
+                    <label width="80">Intensity:</label>
+                    <label width="50" alignright="1">0</label>
+                    <slider dataBindings="FakeLightScale">
+                        <dataBindings increment="0.01" minvalue="0" maxvalue="2" />
+                    </slider>
+                    <label width="50">2</label>
+                </group>
+                <textbox databindings="FakeLightScale">
+                    <databindings increment="0.01" minvalue="0" maxvalue="10" />
+                </textbox>
+            </group>
+            <group horizontal="1" enable_if="FakeLightScale!=0">
+                <label width="80">Color:</label>
+                <label width="50" />
+                <button dataBindings="FakeLightColor" />
+            </group>
+        </group>
+        <label/>
+
+        <group label="Color Radial Fade">
+            <checkbox label="Enable" dataBindings="ColorFade" />
+            <group show_if="ColorFade">
+                <label> </label>
+                <group horizontal="1">
+                    <label width="50">Distance:</label>
+                    <textbox databindings="ColorFadeDistance">
+                        <databindings increment="0.01" minvalue="0.01" />
+                    </textbox>
+                </group>
+                <group horizontal="1">
+                    <label width="50">Alpha:</label>
+                    <textbox databindings="ColorFadeAlpha">
+                        <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                    </textbox>
+                </group>
+
+                <label> </label>
+                <group label="Offset" horizontal="1">
+                    <label width="30" alignright="1">X:</label>
+                    <textbox dataBindings="ColorFadeOffset.x" />
+                    <label width="30" alignright="1">Y:</label>
+                    <textbox dataBindings="ColorFadeOffset.y" />
+                    <label width="30" alignright="1">Z:</label>
+                    <textbox dataBindings="ColorFadeOffset.z" />
+                    <label> </label>
+                </group>
+
+                <label> </label>
+                <group label="Smoothstep" horizontal="1">
+                    <label width="30" alignright="1">Min:</label>
+                    <textbox dataBindings="ColorFadeSmooth.x">
+                        <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                    </textbox>
+                    <label width="30" alignright="1">Max:</label>
+                    <textbox dataBindings="ColorFadeSmooth.y">
+                        <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                    </textbox>
+                    <label> </label>
+                </group>
+            </group>
+        </group>
+        <label/>
+        <group label="Custom data over particle lifetime">
+            <label color="BB0000">X: Fake lighting scale over particle lifetime</label>
+            <label color="00BB00">Y: Emissive mask scale over particle lifetime</label>
+            <label color="0000AA">Z: (unused)</label>
+            <label color="404040">W: (unused)</label>
+        </group>
+        <label/>
+        <group label="Custom data over emitter lifetime">
+            <label color="BB0000">X: Fake lighting scale over emitter lifetime</label>
+            <label color="00BB00">Y: (unused)</label>
+            <label color="0000AA">Z: (unused)</label>
+            <label color="404040">W: (unused)</label>
+        </group>
+        <label/>
+    </ui>
+</materialdescriptor>

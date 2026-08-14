@@ -1,0 +1,298 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="DriverCarPaint" displayname="CarPaint" showinui="1" id="#(0x2e6bae63, 0x119bdfd3)" deprecated="1" >
+    <geometryInputs normal="1" normalModified="1" tangent="0" binormal="0" color="1" uvChannels="2" packedFirstUV="1" bonecount="1" reduceMatrixPerDrawCallBy="14" />
+
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="TwoSided" type="bool" />
+
+    <parameter name="DamageTexture1" oldnames="DiffuseTexture1" type="sampler2D" tilingName="DamageTiling1" UvName="DamageUV1" uvTilingName="DamageUVTiling1" />
+    <parameter name="DamageTiling1" oldnames="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DamageUV1" oldnames="DiffuseUV1" type="int" />
+    <parameter name="Intensities" type="float2" defaultvalue="0.3,0.5" />
+    
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="0.5,0.5,0.5" />
+    <parameter name="DualCarpaint" type="bool" />
+
+    <parameter name="SpecularTexture1" type="sampler2D" tilingName="SpecularTiling1" UvName="SpecularUV1" uvTilingName="SpecularUVTiling1" />
+    <parameter name="SpecularTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SpecularUV1" type="int" />
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.04" />
+
+    <parameter name="DamageUVTiling1" type="float4" provideronly="1" />
+    <parameter name="SpecularUVTiling1" type="float4" provideronly="1" />
+    
+    <parameter name="DecalTexture" type="sampler2D" tilingName="DecalTiling" UvName="DecalUV" uvTilingName="DecalUVTiling" />
+    <parameter name="DecalTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="DecalUV" type="int" />
+    <parameter name="DecalUVTiling" type="float4" provideronly="1" />
+
+    <parameter name="BottomDarkening" type="float" defaultvalue="0.7" />
+    <parameter name="TopBrightening" type="float" defaultvalue="0.7" />
+    <parameter name="RimLight" type="float" defaultvalue="0.1" />
+    <parameter name="Maskcoef" type="float4" defaultvalue="0,0,0,4" />
+
+    <parameter name="RaindropRippleType" type="int" defaultvalue="0" />
+    <parameter name="RaindropSplashesTexture" type="sampler2D"/>
+
+    <parameter name="DustColor" type="color4" defaultvalue="0.5,0.5,0.5,0" />
+
+    <parameterprovider parametersfilename="Mesh_DriverCarPaint.fx">
+        <parameter name="DamageTexture1" />
+        <parameter name="DamageUVTiling1" />
+        <parameter name="Intensities" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="SpecularTexture1" />
+        <parameter name="SpecularUVTiling1" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+        <parameter name="BottomDarkening" />
+        <parameter name="TopBrightening" />
+        <parameter name="RimLight" />
+        <parameter name="Maskcoef" />
+        <parameter name="DualCarpaint" />
+        <parameter name="RaindropSplashesTexture" />
+        <parameter name="RaindropRippleType" />
+        <parameter name="DustColor" />
+        <parameter name="DecalTexture" />
+        <parameter name="DecalUVTiling" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group horizontal="0" label="Settings">
+            <group>
+                <checkbox label="Two sided" dataBindings="TwoSided" />
+                <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+                <checkbox label="Dual carpaint color" dataBindings="DualCarpaint" />
+            </group>
+        </group>
+        <label></label>
+
+        <group label="Diffuse" horizontal="0">
+            <group horizontal="1">
+                <label>         Color(s) </label>
+                <button dataBindings="DiffuseColor1" />
+                <group show_if="DualCarpaint" horizontal="1" >
+                    <button dataBindings="DiffuseColor2" />
+                    <textbox databindings="Maskcoef.w">
+                        <databindings increment="0.1" minvalue="1.0" maxvalue="15.0" />
+                    </textbox>
+                    <label>  1</label>
+                    <slider dataBindings="Maskcoef.w">
+                        <dataBindings minvalue="1.0" maxvalue="15.0"/>
+                    </slider>
+                    <label>15</label>
+                </group>
+            </group>            
+            <group horizontal="1">
+                <label>         Bottom darkening   </label>
+                <textbox databindings="BottomDarkening">
+                    <databindings increment="0.1" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>  0</label>
+                <slider dataBindings="BottomDarkening">
+                    <dataBindings minvalue="0.0" maxvalue="1.0"/>
+                </slider>
+                <label>1</label>
+            </group>
+<!--            
+            <group horizontal="1">
+                <label>          Rimlight                </label>
+                <textbox databindings="RimLight">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>  0</label>
+                <slider dataBindings="RimLight">
+                    <dataBindings minvalue="0.0" maxvalue="1.0"/>
+                </slider>
+                <label>1</label>
+            </group>
+            <group horizontal="1">
+                <label>          Top Brightening   </label>
+                <textbox databindings="TopBrightening">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>  0</label>
+                <slider dataBindings="TopBrightening">
+                    <dataBindings minvalue="0.0" maxvalue="1.0"/>
+                </slider>
+                <label>1</label>
+            </group>            
+-->
+        </group>
+        <label></label>
+
+        <group label="Decal">
+            <group horizontal="1">
+                <button dataBindings="DecalTexture" fill="1" />
+                <textbox dataBindings="DecalUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DecalTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DecalTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>          Decal color saturation </label>
+                <textbox databindings="Intensities.x">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>  0</label>
+                <slider dataBindings="Intensities.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+        <label></label>
+
+        <group label="Damage">
+            <group horizontal="1">
+                <button dataBindings="DamageTexture1" fill="1" />
+                <textbox dataBindings="DamageUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DamageTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DamageTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+
+            <group horizontal="1">
+                <label color="BB0000">          R:</label>
+                <label>Damage intensity</label>
+            </group>
+            <group horizontal="1">
+                <label color="00BB00">          G:</label>
+                <label>Normal offset (x)</label>
+            </group>
+            <group horizontal="1">
+                <label color="0000AA">          B:</label>
+                <label>Normal offset intensity</label>
+            </group>
+            <group horizontal="1">
+                <label color="404040">          A:</label>
+                <label>Normal offset (y)</label>
+            </group>
+            <group horizontal="1">
+                <label>          Normal offset intensity </label>
+                <textbox databindings="Intensities.y">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>  0</label>
+                <slider dataBindings="Intensities.y">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+        <label></label>
+
+        <group label="Wear">
+            <group horizontal="1">
+                <button dataBindings="SpecularTexture1" fill="1" />
+                <textbox dataBindings="SpecularUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="SpecularTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SpecularTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+
+            <group vertical="1" enable_if="SpecularTexture1">
+                <group horizontal="1">
+                    <label color="BB0000">          R:</label>
+                    <label>Defects intensity</label>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00">          G:</label>
+                    <label>Defects normal offset (x)</label>
+                </group>
+                <group horizontal="1">
+                    <label color="0000AA">          B:</label>
+                    <label>Dust intensity</label>
+                </group>
+                <group horizontal="1">
+                    <label color="404040">          A:</label>
+                    <label>Defects normal offset (y)</label>
+                </group>
+
+                <group horizontal="1">
+                    <label>          Defects intensity         </label>
+                    <textbox databindings="Maskcoef.x" >
+                        <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+                    <label>  0</label>
+                    <slider dataBindings="Maskcoef.x">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0"/>
+                    </slider>
+                    <label>1</label>
+                </group>
+                <group horizontal="1">
+                    <label> Dust color </label>
+                    <button dataBindings="DustColor.xyz" />
+                    <group horizontal="1">
+                        <label> Dust opacity </label>
+                        <textbox databindings="Maskcoef.y" >
+                            <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </textbox>
+                        <label>  0</label>
+                        <slider dataBindings="Maskcoef.y">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0"/>
+                        </slider>
+                        <label>1</label>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <label></label>
+
+        <group label="Specular">
+            <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+        	<xi:include href="UI/ReflectanceGroup.xml" />
+
+            <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+            <xi:include href="UI/SpecularPowerGroup.xml" />
+		</group>
+        <label></label>
+
+        <group label="Raindrop ripples normal" >
+            
+            <combobox dataBindings="RaindropRippleType" horizontal="1">
+                <comboboxitem value="0">Disabled</comboboxitem>
+                <comboboxitem value="1">Standard</comboboxitem>
+                <comboboxitem value="2">Puddle</comboboxitem>
+            </combobox>
+            
+            <group show_if="RaindropRippleType!=0" horizontal="1">
+                <label>          Intensity            </label>
+                <textbox databindings="Maskcoef.z" >
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>  0</label>
+                <slider dataBindings="Maskcoef.z">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

@@ -1,0 +1,352 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD3FxExplosion" displayname="WD3FxExplosion" showinui="1" category="Particle" id="#(0x257936aa, 0x6f9b022c)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="8" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Base texture" optional="0" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV1" type="int" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+
+	
+	<parameter name="PaletteTexture1" type="sampler2D" maxdisplayname="Palette texture" optional="0" />
+    <parameter name="UseEmiterColorForFire" type="bool" defaultvalue="0" />
+	<parameter name="BloomIntensity" type="float" defaultvalue="1" div="0.01"/>
+	<parameter name="Brightness" type="float" defaultvalue="1"/>
+    <parameter name="Fire_Transparency" type="float" defaultvalue="0.0" />
+    
+    
+	
+    <parameter name="AlphaTestEnabled" type="bool" defaultvalue="1" />
+    <parameter name="AlphaTestValue" type="float" defaultvalue="128" div="255"/>
+    <parameter name="AlphaBlendEnabled" type="bool" defaultvalue="1" />
+
+    <parameter name="Soft" type="bool" defaultvalue="0" />
+    <parameter name="SoftDistance" type="float" defaultvalue="0.0" op_x="1/x" />
+
+    <parameter name="Blend" type="bool" defaultvalue="0" />
+    
+    <parameter name="LightingType" type="int" defaultvalue="2" />
+    <parameter name="Sun" type="bool" defaultvalue="1" />    
+    <parameter name="SelfShadow" type="float" defaultvalue="0.5" />
+        
+    <parameter name="InnerLightOrigin" type="int" defaultvalue="0" />
+    <parameter name="InnerLightAttenuation" type="float2" defaultvalue="0, 1" />
+    <parameter name="InnerLightColor" type="color4" defaultvalue="1,.25,0,0" />
+    <parameter name="InnerLightIntensity" type="float" defaultvalue="0" />
+    
+    <parameter name="Transparency" type="float" defaultvalue="0.0" />
+
+    <parameter name="ColorRemapA" type="color4" defaultvalue="0,0,0,1" />
+    <parameter name="ColorRemapB" type="color4" defaultvalue="1,1,1,1" />
+    <parameter name="ColorFromSprite" type="float" defaultvalue="1.0" />
+    <parameter name="ColorFromTexture" type="float" defaultvalue="1.0" />
+    <parameter name="AlphaScale" type="float" defaultvalue="1.0" />
+
+    <parameter name="AnimationTiling" type="float2" defaultvalue="1,1" op_x="1/x" op_y="1/y" />
+    <parameter name="AnimationFramerate" type="float" defaultvalue="1" reloadMaterial="1" />
+    <parameter name="AnimationBlend" type="bool" defaultvalue="0" oldnames="Blend" />
+    <parameter name="AnimationFit" type="bool" defaultvalue="0" reloadMaterial="1" />
+
+    <parameter name="FadeAngle" type="float" defaultvalue="1.57" />
+
+    <parameter name="ResponsiveAAStrength" type="float" defaultvalue="2.0"/>
+
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+    <!-- Shader parameters -->
+    <parameterprovider parametersfilename="Particle_WD3FxExplosion.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="PaletteTexture1" />
+        <parameter name="BloomIntensity" />
+        <parameter name="Brightness" />
+        <parameter name="Fire_Transparency" />
+        <parameter name="AlphaTestEnabled" />
+        <parameter name="AlphaTestValue" />
+        <parameter name="Soft" />
+        <parameter name="SoftDistance" />
+        <parameter name="LightingType" />
+        <parameter name="Sun" />
+        <parameter name="SelfShadow"/>
+        <parameter name="Transparency"/>
+        <parameter name="ColorRemapA"/>
+        <parameter name="ColorRemapB"/>
+        <parameter name="ColorFromSprite"/>
+        <parameter name="ColorFromTexture"/>
+        <parameter name="AlphaScale"/>
+        <parameter name="AnimationTiling" />
+        <parameter name="AnimationFramerate" />
+        <parameter name="AnimationBlend" />
+        <parameter name="AnimationFit" />
+        <parameter name="FadeAngle"/>
+        <parameter name="InnerLightOrigin"/>
+        <parameter name="InnerLightAttenuation"/>
+        <parameter name="InnerLightColor"/>
+        <parameter name="InnerLightIntensity"/>
+        <parameter name="ResponsiveAAStrength"/>
+        <parameter name="MSAAOptimizationHighQuality"/>
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="ALPHA_TEST">
+            <condition parameter="AlphaTestEnabled" />
+        </shaderoption>
+        <shaderoption name="SOFT">
+            <condition parameter="Soft" />
+        </shaderoption>
+        <shaderoption name="LIGHTING_TYPE" parameter="LightingType">
+            <condition parameter="LightingType" op="greaterequal" value="1"/>
+        </shaderoption>
+        <shaderoption name="SUN">
+            <condition parameter="Sun" />
+        </shaderoption>
+        <shaderoption name="TEXANIM_LERP">
+            <condition parameter="AnimationBlend" />
+        </shaderoption>
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+    </shaderoptions>
+
+    <!-- Material UI definition -->
+    <ui defaultFilePath="graphics/GFX/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group label="Texture" horizontal="1">
+            <button dataBindings="DiffuseTexture1" fill="1" />
+            <!--
+            <combobox dataBindings="DiffuseTexture1State">
+              <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+              <comboboxitem value="ColorClampAniso">Clamp Aniso (Expensive)</comboboxitem>
+            </combobox>
+            -->
+            <label/>
+        </group>
+        <xi:include href="UI/ParticleAnimationGroup.xml" />
+		<label/>
+        <group label="Options">
+            <group horizontal="1">
+                <label alignright="1" width="120">Responsive AA Strength</label>
+                <textbox dataBindings="ResponsiveAAStrength">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                </textbox>
+                <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+                <checkbox width="80" label="Alpha test" dataBindings="AlphaTestEnabled" />
+                <group horizontal="1" enable_if="AlphaTestEnabled">
+                    <label width="50" alignright="1">0</label>
+                    <slider dataBindings="AlphaTestValue">
+                        <dataBindings increment="1" minvalue="0" maxvalue="255"/>
+                    </slider>
+                    <label width="50" alignright="1">255</label>
+                    <textbox databindings="AlphaTestValue">
+                        <databindings increment="1" minvalue="0" maxvalue="255" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <checkbox width="80" label="Soft" dataBindings="Soft" />
+                <group horizontal="1" enable_if="Soft">
+                    <label width="50">Distance: </label>
+                    <textbox databindings="SoftDistance">
+                        <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label width="80">Fade Angle: </label>
+                <textbox databindings="FadeAngle" width="50">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.57" />
+                </textbox>
+            </group>
+        </group>
+        <label/>
+        <group label="Smoke - Color">
+            <group horizontal="1" >
+                <label width="90">Color Ramp For Black:</label>
+                <label/>
+                <button dataBindings="ColorRemapA" />
+                <label/>
+                <label width="90">Color Ramp For White:</label>
+                <label/>
+                <button dataBindings="ColorRemapB" />
+            </group>
+        
+            <group horizontal="1">
+                <label width="80">From Emitter:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="ColorFromSprite">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="50">1</label>
+                <textbox databindings="ColorFromSprite">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">From Texture:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="ColorFromTexture">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="50">1</label>
+                <textbox databindings="ColorFromTexture">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Alpha Scale:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="AlphaScale">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label width="50">2</label>
+                <textbox databindings="AlphaScale">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="4.0" />
+                </textbox>
+            </group>
+        </group>
+        <label/>
+        <group label="Smoke - Lighting">
+            <group horizontal="1">
+                <label width="80">Lighting Type:</label>
+                <label width="50"/>
+                <combobox dataBindings="LightingType">
+                    <comboboxitem value="1">Emitter</comboboxitem>
+                    <comboboxitem value="2">Particle Center</comboboxitem>
+                    <comboboxitem value="3">Vertex</comboboxitem>
+                    <comboboxitem value="4">Pixel</comboboxitem>
+                    <!--<comboboxitem value="5">Pixel Clustered</comboboxitem>-->
+                </combobox>
+            </group>
+            <checkbox label="Affected by sun" dataBindings="Sun" />
+            <group horizontal="1">
+                <group horizontal="1">
+                    <label width="80">Self Shadow:</label>
+                    <label width="50" alignright="1">0.0</label>
+                    <slider dataBindings="SelfShadow">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label width="50">1.0</label>
+                </group>
+                <textbox databindings="SelfShadow">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Transparency:</label>
+                <label width="50" alignright="1">Fade</label>
+                <slider dataBindings="Transparency">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="50">Dissolve</label>
+                <textbox databindings="Transparency">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+        <label/>
+        
+        <group label="Fire">
+            <group horizontal="1">
+                <label width="80">Color Palette:</label>
+                <button dataBindings="PaletteTexture1" fill="1" />
+            </group>
+            <group horizontal="1">
+                <label width="80">Bloom:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="BloomIntensity">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="2"/>
+                </slider>
+                <label width="50" alignright="1">2</label>
+                <textbox databindings="BloomIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                 <label width="80">Brightness:</label>
+                    <label width="50" alignright="1">0</label>
+                    <slider dataBindings="Brightness">
+                        <dataBindings increment="0.01" minvalue="0" maxvalue="2"/>
+                     </slider>
+                    <label width="50" alignright="1">2</label>
+                    <textbox databindings="Brightness">
+                        <databindings increment="0.01" minvalue="0" maxvalue="2" />
+                    </textbox>
+            </group>
+            <!--
+            <group horizontal="1" >
+                <label width="80">Transparency:</label>
+                <label width="50" alignright="1">Fade</label>
+                <slider dataBindings="Fire_Transparency">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="50">Dissolve</label>
+                <textbox databindings="Fire_Transparency">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            -->
+        </group>
+         <label/>
+        
+        <group label="Inner Light">
+            <group horizontal="1">
+                <label width="110">Source Origin:</label>
+                <label width="50" />
+                <combobox dataBindings="InnerLightOrigin">
+                    <comboboxitem value="0">Emitter</comboboxitem>
+                    <comboboxitem value="1">Particle Center</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label width="110">Source Radius:</label>
+                <label width="50" />
+                <textbox databindings="InnerLightAttenuation.x">
+                    <databindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="110">Distance Scale:</label>
+                <label width="50" />
+                <textbox databindings="InnerLightAttenuation.y">
+                    <databindings increment="0.01" minvalue="0.01" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="110">Color:</label>
+                <label width="50" />
+                <button dataBindings="InnerLightColor" />
+            </group>
+            <group horizontal="1">
+                <group horizontal="1">
+                    <label width="110">Intensity:</label>
+                    <label width="50" alignright="1">0</label>
+                    <slider dataBindings="InnerLightIntensity">
+                        <dataBindings increment="0.01" minvalue="0" maxvalue="10" />
+                    </slider>
+                    <label width="50">10</label>
+                </group>
+                <textbox databindings="InnerLightIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="10" />
+                </textbox>
+            </group>
+        </group>        
+        <label/>
+		
+        <group label="Custom data over particle lifetime">
+            <label color="BB0000">X: Fire:  0 = Palette Left Side // 1 = Palette Right Side</label>
+            <label color="00BB00">Y: Fire:  Value over particle lifetime</label>
+            <label color="0000AA">Z: Inner light intensity over particle lifetime</label>
+            <label color="404040">W: Smoke: Value over particle lifetime)</label>
+        </group>
+        <label/>
+        <group label="Custom data over emitter lifetime">
+            <label color="BB0000">X: (unused)</label>
+            <label color="00BB00">Y: Fire:  Value over emitter lifetime</label>
+            <label color="0000AA">Z: Inner light intensity over emitter lifetime</label>
+            <label color="404040">W: Smoke: Value over emitter lifetime</label>
+        </group>
+        <label/>
+    </ui>
+</materialdescriptor>

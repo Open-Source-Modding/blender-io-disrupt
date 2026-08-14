@@ -1,0 +1,226 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor name="WindowLight" showinui="1" id="#(0xb157abc3, 0x24b94450)">
+    <geometryInputs normal="1" tangent="0" binormal="0" color="1" uvChannels="1" />
+
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="BlendingType" type="int" defaultvalue="2" />
+    
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="MaskTexture1" type="sampler2D" tilingName="MaskTiling1" UvName="MaskUV1" />
+    <parameter name="MaskTiling1" type="float2" defaultvalue="1,1" />
+
+    <parameter name="LightsOffset" type="float2" defaultvalue="0,0" />
+
+    <parameter name="NormalAttenuationPower" type="float" defaultvalue="0" />
+    <parameter name="HDRMul" type="float" defaultvalue="1" />
+
+    <parameter name="UseVertexColor" type="bool" defaultvalue="0" />
+
+    <parameter name="NeedsElectricPower" type="bool" defaultvalue="1" />
+    <parameter name="LightIntensityCurveSel" type="float4" defaultvalue="1,0,0,0" />
+
+    <parameter name="AmountOfUnlitWindows" type="float" defaultvalue="0.2" />
+
+    <parameter name="WindowVariations" type="bool" defaultvalue="0" />
+    <parameter name="WindowRandomColor0" type="color3" defaultvalue="1,1,1" />
+    <parameter name="WindowRandomColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="WindowRandomIntensity0" type="float" defaultvalue="1" />
+    <parameter name="WindowRandomIntensity1" type="float" defaultvalue="1" />
+
+    <parameter name="CeilingTexture" type="sampler2D" />
+    <parameter name="CeilingTiling" type="float" defaultvalue="1" />
+    <parameter name="CeilingIntensity" type="float3" defaultvalue="1,16,0.0625" op_z="1/y"/>
+    <parameter name="CeilingHeightParams" oldnames="CeilingHeightOffset" type="float3" defaultvalue="0,0,0" />
+    <parameter name="CeilingHeightSpacing" type="float" defaultvalue="3" />
+    <parameter name="CeilingRandomUvOffset" type="float" defaultvalue="0" />
+    <parameter name="MaterialPaletteTexture" type="sampler2D" />
+
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+    <!-- Parameter provider description -->
+    <parameterprovider parametersfilename="Mesh_WindowLight.fx">
+        <parameter name="UseVertexColor" />
+        <parameter name="DiffuseTexture1">
+            <alias name="DiffuseTexture1Point" />
+        </parameter>
+        <parameter name="DiffuseTiling1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="MaskTexture1" sizeparameter="1" />
+        <parameter name="MaskTiling1" />
+        <parameter name="NormalAttenuationPower" />
+        <parameter name="HDRMul" />
+        <parameter name="LightsOffset" />
+        <parameter name="NeedsElectricPower" />
+        <parameter name="LightIntensityCurveSel" />
+        <parameter name="AmountOfUnlitWindows" />
+        <parameter name="WindowVariations" />
+        <parameter name="WindowRandomColor0" />
+        <parameter name="WindowRandomColor1" />
+        <parameter name="WindowRandomIntensity0" />
+        <parameter name="WindowRandomIntensity1" />
+        <parameter name="CeilingTexture" />
+        <parameter name="CeilingTiling" />
+        <parameter name="CeilingIntensity" />
+        <parameter name="CeilingHeightParams" />
+        <parameter name="CeilingHeightSpacing" />
+        <parameter name="CeilingRandomUvOffset" />
+        <parameter name="MaterialPaletteTexture" sizeparameter="1" />
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <shaderoptions>
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+    </shaderoptions>
+
+    <!-- User interface definition -->
+    <ui defaultFilePath="graphics/_Texture/" >
+        <!-- Settings -->
+        <group label="Settings" tooltip="Settings">
+            <checkbox label="Two sided" dataBindings="TwoSided" />
+            <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+            <checkbox label="Use Vertex Color" dataBindings="UseVertexColor" />
+            <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+            <group horizontal="1">
+                <label>Normal attenuation power</label>
+                <textbox dataBindings="NormalAttenuationPower" tooltip="Strength of the light attenuation when the view direction is perpendicular to the window normal." >
+                    <dataBindings increment="0.01" minvalue="0.00" maxvalue="10.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>HDR Multiplier</label>
+                <textbox dataBindings="HDRMul" />
+            </group>
+        </group>
+
+        <!-- Light Animation Settings -->
+        <group label="Light Animation">
+            <checkbox label="Needs Electric Power" dataBindings="NeedsElectricPower" tooltip="Intensity will be affected by electric disturbances." />
+            <group horizontal="1">
+                <label>Light Intensity Curve Index</label>
+                <combobox dataBindings="LightIntensityCurveSel" tooltip="Light intensity curve that will be used with time of day.">
+                    <comboboxitem value="1,0,0,0">Curve 0</comboboxitem>
+                    <comboboxitem value="0,1,0,0">Curve 1</comboboxitem>
+                    <comboboxitem value="0,0,1,0">Curve 2</comboboxitem>
+                    <comboboxitem value="0,0,0,1">Curve 3</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>Amount of Unlit Windows</label>
+                <textbox dataBindings="AmountOfUnlitWindows" tooltip="Percentage of windows that will remain unlit." >
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1" disable_if="MaskTexture1">
+                <checkbox label="Window Color Variations" dataBindings="WindowVariations" tooltip="When enabled, the color of each window will be randomly selected between the two specified colors/intensities." />
+                <group horizontal="1" enable_if="WindowVariations">
+                    <label>                  Min:</label>
+                    <button dataBindings="WindowRandomColor0" />
+                    <textbox dataBindings="WindowRandomIntensity0">
+                        <dataBindings increment="0.01" minvalue="0.00" maxvalue="10.0" />
+                    </textbox>
+                    <label>   Max:</label>
+                    <button dataBindings="WindowRandomColor1" />
+                    <textbox dataBindings="WindowRandomIntensity1">
+                        <dataBindings increment="0.01" minvalue="0.00" maxvalue="10.0" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+
+        <!-- Diffuse texture -->
+        <group label="Diffuse" >
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <group show_if="DiffuseTexture1">
+                    <label>Tiling</label>
+                    <textbox dataBindings="DiffuseTiling1.x">
+                        <dataBindings type="int" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling1.y">
+                        <dataBindings type="int" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+
+        <!-- Window light mask texture -->
+        <group label="Mask Texture">
+            <group horizontal="1">
+                <button dataBindings="MaskTexture1" fill="1" />
+            </group>
+            <group horizontal="1" show_if="MaskTexture1">
+                <label tooltip="Number of windows in U and V on the building face. Not used for building tool facades.">  Window Count</label>
+                <textbox dataBindings="MaskTiling1.x" tooltip="Number of windows in U direction on the building face.">
+                    <dataBindings type="int" />
+                </textbox>
+                <textbox dataBindings="MaskTiling1.y" tooltip="Number of windows in V direction on the building face.">
+                    <dataBindings type="int" />
+                </textbox>
+                <label tooltip="Window offset in U and V. Not used for building tool facades.">     Window Offset</label>
+                <textbox dataBindings="LightsOffset.x" minvalue="0" maxvalue="1024" tooltip="Window offset in U.">
+                    <dataBindings type="int" />
+                </textbox>
+                <textbox dataBindings="LightsOffset.y" minvalue="0" maxvalue="1024" tooltip="Window offset in V.">
+                    <dataBindings type="int" />
+                </textbox>
+            </group>
+        </group>
+
+        <!-- Ceiling texture -->
+        <group label="Ceiling Texture">
+            <group horizontal="1">
+                <button dataBindings="CeilingTexture" fill="1"/>
+                <group show_if="CeilingTexture">
+                    <label tooltip="Amount of tiling for the ceiling texture.">Tiling</label>
+                    <textbox dataBindings="CeilingTiling" tooltip="Amount of tiling for the ceiling texture.">
+                        <dataBindings increment="0.01" minvalue="0.01" maxvalue="10.0" />
+                    </textbox>
+                </group>
+                <group show_if="CeilingTexture">
+                    <label tooltip="Random UV offset on each ceiling.">Offset</label>
+                    <textbox dataBindings="CeilingRandomUvOffset" tooltip="Random UV offset on each ceiling.">
+                        <dataBindings increment="0.1" minvalue="0.0" maxvalue="100.0" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1" show_if="CeilingTexture">
+                <label tooltip="Intensity of the ceiling.">Ceiling Intensity</label>
+                <textbox dataBindings="CeilingIntensity.x" tooltip="Intensity of the ceiling.">
+                    <dataBindings increment="0.1" minvalue="0.1" maxvalue="100.0" />
+                </textbox>
+            </group>
+            <group horizontal="1" show_if="CeilingTexture">
+                <label>Ceiling Fade Distance</label>
+                <textbox dataBindings="CeilingIntensity.y" tooltip="Fade distance for the ceiling, measured from the window plane (in meters).">
+                    <dataBindings increment="0.1" minvalue="0.1" />
+                </textbox>
+            </group>
+            <group horizontal="1" show_if="CeilingTexture">
+                <label tooltip="Height offset of the ceilings.">Ceiling Offset</label>
+                <textbox dataBindings="CeilingHeightParams.x" tooltip="Height offset of the ceilings.">
+                    <dataBindings increment="0.01" minvalue="-100.00" maxvalue="100.0" />
+                </textbox>
+                <label tooltip="Distance between two ceilings.">    Ceiling Spacing</label>
+                <textbox dataBindings="CeilingHeightSpacing" tooltip="Distance between two ceilings.">
+                    <dataBindings increment="0.01" minvalue="0.01" maxvalue="100.0" />
+                </textbox>
+                <label tooltip="Ceiling base position when offset is zero.">    Base ceiling height</label>
+                <combobox dataBindings="CeilingHeightParams.yz" tooltip="Ceiling base position when offset is zero.">
+                    <comboboxitem value="0,0">Pivot height</comboboxitem>
+                    <comboboxitem value="1,0">Bottom of facade</comboboxitem>
+                    <comboboxitem value="0,1">Top of facade</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+    </ui>
+    
+</materialdescriptor>

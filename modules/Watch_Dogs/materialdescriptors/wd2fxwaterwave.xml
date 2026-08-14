@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2FxWaterWave" displayname="WD2FxWaterWave" showinui="1" category="Particle" id="#(0x300080bc, 0x648e0121)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="8" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" maxdisplayname="Wave texture" optional="0" />
+    <parameter name="Strength" type="float" defaultvalue="1.0" />
+    <parameter name="FoamMultiplier" type="float" defaultvalue="1.0" />
+    <parameter name="ParticleFrameJobType" type="int" defaultvalue="3" />
+
+    <parameter name="ResponsiveAAStrength" type="float" defaultvalue="2.0"/>
+
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+    <!-- Shader parameters -->
+    <parameterprovider parametersfilename="Particle_WD2FxWaterWave.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="Strength" />
+        <parameter name="FoamMultiplier" />
+        <parameter name="ParticleFrameJobType" />
+        <parameter name="ResponsiveAAStrength" />
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <shaderoptions>
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+    </shaderoptions>
+
+    <!-- Material UI definition -->
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Base settings">
+            <!-- Responsive AA -->
+            <label alignright="1" width="120">Responsive AA Strength</label>
+            <textbox dataBindings="ResponsiveAAStrength">
+                <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+            </textbox>
+            <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+        </group>
+        <group horizontal="1">
+            <label>Texture: </label>
+            <button dataBindings="DiffuseTexture1" fill="1" />
+        </group>
+        <group horizontal="1">
+            <label>Strength: </label>
+            <textbox databindings="Strength">
+                <databindings increment="0.01" minvalue="0" />
+            </textbox>
+        </group>
+        <group horizontal="1">
+            <label>Foam: </label>
+            <textbox databindings="FoamMultiplier">
+                <databindings increment="0.01" minvalue="0" />
+            </textbox>
+        </group>
+    </ui>
+</materialdescriptor>

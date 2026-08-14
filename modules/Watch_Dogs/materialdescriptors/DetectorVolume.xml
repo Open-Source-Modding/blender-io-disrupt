@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="DetectorVolume" pickingid="0" showinui="1" id="#(0x708d2e6, 0x5aaa5454)">
+
+    <parameter name="Color" type="color3" defaultvalue="1.0,1.0,1.0" />
+    <parameter name="Intensity" type="float" defaultvalue="0.5" />
+    <parameter name="Speed" type="float" defaultvalue="0.0" />
+    <parameter name="EdgeThickness" type="float" defaultvalue="0.01" />
+    <parameter name="EdgeNoise" type="float" defaultvalue="0.0" />
+
+    <parameter name="AttenuationDistanceFar" type="float" defaultvalue="100" />
+    <parameter name="AttenuationDistanceRange" type="float" defaultvalue="10" />
+  
+    <parameter name="BlendingType" type="int" defaultvalue="8" />
+
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+    <parameterprovider parametersfilename="Mesh_DetectorVolume.fx">
+        <parameter name="Color" />
+        <parameter name="Intensity" />
+        <parameter name="Speed" />
+        <parameter name="EdgeThickness" />
+        <parameter name="EdgeNoise" />
+        <parameter name="AttenuationDistanceFar" />
+        <parameter name="AttenuationDistanceRange" />
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <shaderoptions>
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Base settings">
+            <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+        </group>
+        <group horizontal="1" >
+            <label alignright="0" width="140">Color</label>
+            <button dataBindings="Color" />
+        </group>
+        <group horizontal="1" >
+            <label alignright="0" width="140">Intensity</label>
+            <textbox dataBindings="Intensity">
+                <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+            </textbox>
+        </group>
+        <group horizontal="1" >
+            <label alignright="0" width="140">Speed</label>
+            <textbox dataBindings="Speed">
+                <dataBindings increment="0.01" minvalue="0" />
+            </textbox>
+        </group>
+        <group horizontal="1" >
+            <label alignright="0" width="140">Thickness</label>
+            <textbox dataBindings="EdgeThickness">
+                <dataBindings increment="0.001" minvalue="0" maxvalue="0.1" />
+            </textbox>
+        </group>
+        <group horizontal="1" >
+            <label alignright="0" width="140">Noise</label>
+            <textbox dataBindings="EdgeNoise">
+                <dataBindings increment="0.01" minvalue="0" />
+            </textbox>
+        </group>
+        <group horizontal="1" >
+            <label alignright="0" width="140">Attenuation Distance</label>
+            <textbox dataBindings="AttenuationDistanceFar">
+                <dataBindings increment="0.1" minvalue="0" />
+            </textbox>
+            <label alignright="0" width="70">Range</label>
+            <textbox dataBindings="AttenuationDistanceRange">
+              <dataBindings increment="0.1" minvalue="0" />
+            </textbox>
+        </group>
+    </ui>
+</materialdescriptor>

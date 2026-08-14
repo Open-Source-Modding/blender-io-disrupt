@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor name="RealTreeDriverLeaf" showinui="1" id="#(0x7680e75, 0x48ca0001)" xmlns:xi="#" deprecated="1" >
+    <geometryInputs normal="1" tangent="0" binormal="0" color="1" uvChannels="1" />
+
+    <parameter name="TwoSided" type="bool" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" />
+    <parameter name="MaskTexture" type="sampler2D" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor3" type="color3" defaultvalue="1,1,1" />
+    <parameter name="HasSpecular" type="bool" />
+    <parameter name="UseTwoColorSets" type="float" defaultvalue="0" />
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.04" />
+    <parameter name="OcclusionIntensity" type="float2" defaultvalue="1,0.25" />
+    <parameter name="HasPerLeafDiversity" type="bool" />
+    <parameter name="RandomLeafAlbedo" type="bool" defaultvalue="1" />
+    <parameter name="PerLeafDiversityIntensity" type="float" defaultvalue="" />
+    <parameter name="DiffuseColors" type="color4" defaultvalue="1,1,1,1" arraysize="11" />
+    <parameter name="DiffuseColors2" type="color4" defaultvalue="1,1,1,1" arraysize="11" />
+
+    <parameter name="VegetationAnim" type="bool" defaultvalue="0" />
+    <parameter name="VegetationAnimLeaf" type="bool" defaultvalue="0" />
+    <parameter name="VegetationAnimParams" type="float" defaultvalue="0" />
+    <parameter name="TrunkAnimParams" oldnames="VegetationTrunkAnimParams" type="float4" defaultvalue="1,1,1,1" />
+    <parameter name="VegetationLeafAnimParams" type="float2" defaultvalue="1,0" />
+    <parameter name="VegetationTrunkNoiseTexture" type="sampler2D" maxdisplayname="Trunk Anim Noise Texture" />
+    <parameter name="VegetationLeafNoiseTexture"  type="sampler2D" maxdisplayname="Leaf Anim Noise Texture" />
+
+    <parameterprovider parametersfilename="RealTree_DriverLeaf.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="MaskTexture" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseColor3" />
+        <parameter name="HasSpecular" />
+        <parameter name="UseTwoColorSets" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+        <parameter name="OcclusionIntensity" />
+        <parameter name="HasPerLeafDiversity" />
+        <parameter name="RandomLeafAlbedo" />
+        <parameter name="PerLeafDiversityIntensity" />
+        <parameter name="DiffuseColors" />
+        <parameter name="DiffuseColors2" />
+
+        <parameter name="VegetationAnim" />
+        <parameter name="VegetationAnimLeaf" />
+        <parameter name="VegetationAnimParams" />
+        <parameter name="TrunkAnimParams" />
+        <parameter name="VegetationLeafAnimParams" />
+        <parameter name="VegetationTrunkNoiseTexture" />
+        <parameter name="VegetationLeafNoiseTexture" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Settings">
+            <group horizontal="1" >
+                <checkbox label="Two sided" dataBindings="TwoSided" />
+            </group>
+            <group horizontal="1">
+                <label>          Occlusion  </label>
+                <label> 0</label>
+                <slider dataBindings="OcclusionIntensity.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+            <group horizontal="1">
+                <label>    Translucency  </label>
+                <label> 0</label>
+                <slider dataBindings="OcclusionIntensity.y">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Diffuse Texture" horizontal="0" >
+            <group horizontal="1" >
+                <button dataBindings="DiffuseTexture1" fill="1" />
+            </group>
+            <group horizontal="1" >
+                <checkbox label="Random diffuse variation" dataBindings="RandomLeafAlbedo" tooltip="Randomly selects between two diffuse texture variations. Always enabled on next-gen." />
+                <group hide_if="RandomLeafAlbedo">
+                    <label color="BB0000">                Texture should contain only ONE leaf variation!</label>
+                </group>
+            </group>
+            <group horizontal="1" >
+                <group label="Diffuse colors 1st set" horizontal="1" >
+                    <button dataBindings="DiffuseColors[0]" />
+                    <button dataBindings="DiffuseColors[1]" />
+                    <button dataBindings="DiffuseColors[2]" />
+                    <button dataBindings="DiffuseColors[3]" />
+                    <button dataBindings="DiffuseColors[4]" />
+                    <button dataBindings="DiffuseColors[5]" />
+                    <button dataBindings="DiffuseColors[6]" />
+                    <button dataBindings="DiffuseColors[7]" />
+                    <button dataBindings="DiffuseColors[8]" />
+                    <button dataBindings="DiffuseColors[9]" />
+                    <button dataBindings="DiffuseColors[10]" />
+                </group>
+                <checkbox label="Random Color" dataBindings="UseTwoColorSets" />
+            </group>
+            <group label="Diffuse colors 2nd set" show_if="UseTwoColorSets==1" horizontal="1" >
+                <button dataBindings="DiffuseColors2[0]" />
+                <button dataBindings="DiffuseColors2[1]" />
+                <button dataBindings="DiffuseColors2[2]" />
+                <button dataBindings="DiffuseColors2[3]" />
+                <button dataBindings="DiffuseColors2[4]" />
+                <button dataBindings="DiffuseColors2[5]" />
+                <button dataBindings="DiffuseColors2[6]" />
+                <button dataBindings="DiffuseColors2[7]" />
+                <button dataBindings="DiffuseColors2[8]" />
+                <button dataBindings="DiffuseColors2[9]" />
+                <button dataBindings="DiffuseColors2[10]" />
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Mask Texture" horizontal="0" >
+            <group horizontal="1" >
+                <button dataBindings="MaskTexture" fill="1" />
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label color="BB0000">          R:</label>
+                    <label>Specular Gloss  OR  Specular Mask (*deprecated*)</label>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00">          G:</label>
+                    <label>Color exclusion</label>
+                </group>
+                <group horizontal="1">
+                    <label color="0000AA">          B:</label>
+                    <label>Normal offset (x)</label>
+                </group>
+                <group horizontal="1">
+                    <label color="404040">          A:</label>
+                    <label>Normal offset (y)</label>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Specular">
+            <checkbox label="Enabled" dataBindings="HasSpecular"  />
+            <group show_if="HasSpecular">
+                <group>
+                    <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+                    <xi:include href="UI/SpecularPowerGroup.xml" />
+                </group>
+                <label></label>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Diversity per leaf">
+            <checkbox label="Enabled" dataBindings="HasPerLeafDiversity"  />
+            <group horizontal="1" show_if="HasPerLeafDiversity">
+                <label>           Intensity   </label>
+                <label> 0</label>
+                <slider dataBindings="PerLeafDiversityIntensity">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Vegetation Anim -->
+        <group label="Vegetation Animation" complexity="1">
+            <xi:include href="UI/VegetationAnimationGroup.xml" />
+
+            <group enable_if="VegetationAnim" >
+                <checkbox label="Use leaf animation" dataBindings="VegetationAnimLeaf" />
+                <group enable_if="VegetationAnimLeaf" >
+                    <group horizontal="1" >
+                        <label>    Leaf wave animation strength   </label>
+                        <textbox dataBindings="VegetationLeafAnimParams.x">
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                        <label>     Frequency </label>
+                        <textbox dataBindings="VegetationLeafAnimParams.y">
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1" >
+                        <label>  Leaf anim noise texture (mandatory)</label>
+                        <button dataBindings="VegetationLeafNoiseTexture" fill="1" />
+                    </group>
+                </group>
+            </group>
+
+            <group horizontal="1" enable_if="VegetationAnim" >
+                <label>  Wind source  </label>
+                <textbox dataBindings="VegetationAnimParams.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>       Global</label>
+                <slider dataBindings="VegetationAnimParams.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>Simulation</label>
+            </group>
+
+        </group>
+    </ui>
+</materialdescriptor>

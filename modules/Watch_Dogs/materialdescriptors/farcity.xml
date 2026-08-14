@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="FarCity" displayname="FarCity" showinui="1" id="#(0x5e187a0f, 0x3363439b)">
+    <geometryInputs normal="1" uvChannels="1" color="0" />
+
+    <!-- BaseColor -->
+    <parameter name="DiffuseTexture1" type="sampler2DArray" maxdisplayname="Diffuse texture" optional="0" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+
+    <!-- SurfaceParams -->
+    <parameter name="MaskTexture1" type="sampler2DArray" maxdisplayname="Mask texture" optional="0" />
+    <parameter name="MaskTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+
+    <!-- Windows -->
+    <parameter name="LightIntensityCurveSel" type="float4" defaultvalue="1,0,0,0" />
+    <parameter name="WindowLightMaskTexture1" type="sampler2DArray" optional="0" />
+    <parameter name="WindowLightIntensity" type="float3" defaultvalue="10,10,1" op_z="irradiance"/>
+
+    <!-- WorldLightDensity -->
+    <parameter name="WorldLightDensityTexture1" type="sampler2D" UvName="WindowLightMaskUV1" maxdisplayname="World light density texture" optional="0" />
+    <parameter name="WorldLightDensityTexture1State" type="samplerState" defaultvalue="ColorClamp" />
+    <parameter name="WorldLightDensityScale" type="float2" defaultvalue="4096,4096" />
+
+    <parameterprovider parametersfilename="Mesh_FarCity.fx">
+        <!-- BaseColor -->
+        <parameter name="DiffuseTexture1" sizeparameter="1" />
+        <parameter name="DiffuseTexture1State" />
+
+        <!-- SurfaceParams -->
+        <parameter name="MaskTexture1" />
+        <parameter name="MaskTexture1State" />
+
+        <!-- Windows -->
+        <parameter name="LightIntensityCurveSel" />
+        <parameter name="WindowLightMaskTexture1" sizeparameter="1" />
+        <parameter name="WindowLightIntensity" />
+      
+        <!-- WorldLightDensity -->
+        <parameter name="WorldLightDensityTexture1" />
+        <parameter name="WorldLightDensityTexture1State" />
+        <parameter name="WorldLightDensityScale" />
+    </parameterprovider>
+
+    <!-- User Interface Definition -->
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Base Color -->
+        <group label="Base Color" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <!-- SurfaceParams -->
+        <group label="Surface Parameters">
+          <group horizontal="1">
+            <group horizontal="1">
+              <button dataBindings="MaskTexture1" fill="1" />
+            </group>
+            <combobox dataBindings="MaskTexture1State">
+              <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+              <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+              <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+              <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+            </combobox>
+          </group>
+        </group>
+      
+        <!-- Window Lights-->
+        <group label="Window Lights">
+          <group horizontal="1">
+            <button dataBindings="WindowLightMaskTexture1" fill="1" />
+          </group>
+
+          <group label="Irradiance" >
+            <group horizontal="1">
+              <group>
+                <label>Power</label>
+                <textbox dataBindings="WindowLightIntensity.x" tooltip="Power of the window light.">
+                  <dataBindings increment="0.1" minvalue="0.1" maxvalue="1000000.0" />
+                </textbox>
+              </group>
+              <group>
+                <label>Area cm2</label>
+                <textbox dataBindings="WindowLightIntensity.y" tooltip="Area">
+                  <dataBindings increment="0.1" minvalue="0.1" maxvalue="1000000.0" />
+                </textbox>
+              </group>
+            </group>
+          </group>
+
+          <!-- Light Animation Settings -->
+          <group label="Light Animation">
+            <group horizontal="1">
+              <label>Global Light Probability Curve Index</label>
+              <combobox dataBindings="LightIntensityCurveSel" tooltip="Light intensity curve that will be used with time of day.">
+                <comboboxitem value="1,0,0,0">Curve 0</comboboxitem>
+                <comboboxitem value="0,1,0,0">Curve 1</comboboxitem>
+                <comboboxitem value="0,0,1,0">Curve 2</comboboxitem>
+                <comboboxitem value="0,0,0,1">Curve 3</comboboxitem>
+              </combobox>
+            </group>
+          </group>
+       </group>
+      
+      <!-- World Light Density -->
+      <group label="World Light Density" horizontal="0">
+        <group horizontal="1">
+          <button dataBindings="WorldLightDensityTexture1" fill="1" />
+          <group>
+            <textbox dataBindings="WorldLightDensityScale.x" tooltip="Planar mapping size (X)">
+              <dataBindings increment="1.0" minvalue="1.0" maxvalue="1000000.0" />
+            </textbox>
+            <textbox dataBindings="WorldLightDensityScale.y" tooltip="Planar mapping size (Y)">
+              <dataBindings increment="1.0" minvalue="1.0" maxvalue="1000000.0" />
+            </textbox>
+          </group>
+        </group>
+      </group>
+    </ui>
+</materialdescriptor>

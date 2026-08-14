@@ -4,6 +4,7 @@ import os
 import bpy
 
 from .import_wd2 import load_wd2_model
+from .import_wd2_xbg import load_wd2_xbg
 
 
 class XBG_OT_ImportWD2(bpy.types.Operator):
@@ -47,6 +48,56 @@ class XBG_OT_ImportWD2(bpy.types.Operator):
                 nv = sum(len(m['verts']) for m in model['meshes'])
                 self.report({'INFO'},
                     f"{os.path.basename(fp)}: WD2 — "
+                    f"{len(model['bones'])} bones, "
+                    f"{len(model['meshes'])} meshes, {nv} verts")
+                ok += 1
+            except Exception as exc:
+                self.report({'ERROR'}, f"{os.path.basename(fp)}: {exc}")
+                import traceback; traceback.print_exc()
+        return {'FINISHED'} if ok else {'CANCELLED'}
+
+
+class XBG_OT_ImportWD2XBG(bpy.types.Operator):
+    """Import a Watch Dogs 2/WDL compiled .xbg model: skeleton, meshes, UVs."""
+    bl_idname  = "xbg.import_wd2_xbg_model"
+    bl_label   = "Import WD2 Compiled Model"
+    bl_description = (
+        "Import a Watch Dogs 2 or Watch Dogs Legion compiled .xbg "
+        "(MOEG binary) model with skeleton and skin weights"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    files: bpy.props.CollectionProperty(type=bpy.types.OperatorFileListElement)
+    directory: bpy.props.StringProperty(subtype="DIR_PATH")
+    filter_glob: bpy.props.StringProperty(default="*.xbg", options={'HIDDEN'})
+
+    def invoke(self, ctx, ev):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        fs = []
+        if self.files:
+            for f in self.files:
+                if f.name.lower().endswith('.xbg'):
+                    fs.append(os.path.join(self.directory, f.name))
+        elif self.filepath:
+            fs.append(self.filepath)
+        if not fs:
+            self.report({'ERROR'}, "No .xbg file selected")
+            return {'CANCELLED'}
+
+        sep = bool(getattr(ctx.scene.xbg_debug_settings,
+                           'separate_primitives', True))
+        ok = 0
+        for fp in fs:
+            try:
+                model, arm = load_wd2_xbg(ctx, fp,
+                                          separate_primitives=sep)
+                nv = sum(len(m['verts']) for m in model['meshes'])
+                self.report({'INFO'},
+                    f"{os.path.basename(fp)}: WD2 XBG — "
                     f"{len(model['bones'])} bones, "
                     f"{len(model['meshes'])} meshes, {nv} verts")
                 ok += 1

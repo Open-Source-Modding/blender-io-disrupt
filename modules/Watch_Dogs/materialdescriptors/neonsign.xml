@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor name="NeonSign" showinui="1" id="#(0x9557abd2, 0x17b94432)" deprecated="1" >
+    <geometryInputs normal="0" tangent="0" binormal="0" color="0" uvChannels="1" />
+
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="BlendingType" type="int" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTiling1" type="float2" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="MaskTexture1" type="sampler2D" tilingName="MaskTiling1" UvName="MaskUV1" />
+    <parameter name="MaskTiling1" type="float2" />
+
+    <parameter name="AnimMaskChannel" type="int" defaultvalue="0" />
+    <parameter name="ActiveMaskChannel" type="float3" provideronly="1" />
+
+    <parameter name="AnimType" type="int" defaultvalue="0" />
+    <parameter name="BackAndForth" type="bool" defaultvalue="0" />
+    <parameter name="Fade" type="bool" defaultvalue="0" />
+    <parameter name="AnimSpeed" type="float" defaultvalue="1" />
+    <parameter name="ChaosBias" type="float" defaultvalue="1" />
+    <parameter name="Threshold" type="float" defaultvalue="0.5" />
+    <parameter name="Parameters" type="float4" defaultvalue="0,0,0,0" />
+
+    <parameter name="HDRMul" type="float" defaultvalue="1" />
+
+    <parameter name="NeedsElectricPower" type="bool" defaultvalue="1" />
+    <parameter name="IsAffectedByTimeOfDay" type="bool" defaultvalue="0" />
+    <parameter name="LightIntensityCurveSel" type="float4" defaultvalue="1,0,0,0" />
+    <parameter name="FadeoutParams" type="float2" defaultvalue="5000,5000" />
+
+    <!-- Parameter provider description -->
+    <parameterprovider parametersfilename="Mesh_NeonSign.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTiling1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseTexture1State" />
+
+        <parameter name="MaskTexture1" />
+        <parameter name="MaskTiling1" />
+
+        <parameter name="ActiveMaskChannel" />
+        <parameter name="AnimType" />
+        <parameter name="BackAndForth" />
+        <parameter name="Fade" />
+        <parameter name="Parameters" />
+        <parameter name="AnimSpeed" />
+        <parameter name="ChaosBias" />
+        <parameter name="Threshold" />
+
+        <parameter name="HDRMul" />
+
+        <parameter name="NeedsElectricPower" />
+        <parameter name="IsAffectedByTimeOfDay" />
+        <parameter name="LightIntensityCurveSel" />
+        <parameter name="FadeoutParams" />
+    </parameterprovider>
+
+    <!-- User interface definition -->
+    <ui defaultFilePath="graphics/_Texture/" >
+        <group>
+            <label link="http://mdc-web-tomcat17.ubisoft.org/confluence/display/driver/Shader+-+NeonSign">Help</label>
+        </group>
+        <label> </label>
+
+        <!-- Settings -->
+        <group label="Settings" tooltip="Settings">
+            <checkbox label="Two sided" dataBindings="TwoSided" />
+            <group>
+                <label>Blending type</label>
+                <group horizontal="1">
+                    <combobox dataBindings="BlendingType">
+                        <comboboxitem value="0">Opaque - DO NOT USE</comboboxitem>
+                        <comboboxitem value="1">Alpha</comboboxitem>
+                        <comboboxitem value="2">Additive</comboboxitem>
+                        <comboboxitem value="3">Screen</comboboxitem>
+                        <comboboxitem value="4">Pre-multiplied Alpha</comboboxitem>
+                        <comboboxitem value="5">Multiply add</comboboxitem>
+                    </combobox>
+                    <group show_if="BlendingType==0">
+                        <label color="FF0000">Do not use 'Opaque'.</label>
+                        <label color="FF0000">Put geometry with lighting under the NeonSign geometry and use 'Additive' blending instead.</label>
+                    </group>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>HDR Multiplier</label>
+                <textbox dataBindings="HDRMul" />
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Light Animation Settings -->
+        <group label="Light Animation" tooltip="Animation">
+            <checkbox label="Needs Electric Power" dataBindings="NeedsElectricPower" tooltip="Intensity can be affected by electric disturbances." />
+            <checkbox label="Affected By Time Of Day" dataBindings="IsAffectedByTimeOfDay" tooltip="Intensity will be affected by time of day."/>
+            <group horizontal="1" show_if="IsAffectedByTimeOfDay">
+                <label>Light Intensity Curve Index</label>
+                <combobox dataBindings="LightIntensityCurveSel" tooltip="Light intensity curve that will be used when affected by time of day.">
+                    <comboboxitem value="1,0,0,0">Curve 0</comboboxitem>
+                    <comboboxitem value="0,1,0,0">Curve 1</comboboxitem>
+                    <comboboxitem value="0,0,1,0">Curve 2</comboboxitem>
+                    <comboboxitem value="0,0,0,1">Curve 3</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>Channel Mask</label>
+                <combobox dataBindings="AnimMaskChannel">
+                    <comboboxitem value="0">Red</comboboxitem>
+                    <comboboxitem value="1">Green</comboboxitem>
+                    <comboboxitem value="2">Blue</comboboxitem>
+                    <comboboxitem value="3">Alpha from Diffuse</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>Type</label>
+                <combobox dataBindings="AnimType">
+                    <comboboxitem value="0">Scrolling</comboboxitem>
+                    <comboboxitem value="1">Flashing</comboboxitem>
+                    <comboboxitem value="2">Alternating</comboboxitem>
+                    <comboboxitem value="3">Alternating then Full</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <group hide_if="AnimType==1,3">
+                    <checkbox label="Back and forth" dataBindings="BackAndForth" />
+                </group>
+                <group hide_if="AnimType==2,3">
+                    <checkbox label="Fading" dataBindings="Fade" />
+                </group>
+                <group>
+                    <checkbox label="Invert intensity" dataBindings="Parameters.x" />
+                </group>
+            </group>
+            <group horizontal="1">
+                <group>
+                    <label>Speed</label>
+                    <textbox dataBindings="AnimSpeed" />
+                </group>
+                <group show_if="AnimType==0">
+                    <label>Chaos bias</label>
+                    <textbox dataBindings="ChaosBias" />
+                </group>
+                <group show_if="AnimType==0">
+                    <label>Threshold</label>
+                    <textbox dataBindings="Threshold" />
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Diffuse texture -->
+        <group label="Diffuse Texture" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <group horizontal="1" show_if="DiffuseTexture1">
+                    <label>Tiling</label>
+                    <textbox dataBindings="DiffuseTiling1.x">
+                        <dataBindings type="int" minvalue="1"/>
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling1.y">
+                        <dataBindings type="int" minvalue="1"/>
+                    </textbox>
+                </group>
+                <group horizontal="1" show_if="DiffuseTexture1">
+                    <label>Addressing</label>
+                    <combobox dataBindings="DiffuseTexture1State">
+                        <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                        <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                        <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+                    </combobox>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Mask texture -->
+        <group label="Mask Texture" horizontal="0" disable_if="AnimMaskChannel==3">
+            <group horizontal="1" >
+                <button dataBindings="MaskTexture1" fill="1" />
+                <group show_if="MaskTexture1">
+                    <textbox dataBindings="MaskTiling1.x">
+                        <dataBindings type="int" minvalue="1"/>
+                    </textbox>
+                    <textbox dataBindings="MaskTiling1.y">
+                        <dataBindings type="int" minvalue="1"/>
+                    </textbox>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Distance Fade">
+            <group horizontal="1">
+                <label>Start</label>
+                <textbox dataBindings="FadeoutParams.x">
+                    <dataBindings increment="0.1" maxvalue="4096" />
+                </textbox>
+                <label>    End</label>
+                <textbox dataBindings="FadeoutParams.y">
+                    <dataBindings increment="0.1" maxvalue="4096" />
+                </textbox>
+            </group>
+        </group>
+        <label> </label>
+
+    </ui>
+
+</materialdescriptor>

@@ -1,0 +1,354 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="Unlit" showinui="1" id="#(0xb806207, 0x24c944d0)" deprecated="1" >
+  <geometryInputs normal="1" tangent="0" binormal="0" color="1" uvChannels="2" />
+
+  <parameter name="AlphaTestEnabled" type="bool" />
+  <parameter name="TwoSided" type="bool" />
+  <parameter name="BlendingType" type="int" />
+  <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+  <parameter name="ZfightingOffset" type="bool" defaultvalue="0"/>
+
+  <parameter name="AnimType" type="int" defaultvalue="1" />
+  <parameter name="USpeed" type="float" />
+  <parameter name="VSpeed" type="float" />
+  <parameter name="AngularSpeed" type="float" />
+  <parameter name="NbFrames" type="int" />
+
+  <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" optional="0" />
+  <parameter name="VideoTexture1"   type="bink" tilingName="DiffuseTiling1" UvName="DiffuseUV1" />
+  <parameter name="VideoPlayOnLoad"   type="bool" defaultvalue="1"/>
+  <parameter name="VideoShareChannel" type="int" defaultvalue="0"/>
+
+  <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+  <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+  <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+  <parameter name="DiffuseUV1" type="int"  />
+
+  <parameter name="NormalAttenuationPower" type="float" />
+  <!-- this is a float so that we can do ALU ops on it -->
+  <parameter name="InverseNormalAttenuation" type="float" />
+
+  <parameter name="DepthIntersectionEnabled" type="bool" defaultvalue="0" />
+  <parameter name="DepthIntersectionRange" type="float3" defaultvalue="0.0,0.2,0.0" op_y="1/y" />
+  <parameter name="DepthIntersectionColor" type="color3" defaultvalue="1,1,1" />
+  <parameter name="DepthIntersectionBorderPower" type="float" defaultvalue="5" />
+
+  <parameter name="HDRMul" type="float" defaultvalue="1" />
+
+  <parameter name="UVAnimControlFlags" type="float4" provideronly="1" />
+  <parameter name="UVAnimControlParams" type="float4" provideronly="1" />
+
+  <parameter name="UseVertexColor" type="bool" defaultvalue="0" />
+
+  <parameter name="AffectedByExposure" type="bool" defaultvalue="1" />
+
+  <parameter name="NeedsElectricPower" type="bool" defaultvalue="1" />
+  <parameter name="LightOffColor" type="color3" defaultvalue="0.25,0.25,0.25" />
+  <parameter name="IsAffectedByTimeOfDay" type="bool" defaultvalue="0" />
+  <parameter name="LightIntensityCurveSel" type="float4" defaultvalue="1,0,0,0" />
+
+  <parameter name="Decal" type="bool" defaultvalue="0" />
+
+  <parameter name="ReflectionType" type="int" defaultvalue="0">
+    <use_if parameter="BlendingType" value="0" />
+  </parameter>
+  <parameter name="ReflectionTexture" type="samplerCUBE">
+    <use_if parameter="BlendingType" value="0" />
+  </parameter>
+  <parameter name="ReflectionIntensity" type="float" defaultvalue="1" />
+  <parameter name="ReflectionAffectedByDaylight" type="bool" defaultvalue="1" />
+
+  <parameter name="Reflectance" type="float" defaultvalue="0.04" />
+  <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+  <parameter name="FadeoutParams" type="float2" defaultvalue="5000,5000" />
+
+  <parameter name="BlackFogFactor" type="float" defaultvalue="1" />
+
+  <!-- Parameter provider description -->
+  <parameterprovider parametersfilename="Mesh_Unlit.fx">
+    <parameter name="Decal" />
+    <parameter name="UseVertexColor" />
+    <parameter name="AffectedByExposure" />
+    <parameter name="DiffuseTexture1" />
+    <parameter name="VideoTexture1" />
+    <parameter name="DiffuseTiling1" />
+    <parameter name="DiffuseColor1" />
+    <parameter name="DiffuseUV1" />
+    <parameter name="NormalAttenuationPower" />
+    <parameter name="InverseNormalAttenuation" />
+    <parameter name="UVAnimControlFlags" />
+    <parameter name="UVAnimControlParams" />
+    <parameter name="HDRMul" />
+    <parameter name="NeedsElectricPower" />
+    <parameter name="LightOffColor" />
+    <parameter name="IsAffectedByTimeOfDay" />
+    <parameter name="LightIntensityCurveSel" />
+    <parameter name="DiffuseTexture1State" />
+    <parameter name="Reflectance" />
+    <parameter name="SpecularPower" />
+    <parameter name="ReflectionType" />
+    <parameter name="ReflectionTexture" />
+    <parameter name="ReflectionIntensity" />
+    <parameter name="ReflectionAffectedByDaylight" />
+    <parameter name="DepthIntersectionEnabled" />
+    <parameter name="DepthIntersectionRange" />
+    <parameter name="DepthIntersectionColor" />
+    <parameter name="DepthIntersectionBorderPower" />
+    <parameter name="FadeoutParams" />
+    <parameter name="ZfightingOffset" />
+    <parameter name="BlackFogFactor" />
+  </parameterprovider>
+
+  <!-- User interface definition -->
+  <ui>
+    <xi:include href="UI/DataClasses.xml" />
+
+    <!-- Settings -->
+    <group label="Settings" tooltip="Settings">
+      <checkbox label="Two sided" dataBindings="TwoSided" />
+      <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+      <checkbox label="Decal" dataBindings="Decal" />
+      <checkbox label="Use Vertex Color" dataBindings="UseVertexColor" />
+      <checkbox label="Affected by Exposure" dataBindings="AffectedByExposure" />
+      <checkbox label="Zfighting Offset" dataBindings="ZfightingOffset" />
+      <group horizontal="1">
+        <label>Blending type</label>
+        <group horizontal="1">
+            <combobox dataBindings="BlendingType">
+                <comboboxitem value="0">Opaque - DO NOT USE</comboboxitem>
+                <comboboxitem value="1">Alpha</comboboxitem>
+                <comboboxitem value="2">Additive</comboboxitem>
+                <comboboxitem value="3">Screen</comboboxitem>
+                <comboboxitem value="4">Pre-multiplied Alpha</comboboxitem>
+                <comboboxitem value="5">Multiply add</comboboxitem>
+                <comboboxitem value="6">ZMask</comboboxitem>
+                <comboboxitem value="9">WaterMask</comboboxitem>
+            </combobox>
+            <group show_if="BlendingType==0">
+                <label color="FF0000">Do not use 'Opaque'.</label>
+                <label color="FF0000">Put geometry with lighting under the Unlit geometry and use 'Additive' blending instead.</label>
+            </group>
+        </group>
+        <group horizontal="1" show_if="BlendingType!=0">
+          <label>Sorting Layer Bias</label>
+          <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order of the mesh.  Materials with smaller values are drawn first.">
+            <dataBindings increment="1" minvalue="-10" maxvalue="10" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>HDR Multiplier</label>
+        <textbox dataBindings="HDRMul">
+          <dataBindings maxvalue="100000000" />
+        </textbox>
+      </group>
+    </group>
+    <label> </label>
+
+    <!-- Light Animation Settings -->
+    <group label="Light Animation">
+      <checkbox label="Needs Electric Power" dataBindings="NeedsElectricPower" tooltip="Intensity can be affected by electric disturbances." />
+      <checkbox label="Affected By Time Of Day" dataBindings="IsAffectedByTimeOfDay" tooltip="Intensity will be affected by time of day." />
+      <group horizontal="1" show_if="IsAffectedByTimeOfDay">
+        <label>Light Intensity Curve Index</label>
+        <combobox dataBindings="LightIntensityCurveSel" tooltip="Light intensity curve that will be used when affected by time of day.">
+          <comboboxitem value="1,0,0,0">Curve 0</comboboxitem>
+          <comboboxitem value="0,1,0,0">Curve 1</comboboxitem>
+          <comboboxitem value="0,0,1,0">Curve 2</comboboxitem>
+          <comboboxitem value="0,0,0,1">Curve 3</comboboxitem>
+        </combobox>
+      </group>
+      <group horizontal="1">
+        <label>Light Off Color</label>
+        <button dataBindings="LightOffColor">
+          <dataBindings tooltip="Diffuse color when light is off."/>
+        </button>
+      </group>
+    </group>
+    <label> </label>
+
+    <group label="Normal attenuation">
+      <group horizontal="1">
+        <label>Power</label>
+        <textbox dataBindings="NormalAttenuationPower">
+          <dataBindings increment="0.01" minvalue="0.0" />
+        </textbox>
+      </group>
+      <checkbox label="Inverse" dataBindings="InverseNormalAttenuation" tooltip="Inverses normal attenuation so that it fades in the middle and not on the edges" />
+    </group>
+
+    <!-- Diffuse texture -->
+    <label> </label>
+    <group label="Diffuse Texture">
+      <group horizontal="1">
+        <button dataBindings="DiffuseColor1" />
+        <group horizontal="1" disable_if="VideoTexture1" fill="1">
+          <button dataBindings="DiffuseTexture1" fill="1" />
+        </group>
+        <group show_if="DiffuseTexture1" horizontal="1">
+          <textbox dataBindings="DiffuseUV1">
+            <dataBindings class="UVChannel" />
+          </textbox>
+          <group>
+            <textbox dataBindings="DiffuseTiling1.x">
+              <dataBindings type="int" />
+            </textbox>
+            <textbox dataBindings="DiffuseTiling1.y">
+              <dataBindings type="int" />
+            </textbox>
+          </group>
+        </group>
+      </group>
+      <group horizontal="1" show_if="DiffuseTexture1">
+        <label>Addressing</label>
+        <group horizontal="1" disable_if="VideoTexture1">
+          <combobox dataBindings="DiffuseTexture1State">
+            <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+            <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+            <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+            <comboboxitem value="ColorClampAniso">Clamp Aniso (Expensive)</comboboxitem>
+          </combobox>
+        </group>
+      </group>
+      <label>VideoTexture (replaces DiffuseTexture, always wrapped)</label>
+      <button dataBindings="VideoTexture1" fill="1" />
+      <group horizontal="1">
+        <group enable_if="VideoTexture1">
+          <checkbox label="Play on load" dataBindings="VideoPlayOnLoad" />
+        </group>
+        <group show_if="VideoTexture1">
+          <group show_if="DiffuseTexture1">
+            <label color="FF0000">Please remove the diffuse texture to avoid wasting memory along with the video</label>
+          </group>
+        </group>
+      </group>
+      <group horizontal="1" enable_if="VideoTexture1" >
+        <label>Share Channel</label>
+        <textbox dataBindings="VideoShareChannel" tooltip="All videos using same Bink file on the same channel will play in sync. 0 = not shared.">
+          <dataBindings increment="1" minvalue="0" maxvalue="100" />
+        </textbox>
+        <group horizontal="1" show_if="VideoShareChannel>0" >
+          <label color="0000FF">      Video will play in sync with other videos using same Bink file on same channel.</label>
+        </group>
+      </group>
+    </group>
+
+    <!-- Reflection Settings -->
+    <label> </label>
+    <group label="Reflection" disable_if="BlendingType">
+      <group horizontal="1" disable_if="ReflectionTexture">
+        <label>Type</label>
+        <combobox dataBindings="ReflectionType">
+          <comboboxitem value="0">None</comboboxitem>
+          <comboboxitem value="1">World static</comboboxitem>
+        </combobox>
+      </group>
+      <group>
+        <label>Reflection Texture Override</label>
+        <button dataBindings="ReflectionTexture" fill="1" />
+      </group>
+      <group horizontal="1">
+        <label>Intensity</label>
+        <textbox dataBindings="ReflectionIntensity">
+          <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+        </textbox>
+        <label> 0</label>
+        <slider dataBindings="ReflectionIntensity">
+          <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+        </slider>
+        <label>1</label>
+      </group>
+      <group enable_if="ReflectionType==1 || ReflectionTexture">
+        <checkbox label="Affected by daylight" dataBindings="ReflectionAffectedByDaylight" tooltip="Multiplies the reflection by the outdoor default ambient." />
+      </group>
+    </group>
+
+    <!-- Specular Settings -->
+    <label> </label>
+    <group label="Specular" disable_if="BlendingType">
+      <group horizontal="1">
+        <label>                              Glossiness    </label>
+        <textbox databindings="SpecularPower.x" >
+          <databindings increment="0.1" minvalue="1" maxvalue="8192.0" />
+        </textbox>
+        <label>  0</label>
+        <slider dataBindings="SpecularPower.x">
+          <dataBindings class="SpecularPower" />
+        </slider>
+        <label>1</label>
+      </group>
+      <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+      <xi:include href="UI/ReflectanceGroup.xml" />
+    </group>
+
+    <!-- Texture Animation -->
+    <label> </label>
+    <group label="Animation">
+      <label>Animation type</label>
+      <combobox dataBindings="AnimType">
+        <comboboxitem value="0">None</comboboxitem>
+        <comboboxitem value="1">UV Scrolling</comboboxitem>
+        <comboboxitem value="2">Flipbook animation</comboboxitem>
+        <comboboxitem value="3">UV PingPong Scrolling</comboboxitem>
+        <comboboxitem value="4">UV Rotation</comboboxitem>
+      </combobox>
+
+      <label>Scrolling speed</label>
+      <group horizontal="1" enable_if="AnimType==1 || AnimType==2 || AnimType==3">
+        <label>U</label>
+        <textbox dataBindings="USpeed" />
+        <label>V</label>
+        <textbox dataBindings="VSpeed" />
+      </group>
+
+      <group enable_if="AnimType==4">
+        <label>Angular Speed</label>
+        <textbox dataBindings="AngularSpeed" />
+      </group>
+
+      <group enable_if="AnimType==2">
+        <label>Number of Frames</label>
+        <textbox dataBindings="NbFrames" />
+      </group>
+    </group>
+
+    <label> </label>
+    <group label="Depth intersection highlight">
+      <checkbox label="Enable" dataBindings="DepthIntersectionEnabled" />
+      <group horizontal="1" >
+        <button dataBindings="DepthIntersectionColor" />
+
+        <label>Border power</label>
+        <textbox dataBindings="DepthIntersectionBorderPower">
+          <dataBindings increment="0.01" minvalue="0.0" />
+        </textbox>
+
+        <label>Border width</label>
+        <textbox dataBindings="DepthIntersectionRange.x">
+          <dataBindings increment="0.01" minvalue="0.0" />
+        </textbox>
+
+        <label>   Highlight height</label>
+        <textbox dataBindings="DepthIntersectionRange.y">
+          <dataBindings increment="0.01" minvalue="0.0" />
+        </textbox>
+      </group>
+    </group>
+
+    <label> </label>
+    <group label="Distance Fade">
+      <group horizontal="1">
+        <label>Start</label>
+        <textbox dataBindings="FadeoutParams.x">
+          <dataBindings increment="0.1" maxvalue="4096" />
+        </textbox>
+        <label>    End</label>
+        <textbox dataBindings="FadeoutParams.y">
+          <dataBindings increment="0.1" maxvalue="4096" />
+        </textbox>
+      </group>
+    </group>
+
+  </ui>
+
+</materialdescriptor>

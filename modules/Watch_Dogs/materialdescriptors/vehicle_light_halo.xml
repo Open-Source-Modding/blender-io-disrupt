@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor name="VehicleLightHalo" showinui="1" id="#(0xb906207, 0x24c994d0)">
+    <geometryInputs normal="1" tangent="0" binormal="0" color="1" uvChannels="1" />
+
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="BlendingType" type="int" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" />
+    <parameter name="DiffuseTiling1" type="float2" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="NormalAttenuationPower" type="float" defaultvalue="2" />
+    <parameter name="HDRMul" type="float" defaultvalue="1" />
+
+    <parameter name="NeedsElectricPower" type="bool" defaultvalue="0" />
+
+    <parameter name="HaloIntensities0" type="float4" defaultvalue="1,1,1,1" provideronly="1" />
+    <parameter name="HaloIntensities1" type="float4" defaultvalue="1,1,1,1" provideronly="1" />
+    <parameter name="HaloIntensities2" type="float4" defaultvalue="1,1,1,1" provideronly="1" />
+    <parameter name="HaloIntensities3" type="float4" defaultvalue="1,1,1,1" provideronly="1" />
+    <parameter name="HaloIntensities4" type="float4" defaultvalue="1,1,1,1" provideronly="1" />
+
+    <parameterprovider parametersfilename="Mesh_VehicleLightHalo.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTiling1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="NormalAttenuationPower" />
+        <parameter name="HDRMul" />
+        <parameter name="NeedsElectricPower" />
+        <parameter name="HaloIntensities0" />
+        <parameter name="HaloIntensities1" />
+        <parameter name="HaloIntensities2" />
+        <parameter name="HaloIntensities3" />
+        <parameter name="HaloIntensities4" />
+    </parameterprovider>
+
+    <ui>
+        <group horizontal="0" label="Settings" tooltip="Settings">
+            <group horizontal="1">
+                <group>
+                    <checkbox label="Two sided" dataBindings="TwoSided" />
+                    <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+                </group>
+                <group>
+                    <label>Blending type</label>
+                    <combobox dataBindings="BlendingType">
+                        <comboboxitem value="0">Opaque</comboboxitem>
+                        <comboboxitem value="1">Alpha</comboboxitem>
+                        <comboboxitem value="2">Additive</comboboxitem>
+                        <comboboxitem value="3">Screen</comboboxitem>
+                        <comboboxitem value="4">Pre-multiplied Alpha</comboboxitem>
+                        <comboboxitem value="5">Multiply add</comboboxitem>
+                        <comboboxitem value="6">ZMask</comboboxitem>
+                    </combobox>
+                </group>
+                <group label="Light Animation" tooltip="Animation">
+                    <checkbox label="Needs Electric Power" dataBindings="NeedsElectricPower" tooltip="Intensity can be affected by electric disturbances." />
+                </group>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Diffuse" horizontal="1">
+            <button dataBindings="DiffuseColor1" />
+            <button dataBindings="DiffuseTexture1" fill="1" />
+            <group>
+                <textbox dataBindings="DiffuseTiling1.x">
+                    <dataBindings type="int" />
+                </textbox>
+                <textbox dataBindings="DiffuseTiling1.y">
+                    <dataBindings type="int" />
+                </textbox>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Attenuation and HDR" horizontal="0">
+            <label>Normal attenuation power (default = 2)</label>
+            <group horizontal="1">
+                <label>     0.1</label>
+                <slider dataBindings="NormalAttenuationPower">
+                    <dataBindings increment="0.001" minvalue="0.1" maxvalue="10.0" />
+                </slider>
+                <label>10</label>
+            </group>
+            <label>HDR Multiplier</label>
+            <group horizontal="1">
+                <label>     0.1</label>
+                <slider dataBindings="HDRMul">
+                    <dataBindings increment="0.001" minvalue="0.1" maxvalue="20.0" />
+                </slider>
+                <label>20</label>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

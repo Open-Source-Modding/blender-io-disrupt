@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="NetHackingBackground" pickingid="0" showinui="1" id="#(0x11D4FADA, 0x08D30471)">
+
+    <parameter name="DitheringTexture" type="sampler2D" />
+
+    <parameter name="Color" type="color3" defaultvalue="1,1,1" />
+    <parameter name="Saturation" type="float" defaultvalue="1" />
+
+    <parameter name="AttenuationDistanceFar" type="float" defaultvalue="200" />
+    <parameter name="AttenuationPower" type="float" defaultvalue="1" />
+
+    <parameter name="FadeInBGSpeed" type="float" defaultvalue="0.001" />
+    <parameter name="FadeInBGPower" type="float" defaultvalue="0.25" />
+
+    <parameter name="OmniLightIntensity" type="float" defaultvalue="1" />
+    <parameter name="OmniLightInvRadius" type="float" defaultvalue="20" op_x="1/x" />
+
+    <parameter name="OuterFresnelPower" type="float" defaultvalue="1" />
+    <parameter name="OuterFresnelIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="InnerFresnelPower" type="float" defaultvalue="1" />
+    <parameter name="InnerFresnelIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="SSAOIntensity" type="float" defaultvalue="3" />
+
+    <parameter name="ConstantIntensity" type="float" defaultvalue="0" />
+
+    <parameter name="MinIntensity" type="float" defaultvalue="0" />
+    <parameter name="MaxIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="GlitchTexture" type="sampler2D" />
+    <parameter name="WaveLength" type="float" defaultvalue="100" />
+    <parameter name="WaveSpeed" type="float" defaultvalue="1" />
+    <parameter name="WaveIntensity" type="float" defaultvalue="1" />
+    <parameter name="WaveAttenuationDistance" type="float" defaultvalue="25" />
+    <parameter name="WaveVertical" type="float" defaultvalue="0.25" />
+
+    <parameter name="WaterIntensity" type="float" defaultvalue="0.75" />
+
+    <parameterprovider parametersfilename="NetHackingBackground.fx">
+        <parameter name="DitheringTexture" />
+        <parameter name="GlitchTexture" />
+
+        <parameter name="Color" />
+        <parameter name="Saturation" />
+
+        <parameter name="AttenuationDistanceFar" />
+        <parameter name="AttenuationPower" />
+
+        <parameter name="FadeInBGSpeed" />
+        <parameter name="FadeInBGPower" />
+
+        <parameter name="OmniLightIntensity" />
+        <parameter name="OmniLightInvRadius" />
+
+        <parameter name="OuterFresnelPower" />
+        <parameter name="OuterFresnelIntensity" />
+
+        <parameter name="InnerFresnelPower" />
+        <parameter name="InnerFresnelIntensity" />
+
+        <parameter name="SSAOIntensity" />
+
+        <parameter name="ConstantIntensity" />
+
+        <parameter name="MinIntensity" />
+        <parameter name="MaxIntensity" />
+
+        <parameter name="WaveLength" />
+        <parameter name="WaveSpeed" />
+        <parameter name="WaveIntensity" />
+        <parameter name="WaveAttenuationDistance" />
+        <parameter name="WaveVertical" />
+
+        <parameter name="WaterIntensity" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group label="Dithering prototype" >
+            <group horizontal="1">
+                <button dataBindings="DitheringTexture" fill="1" />
+            </group>
+            <group horizontal="1">
+                <button dataBindings="GlitchTexture" fill="1" />
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Color</label>
+                <button dataBindings="Color" />
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Saturation</label>
+                <textbox dataBindings="Saturation">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Attenuation Distance</label>
+                <textbox dataBindings="AttenuationDistanceFar">
+                    <dataBindings increment="0.1" minvalue="0" />
+                </textbox>
+                <label alignright="0" width="70">Power</label>
+                <textbox dataBindings="AttenuationPower">
+                  <dataBindings increment="0.1" minvalue="0" maxvalue="100" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Fade In Speed</label>
+                <textbox dataBindings="FadeInBGSpeed">
+                    <dataBindings increment="0.0001" minvalue="0" />
+                </textbox>
+                <label alignright="0" width="70">Power</label>
+                <textbox dataBindings="FadeInBGPower">
+                  <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Outer Fresnel Intensity</label>
+                <textbox dataBindings="OuterFresnelIntensity">
+                    <dataBindings increment="0.01" minvalue="-10" maxvalue="10" />
+                </textbox>
+                <label alignright="0" width="70">Power</label>
+                <textbox dataBindings="OuterFresnelPower">
+                    <dataBindings increment="0.1" minvalue="0" maxvalue="100" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Inner Fresnel Intensity</label>
+                <textbox dataBindings="InnerFresnelIntensity">
+                    <dataBindings increment="0.01" minvalue="-10" maxvalue="10" />
+                </textbox>
+                <label alignright="0" width="70">Power</label>
+                <textbox dataBindings="InnerFresnelPower">
+                    <dataBindings increment="0.1" minvalue="0" maxvalue="100" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">SSAO Power</label>
+                <textbox dataBindings="SSAOIntensity">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Constant Intensity</label>
+                <textbox dataBindings="ConstantIntensity">
+                    <dataBindings increment="0.01" minvalue="-1" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Omni Light Intensity</label>
+                <textbox dataBindings="OmniLightIntensity">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Omni Light Radius</label>
+                <textbox dataBindings="OmniLightInvRadius">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Clamp Intensity</label>
+                <textbox dataBindings="MinIntensity">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </textbox>
+                <textbox dataBindings="MaxIntensity">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Wave Spacing</label>
+                <textbox dataBindings="WaveLength">
+                    <dataBindings increment="0.001" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Wave Speed</label>
+                <textbox dataBindings="WaveSpeed">
+                    <dataBindings increment="0.001" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Wave Intensity</label>
+                <textbox dataBindings="WaveIntensity">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Wave Attenuation Distance</label>
+                <textbox dataBindings="WaveAttenuationDistance">
+                    <dataBindings increment="0.001" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Wave Vertical Attenuation</label>
+                <textbox dataBindings="WaveVertical">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Water Intensity</label>
+                <textbox dataBindings="WaterIntensity">
+                    <dataBindings increment="0.01" minvalue="0"  maxvalue="1" />
+                </textbox>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

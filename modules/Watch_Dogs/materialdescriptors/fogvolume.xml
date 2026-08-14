@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="FogVolume" displayname="FogVolume" showinui="1" id="#(0x4cc81c5a, 0x1d121a1d)">
+    <geometryInputs normal="0" tangent="0" binormal="0" color="1" uvChannels="0" />
+
+    <!-- Material parameters -->
+    <parameter name="EnableFogEffect" type="bool" defaultvalue="1" reloadMaterial="1" />
+    <parameter name="UseMeshDensity" type="bool" defaultvalue="0" reloadMaterial="1" />
+
+    <!-- Shader parameters -->
+    <parameterprovider parametersfilename="Mesh_FogVolume.fx">
+        <parameter name="EnableFogEffect" />
+        <parameter name="UseMeshDensity" />
+    </parameterprovider>
+
+    <!-- Conditional shader options -->
+    <shaderoptions>
+    </shaderoptions>
+    
+    <!-- Material UI definition -->
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Information -->
+        <group label="Information">
+            <label>Vertex color mappings:</label>
+            <group horizontal="1">
+                <label color="BB0000">    R:</label>
+                <label color="404040">(unused)</label>
+            </group>
+            <group horizontal="1" >
+                <label color="00BB00">    G:</label>
+                <label color="404040">(unused)</label>
+            </group>
+            <group horizontal="1">
+                <label color="0000AA">    B:</label>
+                <label color="404040">(unused)</label>
+            </group>
+            <group horizontal="1">
+                <label color="000000">    A:</label>
+                <group enable_if="UseMeshDensity" >
+                    <label>Fog density</label>
+                </group>
+                <group hide_if="UseMeshDensity" >
+                    <label color="404040"> (unused)</label>
+                </group>
+            </group>
+        </group>
+
+        <!-- Settings -->
+        <label> </label>
+        <group label="Settings">
+            <checkbox label="Enable Fog Effect" dataBindings="EnableFogEffect" tooltip="Enables the volumetric fog effect. If unchecked, it will be rendered as a regular solid mesh."/>
+            <checkbox label="Use Mesh Density" dataBindings="UseMeshDensity" tooltip="Use mesh density in alpha channel."/>
+        </group>
+    </ui>
+</materialdescriptor>

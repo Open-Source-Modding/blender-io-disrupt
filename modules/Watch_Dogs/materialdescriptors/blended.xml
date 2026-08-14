@@ -1,0 +1,1864 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="Blended" showinui="1" id="#(0x2240e83, 0x71951684)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" packedUVChannel="10" bonecount="1" reduceMatrixPerDrawCallBy="14" />
+    
+    <parameter name="CastShadow" type="bool" defaultvalue="1" />
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+    <parameter name="WetSurfaceTypeIndex" type="int" defaultvalue="0" />
+    <parameter name="Translucency" type="float" defaultvalue="0" />
+
+    <parameter name="BaseColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="BaseColorTexture" type="sampler2D" tilingName="BaseColorTiling" UvName="BaseColorUV" uvTilingName="BaseColorUVTiling" maxdisplayname="Base Color Texture" optional="1" />
+    <parameter name="BaseColorTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="BaseColorUV" type="int" />
+    <parameter name="BaseColorUVTiling" type="float4" provideronly="1" />
+    <parameter name="BaseColorTextureState" type="samplerState" defaultvalue="ColorWrap" />
+
+    <parameter name="SurfaceParametersTexture" type="sampler2D" tilingName="SurfaceParametersTiling" UvName="SurfaceParametersUV" uvTilingName="SurfaceParametersUVTiling" maxdisplayname="Surface Parameters Texture" optional="1" />
+    <parameter name="SurfaceParametersTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="SurfaceParametersTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="SurfaceParametersUV" type="int" />
+    <parameter name="SurfaceParametersUVTiling" type="float4" provideronly="1" />
+    <parameter name="Opacity" type="float" defaultvalue="1" />
+
+    <parameter name="MaskChannelUsageRed" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageGreen" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageBlue" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageAlpha" type="float" defaultvalue="0" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.5" />
+    <parameter name="Roughness" type="float" defaultvalue="0.3" />
+    <parameter name="Metalness" type="float" defaultvalue="0" />
+    
+    <parameter name="NormalMapTexture" type="sampler2D" maxdisplayname="Normal Map Texture" optional="1" />
+    <parameter name="NormalMapTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="NormalMapTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalMapIntensity" type="float" defaultvalue="1" />
+    
+    <parameter name="AffectByEntityScale_X" type="bool" defaultvalue="1" />
+    <parameter name="AffectByEntityScale_Y" type="bool" defaultvalue="1" />
+    <parameter name="AffectByEntityScale_Z" type="bool" defaultvalue="1" />
+
+    <parameter name="AnimType" type="int" />
+    <parameter name="UVSpeed" type="float2" />
+    <parameter name="UVSpeed2" type="float2" />
+    <parameter name="NbFramesX" type="int" defaultvalue="1" oldnames="NbFrames"/>
+    <parameter name="NbFramesY" type="int" defaultvalue="1" />
+    <parameter name="Framerate" type="float" />
+    <parameter name="BlendFrames" type="bool">
+        <use_if parameter="AnimType" value="2" />
+    </parameter>
+    <parameter name="BlendDelay" type="float" />
+    
+    <parameter name="ScanCone" type="bool" />    
+    <parameter name="EdgeHeight" type="float" defaultvalue="0.5" />
+
+    <parameter name="Ping" type="bool" />
+    <parameter name="Ping_Color1" type="color3" defaultvalue="0.748,0.0133,0.0199" />
+    <parameter name="Ping_Color2" type="color3" defaultvalue="0.17578125,0.67578125,0.80078125" />
+    <parameter name="Ping_Color_Factor" type="float" defaultvalue="1" />
+    <parameter name="Ping_Normal_Str" type="float" defaultvalue="0.5" />
+    <parameter name="Ping_Thickness" type="float3" defaultvalue="2,0.1,0" op_z="y/0.5" />
+    <parameter name="Ping_Fade_Ratio" type="float" defaultvalue="0.75" />
+    <parameter name="Ping_Opacity" type="float3" defaultvalue="0.25,0.5,100" op_x="x/10" op_y="y/10" />
+    <parameter name="Ping_Center_Opacity" type="float" defaultvalue="0" />
+    <parameter name="Ping_Center_Distance" type="float" defaultvalue="95" />
+    
+    <parameter name="Ping_WaveMode" type="bool" />
+    <parameter name="PingWave_Noise" type="float4" defaultvalue="0.03,2,-1.3,1" />
+    
+    <parameter name="Disable_Z" type="bool" defaultvalue="0" />
+    <parameter name="Ping_Highlight" type="bool" />
+    <parameter name="PingHigh_Fresnel_Power" type="float" defaultvalue="2" />
+    <parameter name="PingHigh_PanSpeed" type="float" defaultvalue="0.1" />
+    <parameter name="PingHigh_Banding" type="float4" defaultvalue="4,0.25,8,0.125" op_y="1/x" op_z="x/0.5" op_w="1/z"/>
+    <parameter name="PingHigh_Lines" type="float2" defaultvalue="0.1, 0.25" />
+    <parameter name="PingHigh_Opacity" type="float2" defaultvalue="0.25, 0.5" />
+    <parameter name="PingHigh_PanNorm" type="float2" defaultvalue="0.5, 0.5" op_x="x/100" op_y="y/100" />
+    <parameter name="PingHigh_LinesFadeDist" type="float2" defaultvalue="5,10" />
+    <parameter name="PingHigh_Falloff" type="float3" defaultvalue="1,1,1" op_y="1/y" />
+    <parameter name="PingHigh_Dots_Size" type="float" defaultvalue="0.02" op_x="1/x"/>
+    <parameter name="PingHigh_Dots_Smooth" type="float2" defaultvalue="0, 0.25" />
+    <parameter name="PingHigh_Dots_Opacity" type="float" defaultvalue="0.5" />
+    
+    <parameter name="DScan_BG_Norm_Scale" type="float2" defaultvalue="1,1" />
+    <parameter name="DScan_BG_Norm_Panning" type="float2" defaultvalue="0,0" />
+    <parameter name="DScan_BG_Push" type="float" defaultvalue="0" op_x="x/10" />
+    <parameter name="DScan_Line1_Scale" type="float2" defaultvalue="1,0" />
+    <parameter name="DScan_Line2_Scale" type="float2" defaultvalue="1,0" />
+    <parameter name="DScan_Line_Pan" type="float2" defaultvalue="0,0" />
+    <parameter name="DScan_Line1_Norm_Scale" type="float2" defaultvalue="1,1" />
+    <parameter name="DScan_Line2_Norm_Scale" type="float2" defaultvalue="1,1" />
+    <parameter name="DScan_Line1_Norm_Pan" type="float2" defaultvalue="0,0" />
+    <parameter name="DScan_Line2_Norm_Pan" type="float2" defaultvalue="0,0" />
+    <parameter name="DScan_Line_Norm_Amp" type="float2" defaultvalue="1,1" />
+    <parameter name="DScan_Line_Color" type="color4" defaultvalue="1,1,1,1" />
+    <parameter name="DScan_Line_Bright" type="float2" defaultvalue="1,1" />
+    <parameter name="DScan_Fresnel" type="float" defaultvalue="1" />
+    
+    <parameter name="Hologram" type="bool" />
+    <parameter name="Holo_Intensity" type="float" defaultvalue="1"/>
+    <parameter name="Holo_AlphaTest_Enable" type="bool" defaultvalue="0"/>
+    <parameter name="Holo_AlphaTest_Cutoff" type="float" defaultvalue="0"/>
+    <parameter name="Holo_Use_VA" type="bool" />
+    <parameter name="Holo_Fresnel_Power" type="float" defaultvalue="1" op_x="1/x" />
+    <parameter name="Holo_Fresnel_Opacity" type="float2" defaultvalue="1,0" />
+    <parameter name="Holo_Interlace_Scale" type="float" defaultvalue="1" />
+    <parameter name="Holo_Interlace_Opacity" type="float" defaultvalue="0" />
+    <parameter name="Holo_Interlace_Pan" type="float" defaultvalue="0" />
+    <parameter name="Holo_Interlace_Smooth" type="float2" defaultvalue="0,1" />
+    <parameter name="Holo_Interlace_FadeDist" type="float2" defaultvalue="5,10" />
+    <parameter name="Holo_Glitch_Scale" type="float" defaultvalue="1" />
+    <parameter name="Holo_Glitch_Speed" type="float" defaultvalue="1" />
+    <parameter name="Holo_Glitch_Smooth" type="float2" defaultvalue="0,1" />
+    <parameter name="Holo_Glitch_Opacity" type="float" defaultvalue="0" />
+    <parameter name="Holo_Strobe_Sin" type="float3" defaultvalue="1,2,3" />
+    <parameter name="Holo_Strobe_Opacity" type="float" defaultvalue="0" />
+        
+    <parameter name="Hologram_Rays" type="bool" />
+    <parameter name="HoloRay_Length" type="float" defaultvalue="1" />
+    <parameter name="HoloRay_Speed" type="float" defaultvalue="1" />
+    <parameter name="HoloRay_Position" type="float3" defaultvalue="0,0,0" />
+    <parameter name="HoloRay_WS" type="bool" />
+    <parameter name="HoloRay_NearFade" type="float2" defaultvalue="1,0" op_x="1/x" />
+    
+    <parameter name="Hologram_AR" type="bool" />
+    <parameter name="HoloAR_Falloff" type="float3" defaultvalue="1,1,2" op_y="1/y" />
+    <parameter name="HoloAR_Color1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="HoloAR_Color2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="HoloAR_Color_Size" type="float4" defaultvalue="2,1,1.5,3" />
+    <parameter name="HoloAR_NoiseTexture" type="sampler2D" maxdisplayname="Laser Noise Texture" optional="1" />
+    <parameter name="HoloAR_NoiseTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="HoloAR_NoiseTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="HoloAR_3D_Speed" type="float" defaultvalue="1" />
+    <parameter name="HoloAR_BrightDist" type="float2" defaultvalue="5,10" />
+    <parameter name="HoloAR_NearFade" type="float2" defaultvalue="0,1" />
+    <parameter name="HoloAR_BG_Str" type="float" defaultvalue="0.1" />
+    <parameter name="HoloAR_Dot_Noise" type="float" defaultvalue="0" />
+    <parameter name="HoloAR_Dot_Amp" type="float" defaultvalue="0.25" />
+    <parameter name="HoloAR_Dot_Size" type="float" defaultvalue="0.0225" />
+    <parameter name="HoloAR_Dot_Far" type="float" defaultvalue="6" />
+    <parameter name="HoloAR_Dot_Near" type="float" defaultvalue="4" />
+    <parameter name="HoloAR_Dot_FadeDistance" type="float" defaultvalue="10" />
+    
+    <parameter name="Reticule_Circle" type="bool" />
+    <parameter name="Reticule_Circle_CylinderMode" type="bool"/>
+    <parameter name="RetCir_Color" type="color4" defaultvalue="1,1,1,0.25" />
+    <parameter name="RetCir_SmoothOut" type="float2" defaultvalue="0,1" />
+    <parameter name="RetCir_SmoothIns" type="float2" defaultvalue="0,1" />
+    <parameter name="RetCir_SmoothDot" type="float3" defaultvalue="0,1,1" />
+    <parameter name="RetCir_SmoothPan" type="float2" defaultvalue="0,1" />
+    <parameter name="RetCir_SpeedPan" type="float3" defaultvalue="1,1,1" />
+    <parameter name="RetCir_RotationCircle" type="float3" defaultvalue="0,0,0" />
+    <parameter name="RetCir_DashLines" type="float2" defaultvalue="1,0" />
+    <parameter name="RetCir_Fade" type="float3" defaultvalue="1,1,1" />
+    
+    <parameter name="Reticule_Line" type="bool" />
+    <parameter name="RetLin_Color" type="color4" defaultvalue="1,1,1,0.25" />
+    <parameter name="RetLin_Size" type="float3" defaultvalue="1,10,0" />
+    <parameter name="RetLin_Smooth" type="float2" defaultvalue="0,1" />
+    <parameter name="RetLin_SpeedPan" type="float4" defaultvalue="1,0.1,0.25,20" />
+    
+    <parameter name="Laser" type="bool" />
+    <parameter name="Laser_Brightness" type="float" defaultvalue="1" />
+    <parameter name="Laser_Use_VA" type="bool" defaultvalue="0" />
+    <parameter name="Laser_BC_Pan" type="float2" defaultvalue="0,0" />
+    <parameter name="Laser_Wind" type="float2" defaultvalue="0.1,0.05" />
+    
+    <parameter name="LaserVolumeTexture" type="sampler3D" maxdisplayname="Laser volume texture" optional="1" />
+    <parameter name="Laser_VolTex_Scale" type="float" defaultvalue="1" />
+    <parameter name="Laser_VolTex_Smooth" type="float3" defaultvalue="0,1,0.05" />
+    <parameter name="Laser_Fresnel" type="float" defaultvalue="2" />
+    <parameter name="LaserNoiseTexture" type="sampler2D" maxdisplayname="Laser Noise Texture" optional="1" />
+    <parameter name="LaserNoiseTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="LaserNoiseTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="Laser_Noise_FPS" type="float" defaultvalue="10" />
+    <parameter name="Laser_Noise_FadeDist" type="float2" defaultvalue="0.5,2" />
+    <parameter name="Laser_Depth" type="bool" />
+    <parameter name="Laser_Depth_Dist" type="float" defaultvalue="1" op_x="1/x" />
+    <parameter name="Laser_Near_FadeDist" type="float2" defaultvalue="1,2" />
+    <parameter name="Laser_Thickness" type="float3" defaultvalue="1,1,1" op_z="1/z" />
+
+    <parameter name="AffectsGI" type="bool" defaultvalue="0" /><!-- Should the material be present/emissive in GI generation renders for the 'local lights' pass. -->
+
+    <parameter name="ResponsiveAAStrength" type="float" defaultvalue="1.0"/>
+
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+    <parameterprovider parametersfilename="Mesh_Blended.fx">
+        <parameter name="Translucency" />
+        <parameter name="WetSurfaceTypeIndex" />
+
+        <parameter name="BaseColor" />
+        <parameter name="BaseColorTexture" />
+        <parameter name="BaseColorTextureState" />
+        <parameter name="BaseColorUVTiling" />
+
+        <parameter name="SurfaceParametersTexture" />
+        <parameter name="SurfaceParametersTextureState" />
+        <parameter name="SurfaceParametersUVTiling" />
+        <parameter name="Opacity" />
+
+        <parameter name="MaskChannelUsageRed" />
+        <parameter name="MaskChannelUsageGreen" />
+        <parameter name="MaskChannelUsageBlue" />
+        <parameter name="MaskChannelUsageAlpha" />
+
+        <parameter name="Reflectance" />
+        <parameter name="Roughness" />
+        <parameter name="Metalness" />
+
+        <parameter name="NormalMapTexture" />
+        <parameter name="NormalMapTextureState" />
+        <parameter name="NormalMapTiling" />
+        <parameter name="NormalMapIntensity" />
+        
+        <parameter name="AffectByEntityScale_X" />
+        <parameter name="AffectByEntityScale_Y" />
+        <parameter name="AffectByEntityScale_Z" />
+
+        <parameter name="Ping" />
+        <parameter name="Ping_Color1" />
+        <parameter name="Ping_Color2" />
+        <parameter name="Ping_Color_Factor" />
+        <parameter name="Ping_Normal_Str" />
+        <parameter name="Ping_Thickness" />
+        <parameter name="Ping_Fade_Ratio" />
+        <parameter name="Ping_Opacity" />
+        <parameter name="Ping_Center_Opacity" />
+        <parameter name="Ping_Center_Distance" />
+
+        <parameter name="Disable_Z" />
+        
+        <parameter name="Ping_WaveMode" />
+        <parameter name="PingWave_Noise" />
+        <parameter name="Ping_Highlight" />
+        <parameter name="PingHigh_Fresnel_Power" />
+        <parameter name="PingHigh_PanSpeed" />
+        <parameter name="PingHigh_Banding" />
+        <parameter name="PingHigh_Lines" />
+        <parameter name="PingHigh_Opacity" />
+        <parameter name="PingHigh_PanNorm" />
+        <parameter name="PingHigh_LinesFadeDist" />
+        <parameter name="PingHigh_Falloff" />
+        <parameter name="PingHigh_Dots_Size" />
+        <parameter name="PingHigh_Dots_Smooth" />
+        <parameter name="PingHigh_Dots_Opacity" />
+
+        <parameter name="AnimType" />
+        <parameter name="UVSpeed" />
+        <parameter name="UVSpeed2" />
+        <parameter name="NbFramesX" />
+        <parameter name="NbFramesY" />
+        <parameter name="BlendFrames" />
+        <parameter name="Framerate" />
+        <parameter name="BlendDelay" />
+        
+        <parameter name="ScanCone" />
+        <parameter name="EdgeHeight" />      
+        
+        <parameter name="DScan_BG_Norm_Scale" />
+        <parameter name="DScan_BG_Norm_Panning" />
+        <parameter name="DScan_BG_Push" />
+        <parameter name="DScan_Line1_Scale" />
+        <parameter name="DScan_Line2_Scale" />
+        <parameter name="DScan_Line_Pan" />
+        <parameter name="DScan_Line1_Norm_Scale" />
+        <parameter name="DScan_Line2_Norm_Scale" />
+        <parameter name="DScan_Line1_Norm_Pan" />
+        <parameter name="DScan_Line2_Norm_Pan" />
+        <parameter name="DScan_Line_Norm_Amp" />
+        <parameter name="DScan_Line_Color" />
+        <parameter name="DScan_Line_Bright" />
+        <parameter name="DScan_Fresnel" />
+        
+        <parameter name="Hologram" />
+        <parameter name="Holo_AlphaTest_Enable"/>
+        <parameter name="Holo_AlphaTest_Cutoff"/>
+        <parameter name="Holo_Intensity"/>
+        <parameter name="Holo_Use_VA" />
+        <parameter name="Holo_Fresnel_Power" />
+        <parameter name="Holo_Fresnel_Opacity" />
+        <parameter name="Holo_Interlace_Scale" />
+        <parameter name="Holo_Interlace_Opacity" />
+        <parameter name="Holo_Interlace_Pan" />
+        <parameter name="Holo_Interlace_Smooth" />
+        <parameter name="Holo_Interlace_FadeDist" />
+        <parameter name="Holo_Glitch_Scale" />
+        <parameter name="Holo_Glitch_Speed" />
+        <parameter name="Holo_Glitch_Smooth" />
+        <parameter name="Holo_Glitch_Opacity" />
+        <parameter name="Holo_Strobe_Sin" />
+        <parameter name="Holo_Strobe_Opacity" />
+        
+        
+        <parameter name="Hologram_Rays" />
+        <parameter name="HoloRay_Length" />
+        <parameter name="HoloRay_Speed" />
+        <parameter name="HoloRay_Position" />
+        <parameter name="HoloRay_WS" />
+        <parameter name="HoloRay_NearFade" />
+        
+        <parameter name="Hologram_AR" />
+        <parameter name="HoloAR_Falloff" />
+        <parameter name="HoloAR_Color1" />
+        <parameter name="HoloAR_Color2" />
+        <parameter name="HoloAR_Color_Size" />
+        <parameter name="HoloAR_NoiseTexture" />
+        <parameter name="HoloAR_NoiseTextureState" />
+        <parameter name="HoloAR_NoiseTiling" />>
+        <parameter name="HoloAR_3D_Speed" />
+        <parameter name="HoloAR_BrightDist" />
+        <parameter name="HoloAR_NearFade" />
+        <parameter name="HoloAR_BG_Str" />
+        <parameter name="HoloAR_Dot_Noise" />
+        <parameter name="HoloAR_Dot_Amp" />
+        <parameter name="HoloAR_Dot_Size" />
+        <parameter name="HoloAR_Dot_Near" />
+        <parameter name="HoloAR_Dot_Far" />
+        <parameter name="HoloAR_Dot_FadeDistance" />
+        
+        
+        <parameter name="Reticule_Circle" />
+        <parameter name="Reticule_Circle_CylinderMode" />
+        <parameter name="RetCir_Color" />
+        <parameter name="RetCir_SmoothOut" />
+        <parameter name="RetCir_SmoothIns" />
+        <parameter name="RetCir_SmoothDot" />
+        <parameter name="RetCir_SmoothPan" />
+        <parameter name="RetCir_SpeedPan" />
+        <parameter name="RetCir_RotationCircle" />
+        <parameter name="RetCir_DashLines" />
+        <parameter name="RetCir_Fade" />
+        
+        <parameter name="Reticule_Line" />
+        <parameter name="RetLin_Color" />
+        <parameter name="RetLin_Size" />
+        <parameter name="RetLin_Smooth" />
+        <parameter name="RetLin_SpeedPan" />
+        
+        <parameter name="Laser" />
+        <parameter name="Laser_Brightness" />
+        <parameter name="Laser_Use_VA" />
+        <parameter name="Laser_BC_Pan" />
+        <parameter name="Laser_Wind" />
+        <parameter name="LaserVolumeTexture" />
+        <parameter name="Laser_VolTex_Scale" />
+        <parameter name="Laser_VolTex_Smooth" />
+        <parameter name="Laser_Fresnel" />
+        <parameter name="LaserNoiseTexture" />
+        <parameter name="LaserNoiseTextureState" />
+        <parameter name="LaserNoiseTiling" />
+        <parameter name="Laser_Noise_FPS" />
+        <parameter name="Laser_Noise_FadeDist" />
+        <parameter name="Laser_Depth" />
+        <parameter name="Laser_Depth_Dist" />
+        <parameter name="Laser_Near_FadeDist" />
+        <parameter name="Laser_Thickness" />
+
+        <parameter name="AffectsGI" />
+
+        <parameter name="ResponsiveAAStrength" />
+
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <shaderoptions>
+        <shaderoption name="ALPHA_TEST">
+          <condition parameter="Hologram" />
+          <condition parameter="Holo_AlphaTest_Enable" />
+        </shaderoption>
+        <shaderoption name="USE_BASE_COLOR_TEXTURE">
+            <condition parameter="BaseColorTexture" />
+        </shaderoption>
+        <shaderoption name="USE_SURFACE_PARAMETERS_TEXTURE">
+            <condition parameter="SurfaceParametersTexture" />
+        </shaderoption>
+        <shaderoption name="USE_NORMAL_MAP_TEXTURE">
+            <condition parameter="NormalMapTexture" />
+        </shaderoption>
+        <shaderoption name="ANIMATED">
+            <condition parameter="AnimType" />
+        </shaderoption>
+        <shaderoption name="SCANCONE">
+            <condition parameter="ScanCone" op="equal" value="1" />
+        </shaderoption>
+        <shaderoption name="PING">
+            <condition parameter="Ping" />
+        </shaderoption>
+        <shaderoption name="PING_HIGHLIGHT">
+            <condition parameter="Ping_Highlight" />
+        </shaderoption>
+        <shaderoption name="HOLOGRAM">
+            <condition parameter="Hologram" />
+            <condition parameter="SurfaceParametersTexture" op="equal" value="0" />
+        </shaderoption>
+        <shaderoption name="HOLOGRAM_RAYS">
+            <condition parameter="Hologram_Rays" />
+            <condition parameter="SurfaceParametersTexture" op="equal" value="0" />
+        </shaderoption>   
+        <shaderoption name="HOLOGRAM_AR">
+            <condition parameter="Hologram" />
+            <condition parameter="Hologram_AR" />
+        </shaderoption>   
+        <shaderoption name="BLEND_FRAMES">
+            <condition parameter="AnimType" />
+            <condition parameter="BlendFrames" />            
+        </shaderoption>
+         <shaderoption name="RETICULE_CIRCLE">
+            <condition parameter="Reticule_Circle" />
+        </shaderoption>
+        <shaderoption name="RETICULE_LINE">
+            <condition parameter="Reticule_Line" />
+        </shaderoption>
+        <shaderoption name="LASER">
+            <condition parameter="Laser" />
+        </shaderoption>
+        <shaderoption name="LASER_VOLUME">
+            <condition parameter="Laser" />
+            <condition parameter="LaserVolumeTexture" />
+        </shaderoption>
+        <shaderoption name="LASER_NOISE">
+            <condition parameter="Laser" />
+            <condition parameter="LaserNoiseTexture" />
+        </shaderoption>
+        <shaderoption name="LASER_DEPTH">
+            <condition parameter="Laser" />
+            <condition parameter="Laser_Depth" />
+        </shaderoption>
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+        <shaderoption name="DISABLE_Z">
+            <condition parameter="Disable_Z" />
+        </shaderoption>
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Settings">
+            <checkbox label="Two sided" dataBindings="TwoSided" />
+            <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+            <checkbox label="Affects GI" dataBindings="AffectsGI" />
+
+            <group horizontal="1">
+                <label alignright="1" width="120">Responsive AA Strength</label>
+                <textbox dataBindings="ResponsiveAAStrength">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                </textbox>
+            </group>
+
+            <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+
+            <group horizontal="1">
+                <label>Translucency</label>
+                <label> 0</label>
+                <slider dataBindings="Translucency">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+                <textbox dataBindings="Translucency">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>Sorting Layer Bias</label>
+                <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order.  Materials with smaller values are drawn first.">
+                    <dataBindings increment="1" minvalue="-4" maxvalue="4" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>Wet Surface Type: </label>
+                <combobox dataBindings="WetSurfaceTypeIndex">
+                    <comboboxitem value="0">Default</comboboxitem>
+                    <comboboxitem value="-1">Never Wet</comboboxitem>
+                    <comboboxitem value="1">Car Window</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Base Color">
+            <group horizontal="1">
+                <button dataBindings="BaseColor" />
+                <group horizontal="1" enable_if="Ping_Highlight==0">
+                <group enable_if="Ping==0">
+                    <button dataBindings="BaseColorTexture" />
+                    <textbox dataBindings="BaseColorUV">
+                        <dataBindings class="UVChannel" />
+                    </textbox>
+                    <group>
+                        <textbox dataBindings="BaseColorTiling.x">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                        <textbox dataBindings="BaseColorTiling.y">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+                    <combobox dataBindings="BaseColorTextureState">
+                        <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                        <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                        <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                        <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                        <comboboxitem value="ColorWrapHClampV">Wrap H - Clamp V</comboboxitem>
+                    </combobox>
+                </group>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>Opacity:   0</label>
+                <slider dataBindings="Opacity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+
+        <group label="Surface Parameters" enable_if="Hologram==0">
+        <group enable_if="Hologram_Rays==0">
+        <group enable_if="Laser==0">
+        <group enable_if="Ping==0">
+        <group enable_if="Ping_Highlight==0">
+            <group horizontal="1">
+                <group horizontal="1">
+                    <button dataBindings="SurfaceParametersTexture" fill="1" />
+                </group>
+                <textbox dataBindings="SurfaceParametersUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="SurfaceParametersTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SurfaceParametersTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="SurfaceParametersTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                    <comboboxitem value="ColorWrapHClampV">Wrap H - Clamp V</comboboxitem>
+                </combobox>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label alignright="1" width="40" color="BB0000">R:</label>
+                    <group horizontal="1" enable_if="Colorize==0">
+                        <group horizontal="1">
+                            <combobox dataBindings="MaskChannelUsageRed">
+                                <comboboxitem value="1">Reflectance</comboboxitem>
+                                <comboboxitem value="0">None</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <!-- MaskChannelUsageRed 0 NONE | 1 REFLECTANCE | 2 COLORIZE -->
+                    <!-- MaskChannelUsageAlpha 0 NONE | 1 COLORIZE -->
+                    <group horizontal="1" disable_if="MaskChannelUsageRed==1">
+                        <group horizontal="1" enable_if="MaskChannelUsageRed==2 || MaskChannelUsageRed==0">
+                            <label alignright="1" width="90">Reflectance</label>
+                            <label> 0</label>
+                            <slider dataBindings="Reflectance">
+                                <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                                <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                            </slider>
+                            <label>1  </label>
+                            <textbox databindings="Reflectance">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="40" color="00BB00">G:</label>
+                    <group horizontal="1" enable_if="SurfaceParametersTexture==1">
+                        <group horizontal="1">
+                            <combobox dataBindings="MaskChannelUsageGreen">
+                                <comboboxitem value="1">Roughness</comboboxitem>
+                                <comboboxitem value="0">None</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <group horizontal="1" enable_if="SurfaceParametersTexture==0 || MaskChannelUsageGreen==0">
+                        <label alignright="1" width="90">Roughness</label>
+                        <label> 0</label>
+                        <slider dataBindings="Roughness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Roughness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="40" color="0000BB">B:</label>
+                    <group horizontal="1" enable_if="SurfaceParametersTexture==1">
+                        <group horizontal="1">
+                            <combobox dataBindings="MaskChannelUsageBlue">
+                                <comboboxitem value="1">Metal Mask</comboboxitem>
+                                <comboboxitem value="0">None</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <group horizontal="1" enable_if="SurfaceParametersTexture==0 || MaskChannelUsageBlue==0">
+                        <label alignright="1" width="90">Metal Mask</label>
+                        <label> 0</label>
+                        <slider dataBindings="Metalness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Metalness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <!--group horizontal="1">
+                    <label alignright="1" width="40" color="404040">A:</label>
+                    <group horizontal="1" enable_if="SurfaceParametersTexture==1">
+                        <group horizontal="1">
+                            <combobox dataBindings="MaskChannelUsageAlpha">
+                                <comboboxitem value="1">Alpha</comboboxitem>
+                                <comboboxitem value="0">None</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                </group-->
+            </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+
+        <label> </label>
+        <group label="Normal Map" horizontal="1" fill="1">
+        <group enable_if="Ping==0">
+        <group enable_if="Laser==0">
+            <group vertical="1">
+                <group horizontal="1">
+                    <button dataBindings="NormalMapTexture" />
+                    <group>
+                        <textbox dataBindings="NormalMapTiling.x">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                        <textbox dataBindings="NormalMapTiling.y">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+                    <combobox dataBindings="NormalMapTextureState">
+                        <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                        <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                        <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                        <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                        <comboboxitem value="ColorWrapHClampV">Wrap H - Clamp V</comboboxitem>
+                    </combobox>
+                </group>
+                <group horizontal="1" enable_if="NormalMapTexture">
+                    <label>Intensity: </label>
+                    <textbox databindings="NormalMapIntensity">
+                        <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                    </textbox>
+                    <label> 0</label>
+                    <slider dataBindings="NormalMapIntensity">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                    </slider>
+                    <label>2</label>
+                </group>
+            </group>
+        </group>
+        </group>
+        </group>
+        <label> </label>
+        
+        <group label="Entity Scale" horizontal="1" fill="1" width="100">
+            <label>Affect:</label>
+            <checkbox  label="X" dataBindings="AffectByEntityScale_X" alignright="1" />
+            <checkbox  label="Y" dataBindings="AffectByEntityScale_Y" alignright="1" />
+            <checkbox  label="Z" dataBindings="AffectByEntityScale_Z" alignright="1" />
+            <label> </label>
+        </group>
+
+        <label> </label>
+        <group enable_if="Ping==0">
+        <group enable_if="Laser==0">
+        <group enable_if="Ping_Highlight==0">
+        <group enable_if="Ping_WaveMode==0">
+            <xi:include href="UI/TextureAnimationGroup.xml" />
+        </group>
+        </group>
+        </group>
+        </group>
+            
+        <label> </label>
+        <group enable_if="Ping_Highlight==0">
+        <group enable_if="ScanCone==0">
+        <group enable_if="Hologram==0">
+        <group enable_if="Hologram_Rays==0">
+        <group enable_if="Reticule_Circle==0">
+        <group enable_if="Reticule_Line==0">
+        <group enable_if="Laser==0">
+            <group label="Ping" >
+                <checkbox label="Ping" dataBindings="Ping" />
+                <group show_if="Ping">
+                    <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/wd3/How+To+-+Ping+Shader">How To...</label>
+       
+                    <label> </label>
+                    <group label="Colors">
+                             <group horizontal="1">
+                                <label width="75" alignright="1">Color1:</label>
+                                <button dataBindings="Ping_Color1" />
+                                <label width="50" alignright="1">Color2:</label>
+                                <button dataBindings="Ping_Color2" />
+    
+                                </group>
+                                 <label> </label>
+                                <group horizontal="1">
+                                <label width="75" alignright="1">Ping Color Factor:</label>
+                                <textbox dataBindings="Ping_Color_Factor" >
+                                    <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                    </group>
+                     <label> </label>
+                    <group label="Ping Wave Mode">
+                        <group horizontal="1">
+                             <checkbox label="Enable" dataBindings="Ping_WaveMode" />
+                        </group>
+                        <label> </label>
+                        <group   label="Noise">
+                            <group horizontal="1">
+                                <label width="100" alignright="1">Amplitude:</label>
+                                <textbox dataBindings="PingWave_Noise.x" >
+                                    <databindings increment="0.001" minvalue="-1" maxvalue="1" />
+                                </textbox>
+                            </group>
+                            <group horizontal="1">
+                                <label width="100" alignright="1">Frequency:</label>
+                                <textbox dataBindings="PingWave_Noise.y" >
+                                    <databindings increment="1" minvalue="1" maxvalue="32" />
+                                </textbox>
+                            </group>
+                            <group horizontal="1">
+                                <label width="100" alignright="1">Speed:</label>
+                                <textbox dataBindings="PingWave_Noise.z" >
+                                    <databindings increment="0.001" minvalue="-100" maxvalue="100.0" />
+                                </textbox>
+                            </group>
+                            <group horizontal="1">
+                                <label width="100" alignright="1">Line Size:</label>
+                                <textbox dataBindings="PingWave_Noise.w" >
+                                    <databindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                        </group>
+                     </group>
+                    
+                    <label> </label>
+                    <group>
+                    <label> </label>
+                    <group label="Thickness">
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Main:</label>
+                            <textbox dataBindings="Ping_Thickness.x" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="100" />
+                            </textbox>
+                            <label width="75" alignright="1">Edge:</label>
+                            <textbox dataBindings="Ping_Thickness.y" >
+                                <databindings increment="0.001" minvalue="0" maxvalue="1" />
+                            </textbox>
+                        </group>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="Opacity">
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Main:</label>
+                            <textbox dataBindings="Ping_Opacity.x" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="10" />
+                            </textbox>
+                            <label width="75" alignright="1">Edge:</label>
+                            <textbox dataBindings="Ping_Opacity.y" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="10" />
+                            </textbox>
+                            <label width="50" alignright="1">Glow:</label>
+                            <textbox dataBindings="Ping_Opacity.z" >
+                                <databindings increment="0.1" minvalue="0" maxvalue="1000" />
+                            </textbox>
+                            <label width="75" alignright="1">Fade Ratio:</label>
+                            <textbox dataBindings="Ping_Fade_Ratio" >
+                              <databindings increment="0.01" minvalue="0" maxvalue="1" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group label="Desaturation">
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Opacity:</label>
+                            <textbox dataBindings="Ping_Center_Opacity" >
+                              <databindings increment="0.01" minvalue="0" maxvalue="1" />
+                            </textbox>
+                            <label width="75" alignright="1">Distance:</label>
+                            <textbox dataBindings="Ping_Center_Distance" >
+                              <databindings increment="0.01" minvalue="-1" maxvalue="500" />
+                            </textbox>
+                         </group>
+                    </group>
+                    <label> </label>
+                    <group label="Normal">
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Strength:</label>
+                            <textbox dataBindings="Ping_Normal_Str" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="10" />
+                            </textbox>
+                        </group>
+                    </group>
+                </group>
+                </group>
+            </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+
+        <label> </label>
+        <group enable_if="Ping==0">
+        <group enable_if="ScanCone==0">
+        <group enable_if="Hologram==0">
+        <group enable_if="Hologram_Rays==0">
+        <group enable_if="Reticule_Circle==0">
+        <group enable_if="Reticule_Line==0">
+        <group enable_if="Laser==0">
+            <group label="Ping Highlight" >
+                <checkbox label="Enable" dataBindings="Ping_Highlight" />
+                <group show_if="Ping_Highlight">
+                    <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/wd3/How+To+-+Ping+Shader#HowTo-PingShader-PingHighlight">How To...</label>
+                    <label> </label>
+                    <group horizontal="1">
+                        <checkbox label="See Through Walls" dataBindings="Disable_Z" />
+                    </group>
+                    <group label="Banding Effect">
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Opacity:</label>
+                            <textbox dataBindings="PingHigh_Opacity.x" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="1" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Banding Steps:</label>
+                            <textbox dataBindings="PingHigh_Banding.x" >
+                                <databindings increment="1" minvalue="1" maxvalue="32" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Fresnel Power:</label>
+                            <textbox dataBindings="PingHigh_Fresnel_Power" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Panning Speed:</label>
+                            <textbox dataBindings="PingHigh_PanSpeed" >
+                                <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Normal Pan Speed:</label>
+                            <textbox dataBindings="PingHigh_PanNorm.x" >
+                                <databindings increment="0.01" minvalue="-1" maxvalue="10" />
+                            </textbox>
+                            <textbox dataBindings="PingHigh_PanNorm.y" >
+                                <databindings increment="0.01" minvalue="-1" maxvalue="10" />
+                            </textbox>
+                        </group>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="Topographic Lines">
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Opacity:</label>
+                            <textbox dataBindings="PingHigh_Opacity.y" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="1" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Thickness:</label>
+                            <textbox dataBindings="PingHigh_Lines.x" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="1" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Other Line Opacity:</label>
+                            <textbox dataBindings="PingHigh_Lines.y" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="1" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Fade Dist - Min:</label>
+                            <textbox dataBindings="PingHigh_LinesFadeDist.x">
+                                <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Max:</label>
+                            <textbox dataBindings="PingHigh_LinesFadeDist.y">
+                                <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="Dots">
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Size:</label>
+                            <textbox dataBindings="PingHigh_Dots_Size" >
+                                <databindings increment="0.001" minvalue="0" maxvalue="1" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">SmoothStep - Min:</label>
+                            <textbox dataBindings="PingHigh_Dots_Smooth.x" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="1" />
+                            </textbox>
+                            <label width="50" alignright="1">Max:</label>
+                            <textbox dataBindings="PingHigh_Dots_Smooth.y" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Opacity:</label>
+                            <textbox dataBindings="PingHigh_Dots_Opacity" >
+                                <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="Falloff" horizontal="1">
+                        <label width="100" alignright="1">Height:</label>
+                        <textbox dataBindings="PingHigh_Falloff.x" />
+                        <label width="50" alignright="1">Distance:</label>
+                        <textbox dataBindings="PingHigh_Falloff.y">
+                            <databindings increment="0.01" minvalue="0" maxvalue="10" />
+                        </textbox>
+                        <label width="50" alignright="1">Power:</label>
+                        <textbox dataBindings="PingHigh_Falloff.z">
+                            <databindings increment="0.01" minvalue="0" maxvalue="10" />
+                        </textbox>
+                        <label> </label>
+                    </group>
+                </group>
+            </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+
+        <label> </label>
+        <group enable_if="Ping==0">
+        <group enable_if="Ping_Highlight==0">
+        <group enable_if="Hologram==0">
+        <group enable_if="Hologram_Rays==0">
+        <group enable_if="Reticule_Circle==0">
+        <group enable_if="Reticule_Line==0">
+        <group enable_if="Laser==0">
+            <group label="Digital Scan Cone" >
+                <checkbox label="Scan Cone" dataBindings="ScanCone" />
+                <group show_if="ScanCone>0">
+                    <group horizontal="1">
+                        <label width="75">Edge Height:</label>
+                        <textbox dataBindings="EdgeHeight" />
+                    </group>
+                    
+                    <group horizontal="1">
+                        <label width="75">Fresnel:</label>
+                        <textbox dataBindings="DScan_Fresnel" />
+                    </group>
+                    
+                    <label> </label>
+                    
+                    <group label="Background">
+                        <group horizontal="1">
+                            <label width="50">Scale: </label>
+                            <textbox dataBindings="DScan_BG_Norm_Scale.x" />
+                            <textbox dataBindings="DScan_BG_Norm_Scale.y" />
+                        </group>
+                        <group horizontal="1">
+                            <label width="50">Pan: </label>
+                            <textbox dataBindings="DScan_BG_Norm_Panning.x" />
+                            <textbox dataBindings="DScan_BG_Norm_Panning.y" />
+                        </group>
+                        <group horizontal="1">
+                            <label width="50">Push: </label>
+                            <textbox dataBindings="DScan_BG_Push" />
+                        </group>
+                    </group>
+                    
+                    <label> </label>
+                    
+                    <group label="Waves">
+                        <group horizontal="1">
+                            <label width="50">Color: </label>
+                            <button dataBindings="DScan_Line_Color" />
+                        </group>
+                    
+                        <group horizontal="1">
+                            <group label="1">
+                                <group horizontal="1">
+                                    <label width="75">Thickness: </label>
+                                    <textbox dataBindings="DScan_Line1_Scale.x" />
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Offset: </label>
+                                    <textbox dataBindings="DScan_Line1_Scale.y" />
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Pan: </label>
+                                    <textbox dataBindings="DScan_Line_Pan.x" />
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Brightness:</label>
+                                    <textbox dataBindings="DScan_Line_Bright.x" />
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Normal Scale:</label>
+                                    <textbox dataBindings="DScan_Line1_Norm_Scale.x" />
+                                    <textbox dataBindings="DScan_Line1_Norm_Scale.y" />
+                                    <label width="15"></label>
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Normal Pan: </label>
+                                    <textbox dataBindings="DScan_Line1_Norm_Pan.x" />
+                                    <textbox dataBindings="DScan_Line1_Norm_Pan.y" />
+                                    <label width="15"></label>
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Normal Amp: </label>
+                                    <textbox dataBindings="DScan_Line_Norm_Amp.x" />
+                                </group>
+                            </group>
+                            
+                            <group label="2">
+                                <group horizontal="1">
+                                    <label width="75">Thickness: </label>
+                                    <textbox dataBindings="DScan_Line2_Scale.x" />
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Offset: </label>
+                                    <textbox dataBindings="DScan_Line2_Scale.y" />
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Pan: </label>
+                                    <textbox dataBindings="DScan_Line_Pan.y" />
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Brightness:</label>
+                                    <textbox dataBindings="DScan_Line_Bright.y" />
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Normal Scale:</label>
+                                    <textbox dataBindings="DScan_Line2_Norm_Scale.x" />
+                                    <textbox dataBindings="DScan_Line2_Norm_Scale.y" />
+                                    <label width="15"></label>
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Normal Pan: </label>
+                                    <textbox dataBindings="DScan_Line2_Norm_Pan.x" />
+                                    <textbox dataBindings="DScan_Line2_Norm_Pan.y" />
+                                    <label width="15"></label>
+                                </group>
+                                <group horizontal="1">
+                                    <label width="75">Normal Amp: </label>
+                                    <textbox dataBindings="DScan_Line_Norm_Amp.y" />
+                                </group>
+                            </group>
+                        </group>
+                    </group>
+                </group>
+            </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        
+        <label> </label>
+        <group enable_if="Ping_Highlight==0">
+        <group enable_if="SurfaceParametersTexture==0">
+        <group enable_if="ScanCone==0">
+        <group enable_if="Reticule_Circle==0">
+        <group enable_if="Reticule_Line==0">
+        <group enable_if="Laser==0">
+            <group label="Hologram" enable_if="Ping==0">
+                <group horizontal="1">
+                    <group enable_if="Hologram_Rays==0">
+                        <checkbox label="Hologram" dataBindings="Hologram" />
+                    </group>
+                    <group enable_if="Hologram==0">
+                        <checkbox label="Rays" dataBindings="Hologram_Rays" />
+                    </group>
+                </group>
+                <group show_if="Hologram || Hologram_Rays">
+                    <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/wd3/How+To+-+Hologram">How To...</label>
+                    <label> </label>
+                    <checkbox label="Use Vertex Alpha" dataBindings="Holo_Use_VA" />
+                    <label> </label>
+                  
+                  <group horizontal="1">
+                    <checkbox label="Alpha Test" dataBindings="Holo_AlphaTest_Enable" />
+                  </group>
+                  
+                  <group horizontal="1" enable_if="Holo_AlphaTest_Enable==1">
+                    <label width="100">Alpha Cutoff:</label>
+                    <textbox dataBindings="Holo_AlphaTest_Cutoff">
+                      <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+                    <label>0</label>
+                    <slider dataBindings="Holo_AlphaTest_Cutoff">
+                      <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                  </group>
+                  
+                  <group label="Fresnel"> 
+                        <group horizontal="1">
+                            <label width="100">Power:</label>
+                            <textbox dataBindings="Holo_Fresnel_Power">
+                                <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                            <label>0</label>
+                              <slider dataBindings="Holo_Fresnel_Power">
+                                  <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                              </slider>
+                            <label>1</label>
+                        </group>
+                        <group horizontal="1" label="Intensity">
+                            <label width="100">Edge (Outer):</label>
+                            <textbox dataBindings="Holo_Fresnel_Opacity.x">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Center (Inner):</label>
+                            <textbox dataBindings="Holo_Fresnel_Opacity.y">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                  
+                  <group label="EV Intensity Modifier">
+                    <group horizontal="1">
+                      <label width="100">Power (EV):</label>
+                      <textbox dataBindings="Holo_Intensity">
+                        <databindings increment="0.01" minvalue="0" maxvalue="20.0" />
+                      </textbox>
+                    </group>
+                  </group>
+                  
+                    <label> </label>
+                    <group label="Interlace" enable_if="Hologram_AR==0">
+                        <group horizontal="1">
+                            <label width="100">Scale:</label>
+                            <textbox dataBindings="Holo_Interlace_Scale">
+                                <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100">Opacity:</label>
+                            <textbox dataBindings="Holo_Interlace_Opacity">
+                                <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100">Pan Speed:</label>
+                            <textbox dataBindings="Holo_Interlace_Pan">
+                                <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100">SmoothStep - Min:</label>
+                            <textbox dataBindings="Holo_Interlace_Smooth.x">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Max:</label>
+                            <textbox dataBindings="Holo_Interlace_Smooth.y">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100">Fade Dist - Min:</label>
+                            <textbox dataBindings="Holo_Interlace_FadeDist.x">
+                                <databindings increment="0.001" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Max:</label>
+                            <textbox dataBindings="Holo_Interlace_FadeDist.y">
+                                <databindings increment="0.001" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="Glitch" enable_if="Hologram_AR==0">
+                        <group horizontal="1">
+                            <label width="100">Scale:</label>
+                            <textbox dataBindings="Holo_Glitch_Scale">
+                                <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100">Speed:</label>
+                            <textbox dataBindings="Holo_Glitch_Speed">
+                                <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100">Opacity:</label>
+                            <textbox dataBindings="Holo_Glitch_Opacity">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100">SmoothStep - Min:</label>
+                            <textbox dataBindings="Holo_Glitch_Smooth.x">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Max:</label>
+                            <textbox dataBindings="Holo_Glitch_Smooth.y">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="Strobe" enable_if="Hologram_AR==0">
+                        <group horizontal="1">
+                            <label width="100">Sin 1:</label>
+                            <textbox dataBindings="Holo_Strobe_Sin.x">
+                                <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Sin 2:</label>
+                            <textbox dataBindings="Holo_Strobe_Sin.y">
+                                <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Sin 3:</label>
+                            <textbox dataBindings="Holo_Strobe_Sin.z">
+                                <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100">Opacity:</label>
+                            <textbox dataBindings="Holo_Strobe_Opacity">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="Rays" enable_if="Hologram_AR==0">
+                        <group enable_if="Hologram_Rays">
+                            <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/wd3/How+To+-+Hologram#HowTo-Hologram-HologramRays">How To...</label>
+                            <group horizontal="1">
+                                <label width="120">Length:</label>
+                                <label>0</label>
+                                <slider dataBindings="HoloRay_Length">
+                                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                                </slider>
+                                <label>1</label>
+                                <textbox dataBindings="HoloRay_Length">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                                </textbox>
+                            </group>
+                            <group horizontal="1">
+                                <label width="120">Oscilation Speed:</label>
+                                <textbox dataBindings="HoloRay_Speed">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                                </textbox>
+                            </group>
+                            <group horizontal="1">
+                                <label width="120">Projector Position:</label>
+                                <checkbox label="Local/World -- X:" dataBindings="HoloRay_WS" />
+                                <textbox dataBindings="HoloRay_Position.x" />
+                                <label width="20" alignright="1">Y:</label>
+                                <textbox dataBindings="HoloRay_Position.y" />
+                                <label width="20" alignright="1">Z:</label>
+                                <textbox dataBindings="HoloRay_Position.z" />
+                            </group>
+                            <group horizontal="1">
+                                <label width="120">Near Fade -- Distance:</label>
+                                <textbox dataBindings="HoloRay_NearFade.x">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                                </textbox>
+                                <label width="25">Offset:</label>
+                                <textbox dataBindings="HoloRay_NearFade.y">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="0.99" />
+                                </textbox>
+                            </group>
+                        </group>
+                    </group>
+                
+                    <label> </label>
+                    <group label="AR" enable_if="Hologram_Rays==0">
+                        <checkbox label="Enable AR" dataBindings="Hologram_AR" />
+                        <group show_if="Hologram_AR">
+                            <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/pages/viewpage.action?pageId=406848252">How To...</label>
+                            <label> </label>
+                            <group label="Colors" horizontal="1">
+                                <label width="75" alignright="1">Side:</label>
+                                <button dataBindings="HoloAR_Color1" />
+                                <label width="50" alignright="1">Middle:</label>
+                                <button dataBindings="HoloAR_Color2" />
+                                <label> </label>
+                            </group>
+                            
+                             <group horizontal="1" label="Object Size RampColor">
+                                    <group horizontal="1">
+                                        <label width="75" alignright="1">Size X:</label>
+                                        <textbox dataBindings="HoloAR_Color_Size.x">
+                                            <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                        </textbox>
+                                        <label width="50" alignright="1">Size Y:</label>
+                                        <textbox dataBindings="HoloAR_Color_Size.y">
+                                            <databindings increment="0.01" minvalue="0" maxvalue="100" />
+                                        </textbox>
+                                    </group>
+                                    <group horizontal="1">
+                                        <label width="75" alignright="1">Falloff X:</label>
+                                        <textbox dataBindings="HoloAR_Color_Size.z">
+                                            <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                        </textbox>
+                                        <label width="50" alignright="1">Falloff Y:</label>
+                                        <textbox dataBindings="HoloAR_Color_Size.w">
+                                            <databindings increment="0.01" minvalue="0" maxvalue="100" />
+                                        </textbox>
+                                    </group>
+                                    
+                            </group>
+                            <label> </label>
+                            <group label="ScreenSpace Noise" >
+                                <group horizontal="1">
+                                    <button dataBindings="HoloAR_NoiseTexture" />
+                                    <group horizontal="1" enable_if="HoloAR_NoiseTexture">
+                                        <group>
+                                            <textbox dataBindings="HoloAR_NoiseTiling.x">
+                                                <dataBindings class="Tiling" />
+                                            </textbox>
+                                            <textbox dataBindings="HoloAR_NoiseTiling.y">
+                                                <dataBindings class="Tiling" />
+                                            </textbox>
+                                        </group>
+                                        <combobox dataBindings="HoloAR_NoiseTextureState">
+                                            <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                                            <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                                        </combobox>
+                                    </group>
+                                </group>
+                            </group>
+                            
+                            <label> </label>
+                            <group label="Brightness Over Distance (meters)" horizontal="1">
+                                <label width="75" alignright="1">Min:</label>
+                                <textbox dataBindings="HoloAR_BrightDist.x">
+                                    <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                                </textbox>
+                                <label width="50" alignright="1">Max:</label>
+                                <textbox dataBindings="HoloAR_BrightDist.y">
+                                    <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                                </textbox>
+                                <label> </label>
+                            </group>
+                            
+                            <label> </label>
+                            <group label="Near Fade Distance (meters)" horizontal="1">
+                                <label width="75" alignright="1">Min:</label>
+                                <textbox dataBindings="HoloAR_NearFade.x">
+                                    <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                                </textbox>
+                                <label width="50" alignright="1">Max:</label>
+                                <textbox dataBindings="HoloAR_NearFade.y">
+                                    <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                                </textbox>
+                                <label> </label>
+                            </group>
+                            
+                            <label> </label>
+                            <group label="Falloff" horizontal="1">
+                                <label width="75" alignright="1">Height:</label>
+                                <textbox dataBindings="HoloAR_Falloff.x" />
+                                <label width="50" alignright="1">Distance:</label>
+                                <textbox dataBindings="HoloAR_Falloff.y">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="10" />
+                                </textbox>
+                                <label width="50" alignright="1">Power:</label>
+                                <textbox dataBindings="HoloAR_Falloff.z">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="10" />
+                                </textbox>
+                                <label> </label>
+                            </group>
+                            
+                            <label> </label>
+                            <group label="Black Background" horizontal="1">
+                                <label width="75" alignright="1">Opacity:</label>
+                                <textbox dataBindings="HoloAR_BG_Str">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="1" />
+                                </textbox>
+                                <label> </label>
+                            </group>
+                            <group label="Dots" vertical="1">
+                                <group  horizontal="1">
+                                    <label width="75" alignright="1">Noise:</label>
+                                    <textbox dataBindings="HoloAR_Dot_Noise">
+                                        <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                    </textbox>
+                                    <label width="75" alignright="1">Amplitude:</label>
+                                    <textbox dataBindings="HoloAR_Dot_Amp">
+                                        <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                    </textbox>
+                                    <label width="75" alignright="1">Speed:</label>
+                                    <textbox dataBindings="HoloAR_3D_Speed">
+                                        <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                    </textbox>
+                                </group>
+                                <group  horizontal="1"> 
+                                        <label width="75" alignright="1">Size:</label>
+                                        <textbox dataBindings="HoloAR_Dot_Size">
+                                            <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                        </textbox>
+                                        <label width="75" alignright="1">Near:</label>
+                                        <textbox dataBindings="HoloAR_Dot_Near">
+                                            <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                        </textbox>
+                                        <label width="75" alignright="1">Far:</label>
+                                        <textbox dataBindings="HoloAR_Dot_Far">
+                                            <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                        </textbox>
+                                        <label width="75" alignright="1">Fade Distance:</label>
+                                        <textbox dataBindings="HoloAR_Dot_FadeDistance">
+                                            <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                        </textbox>
+                                    </group>
+                                </group>
+                                
+                            </group>
+                    </group>
+
+                </group>
+            </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        
+        <label> </label>
+        <group enable_if="ScanCone==0">
+        <group enable_if="Hologram==0">
+        <group enable_if="Hologram_Rays==0">
+        <group enable_if="Ping==0">
+        <group enable_if="Ping_Highlight==0">
+        <group enable_if="Reticule_Line==0">
+        <group enable_if="Laser==0">
+            <group label="Reticule Circle" >
+                <checkbox label="Reticule Circle" dataBindings="Reticule_Circle" />
+                <group show_if="Reticule_Circle">
+                    <group horizontal="1" >
+                        <checkbox label="Cylinder Mode" dataBindings="Reticule_Circle_CylinderMode" />
+                        <label width="50">BG Color:</label>
+                        <button dataBindings="RetCir_Color" />
+                        <label>Alpha:   0</label>
+                        <slider dataBindings="RetCir_Color.w">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1</label>
+                        <textbox dataBindings="RetCir_Color.w" >
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="Smoothstep">
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Outside Min:</label>
+                            <textbox dataBindings="RetCir_SmoothOut.x">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Max:</label>
+                            <textbox dataBindings="RetCir_SmoothOut.y">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Inside Min:</label>
+                            <textbox dataBindings="RetCir_SmoothIns.x">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Max:</label>
+                            <textbox dataBindings="RetCir_SmoothIns.y">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Dot Min:</label>
+                            <textbox dataBindings="RetCir_SmoothDot.x">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Max:</label>
+                            <textbox dataBindings="RetCir_SmoothDot.y">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Cross Size:</label>
+                            <textbox dataBindings="RetCir_SmoothDot.z">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Pan Min:</label>
+                            <textbox dataBindings="RetCir_SmoothPan.x">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Max:</label>
+                            <textbox dataBindings="RetCir_SmoothPan.y">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group label="Panner">
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Speed:</label>
+                            <textbox dataBindings="RetCir_SpeedPan.x">
+                                <databindings increment="0.001" minvalue="-10" maxvalue="10.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Spacing:</label>
+                            <textbox dataBindings="RetCir_SpeedPan.y">
+                                <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Opacity:</label>
+                            <textbox dataBindings="RetCir_SpeedPan.z">
+                                <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group label="Rotation Lines">
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Width:</label>
+                            <textbox dataBindings="RetCir_RotationCircle.x">
+                                <databindings increment="0.001" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Lenght:</label>
+                            <textbox dataBindings="RetCir_RotationCircle.y">
+                                <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Speed:</label>
+                            <textbox dataBindings="RetCir_RotationCircle.z">
+                                <databindings increment="0.01" minvalue="-10" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group label="Dash Lines">
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Size:</label>
+                            <textbox dataBindings="RetCir_DashLines.x">
+                                <databindings increment="0.001" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Spacer:</label>
+                            <textbox dataBindings="RetCir_DashLines.y">
+                                <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group label="Fade">
+                        <group horizontal="1">
+                            <label width="75" alignright="1">Line fade X:</label>
+                            <textbox dataBindings="RetCir_Fade.x">
+                                <databindings increment="0.001" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Line fade Y:</label>
+                             <textbox dataBindings="RetCir_Fade.y">
+                                <databindings increment="0.001" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Z Fade:</label>
+                             <textbox dataBindings="RetCir_Fade.z">
+                                <databindings increment="0.001" minvalue="0" maxvalue="10.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                </group>
+            </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        
+        <label> </label>
+        <group enable_if="ScanCone==0">
+        <group enable_if="Hologram==0">
+        <group enable_if="Hologram_Rays==0">
+        <group enable_if="Ping==0">
+        <group enable_if="Ping_Highlight==0">
+        <group enable_if="Reticule_Circle==0">
+        <group enable_if="Laser==0">
+            <group label="Reticule Line" >
+                <checkbox label="Reticule Line" dataBindings="Reticule_Line" />
+                <group show_if="Reticule_Line">
+                    <group horizontal="1" >
+                        <label width="50">Alt Color:</label>
+                        <button dataBindings="RetLin_Color" />
+                        <label>Alpha:   0</label>
+                        <slider dataBindings="RetLin_Color.w">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1</label>
+                        <textbox dataBindings="RetLin_Color.w" >
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                    <label> </label>
+                    <group label="Dots" horizontal="1">
+                        <label width="50" alignright="1">Size X:</label>
+                        <textbox dataBindings="RetLin_Size.x">
+                            <databindings increment="0.001" minvalue="0" maxvalue="100.0" />
+                        </textbox>
+                        <label width="30" alignright="1">Y:</label>
+                        <textbox dataBindings="RetLin_Size.y">
+                            <databindings increment="0.001" minvalue="0" maxvalue="100.0" />
+                        </textbox>
+                        <label width="50" alignright="1">Offset:</label>
+                        <textbox dataBindings="RetLin_Size.z">
+                            <databindings increment="0.001" minvalue="-10" maxvalue="10.0" />
+                        </textbox>
+                        <label> </label>
+                    </group>
+                    <group label="Smoothstep" horizontal="1">
+                        <label width="50" alignright="1">Min:</label>
+                        <textbox dataBindings="RetLin_Smooth.x">
+                            <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                        <label width="30" alignright="1">Max:</label>
+                        <textbox dataBindings="RetLin_Smooth.y">
+                            <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                        <label> </label>
+                    </group>
+                    <group label="Panner" horizontal="1">
+                        <label width="50" alignright="1">Speed:</label>
+                        <textbox dataBindings="RetLin_SpeedPan.x">
+                            <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                        </textbox>
+                        <label width="30" alignright="1">Size:</label>
+                        <textbox dataBindings="RetLin_SpeedPan.y">
+                            <databindings increment="0.001" minvalue="0" maxvalue="10.0" />
+                        </textbox>
+                        
+                        <label width="50">Distance:</label>
+                        <textbox dataBindings="RetLin_SpeedPan.z">
+                            <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                        </textbox>
+                        <label width="50" alignright="1">Lenght:</label>
+                        <textbox dataBindings="RetLin_SpeedPan.w">
+                            <databindings increment="0.1" minvalue="0" maxvalue="100.0" />
+                        </textbox>
+                        <label> </label>
+                    </group>
+                </group>
+            </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        
+        <label> </label>
+        <group enable_if="ScanCone==0">
+        <group enable_if="Hologram==0">
+        <group enable_if="Hologram_Rays==0">
+        <group enable_if="Ping==0">
+        <group enable_if="Ping_Highlight==0">
+        <group enable_if="Reticule_Circle==0">
+        <group enable_if="Reticule_Line==0">
+            <group label="Laser" >
+                <checkbox label="Enable" dataBindings="Laser" />
+                <group show_if="Laser">
+                    <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/wd3/How+To+-+Laser+Shader">How To...</label>
+                    <label> </label>
+                    <group horizontal="1">
+                        <label width="75" alignright="1">Brightness:</label>
+                        <textbox dataBindings="Laser_Brightness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                        </textbox>
+                        <label width="20"> </label>
+                        <checkbox label="Use Vertex Alpha" dataBindings="Laser_Use_VA" />
+                    </group>
+                    <group horizontal="1">
+                        <label width="75" alignright="1">Fresnel:</label>
+                        <textbox dataBindings="Laser_Fresnel">
+                            <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                        </textbox>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="Thickness" horizontal="1">
+                        <label width="75" alignright="1">Near:</label>
+                        <textbox dataBindings="Laser_Thickness.x">
+                            <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                        </textbox>
+                        <label width="50" alignright="1">Far:</label>
+                        <textbox dataBindings="Laser_Thickness.y">
+                            <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                        </textbox>
+                        <label width="50" alignright="1">Dist:</label>
+                        <textbox dataBindings="Laser_Thickness.z">
+                            <dataBindings increment="0.01" minvalue="0" maxvalue="1000" />
+                        </textbox>
+                        <label> </label>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="Near Fade Distance (meters)" horizontal="1">
+                        <label width="75" alignright="1">Min:</label>
+                        <textbox dataBindings="Laser_Near_FadeDist.x">
+                            <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                        </textbox>
+                        <label width="50" alignright="1">Max:</label>
+                        <textbox dataBindings="Laser_Near_FadeDist.y">
+                            <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                        </textbox>
+                        <label> </label>
+                    </group>
+                
+                    <label> </label>
+                    <group label="Base Color Panner" horizontal="1" enable_if="BaseColorTexture">
+                        <label width="75" alignright="1">X:</label>
+                        <textbox dataBindings="Laser_BC_Pan.x">
+                            <dataBindings increment="0.01" minvalue="-100" maxvalue="100" />
+                        </textbox>
+                        <label width="50" alignright="1">Y:</label>
+                        <textbox dataBindings="Laser_BC_Pan.y">
+                            <dataBindings increment="0.01" minvalue="-100" maxvalue="100" />
+                        </textbox>
+                        <label> </label>
+                    </group>
+                
+                    <label> </label>
+                    <group label="Volume Texture">
+                        <button dataBindings="LaserVolumeTexture" />
+                        <group show_if="LaserVolumeTexture">
+                            <label> </label>
+                            <group horizontal="1">
+                                <label width="75" alignright="1">Min Opacity:</label>
+                                <textbox dataBindings="Laser_VolTex_Smooth.z">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                                </textbox>
+                                
+                                <label width="50" alignright="1">Scale:</label>
+                                <textbox dataBindings="Laser_VolTex_Scale">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                </textbox>
+                                <label> </label>
+                            </group>
+                        
+                            <label> </label>
+                            <group label="Wind" horizontal="1">
+                                <label width="75" alignright="1">Speed:</label>
+                                <textbox dataBindings="Laser_Wind.x">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                </textbox>
+                                <label width="50" alignright="1">Min:</label>
+                                <textbox dataBindings="Laser_Wind.y">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                </textbox>
+                                <label> </label>
+                            </group>
+                            
+                            <label> </label>
+                            <group label="Smoothstep" horizontal="1">
+                                <label width="75" alignright="1">Min:</label>
+                                <textbox dataBindings="Laser_VolTex_Smooth.x">
+                                    <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                                </textbox>
+                                <label width="50" alignright="1">Max:</label>
+                                <textbox dataBindings="Laser_VolTex_Smooth.y">
+                                    <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                                </textbox>
+                                <label> </label>
+                            </group>
+                        </group>
+                    </group>
+                
+                    <label> </label>
+                    <group label="ScreenSpace Noise" >
+                        <group horizontal="1">
+                            <button dataBindings="LaserNoiseTexture" />
+                            <group horizontal="1" show_if="LaserNoiseTexture">
+                                <group>
+                                    <textbox dataBindings="LaserNoiseTiling.x">
+                                        <dataBindings class="Tiling" />
+                                    </textbox>
+                                    <textbox dataBindings="LaserNoiseTiling.y">
+                                        <dataBindings class="Tiling" />
+                                    </textbox>
+                                </group>
+                                <combobox dataBindings="LaserNoiseTextureState">
+                                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                                </combobox>
+                            </group>
+                        </group>
+                        
+                        <group show_if="LaserNoiseTexture">
+                            <group horizontal="1">
+                                <label width="75" alignright="1">FPS:</label>
+                                <textbox dataBindings="Laser_Noise_FPS">
+                                    <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                                </textbox>
+                            </group>
+                            
+                            <label> </label>
+                            <group label="Fade Distance (meters)" horizontal="1">
+                                <label width="75" alignright="1">Min:</label>
+                                <textbox dataBindings="Laser_Noise_FadeDist.x">
+                                    <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                                </textbox>
+                                <label width="50" alignright="1">Max:</label>
+                                <textbox dataBindings="Laser_Noise_FadeDist.y">
+                                    <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                                </textbox>
+                                <label> </label>
+                            </group>
+                        </group>
+                    </group>
+                
+                    <label> </label>
+                    <group label="Depth Fade (Expensive)" >
+                        <checkbox label="Enable" dataBindings="Laser_Depth" />
+                        
+                        <group show_if="Laser_Depth">
+                            <group horizontal="1">
+                        <label width="75" alignright="1">Distance:</label>
+                        <textbox dataBindings="Laser_Depth_Dist">
+                            <dataBindings increment="0.01" minvalue="0" maxvalue="100" />
+                        </textbox>
+                            </group>
+                        </group>
+                    </group>
+                </group>
+            </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        </group>
+        <label> </label>
+    </ui>
+</materialdescriptor>

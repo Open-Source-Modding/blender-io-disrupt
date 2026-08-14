@@ -1,0 +1,266 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="DriverVegetation" displayname="DriverVegetation" showinui="1" id="#(0x461eef0a, 0x36fa71b0)" deprecated="1" >
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" packedUVChannel="12"/>
+
+    <parameter name="AlphaTestEnabled" type="bool" defaultvalue="1" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Diffuse texture 1" optional="0"/>
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1"/>
+    <parameter name="DiffuseUV1" type="int" default="0"/>
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColors" type="color4" defaultvalue="1,1,1,1" arraysize="8" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="VegetationAnim" type="bool" defaultvalue="1" />
+    <parameter name="VegetationAnimParams" type="float" defaultvalue="1" />
+    <parameter name="TrunkAnimParams" oldnames="VegetationTrunkAnimParams" type="float3" defaultvalue="1,1,1" />
+    <parameter name="VegetationAnimDiffuseColorBoost" type="float" defaultvalue="0" />
+    <parameter name="VegetationAnimLeaf" type="bool" defaultvalue="0" />
+    <parameter name="VegetationLeafAnimParams" type="float2" defaultvalue="1,0" />
+    <parameter name="VegetationLeafNoiseTexture" type="sampler2D" maxdisplayname="Leaf Anim Noise Texture" />
+    <parameter name="VegetationAnimUseUV2" type="bool" defaultvalue="0" />
+
+    <parameter name="ObstacleDisplacement" type="bool" defaultvalue="1" />
+    <parameter name="ObstacleDisplacementReduceStretching" type="bool" defaultvalue="0" />
+    <parameter name="ObstacleDisplacementParams" type="float3" defaultvalue="1,1,1" op_x="1/x" op_y="1/y" />
+    <parameter name="ObstacleDisplacementParams2" type="float" defaultvalue="1" />
+
+    <parameter name="VegetationEffectFadeValues" type="float3" defaultvalue="80,20,50" op_x="1/x" op_y="1/y" op_z="1/z" />
+
+    <parameterprovider parametersfilename="Mesh_DriverVegetation.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColors" />
+
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalUV1" type="int" />
+        <parameter name="NormalIntensity" />
+
+        <parameter name="VegetationAnim" />
+        <parameter name="VegetationAnimParams" />
+        <parameter name="TrunkAnimParams" />
+        <parameter name="VegetationAnimDiffuseColorBoost" />
+        <parameter name="VegetationAnimLeaf" />
+        <parameter name="VegetationLeafAnimParams" />
+        <parameter name="VegetationLeafNoiseTexture" />
+        <parameter name="VegetationAnimUseUV2" />
+
+        <parameter name="ObstacleDisplacement" />
+        <parameter name="ObstacleDisplacementReduceStretching" />
+        <parameter name="ObstacleDisplacementParams" />
+        <parameter name="ObstacleDisplacementParams2" />
+
+        <parameter name="VegetationEffectFadeValues" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Information -->
+        <group label="Information">
+            <label>Vertex color mappings:</label>
+            <group horizontal="1">
+                <label color="BB0000">    R:</label>
+                <label>Main animation weight</label>
+            </group>
+            <group horizontal="1" >
+                <label color="00BB00">    G:</label>
+                <label>Main animation phase shift</label>
+            </group>
+            <group horizontal="1">
+                <label color="0000AA">    B:</label>
+                <label color="404040">Leaf animation phase shift</label>
+            </group>
+            <group horizontal="1">
+                <label color="000000">    A:</label>
+                <label color="404040">Leaf animation weight (from illum in 3dsMax)</label>
+            </group>
+        </group>
+        <label> </label>
+        
+        <!-- Diffuse -->
+        <group label="Diffuse">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <group>
+                    <textbox dataBindings="DiffuseTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1" >
+                <label>Random diffuse colors:</label>
+                <button dataBindings="DiffuseColors[0]" />
+                <button dataBindings="DiffuseColors[1]" />
+                <button dataBindings="DiffuseColors[2]" />
+                <button dataBindings="DiffuseColors[3]" />
+                <button dataBindings="DiffuseColors[4]" />
+                <button dataBindings="DiffuseColors[5]" />
+                <button dataBindings="DiffuseColors[6]" />
+                <button dataBindings="DiffuseColors[7]" />
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Normal -->
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1" enable_if="NormalTexture1">
+                <label>          Intensity    </label>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- GPU Animation -->
+        <group label="GPU animation">
+            <checkbox label="High-precision animation using UV channel 2" dataBindings="VegetationAnimUseUV2" />
+            <group show_if="VegetationAnimUseUV2==0">
+                <label color="FF0000">        WARNING: This option should be enabled on all meshes, old method is now obsolete!</label>
+            </group>
+
+            <!-- Wind Animation -->
+            <group label="Wind animation">
+                <checkbox label="Enabled" dataBindings="VegetationAnim" />
+                <group horizontal="1" enable_if="VegetationAnim" >
+                    <label>  Wind source  </label>
+                    <textbox dataBindings="VegetationAnimParams.x">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+                    <label>       Global</label>
+                    <slider dataBindings="VegetationAnimParams.x">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>Simulation</label>
+                </group>
+                <group enable_if="VegetationAnim">
+                    <group horizontal="1" >
+                        <label>  Main animation strength  </label>
+                        <textbox dataBindings="TrunkAnimParams.x">
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                        <label>     Fade distance  </label>
+                        <textbox dataBindings="VegetationEffectFadeValues.x" tooltip="The material must be saved for changes to this parameter to take effect!" >
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1" >
+                        <label>  Secondary wave animation strength </label>
+                        <textbox dataBindings="TrunkAnimParams.y">
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                        <label>     Frequency </label>
+                        <textbox dataBindings="TrunkAnimParams.z">
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1" >
+                        <label>  Diffuse color boost  </label>
+                        <textbox dataBindings="VegetationAnimDiffuseColorBoost.x">
+                            <dataBindings increment="0.01" minvalue="0" />
+                        </textbox>
+                    </group>
+                </group>
+
+                <group enable_if="VegetationAnim" >
+                    <checkbox label="Use leaf animation" dataBindings="VegetationAnimLeaf" />
+                    <group enable_if="VegetationAnimLeaf" >
+                        <group horizontal="1" >
+                            <label>    Leaf wave animation strength   </label>
+                            <textbox dataBindings="VegetationLeafAnimParams.x">
+                                <dataBindings increment="0.01" minvalue="0.01" />
+                            </textbox>
+                            <label>     Frequency </label>
+                            <textbox dataBindings="VegetationLeafAnimParams.y">
+                                <dataBindings increment="0.01" minvalue="0.01" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1" >
+                            <label>  Leaf anim noise texture (mandatory)</label>
+                            <button dataBindings="VegetationLeafNoiseTexture" fill="1" />
+                        </group>
+                    </group>
+                </group>
+            </group>
+
+            <!-- Displacement -->
+            <group label="Obstacle collisions">
+                <checkbox label="Enabled" dataBindings="ObstacleDisplacement" />
+                <group enable_if="ObstacleDisplacement">
+                    <group horizontal="1" >
+                        <checkbox label="Reduce displacement stretching" dataBindings="ObstacleDisplacementReduceStretching" tooltip="Reduces stretching by re-normalizing mesh length. EXPENSIVE! Not necessary on smaller grass." />
+                    </group>
+                    <group horizontal="1" >
+                        <label>  Obstacle radius multiplier  </label>
+                        <textbox dataBindings="ObstacleDisplacementParams.x" tooltip="Scaling factor for the obstacle radius. Can be used to adjust the size of the effect on different types of meshes." >
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1" >
+                        <label>  Displacement strength       </label>
+                        <textbox dataBindings="ObstacleDisplacementParams.z" tooltip="Strength of the displacement effect when colliding with characters." >
+                            <dataBindings increment="0.01" minvalue="0.0" />
+                        </textbox>
+                        <group horizontal="1" >
+                            <label>     Fade distance  </label>
+                            <textbox dataBindings="VegetationEffectFadeValues.y" tooltip="The material must be saved for changes to this parameter to take effect!" >
+                                <dataBindings increment="0.01" minvalue="0.01" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group horizontal="1" >
+                        <label>  Vehicle crush strength       </label>
+                        <textbox dataBindings="ObstacleDisplacementParams2.x" tooltip="Strength of the crush effect caused by vehicles." >
+                            <dataBindings increment="0.01" minvalue="0.0" />
+                        </textbox>
+                        <group horizontal="1" >
+                            <label>     Fade distance  </label>
+                            <textbox dataBindings="VegetationEffectFadeValues.z" tooltip="The material must be saved for changes to this parameter to take effect!" >
+                                <dataBindings increment="0.01" minvalue="0.01" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group horizontal="1" >
+                        <label>  Effect vertical range           </label>
+                        <textbox dataBindings="ObstacleDisplacementParams.y" tooltip="Use this value to fade-out the collision effect when the obstacle gets away from the mesh vertically." >
+                            <dataBindings increment="0.01" minvalue="0.1" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+            
+        </group>
+
+    </ui>
+</materialdescriptor>

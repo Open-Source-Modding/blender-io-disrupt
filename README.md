@@ -48,6 +48,7 @@ toolkit.
 | **Far Cry Instincts** (Xbox) | .xbg | ✅ | ✅ .xbt auto-decode | — | — | — | — | — |
 | **Watch Dogs 1** | .xbg | ✅ Full (+ streamed hi-detail LODs) | ⚠️ slot names only | ✅ | ✅ | ✅ .mab | ✅ import | ✅ import |
 | **Watch Dogs 2** | .glm | ✅ Full | ⚠️ slot names | ✅ **.glm export** | ✅ | — | — (rig from model) | — |
+| Watch Dogs Legion | .xbg | ✅ (compiled MOEG + .skel) | ⚠️ slot names only | ✅ in-place | ❌ Count changes | ✅ .mab | ✅ import (.skel) | — |
 | Far Cry 6 | — | 🔜 coming soon | | | | | | |
 
 **Legend / footnotes**
@@ -175,13 +176,13 @@ experiment in one game can never break another.
 
 ## Credits
 
-**Author:** Quiet Joker
+**Authors:** Selene0623, Quiet Joker
 
-**Special thanks:** Jasper_Zebra, legendhavoc175, qstlijku
+**Special thanks:** EncryptedStudios, Jasper_Zebra, legendhavoc175, and qstlijku
 
 **Original script:** Szkaradek123 for the Avatar modding community (Blender 2.49b era). 
 
-Rewritten and expanded for Blender 5.0
+Rewritten and expanded for Blender 5.0 by Selene0623
 
 ## Want to help?
 

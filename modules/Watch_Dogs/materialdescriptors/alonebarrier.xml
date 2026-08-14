@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="AloneBarrier" showinui="1" id="#(0x73756157, 0x796f6e43)" deprecated="1" >
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" />
+
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+
+    <parameter name="WaterColor" type="color4" defaultvalue="0.125,0.125,0.11, 0.9" />
+    <parameter name="OverlayTexture" type="sampler2D" tilingName="OverlayTiling" UvName="OverlayUV" uvTilingName="OverlayUVTiling" />
+    <parameter name="OverlayTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="OverlayUV" type="int" />
+    <parameter name="OverlayParams" type="float4" defaultvalue="0.0,0.15,0.075,13.34" op_z="y/2" op_w="1/z"/>
+
+    <parameter name="FlowTexture" type="sampler2D" tilingName="FlowTiling" UvName="FlowUV" uvTilingName="FlowUVTiling" optional="0" />
+    <parameter name="FlowTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="FlowUV" type="int" />
+    <parameter name="FlowParams" type="float4" defaultvalue="0.05,0.15,0.075,13.34" op_z="y/2" op_w="1/z"/>
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" optional="0" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalIntensity" type="float2" defaultvalue="1,1" />
+
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float3" defaultvalue="0.04,0,1" />
+
+    <parameter name="OverlayUVTiling" type="float4" provideronly="1" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="FlowUVTiling" type="float4" provideronly="1" />
+
+    <parameter name="ReflectionTextureSource" type="int" />
+    <parameter name="ReflectionTexture" type="samplerCUBE" />
+    <parameter name="ReflectionIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="HDRMul" type="float" defaultvalue="1" />
+    <parameter name="NormalAttenuationPower" type="float" />
+    <parameter name="InverseNormalAttenuation" type="float" />
+    <parameter name="UVAnimControlParams" type="float2" provideronly="1" />
+    <parameter name="USpeed" type="float" />
+    <parameter name="VSpeed" type="float" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="FadeDist" type="float3" provideronly="1" />
+    <parameter name="nearFade" type="float" defaultvalue="50" />
+    <parameter name="farFade" type="float" defaultvalue="100" />
+    <parameter name="ZCol" type="float3" provideronly="1" />
+    <parameter name="ZMin" type="float" defaultvalue="0.5" />
+    <parameter name="ZMax" type="float" defaultvalue="1.5" />
+    <parameter name="ColorZC" type="color3" defaultvalue="0,0,1,0.5" />
+    <parameter name="AlphaZC" type="float" defaultvalue="0.5" />
+
+    <parameterprovider parametersfilename="Mesh_AloneBarrier.fx">
+        <parameter name="WaterColor" />
+        <parameter name="OverlayTexture" />
+        <parameter name="OverlayUVTiling" />
+        <parameter name="OverlayParams" />
+        <parameter name="FlowTexture" />
+        <parameter name="FlowUVTiling" />
+        <parameter name="FlowParams" />
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalIntensity" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+        <parameter name="ReflectionTextureSource" />
+        <parameter name="ReflectionTexture" />
+        <parameter name="ReflectionIntensity" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="HDRMul" />
+        <parameter name="NormalAttenuationPower" />
+        <parameter name="InverseNormalAttenuation" />
+        <parameter name="UVAnimControlParams" />
+        <parameter name="DiffuseTiling1" />
+        <parameter name="FadeDist" />
+        <parameter name="ZCol" />
+        <parameter name="ColorZC" />
+        <parameter name="AlphaZC" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Settings">
+            <group horizontal="1">
+                <label>Sorting Layer Bias</label>
+                <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order.  Materials with smaller values are drawn first.">
+                    <dataBindings increment="1" minvalue="-4" maxvalue="4" />
+                </textbox>
+            </group>
+        </group>
+        <label> </label>
+        <group label="Overlay">
+            <group horizontal="1">
+                <button dataBindings="OverlayTexture" fill="1" />
+                <textbox dataBindings="OverlayUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="OverlayTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="OverlayTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>Overlay Speed</label>
+                <textbox dataBindings="OverlayParams.x">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </textbox>
+                <slider dataBindings="OverlayParams.x" fill="1">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </slider>
+            </group>
+            <group horizontal="1">
+                <label>Overlay Cycle</label>
+                <textbox dataBindings="OverlayParams.y">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="0.5" />
+                </textbox>
+                <slider dataBindings="OverlayParams.y" fill="1">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="0.5" />
+                </slider>
+            </group>
+        </group>
+        <label> </label>
+        <group label="Water" horizontal="0">
+            <group horizontal="1">
+                <label>Color</label>
+                <button dataBindings="WaterColor"/>
+                <label>Opacity</label>
+                <textbox dataBindings="WaterColor.w">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+                <slider dataBindings="WaterColor.w" fill="1">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </slider>
+            </group>
+        </group>
+        <label> </label>
+        <group label="Flow" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="FlowTexture" fill="1" />
+                <textbox dataBindings="FlowUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="FlowTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="FlowTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>Flow Texture Layout (no sRGB)</label>
+                <label color="BB0000">R</label>
+                <label color="00BB00">G</label>
+                <label>: UV direction</label>
+                <label color="0000BB">B</label>
+                <label>A : Unused</label>
+            </group>
+            <group horizontal="1">
+                <label>Flow Speed</label>
+                <textbox dataBindings="FlowParams.x">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </textbox>
+                <slider dataBindings="FlowParams.x" fill="1">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </slider>
+            </group>
+            <group horizontal="1">
+                <label>Flow Cycle</label>
+                <textbox dataBindings="FlowParams.y">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="0.5" />
+                </textbox>
+                <slider dataBindings="FlowParams.y" fill="1">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="0.5" />
+                </slider>
+            </group>
+        </group>
+        <label> </label>
+        <group label="Specular">
+            <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+            <xi:include href="UI/SpecularPowerGroup.xml" />
+            <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+            <xi:include href="UI/ReflectanceGroup.xml" />
+        </group>
+        <label> </label>
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>Intensity</label>
+                <slider dataBindings="NormalIntensity.x">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </slider>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Reflection">
+            <group horizontal="1" disable_if="ReflectionTexture">
+                <label>Type</label>
+                <combobox dataBindings="ReflectionTextureSource">
+                    <comboboxitem value="0">World static</comboboxitem>
+                    <comboboxitem value="1">World dynamic</comboboxitem>
+                </combobox>
+            </group>
+            <group>
+                <label>Reflection Texture Override</label>
+                <button dataBindings="ReflectionTexture" fill="1" />
+            </group>
+            <group horizontal="1">
+                <label>Intensity</label>
+                <textbox dataBindings="ReflectionIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="50.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="ReflectionIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="50.0" />
+                </slider>
+                <label>50</label>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Far parameters">
+
+            <button dataBindings="DiffuseColor1" />
+
+            <label>Scrolling speed</label>
+            <group horizontal="1">
+                <label>U</label>
+                <textbox dataBindings="USpeed" />
+                <label>V</label>
+                <textbox dataBindings="VSpeed" />
+            </group>
+
+            <label>Tiling</label>
+            <group horizontal="1">
+                <textbox dataBindings="DiffuseTiling1.x">
+                    <dataBindings type="int" />
+                </textbox>
+                <textbox dataBindings="DiffuseTiling1.y">
+                    <dataBindings type="int" />
+                </textbox>
+            </group>
+
+            <group horizontal="1">
+                <label>HDR Multiplier</label>
+                <textbox dataBindings="HDRMul" />
+            </group>
+
+            <group label="Normal attenuation">
+                <group horizontal="1">
+                    <label>Power</label>
+                    <textbox dataBindings="NormalAttenuationPower">
+                        <dataBindings increment="0.01" minvalue="0.0" />
+                    </textbox>
+                </group>
+                <checkbox label="Inverse" dataBindings="InverseNormalAttenuation" tooltip="Inverses normal attenuation so that it fades in the middle and not on the edges" />
+            </group>
+
+            <group horizontal="1">
+                <label>Near Fade</label>
+                <textbox dataBindings="nearFade" />
+                <label>Far Fade</label>
+                <textbox dataBindings="farFade" />
+            </group>
+
+        </group>
+        <label> </label>
+
+        <group label="Barrier Collision" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="ColorZC" />
+                <label>Alpha</label>
+                <textbox dataBindings="AlphaZC" />
+                <label>Z min threshold</label>
+                <textbox dataBindings="ZMin" />
+                <label>Z max threshold</label>
+                <textbox dataBindings="ZMax" />
+            </group>
+        </group>
+
+    </ui>
+</materialdescriptor>

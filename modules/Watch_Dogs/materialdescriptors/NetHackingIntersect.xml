@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="NetHackingIntersect" pickingid="0" showinui="1" id="#(0x46b27c50, 0x55dea99)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" bonecount="8" />
+
+    <parameter name="Color" type="color3" defaultvalue="1.0,1.0,1.0" />
+    <parameter name="ConstantIntensity" type="float" defaultvalue="1.0" />
+
+    <parameter name="AttenuationDistanceFar" type="float" defaultvalue="100" />
+    <parameter name="AttenuationDistanceRange" type="float" defaultvalue="10" />
+
+    <parameter name="SmoothDistance" type="float" defaultvalue="0" />
+  
+    <parameterprovider parametersfilename="Mesh_NetHackingIntersect.fx">
+        <parameter name="Color" />
+        <parameter name="ConstantIntensity" />
+
+        <parameter name="AttenuationDistanceFar" />
+        <parameter name="AttenuationDistanceRange" />
+        <parameter name="SmoothDistance" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group label="Fill">
+            <group horizontal="1" >
+                <label alignright="0" width="140">Fill color</label>
+                <button dataBindings="Color" />
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Base Intensity</label>
+                <textbox dataBindings="ConstantIntensity">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="2" />
+                </textbox>
+            </group>
+        </group>
+
+        <group label="Attenuation">
+            <group horizontal="1" >
+                <label alignright="0" width="140">Attenuation Distance</label>
+                <textbox dataBindings="AttenuationDistanceFar">
+                    <dataBindings increment="0.1" minvalue="0" />
+                </textbox>
+                <label alignright="0" width="70">Range</label>
+                <textbox dataBindings="AttenuationDistanceRange">
+                  <dataBindings increment="0.1" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="70">Smooth Distance</label>
+                <textbox dataBindings="SmoothDistance">
+                  <dataBindings increment="0.1" minvalue="0" />
+                </textbox>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

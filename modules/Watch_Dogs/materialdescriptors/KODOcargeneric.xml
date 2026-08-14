@@ -1,0 +1,626 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="KODOCarGeneric" displayname="KODOCarGeneric" showinui="1" id="#(0x19e9c5b2, 0x562393ac)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="0" uvChannels="3" bonecount="2" packedUChannel="10" packedVChannel="5" vehicleExtraUVChannel1="3" vehicleExtraUVChannel2="4" />
+    
+    <!-- Settings -->
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="CastShadow" type="bool" defaultvalue="1" />
+    <parameter name="WetSurfaceTypeIndex" type="int" defaultvalue="0" />
+
+    <!-- BaseColor -->
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTextureTiling1" UvName="DiffuseTextureUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Base texture 1" optional="0" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTextureTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseTextureUV1" type="int" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+  
+    <!-- Blend Mode -->
+    <parameter name="BlendModeIndex" type="int" defaultvalue="0" />
+
+    <!-- SurfaceParams -->
+    <parameter name="MaskTexture1" type="sampler2D" tilingName="MaskTiling1" UvName="MaskUV1" uvTilingName="MaskTextureUVTiling1" maxdisplayname="Mask texture" />
+    <parameter name="MaskTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="MaskUV1" type="int" />
+    <parameter name="MaskTextureUVTiling1" type="float4" provideronly="1" />
+    <parameter name="MaskChannelUsageRed" oldnames="MaskChannelsContent.x" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageGreen" oldnames="MaskChannelsContent.y" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageBlue" oldnames="MaskChannelsContent.z" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageAlpha" oldnames="MaskChannelsContent.w" type="float" defaultvalue="0" />
+    <parameter name="Reflectance" oldnames="MaskParameters.x" type="float" defaultvalue="0.5" />
+    <parameter name="Roughness" oldnames="MaskParameters.y" type="float" defaultvalue="0.5" />
+    <parameter name="Metalness" oldnames="MaskParameters.z" type="float" defaultvalue="0" />
+
+    <!-- Normal -->
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" />
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="DamageTexture" type="sampler2D" tilingName="DamageTextureTiling" UvName="DamageTextureUV" uvTilingName="DamageUVTiling" maxdisplayname="Damage texture" optional="1" />
+    <parameter name="DamageTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DamageTextureTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="DamageTextureUV" type="int" />
+    <parameter name="DamageUVTiling" type="float4" provideronly="1" />
+
+    <parameter name="DisableScratchDustMud" type="bool" defaultvalue="0" />
+    <parameter name="ScratchColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="ScratchIntensity" type="float" defaultvalue="1" />
+    <parameter name="DustColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DustIntensity" type="float" defaultvalue="1" />
+    <parameter name="TyreDustIntensityBase" type="float" defaultvalue="0.25" />
+    <parameter name="MudColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="MudIntensity" type="float" defaultvalue="1" />
+
+    <!-- Emissive -->
+    <parameter name="EmissiveTexture" type="sampler2D" tilingName="EmissiveTiling" UvName="EmissiveUV" uvTilingName="EmissiveUVTiling" maxdisplayname="Emissive texture">
+        <use_if parameter="MeshLightEnabled" value="1" />
+    </parameter>
+    <parameter name="EmissiveTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="EmissiveTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="EmissiveUV" type="int" />
+    <parameter name="EmissiveUVTiling" type="float4" provideronly="1"  />
+    <parameter name="MeshLightEnabled" type="bool" defaultvalue="1" />
+    <parameter name="MeshLightAnimated" type="bool" defaultvalue="0" />
+    <parameter name="MeshLightIntensity" type="float" defaultvalue="0" op_x="2^x" />
+    <parameter name="AnimationSoftness" type="float" defaultvalue="1" />
+    <parameter name="RemapEmissiveTextureUV" type="bool" defaultvalue="0" />
+    <parameter name="EmissiveFadeoutParams" type="float2" defaultvalue="4096,4096" />
+
+    <!-- License plate -->
+    <parameter name="LicensePlate" type="bool" defaultvalue="0"/>
+    <parameter name="LicensePlateVintageInfo" type="float2" defaultvalue="0,0"/>
+    <parameter name="LicensePlateFontInfo" type="float4" defaultvalue="0,0,2048,2048"/>
+    <parameter name="LicensePlateRearInfo" type="float2" defaultvalue="0,0"/>
+    <parameter name="LicensePlateCharInfo" type="float3" defaultvalue="1,1,1"/>
+    <parameter name="LicensePlateCharSize" type="float4" provideronly="1" />
+    <parameter name="LicensePlateFontOrigin" type="float4" provideronly="1" />
+    <parameter name="LicensePlateStyleOffset" type="float4" provideronly="1" />
+    <parameter name="LicensePlateFontAreaUvScaleBias" type="float4" provideronly="1" />
+
+    <!-- Burn material options -->
+    <parameter name="BurnColorGrade" type="float" defaultvalue="0.0356013" />
+    <parameter name="BurnFactorChannel" type="float3" defaultvalue="0,1,1" />
+    <parameter name="BurnMaskRemapSrc" type="float" defaultvalue="0.3" />
+    <parameter name="BurnMaskRemapDst" type="float" defaultvalue="0.1" />
+    <parameter name="BurnMaskOffset" type="float" defaultvalue="0" />
+    <parameter name="BurnMaskScale" type="float" defaultvalue="5" />
+    <parameter name="BurnMaterialMaxGrade" type="float" defaultvalue="0.75" />
+    <parameter name="BurnMaskTextureUVChannel" type="int" defaultvalue="1"/>
+
+    <!-- Parameter Provider -->
+    <parameterprovider parametersfilename="Mesh_KODOCarGeneric.fx">
+        <parameter name="WetSurfaceTypeIndex" />
+
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseColor1" />
+
+        <parameter name="BlendModeIndex" />
+
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTexture1State" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalIntensity" />
+
+        <parameter name="MaskTexture1" />
+        <parameter name="MaskTextureUVTiling1" />
+        <parameter name="MaskChannelUsageRed" />
+        <parameter name="MaskChannelUsageGreen" />
+        <parameter name="MaskChannelUsageBlue" />
+        <parameter name="MaskChannelUsageAlpha" />
+
+        <parameter name="Reflectance" />
+        <parameter name="Roughness" />
+        <parameter name="Metalness" />
+
+        <parameter name="DamageTexture" />
+        <parameter name="DamageTextureState" />
+        <parameter name="DamageUVTiling" />
+        <parameter name="DisableScratchDustMud" />
+        <parameter name="ScratchColor" />
+        <parameter name="ScratchIntensity" />
+        <parameter name="DustColor" />
+        <parameter name="DustIntensity" />
+        <parameter name="TyreDustIntensityBase" />
+        <parameter name="MudColor" />
+        <parameter name="MudIntensity" />
+
+        <parameter name="EmissiveTexture" />
+        <parameter name="EmissiveTextureState" />
+        <parameter name="EmissiveUVTiling" />
+        <parameter name="RemapEmissiveTextureUV" />
+        <parameter name="MeshLightIntensity" />
+        <parameter name="AnimationSoftness" />
+        <parameter name="MeshLightEnabled" />
+        <parameter name="MeshLightAnimated" />
+        <parameter name="EmissiveFadeoutParams" />
+
+        <parameter name="LicensePlate" />
+        <parameter name="LicensePlateCharSize" />
+        <parameter name="LicensePlateFontOrigin" />
+        <parameter name="LicensePlateStyleOffset" />
+        <parameter name="LicensePlateFontAreaUvScaleBias" />
+
+        <parameter name="BurnColorGrade" />
+        <parameter name="BurnFactorChannel" />
+        <parameter name="BurnMaskRemapSrc" />
+        <parameter name="BurnMaskRemapDst" />
+        <parameter name="BurnMaskOffset" />
+        <parameter name="BurnMaskScale" />
+        <parameter name="BurnMaterialMaxGrade" />
+        <parameter name="BurnMaskTextureUVChannel" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="NORMALMAP">
+            <condition parameter="NormalTexture1" />
+            <condition parameter="NormalIntensity" op="greaterequal" value="0.01" />
+        </shaderoption>
+
+        <shaderoption name="MASKMAP">
+            <condition parameter="MaskTexture1" />
+        </shaderoption>
+
+        <shaderoption name="DAMAGE_TEXTURE">
+            <condition parameter="DamageTexture" />
+        </shaderoption>
+
+        <shaderoption name="EMISSIVE_ONLY_TRANSPARENT">
+          <condition parameter="BlendModeIndex" op="greaterequal" value="1"/>
+        </shaderoption>
+      
+        <shaderoption name="EMISSIVE_ADDITIVE">
+          <condition parameter="BlendModeIndex" op="equal" value="2"/>
+        </shaderoption>
+      
+    </shaderoptions>
+    
+    <!-- User Interface Definition -->
+    <ui defaultFilePath="graphics/_Texture/">
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Information -->
+        <group label="Information">
+            <!-- <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/wd2world/WD2Cloth">Cloth material online help</label> -->
+            <!-- <label> </label> -->
+            <label>Vertex color mappings:</label>
+            <group horizontal="1">
+                <label color="BB0000">    R</label>
+                <label color="00BB00">G</label>
+                <label color="0000AA">B</label>
+                <label color="404040">:</label>
+                <label color="404040" width="150">Damage morph target</label>
+                <label color="000000">    Illum</label>
+                <label color="404040">:</label>
+                <label color="404040" width="150">Wetness mask</label>
+            </group>
+        </group>
+
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <group>
+                <group horizontal="1">
+                    <checkbox label="Two sided" dataBindings="TwoSided" />
+                    <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+                    <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+                    <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/wd3/Vehicle+Orwell+Car+Paint+Overview+and+Database+Setup">Car Painter Shader</label>
+                    <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/wd3/Car+Material">Car Material Guide</label>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>Wet Surface Type: </label>
+                <combobox dataBindings="WetSurfaceTypeIndex">
+                    <comboboxitem value="0">Default</comboboxitem>
+                    <comboboxitem value="-1">Never Wet</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <!-- Base Color -->
+        <group horizontal="0" label="Base Color">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <textbox dataBindings="DiffuseTextureUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTextureTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTextureTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <!-- SurfaceParams -->
+        <group label="Surface Parameters">
+            <group horizontal="1">
+                <button dataBindings="MaskTexture1" fill="1" />
+                <textbox dataBindings="MaskUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="MaskTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="MaskTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label color="BB0000">   R:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelUsageRed">
+                            <comboboxitem value="1">Reflectance</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <!-- MaskChannelUsageRed 0 NONE | 1 REFLECTANCE | 2 COLORIZE
+                         MaskChannelUsageAlpha 0 NONE | 1 COLORIZE -->
+                    <group horizontal="1" disable_if="MaskChannelUsageRed==1">
+                        <label>    Reflectance: </label>
+                        <label> 0</label>
+                        <slider dataBindings="Reflectance">
+                            <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                            <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Reflectance">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00">   G:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelUsageGreen">
+                            <comboboxitem value="1">Roughness</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelUsageGreen==0">
+                        <label>    Roughness: </label>
+                        <label>  0</label>
+                        <slider dataBindings="Roughness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Roughness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="0000BB">   B:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelUsageBlue">
+                            <comboboxitem value="1">Metal Mask</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelUsageBlue==0">
+                        <label>    Metal Mask:  </label>
+                        <label> 0</label>
+                        <slider dataBindings="Metalness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Metalness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="404040">   A:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelUsageAlpha">
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <!-- NormalMap -->
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture1State">
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>     Intensity:   </label>
+                <textbox databindings="NormalIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+
+        <!-- Burn Options -->
+        <group label="Burn Options">
+            <group horizontal="1">
+                <label>Color Grade:</label>
+                <textbox databindings="BurnColorGrade">
+                    <databindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>Mask Remap Src Value:</label>
+                <textbox dataBindings="BurnMaskRemapSrc">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>Mask Remap Dst Value:</label>
+                <textbox dataBindings="BurnMaskRemapDst">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>UV Channel:</label>
+                <textbox dataBindings="BurnMaskTextureUVChannel">
+                    <dataBindings increment="1" minvalue="1" maxvalue="2" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>Mask Offset:</label>
+                <textbox dataBindings="BurnMaskOffset">
+                    <dataBindings increment="0.01" minvalue="-15.0" maxvalue="15.0" />
+                </textbox>
+                <label>Mask Scale:</label>
+                <textbox dataBindings="BurnMaskScale">
+                    <dataBindings increment="0.01" minvalue="-15.0" maxvalue="15.0" />
+                </textbox>
+                <label>Material Max Grade:</label>
+                <textbox databindings="BurnMaterialMaxGrade">
+                    <databindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>Channel:</label>
+                <combobox dataBindings="BurnFactorChannel">
+                  <comboboxitem value="1,0,0">Scratch</comboboxitem>
+                  <comboboxitem value="0,1,0">Dust</comboboxitem>
+                  <comboboxitem value="0,0,1">Mud</comboboxitem>
+                  <comboboxitem value="1,1,0">MAX(Scratch,Dust)</comboboxitem>
+                  <comboboxitem value="1,0,1">MAX(Scratch,Mud)</comboboxitem>
+                  <comboboxitem value="0,1,1">MAX(Dust,Mud)</comboboxitem>
+                  <comboboxitem value="1,1,1">MAX(Scratch,Dust,Mud)</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <!-- Dust & Scratches -->
+        <group horizontal="0" label="Dust and Scratches">
+            <!-- Normal Map 2 -->
+            <group horizontal="1">
+                <button dataBindings="DamageTexture" fill="1" />
+                <textbox dataBindings="DamageTextureUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DamageTextureTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DamageTextureTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DamageTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+
+            <group vertical="1">
+                <group horizontal="1">
+                    <checkbox label="Disable Scratch+Dust+Mud" dataBindings="DisableScratchDustMud" />
+                </group>
+                <group horizontal="1">
+                    <label color="BB0000" alignright="0" width="80">  R: Scratches</label>
+                    <label>    Color: </label> <button dataBindings="ScratchColor" />
+                    <label>    Intensity: </label>
+                    <label>  0</label>
+                    <slider dataBindings="ScratchIntensity">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00" alignright="0" width="80">  G: Dust</label>
+                    <label>    Color: </label> <button dataBindings="DustColor" />
+                    <label>    Intensity: </label>
+                    <label>  0</label>
+                    <slider dataBindings="DustIntensity">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                </group>
+                <group horizontal="1">
+                    <label color="0000BB" alignright="0" width="80">  B: Mud</label>
+                    <label>    Color: </label> <button dataBindings="MudColor" />
+                    <label>    Intensity: </label>
+                    <label>  0</label>
+                    <slider dataBindings="MudIntensity">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                </group>
+            </group>
+
+        </group>
+
+        <group horizontal="0" label="Tyre settings">
+            <group horizontal="1">
+                <label color="000000" alignright="0" width="80">  Tyre Dust Base Value:</label>
+                <label>  0</label>
+                <slider dataBindings="TyreDustIntensityBase">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+
+        <!-- Emissive -->
+        <group label="Emissive Mesh Light" complexity="1">
+            <checkbox label="Enable" dataBindings="MeshLightEnabled" />
+            <group horizontal="1">
+                <button dataBindings="EmissiveTexture" fill="1" />
+                <group horizontal="1" enable_if="EmissiveTexture">
+                    <textbox dataBindings="EmissiveUV">
+                        <dataBindings class="UVChannel" />
+                    </textbox>
+                    <group>
+                        <textbox dataBindings="EmissiveTiling.x">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                        <textbox dataBindings="EmissiveTiling.y">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+                </group>
+                <combobox dataBindings="EmissiveTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorBlackTransparentBorder">Black Border</comboboxitem>
+                    <comboboxitem value="ColorWhiteTransparentBorder">Deprecated - White Transparent Border</comboboxitem>
+                </combobox>
+            </group>
+            <group enable_if="MeshLightEnabled,EmissiveTexture">
+                <checkbox label="Remap UVs to upper right quadrant" dataBindings="RemapEmissiveTextureUV" />
+            </group>
+            <group horizontal="1" enable_if="MeshLightEnabled">
+                <label width="150">MeshLight Intensity:</label>
+                <textbox databindings="MeshLightIntensity">
+                    <databindings increment="0.01" minvalue="-10.0" maxvalue="10.0" />
+                </textbox>
+                <label>  EV</label>
+            </group>
+            <group label="Animation" enable_if="MeshLightEnabled">
+                <checkbox label="Enable" dataBindings="MeshLightAnimated" />
+                <group horizontal="1" enable_if="MeshLightAnimated">
+                    <label width="150">Animation Softness:</label>
+                    <textbox dataBindings="AnimationSoftness">
+                        <databindings increment="0.01" minvalue="0.01" maxvalue="10.0" />
+                    </textbox>"
+                </group>
+            </group>
+            <group label="Distance Fade" enable_if="MeshLightEnabled">
+                <group horizontal="1">
+                    <label>Start</label>
+                    <textbox dataBindings="EmissiveFadeoutParams.x">
+                        <dataBindings increment="0.1" maxvalue="4096" />
+                    </textbox>
+                    <label>    End</label>
+                    <textbox dataBindings="EmissiveFadeoutParams.y">
+                        <dataBindings increment="0.1" maxvalue="4096" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+      
+        <group label="Transparency">
+            <label>Blend Mode: </label>
+            <combobox dataBindings="BlendModeIndex">
+                <comboboxitem value="0">Default (No Blending)</comboboxitem>
+                <comboboxitem value="1">Alpha Blend (Emissive Only)</comboboxitem>
+                <comboboxitem value="2">Additive Blend (Emissive Only)</comboboxitem>
+            </combobox>
+        </group>
+
+        <!-- License plate -->
+        <group label="Dynamic License Plate" complexity="1">
+            <checkbox label="Enabled" dataBindings="LicensePlate" />
+            <group enable_if="LicensePlate">
+                <label color="0000AA">  All sizes and coordinates are specified in PIXELS, based on the source PNG texture.</label>
+                <label> </label>
+                <group horizontal="1" enable_if="LicensePlate">
+                    <label>  Font upper-left coordinate (Vintage)   U:</label>
+                    <textbox dataBindings="LicensePlateVintageInfo.x">
+                       <dataBindings increment="1" minvalue="0" maxvalue="4095" />
+                    </textbox>
+                    <label>   V:</label>
+                    <textbox dataBindings="LicensePlateVintageInfo.y">
+                      <dataBindings increment="1" minvalue="0" maxvalue="4095" />
+                    </textbox>
+                </group>
+                <group horizontal="1" enable_if="LicensePlate">
+                    <label>  Font upper-left coordinate   U:</label>
+                    <textbox dataBindings="LicensePlateFontInfo.x">
+                        <dataBindings increment="1" minvalue="0" maxvalue="4095" />
+                    </textbox>
+                    <label>   V:</label>
+                    <textbox dataBindings="LicensePlateFontInfo.y">
+                        <dataBindings increment="1" minvalue="0" maxvalue="4095" />
+                    </textbox>
+                </group>
+                <group horizontal="1" enable_if="LicensePlate">
+                    <label>  Font upper-left coordinate (Rear)   U:</label>
+                    <textbox dataBindings="LicensePlateRearInfo.x">
+                        <dataBindings increment="1" minvalue="0" maxvalue="4095" />
+                    </textbox>
+                    <label>   V:</label>
+                    <textbox dataBindings="LicensePlateRearInfo.y">
+                        <dataBindings increment="1" minvalue="0" maxvalue="4095" />
+                    </textbox>
+                </group>
+                <group horizontal="1" enable_if="LicensePlate">
+                    <label>  Font character size   U:</label>
+                    <textbox dataBindings="LicensePlateCharInfo.x">
+                        <dataBindings increment="1" minvalue="1" maxvalue="4096" />
+                    </textbox>
+                    <label>   V:</label>
+                    <textbox dataBindings="LicensePlateCharInfo.y">
+                        <dataBindings increment="1" minvalue="1" maxvalue="4096" />
+                    </textbox>
+                </group>
+                <group horizontal="1" enable_if="LicensePlate">
+                    <label>  Source texture size   U:</label>
+                    <textbox dataBindings="LicensePlateFontInfo.z" tooltip="Width of the source PNG texture.">
+                        <dataBindings increment="1" minvalue="1" maxvalue="4096" />
+                    </textbox>
+                    <label>   V:</label>
+                    <textbox dataBindings="LicensePlateFontInfo.w" tooltip="Height of the source PNG texture.">
+                        <dataBindings increment="1" minvalue="1" maxvalue="4096" />
+                    </textbox>
+                </group>
+                <group horizontal="1" enable_if="LicensePlate">
+                    <label>  Number of characters per row:</label>
+                    <textbox dataBindings="LicensePlateCharInfo.z">
+                        <dataBindings increment="1" minvalue="1" maxvalue="256" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

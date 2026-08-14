@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="NetHackingVolume" pickingid="0" showinui="1" id="#(0x2490af05, 0x633e087)">
+
+    <parameter name="Color" type="color3" defaultvalue="1.0,1.0,1.0" />
+    <parameter name="Intensity" type="float" defaultvalue="0.5" />
+    <parameter name="Speed" type="float" defaultvalue="0.0" />
+
+    <parameter name="EdgeColor" type="color3" defaultvalue="1.0,1.0,1.0" />
+    <parameter name="EdgeIntensity" type="float" defaultvalue="1.0" />
+    <parameter name="EdgeThickness" type="float" defaultvalue="0.01" />
+    <parameter name="EdgeNoise" type="float" defaultvalue="0.0" />
+
+    <parameter name="LineColor" type="color3" defaultvalue="1.0,1.0,1.0" />
+    <parameter name="LineIntensity" type="float" defaultvalue="1.0" />
+    <parameter name="LineSpeed" type="float" defaultvalue="0.0" />
+    <parameter name="LineRatio" type="float" defaultvalue="0.5" />
+
+    <parameter name="AttenuationDistanceFar" type="float" defaultvalue="100" />
+    <parameter name="AttenuationDistanceRange" type="float" defaultvalue="10" />
+
+    <parameterprovider parametersfilename="Mesh_NetHackingVolume.fx">
+        <parameter name="Color" />
+        <parameter name="Intensity" />
+        <parameter name="Speed" />
+
+        <parameter name="EdgeColor" />
+        <parameter name="EdgeIntensity" />
+        <parameter name="EdgeThickness" />
+        <parameter name="EdgeNoise" />
+
+        <parameter name="LineColor" />
+        <parameter name="LineIntensity" />
+        <parameter name="LineSpeed" />
+        <parameter name="LineRatio" />
+
+        <parameter name="AttenuationDistanceFar" />
+        <parameter name="AttenuationDistanceRange" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group label="Fill">
+            <group horizontal="1" >
+                <label alignright="0" width="140">Color</label>
+                <button dataBindings="Color" />
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Intensity</label>
+                <textbox dataBindings="Intensity">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Speed</label>
+                <textbox dataBindings="Speed">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+        </group>
+
+        <group label="Edge">
+            <group horizontal="1" >
+                <label alignright="0" width="140">Color</label>
+                <button dataBindings="EdgeColor" />
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Intensity</label>
+                <textbox dataBindings="EdgeIntensity">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Thickness</label>
+                <textbox dataBindings="EdgeThickness">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="0.1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Noise</label>
+                <textbox dataBindings="EdgeNoise">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+        </group>
+
+        <group label="Lines">
+            <group horizontal="1" >
+                <label alignright="0" width="140">Color</label>
+                <button dataBindings="LineColor" />
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Intensity</label>
+                <textbox dataBindings="LineIntensity">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Speed</label>
+                <textbox dataBindings="LineSpeed">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Ratio</label>
+                <textbox dataBindings="LineRatio">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+        </group>
+
+        <group label="Attenuation">
+            <group horizontal="1" >
+                <label alignright="0" width="140">Attenuation Distance</label>
+                <textbox dataBindings="AttenuationDistanceFar">
+                    <dataBindings increment="0.1" minvalue="0" />
+                </textbox>
+                <label alignright="0" width="70">Range</label>
+                <textbox dataBindings="AttenuationDistanceRange">
+                  <dataBindings increment="0.1" minvalue="0" />
+                </textbox>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

@@ -1,0 +1,349 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD3GodrayWall" showinui="1" id="#(0x57a516e, 0x43381ede)">
+  <geometryInputs normal="1" tangent="0" binormal="0" color="1" uvChannels="2" />
+    <parameter name="BlendingType" type="int" defaultvalue="2"/>
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+    <parameter name="AffectsGI" type="bool" defaultvalue="0" /><!-- Should the material be present/emissive in GI generation renders for the 'local lights' pass. -->
+    
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+     
+     <!-- Responsive AA -->
+    <parameter name="UseResponsiveAA" type="bool" defaultvalue="0" />
+    <parameter name="ResponsiveAAStrength" type="float" defaultvalue="1.0" />
+
+    <!-- Tech Art Validation Shader options -->
+    <parameter name="isillegal" type="bool" defaultvalue="0"/> <!-- Tag material to be Illegal -->
+    
+    <!-- Base color -->
+    <parameter name="BaseColor" type="color3" defaultvalue="1,0,0" />
+    <parameter name="BaseColorTexture" type="sampler2D" tilingName="BaseColorTiling" UvName="BaseColorUV" uvTilingName="BaseColorUVTiling" maxdisplayname="Base Color Texture" optional="0" />
+    <parameter name="BaseColorTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="BaseColorUV" type="int" />
+    <parameter name="BaseColorUVTiling" type="float4" provideronly="1" />
+    <parameter name="BaseColorTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    
+    <parameter name="Opacity" type="float" defaultvalue="1" />
+    <parameter name="IsOob" type="bool" />
+    <parameter name="OobNoise" type="float" defaultvalue="0.01"  />
+    
+    <parameter name="Scrolling" type="float2" defaultvalue="1,1"  />
+    <parameter name="Intensity" type="float" defaultvalue="1"  />
+    
+   
+    <parameter name="BurnDistance" type="float" defaultvalue="0.25"  />
+    <parameter name="Width" type="float" defaultvalue="1"  />
+    <parameter name="Height" type="float" defaultvalue="1"  />
+    
+    <parameter name="FuseBoxPosA" type="float3" defaultvalue="0,0,0" />
+    <parameter name="FuseBoxPosB" type="float3" defaultvalue="0,0,0" />
+    <parameter name="FuseBoxPosC" type="float3" defaultvalue="0,0,0" />
+    <parameter name="FuseBoxPosD" type="float3" defaultvalue="0,0,0" />
+    <parameter name="FuseBoxPosE" type="float3" defaultvalue="0,0,0" />
+    
+    <parameter name="FadeFactor" type="float" defaultvalue="1" />
+    <parameter name="GlitchFactor" type="float" defaultvalue="0" />
+    
+    <parameter name="GlitchBlockSize" type="float" defaultvalue="1" />
+    <parameter name="GlitchSpeed" type="float" defaultvalue="1" />
+    
+    <parameter name="EmissiveIntensity" oldnames="IntensityInEV" type="float" defaultvalue="9" op_x="ev100" />
+    
+   
+
+    <parameterprovider parametersfilename="Mesh_WD3GodrayWall.fx">
+        <parameter name="AffectsGI" />
+        <parameter name="UseResponsiveAA" />
+        <parameter name="ResponsiveAAStrength" />
+
+        <parameter name="BaseColor" />
+        <parameter name="BaseColorTexture" />
+        <parameter name="BaseColorTextureState" />
+        <parameter name="BaseColorUVTiling" />
+        
+        <parameter name="Opacity" />
+         
+        <parameter name="EmissiveIntensity" />
+        
+        <parameter name="IsOob" />
+        <parameter name="OobNoise" />
+        
+        <parameter name="Scrolling" />
+        <parameter name="Intensity" />
+     
+        <parameter name="BurnDistance" />
+        <parameter name="Width"/>
+        <parameter name="Height"/>
+        
+        <parameter name="FuseBoxPosA" />
+        <parameter name="FuseBoxPosB" />
+        <parameter name="FuseBoxPosC" />
+        <parameter name="FuseBoxPosD" />
+        <parameter name="FuseBoxPosE" />
+       
+        <parameter name="FadeFactor" />
+        <parameter name="GlitchFactor" />
+        
+        <parameter name="GlitchBlockSize" />
+        <parameter name="GlitchSpeed" />
+        
+        <parameter name="MSAAOptimizationHighQuality" />
+      
+        <!-- Tech Art Validation Shader options -->
+        <parameter name="isillegal"/>  <!-- Tag material to be Illegal -->
+ 
+        
+    </parameterprovider>
+
+    <shaderoptions>      
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+        <!--
+        <shaderoption name="RESPONSIVE_AA">
+            <condition parameter="UseResponsiveAA" />
+            <condition parameter="BaseColorTexture" />
+        </shaderoption> 
+        -->
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/_Textures/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Settings">
+              <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+
+            <checkbox label="Two sided" dataBindings="TwoSided" />
+            
+
+            <group horizontal="1">
+                <label>Sorting Layer Bias</label>
+                <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order.  Materials with smaller values are drawn first.">
+                    <dataBindings increment="1" minvalue="-4" maxvalue="4" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+            <label>Blending type</label>
+            <group horizontal="1">
+              <combobox dataBindings="BlendingType">
+                <comboboxitem value="1">Alpha</comboboxitem>
+                <comboboxitem value="2">Additive</comboboxitem>
+              </combobox>
+            </group>
+          </group>
+            
+        </group>
+        
+        
+  
+        
+        
+        <label> </label>        
+        <group label="Base Color">
+            <group horizontal="1">
+                <button dataBindings="BaseColor" />
+                <button dataBindings="BaseColorTexture" />
+                <textbox dataBindings="BaseColorUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="BaseColorTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="BaseColorTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="BaseColorTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                    <comboboxitem value="ColorWrapHClampV">Wrap H - Clamp V</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+         <label> </label>      
+        <group label="Irradiance">
+          <group horizontal="1">
+            <label width="110">Brightness (EV)</label>
+            <textbox dataBindings="EmissiveIntensity">
+              <dataBindings minvalue="-110.0f" maxvalue="110.0" />
+            </textbox>
+          </group>          
+        </group>
+         <label> </label>     
+        <group label="Opacity"    >     
+            <group horizontal="1">
+                    <label>Opacity:   0</label>
+                    <slider dataBindings="Opacity">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="100.0" />
+                    </slider>
+                    <label>100</label>
+                     <textbox dataBindings="Opacity" >
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="100.0" />
+                    </textbox>
+            </group>
+        </group>
+             <label> </label>      
+        <group label="Out of Bound">
+            <group horizontal="1">
+                <checkbox label="Enable" dataBindings="IsOob" />
+             </group>  
+             <group horizontal="1" enable_if="IsOob==1">
+                <label width="110">Noise Factor</label>
+                    <textbox dataBindings="OobNoise">
+                <dataBindings increment="0.001" minvalue="0.0" maxvalue="1" />
+            </textbox>
+           </group>          
+        </group>
+         <label> </label>   
+        <group label="Distortion">     
+            <group horizontal="1">
+                    <label>Intensity:   0</label>
+                    <slider dataBindings="Intensity">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                     <textbox dataBindings="Intensity" >
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+            </group>
+              <group horizontal="1">
+                    <label>Scrolling:</label>
+                     <textbox dataBindings="Scrolling.x" >
+                        <dataBindings increment="0.01" minvalue="-10.0" maxvalue="10.0" />
+                    </textbox>
+                     <textbox dataBindings="Scrolling.y" >
+                        <dataBindings increment="0.01" minvalue="-10.0" maxvalue="10.0" />
+                    </textbox>
+            </group>
+        </group>
+             <label> </label>           
+        <group label="Burn">
+            <group horizontal="1">
+                <label width="110">Burn Distance</label>
+                <textbox dataBindings="BurnDistance" >
+                    <databindings increment="0.001" minvalue="0" maxvalue="5" />
+                </textbox>
+            </group>
+        </group>
+         <label> </label>      
+         <group label="Size" enable_if="IsOob==0">
+            <group horizontal="1">
+                <label width="110">Width</label>
+                <textbox dataBindings="Width" >
+                    <databindings increment="0.001" minvalue="0" maxvalue="999" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="110">Height</label>
+                <textbox dataBindings="Height" >
+                    <databindings increment="0.001" minvalue="0" maxvalue="999" />
+                </textbox>
+            </group>
+        </group>
+         <label> </label>      
+         <group label="Fuse Box Position" enable_if="IsOob==0">
+            <group horizontal="1">
+                <label width="110">Fuse Box Position A</label>
+                  <textbox dataBindings="FuseBoxPosA.x" />
+                  <textbox dataBindings="FuseBoxPosA.y" />
+                  <textbox dataBindings="FuseBoxPosA.z" />
+            </group>
+              <group horizontal="1">
+                <label width="110">Fuse Box Position B</label>
+                  <textbox dataBindings="FuseBoxPosB.x" />
+                  <textbox dataBindings="FuseBoxPosB.y" />
+                  <textbox dataBindings="FuseBoxPosB.z" />
+            </group>
+              <group horizontal="1">
+                <label width="110">Fuse Box Position C</label>
+                  <textbox dataBindings="FuseBoxPosC.x" />
+                  <textbox dataBindings="FuseBoxPosC.y" />
+                  <textbox dataBindings="FuseBoxPosC.z" />
+            </group>
+              <group horizontal="1">
+                <label width="110">Fuse Box Position D</label>
+                  <textbox dataBindings="FuseBoxPosD.x" />
+                  <textbox dataBindings="FuseBoxPosD.y" />
+                  <textbox dataBindings="FuseBoxPosD.z" />
+            </group>
+              <group horizontal="1">
+                <label width="110">Fuse Box Position E</label>
+                  <textbox dataBindings="FuseBoxPosE.x" />
+                  <textbox dataBindings="FuseBoxPosE.y" />
+                  <textbox dataBindings="FuseBoxPosE.z" />
+            </group>
+        </group>
+         <label> </label>      
+         <group label="Transition" enable_if="IsOob==0">
+            <group horizontal="1">
+                <label width="110">Fade Factor:</label>
+                    <textbox dataBindings="FadeFactor">
+                      <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+                    <label>0</label>
+                    <slider dataBindings="FadeFactor">
+                      <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+            </group>
+             <group horizontal="1">
+                <label width="110">Glitch Factor:</label>
+                    <textbox dataBindings="GlitchFactor">
+                      <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+                    <label>0</label>
+                    <slider dataBindings="GlitchFactor">
+                      <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+            </group>
+        </group>
+         <label> </label>      
+         <group label="Glitch" enable_if="IsOob==0">
+            <group horizontal="1">
+                <label width="110">Block Size:</label>
+                    <textbox dataBindings="GlitchBlockSize">
+                      <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                    </textbox>
+                    <label>0</label>
+                    <slider dataBindings="GlitchBlockSize">
+                      <dataBindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                    </slider>
+                    <label>10</label>
+            </group>
+             <group horizontal="1">
+                <label width="110">Glitch Speed:</label>
+                    <textbox dataBindings="GlitchSpeed">
+                      <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                    </textbox>
+                    <label>0</label>
+                    <slider dataBindings="GlitchSpeed">
+                      <dataBindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+                    </slider>
+                    <label>10</label>
+            </group>
+        </group>
+        <!-- Responsive AA -->
+        <label> </label>
+        <group label="Use Responsive AA" enable_if="DiffuseTexture1 || VideoTexture1">
+            <checkbox label="Enable ResponsiveAA" dataBindings="UseResponsiveAA" tooltip="Parameter to make TAA pass through the emissive material avoiding smudging." />
+            <label width="140">Responsive AA Strength:</label>
+            <textbox dataBindings="ResponsiveAAStrength">
+                <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+            </textbox>
+            <slider dataBindings="ResponsiveAAStrength">
+                <dataBindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+            </slider>
+        </group>
+        <label> </label>
+      <!-- Tech Art Validation Shader options -->
+       <group label="Tag Illegal Material"> <!-- Tag material to be Illegal -->
+        <group horizontal="1">
+          <checkbox label="is Illegal" dataBindings="isillegal"/>
+        </group>
+      </group>    
+    </ui>
+</materialdescriptor>

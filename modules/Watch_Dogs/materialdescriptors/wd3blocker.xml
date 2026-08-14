@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD3Blocker" displayname="WD3Blocker" showinui="1" id="#(0x59f3187e, 0x57d686c3)" version="1.0">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" packedUVChannel="10" />
+
+    <!-- Settings -->
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0" />
+    <parameter name="CastShadow" type="bool" defaultvalue="1" />
+    <parameter name="ShadowOnly" type="bool" defaultvalue="0" />
+    <parameter name="TwoSided"   type="bool" defaultvalue="0" />
+
+    <parameter name="SurfaceAlbedo" type="color3" defaultvalue="0,0,0" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.5" />
+    <parameter name="Roughness" type="float" defaultvalue="0.3" />
+    <parameter name="Metalness" type="float" defaultvalue="0" />
+    
+    <parameterprovider parametersfilename="Mesh_WD3Blocker.fx">
+        <parameter name="SurfaceAlbedo" />
+        <parameter name="Reflectance" />
+        <parameter name="Roughness" />
+        <parameter name="Metalness" />
+    </parameterprovider>
+
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <!-- Settings -->
+        <group label="Settings">
+            <checkbox label="Two Sided"   dataBindings="TwoSided" />
+            <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+            <checkbox label="Only Shadow" dataBindings="ShadowOnly" />
+        </group>
+
+        <label> </label>
+        <group label="Surface paramters">
+            <group horizontal="1">
+                <label >Albedo</label>
+                <button dataBindings="SurfaceAlbedo" />
+            </group>
+
+            <group horizontal="1">
+                <label>Reflectance</label>
+                <slider dataBindings="Reflectance">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label> </label>
+                <textbox databindings="Reflectance">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+
+            <group horizontal="1">
+                <label>Roughness</label>
+                <slider dataBindings="Roughness">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label> </label>
+                <textbox databindings="Roughness">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+
+            <group horizontal="1" >
+                <label >Metal Mask</label>
+                <slider dataBindings="Metalness">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label> </label>
+                <textbox databindings="Metalness">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            
+            
+
+        </group>
+
+    </ui>
+</materialdescriptor>

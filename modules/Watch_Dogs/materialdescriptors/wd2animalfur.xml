@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2AnimalFur" displayname="WD2AnimalFur" showinui="1" id="#(0x15b0ed34, 0x2a69c2a6)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" packedUVChannel="10" />
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="TwoSided" type="bool" />
+    <!-- BaseColor -->
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTextureTiling1" UvName="DiffuseTextureUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Base texture 1" optional="0" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTextureTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseTextureUV1" type="int" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+
+    <!-- SurfaceParams -->
+    <parameter name="MaskTexture1" type="sampler2D" tilingName="MaskTiling1" UvName="MaskUV1" uvTilingName="MaskTextureUVTiling1" maxdisplayname="Mask texture" />
+    <parameter name="MaskTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="MaskUV1" type="int" />
+    <parameter name="MaskTextureUVTiling1" type="float4" provideronly="1" />
+    <parameter name="MaskChannelUsageRed" oldnames="MaskChannelsContent.x" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageGreen" oldnames="MaskChannelsContent.y" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageBlue" oldnames="MaskChannelsContent.z" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageAlpha" oldnames="MaskChannelsContent.w" type="float" defaultvalue="0" />
+    <parameter name="Reflectance" oldnames="MaskParameters.x" type="float" defaultvalue="0.5" />
+    <parameter name="Roughness" oldnames="MaskParameters.y" type="float" defaultvalue="0.5" />
+    <parameter name="FurEffectMask" oldnames="MaskParameters.z" type="float" defaultvalue="0" />
+
+    <!-- Normal -->
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" />
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+    
+    <!-- Fur normal -->
+    <parameter name="FurNormalTexture1" type="sampler2D" tilingName="FurNormalTextureTiling1" />
+    <parameter name="FurNormalTextureTiling1" type="float2" defaultvalue="1,1" op_x="1/x" op_y="1/y" />
+
+    <parameterprovider parametersfilename="Mesh_WD2AnimalFur.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTexture1State" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalIntensity" />
+        <parameter name="MaskTexture1" />
+        <parameter name="MaskTextureUVTiling1" />
+        <parameter name="MaskChannelUsageRed" />
+        <parameter name="MaskChannelUsageGreen" />
+        <parameter name="MaskChannelUsageBlue" />
+        <parameter name="MaskChannelUsageAlpha" />
+        <parameter name="Reflectance" />
+        <parameter name="Roughness" />
+        <parameter name="FurEffectMask" />
+        <parameter name="FurNormalTexture1" />
+        <parameter name="FurNormalTextureTiling1" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="NORMALMAP">
+            <condition parameter="NormalTexture1" />
+            <condition parameter="NormalIntensity" op="greaterequal" value="0.01" />
+        </shaderoption>
+        <shaderoption name="MASKMAP">
+            <condition parameter="MaskTexture1" />
+        </shaderoption>
+        <shaderoption name="FURNORMALMAP">
+            <condition parameter="NormalTexture1" />
+            <condition parameter="FurNormalTexture1" />
+        </shaderoption>
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/_Texture/">
+        <xi:include href="UI/DataClasses.xml" />
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <group>
+                <group horizontal="1">
+                    <checkbox label="Two sided" dataBindings="TwoSided" />
+                    <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+                </group>
+            </group>
+        </group>
+        <group horizontal="0" label="" hide_if="TwoSided==0">
+            <label />
+        </group>
+        <!-- Base Color -->
+        <group horizontal="0" label="Base Color">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <textbox dataBindings="DiffuseTextureUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTextureTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTextureTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+        <group horizontal="0" label="" hide_if="TwoSided==0">
+            <label />
+        </group>
+
+        <!-- SurfaceParams -->
+        <group label="Surface Parameters">
+            <group horizontal="1">
+                <button dataBindings="MaskTexture1" fill="1" />
+                <textbox dataBindings="MaskUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="MaskTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="MaskTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label alignright="1" width="40" color="BB0000">R:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelUsageRed">
+                            <comboboxitem value="1">Reflectance</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <!-- MaskChannelUsageRed 0 NONE | 1 REFLECTANCE -->
+                    <!-- MaskChannelUsageAlpha 0 NONE -->
+                    <group horizontal="1" disable_if="MaskChannelUsageRed==1">
+                        <group horizontal="1" enable_if="MaskChannelUsageRed==2 || MaskChannelUsageRed==0">
+                            <label alignright="1" width="90">Reflectance</label>
+                            <label> 0</label>
+                            <slider dataBindings="Reflectance">
+                                <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                                <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                            </slider>
+                            <label>1  </label>
+                            <textbox databindings="Reflectance">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="40" color="00BB00">G:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelUsageGreen">
+                            <comboboxitem value="1">Roughness</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelUsageGreen==0">
+                        <label alignright="1" width="90">Roughness</label>
+                        <label> 0</label>
+                        <slider dataBindings="Roughness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Roughness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="40" color="0000BB">B:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelUsageBlue">
+                            <comboboxitem value="1">Fur Effect Mask</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelUsageBlue==0">
+                        <label alignright="1" width="90">Fur Effect Mask</label>
+                        <label> 0</label>
+                        <slider dataBindings="FurEffectMask">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="FurEffectMask">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="40" color="404040">A:</label>
+                    <group horizontal="1" enable_if="MaskTexture1==1">
+                        <combobox dataBindings="MaskChannelUsageAlpha">
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <group horizontal="0" label="" hide_if="TwoSided==0">
+            <label />
+        </group>
+
+        <!-- NormalMap -->
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture1State">
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>     Intensity:   </label>
+                <textbox databindings="NormalIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+
+        <!-- Pattern Texture -->
+        <group horizontal="0" label="Fur Rough Normal">
+            <group horizontal="1">
+                <button dataBindings="FurNormalTexture1" fill="1" />
+                <group>
+                    <textbox dataBindings="FurNormalTextureTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="FurNormalTextureTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

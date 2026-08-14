@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- If required, BuildingAtlasGenerator.cpp needs to be modified to account for new parameters -->
+<materialdescriptor xmlns:xi="#" name="DriverMinimap" displayname="Minimap" showinui="1" id="#(0x4c80b7c7, 0x3a7156fb0)" version="1.0" deprecated="1" >
+    <geometryInputs normal="1" tangent="0" binormal="0" color="0" uvChannels="0" packedUVChannel="0" />
+
+    <parameter name="DiffuseColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="HemiSkyColor" type="color3" defaultvalue="0.65,0.65,0.75" />
+    <parameter name="HemiGroundColor" type="color3" defaultvalue="0.65,0.75,0.65" />
+
+    <parameter name="GridModeAdditive" type="bool" defaultvalue="0" />
+
+    <parameter name="Opacity" type="float" defaultvalue="1" />
+    <parameter name="FogOfWar" type="float" defaultvalue="0" />
+
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Diffuse texture 1" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV1" type="int" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="DiffuseTexture0" type="sampler2D" tilingName="DiffuseTiling0" UvName="DiffuseUV0" uvTilingName="DiffuseUVTiling0" maxdisplayname="Diffuse texture 0" />
+    <parameter name="DiffuseTexture0State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTiling0" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV0" type="int" />
+    <parameter name="DiffuseUVTiling0" type="float4" provideronly="1" />
+    <parameter name="UseUVs" type="bool" defaultvalue="0" />
+    
+    <parameterprovider parametersfilename="Mesh_DriverMinimap.parameters.inc.fx">
+        <parameter name="DiffuseTexture0"/>
+        <parameter name="DiffuseTexture0State" />
+        <parameter name="DiffuseUVTiling0" />
+        <parameter name="DiffuseTexture1"/>
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseColor" />
+        <parameter name="HemiSkyColor" />
+        <parameter name="HemiGroundColor" />
+        <parameter name="GridModeAdditive" />
+        <parameter name="Opacity" />
+        <parameter name="FogOfWar" />        
+        <parameter name="UseUVs" />
+    </parameterprovider>
+        
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group label="Grid Mode" horizontal="0">
+            <checkbox label="Grid Mode Additive" dataBindings="GridModeAdditive" />
+            <textbox label="Fog of war glitch texture" dataBindings="FogOfWar"/>
+        </group>
+        <label> </label>
+
+        <group label="Diffuse" horizontal="0">       	
+            <group label="WorldMode" horizontal="0">                
+                <group horizontal="1">
+                    <button dataBindings="DiffuseColor" />
+                </group>
+                
+                <button dataBindings="DiffuseTexture0" fill="1" />
+                <textbox dataBindings="DiffuseUV0">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <checkbox label="Use UVs" dataBindings="UseUVs" />
+                <group>
+                    <textbox dataBindings="DiffuseTiling0.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling0.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture0State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                </combobox>
+            </group>
+
+            <group label="GridMode" horizontal="0">
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <textbox dataBindings="DiffuseUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+        <label> </label>
+
+        <group label="Hemi Ambient" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="HemiSkyColor" />
+                <button dataBindings="HemiGroundColor" />
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

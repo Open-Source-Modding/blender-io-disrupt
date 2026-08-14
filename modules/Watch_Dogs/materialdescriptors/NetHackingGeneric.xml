@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="NetHackingGeneric" pickingid="0" showinui="1" id="#(0x57f06601, 0x6c9cc577)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" bonecount="8" />
+
+    <parameter name="Color" type="color3" defaultvalue="1.0,1.0,1.0" />
+    <parameter name="ConstantIntensity" type="float" defaultvalue="0.0" />
+    <parameter name="OverExposeIntensity" type="float" defaultvalue="1.0" />
+    <parameter name="InnerFresnelPower" type="float" defaultvalue="1.0" />
+    <parameter name="InnerFresnelIntensity" type="float" defaultvalue="1.0" />
+    <parameter name="OuterFresnelPower" type="float" defaultvalue="1.0" />
+    <parameter name="OuterFresnelIntensity" type="float" defaultvalue="0.0" />
+    <parameter name="RandomColor" type="bool" defaultvalue="0" />
+    <parameter name="WhiteNoise" type="bool" defaultvalue="0" />
+    <parameter name="DisableAlphaTest" type="bool" defaultvalue="0" />
+    <parameter name="OccludedIntensity" type="float" defaultvalue="0.3" />
+    <parameter name="TransparentIntensity" type="float" defaultvalue="0.5" />
+    <parameter name="TransparentSoft" type="float" defaultvalue="0.0" />
+
+    <parameter name="OutlineColor" type="color3" defaultvalue="1.0,1.0,1.0" />
+    <parameter name="OutlineTargetColor" type="color3" defaultvalue="1.0,1.0,1.0" />
+    <parameter name="OutlineIntensity" type="float" defaultvalue="1.0" />
+    <parameter name="OutlineNearMultiplier" type="float" defaultvalue="1.0" />
+    <parameter name="OutlineFarMultiplier" type="float" defaultvalue="0.5" />
+    <parameter name="OutlineCutout" type="float" defaultvalue="0.0" />
+
+    <parameter name="AttenuationDistanceFar" type="float" defaultvalue="100" />
+    <parameter name="AttenuationDistanceRange" type="float" defaultvalue="10" />
+
+    <parameter name="VertexNoiseIntensity" type="float" defaultvalue="0.0" />
+    <parameter name="VertexNoiseNearDist" type="float" defaultvalue="10.0" />
+    <parameter name="VertexNoiseNearMultiplier" type="float" defaultvalue="1.0" />
+    <parameter name="VertexNoiseFarDist" type="float" defaultvalue="100.0" />
+    <parameter name="VertexNoiseFarMultiplier" type="float" defaultvalue="1.0" />
+
+    <parameter name="VertexNoiseRatio" type="float" defaultvalue="0.05" />
+    <parameter name="VertexNoiseScale" type="float" defaultvalue="0.0" />
+    <parameter name="VertexNoiseTop" type="float" defaultvalue="1.0" op_x="1/x" />
+    <parameter name="VertexNoiseBaseMultiplier" type="float" defaultvalue="1.0" />
+    <parameter name="VertexNoiseTopMultiplier" type="float" defaultvalue="1.0" />
+
+    <parameterprovider parametersfilename="Mesh_NetHackingGeneric.fx">
+        <parameter name="Color" />
+        <parameter name="ConstantIntensity" />
+        <parameter name="OverExposeIntensity" />
+        <parameter name="InnerFresnelPower" />
+        <parameter name="InnerFresnelIntensity" />
+        <parameter name="OuterFresnelPower" />
+        <parameter name="OuterFresnelIntensity" />
+        <parameter name="RandomColor" />
+        <parameter name="WhiteNoise" />
+        <parameter name="DisableAlphaTest" />
+        <parameter name="OccludedIntensity" />
+        <parameter name="TransparentIntensity" />
+        <parameter name="TransparentSoft" />
+
+        <parameter name="OutlineColor" />
+        <parameter name="OutlineTargetColor" />
+        <parameter name="OutlineIntensity" />
+        <parameter name="OutlineNearMultiplier" />
+        <parameter name="OutlineFarMultiplier" />
+        <parameter name="OutlineCutout" />
+
+        <parameter name="AttenuationDistanceFar" />
+        <parameter name="AttenuationDistanceRange" />
+
+        <parameter name="VertexNoiseIntensity" />
+        <parameter name="VertexNoiseNearDist" />
+        <parameter name="VertexNoiseNearMultiplier" />
+        <parameter name="VertexNoiseFarDist" />
+        <parameter name="VertexNoiseFarMultiplier" />
+
+        <parameter name="VertexNoiseRatio" />
+        <parameter name="VertexNoiseScale" />
+        <parameter name="VertexNoiseTop" />
+        <parameter name="VertexNoiseBaseMultiplier" />
+        <parameter name="VertexNoiseTopMultiplier" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="VERTEX_NOISE">
+            <condition parameter="VertexNoiseIntensity" op="greater" value="0" />
+        </shaderoption>
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group label="Fill">
+            <group horizontal="1" >
+                <label alignright="0" width="140">Fill color</label>
+                <button dataBindings="Color" />
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Base Intensity</label>
+                <textbox dataBindings="ConstantIntensity">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="2" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Bloom Intensity</label>
+                <textbox dataBindings="OverExposeIntensity">
+                    <dataBindings increment="0.01" minvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Inner Fresnel Intensity</label>
+                <textbox dataBindings="InnerFresnelIntensity">
+                    <dataBindings increment="0.01" minvalue="-10" maxvalue="10" />
+                </textbox>
+                <label alignright="0" width="70">Power</label>
+                <textbox dataBindings="InnerFresnelPower">
+                    <dataBindings increment="0.1" minvalue="0" maxvalue="100" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Outer Fresnel Intensity</label>
+                <textbox dataBindings="OuterFresnelIntensity">
+                    <dataBindings increment="0.01" minvalue="-10" maxvalue="10" />
+                </textbox>
+                <label alignright="0" width="70">Power</label>
+                <textbox dataBindings="OuterFresnelPower">
+                    <dataBindings increment="0.1" minvalue="0" maxvalue="100" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Opacity</label>
+                <textbox dataBindings="OutlineIntensity">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Occluded Opacity</label>
+                <textbox dataBindings="OccludedIntensity">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Transparent Opacity</label>
+                <textbox dataBindings="TransparentIntensity">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Transparent Soft</label>
+                <textbox dataBindings="TransparentSoft">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <checkbox label="Multiply Random Color" dataBindings="RandomColor" />
+            <checkbox label="Multiply White Noise" dataBindings="WhiteNoise" />
+            <checkbox label="Disable Alpha Test" dataBindings="DisableAlphaTest" />
+        </group>
+
+        <group label="Outline">
+            <group horizontal="1" >
+                <label alignright="0" width="140">Outline color</label>
+                <button dataBindings="OutlineColor" />
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Outline target color</label>
+                <button dataBindings="OutlineTargetColor" />
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Near Multiplier</label>
+                <textbox dataBindings="OutlineNearMultiplier">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Far Multiplier</label>
+                <textbox dataBindings="OutlineFarMultiplier">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Fresnel Cutout</label>
+                <textbox dataBindings="OutlineCutout">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </textbox>
+            </group>
+        </group>
+
+        <group label="Attenuation">
+            <group horizontal="1" >
+                <label alignright="0" width="140">Attenuation Distance</label>
+                <textbox dataBindings="AttenuationDistanceFar">
+                    <dataBindings increment="0.1" minvalue="0" />
+                </textbox>
+                <label alignright="0" width="70">Range</label>
+                <textbox dataBindings="AttenuationDistanceRange">
+                  <dataBindings increment="0.1" minvalue="0" />
+                </textbox>
+            </group>
+        </group>
+
+        <group label="Vertex Noise Intensity">
+            <group horizontal="1" >
+                <label alignright="0" width="140">Intensity</label>
+                <textbox dataBindings="VertexNoiseIntensity">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Near Distance</label>
+                <textbox dataBindings="VertexNoiseNearDist">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Near Multiplier</label>
+                <textbox dataBindings="VertexNoiseNearMultiplier">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Far Distance</label>
+                <textbox dataBindings="VertexNoiseFarDist">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Far Multiplier</label>
+                <textbox dataBindings="VertexNoiseFarMultiplier">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+        </group>
+        <group label="Vertex Noise Ratio">
+            <group horizontal="1" >
+                <label alignright="0" width="140">Ratio</label>
+                <textbox dataBindings="VertexNoiseRatio">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Scale</label>
+                <textbox dataBindings="VertexNoiseScale">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Top Height</label>
+                <textbox dataBindings="VertexNoiseTop">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Base Multiplier</label>
+                <textbox dataBindings="VertexNoiseBaseMultiplier">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Top Multiplier</label>
+                <textbox dataBindings="VertexNoiseTopMultiplier">
+                    <dataBindings increment="0.01" minvalue="0" />
+                </textbox>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

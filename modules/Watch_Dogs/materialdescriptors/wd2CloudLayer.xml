@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2CloudLayer" pickingid="0" showinui="1" id="#(0x1e555646, 0x25231ae1)">
+
+    <parameter name="TypeTexture" type="sampler2D" tilingName="TypeTextureTiling"  />
+    <parameter name="TypeTextureTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="TypeTextureRotation" type="float" defaultvalue="0" />
+    <parameter name="TypeBlendingMode" type="int" defaultvalue="0" />
+    <parameter name="TypeUnderlayerBlend" type="float4" defaultvalue="0,1,254,255" />
+    <parameter name="TypeUVAnimation" type="float2" defaultvalue="0,0" />
+    <parameter name="TypeUVRotationAnimation" type="float" defaultvalue="0" />
+    
+    <parameter name="DetailTexture" type="sampler2D" tilingName="DetailTextureTiling"  />
+    <parameter name="DetailTextureTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="DetailTextureRotation" type="float" defaultvalue="0" />
+    <parameter name="DetailBlendingMode" type="int" defaultvalue="0" />
+    <parameter name="DetailUnderlayerBlend" type="float4" defaultvalue="0,0,255,255" />
+    <parameter name="DetailUVAnimation" type="float2" defaultvalue="0,0" />
+    <parameter name="DetailUVRotationAnimation" type="float" defaultvalue="0" />
+
+    <parameter name="MaskTexture" type="sampler2D" />
+    <parameter name="MaskTileCountX" type="float" defaultvalue="1" op_x="1/x"/>/>
+    <parameter name="MaskTileCountY" type="float" defaultvalue="1" op_x="1/x"/>/>
+    <parameter name="MaskIntensity"  type="float" defaultvalue="1" />
+    <parameter name="NormalMapTexture" type="sampler2D"/>
+
+    <parameterprovider parametersfilename="WD2CloudLayer.fx">
+
+        <parameter name="TypeTextureTiling" />
+        <parameter name="TypeTexture"/>
+        <parameter name="TypeBlendingMode"/>
+        <parameter name="TypeUnderlayerBlend"/>
+        <parameter name="TypeTextureRotation"/>
+        <parameter name="TypeUVAnimation"/>
+        <parameter name="TypeUVRotationAnimation"/>
+        
+        <parameter name="DetailTextureTiling" />
+        <parameter name="DetailTexture"/>
+        <parameter name="DetailBlendingMode"/>
+        <parameter name="DetailUnderlayerBlend"/>
+        <parameter name="DetailTextureRotation"/>
+        <parameter name="DetailUVAnimation"/>
+        <parameter name="DetailUVRotationAnimation"/>
+
+        <parameter name="NormalMapTexture"/>
+
+        <parameter name="MaskTexture"/>
+        <parameter name="MaskTileCountX"/>
+        <parameter name="MaskTileCountY"/>
+        <parameter name="MaskIntensity"/>
+
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group label="Detail" horizontal="0">
+
+            <group horizontal="1">
+                <button dataBindings="DetailTexture" fill="1" />
+
+                <label>Blending mode</label>
+
+                <combobox dataBindings="DetailBlendingMode">
+                    <comboboxitem value="0">Multiply</comboboxitem>
+                    <comboboxitem value="1">Color burn</comboboxitem>
+                </combobox>
+
+                <group horizontal="1">
+                    <label>UnderLayer</label>
+                    <textbox dataBindings="DetailUnderlayerBlend.x">
+                        <dataBindings increment="0.001" minvalue="0" maxvalue="1" displayvaluemul="255" />
+                    </textbox>
+                    <textbox dataBindings="DetailUnderlayerBlend.y">
+                        <dataBindings increment="0.001" minvalue="0" maxvalue="1" displayvaluemul="255" />
+                    </textbox>
+                    <textbox dataBindings="DetailUnderlayerBlend.z">
+                        <dataBindings increment="0.001" minvalue="0" maxvalue="1" displayvaluemul="255" />
+                    </textbox>
+                    <textbox dataBindings="DetailUnderlayerBlend.w">
+                        <dataBindings increment="0.001" minvalue="0" maxvalue="1" displayvaluemul="255" />
+                    </textbox>
+                </group>
+            </group>
+
+            <group horizontal="1">
+
+                <group horizontal="1">
+                    <label>Tiling U</label>
+                    <textbox dataBindings="DetailTextureTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <label>Animation U</label>
+                    <textbox dataBindings="DetailUVAnimation.x">
+                        <dataBindings increment="0.001" minvalue="-1" maxvalue="1" displayvaluemul="100.0" />
+                    </textbox>
+                </group>
+
+                <group horizontal="1">
+                    <label>Scaling V</label>
+                    <textbox dataBindings="DetailTextureTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <label>Animation V</label>
+                    <textbox dataBindings="DetailUVAnimation.y">
+                        <dataBindings increment="0.001" minvalue="-1" maxvalue="1" displayvaluemul="100.0" />
+                    </textbox>
+                </group>
+
+                <group horizontal="1">
+                    <label>Rotation</label>
+                    <textbox dataBindings="DetailTextureRotation">
+                        <dataBindings increment="0.001" minvalue="0.0" maxvalue="1" displayvaluemul="360.0" />
+                    </textbox>
+                    <label>Animation</label>
+                    <textbox dataBindings="DetailUVRotationAnimation">
+                        <dataBindings increment="0.001" minvalue="-1" maxvalue="1" displayvaluemul="360.0" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+
+
+        <group label="Type" horizontal="0">
+
+            <group horizontal="1">
+                <button dataBindings="TypeTexture" fill="1" />
+
+                <label>Blending mode</label>
+
+                <combobox dataBindings="TypeBlendingMode">
+                    <comboboxitem value="0">Multiply</comboboxitem>
+                    <comboboxitem value="1">Color burn</comboboxitem>
+                </combobox>
+
+                <group horizontal="1">
+                    <label>UnderLayer</label>
+                    <textbox dataBindings="TypeUnderlayerBlend.x">
+                        <dataBindings increment="0.001" minvalue="0" maxvalue="1" displayvaluemul="255" />
+                    </textbox>
+                    <textbox dataBindings="TypeUnderlayerBlend.y">
+                        <dataBindings increment="0.001" minvalue="0" maxvalue="1" displayvaluemul="255" />
+                    </textbox>
+                    <textbox dataBindings="TypeUnderlayerBlend.z">
+                        <dataBindings increment="0.001" minvalue="0" maxvalue="1" displayvaluemul="255" />
+                    </textbox>
+                    <textbox dataBindings="TypeUnderlayerBlend.w">
+                        <dataBindings increment="0.001" minvalue="0" maxvalue="1" displayvaluemul="255" />
+                    </textbox>
+                </group>
+            </group>
+
+            <group horizontal="1">
+
+                <group horizontal="1">
+                    <label>Tiling U</label>
+                    <textbox dataBindings="TypeTextureTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <label>Animation U</label>
+                    <textbox dataBindings="TypeUVAnimation.x">
+                        <dataBindings increment="0.001" minvalue="-1" maxvalue="1" displayvaluemul="100.0" />
+                    </textbox>
+                </group>
+
+                <group horizontal="1">
+                    <label>Scaling V</label>
+                    <textbox dataBindings="TypeTextureTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <label>Animation V</label>
+                    <textbox dataBindings="TypeUVAnimation.y">
+                        <dataBindings increment="0.001" minvalue="-1" maxvalue="1" displayvaluemul="100.0" />
+                    </textbox>
+                </group>
+
+                <group horizontal="1">
+                    <label>Rotation</label>
+                    <textbox dataBindings="TypeTextureRotation">
+                        <dataBindings increment="0.001" minvalue="0.0" maxvalue="1" displayvaluemul="360.0" />
+                    </textbox>
+                    <label>Animation</label>
+                    <textbox dataBindings="TypeUVRotationAnimation">
+                        <dataBindings increment="0.001" minvalue="-1" maxvalue="1" displayvaluemul="360.0" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+
+        <group label="Mask" horizontal="0">
+
+            <group horizontal="1">
+                <button dataBindings="MaskTexture" fill="1" />
+            </group>
+
+            <group horizontal="1">
+
+                <group horizontal="1">
+                    <label>Tile Count U</label>
+                    <textbox dataBindings="MaskTileCountX">
+                        <dataBindings increment="1" minvalue="1" maxvalue="4" displayvaluemul="1.0" />
+                    </textbox>
+                    <label>Tile Count V</label>
+                    <textbox dataBindings="MaskTileCountY">
+                        <dataBindings increment="1" minvalue="1" maxvalue="4" displayvaluemul="1.0" />
+                    </textbox>
+                    <textbox dataBindings="MaskIntensity">
+                        <dataBindings increment="0.001" minvalue="0.0" maxvalue="1" displayvaluemul="1.0" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+
+        <group label="Normal" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="NormalMapTexture" fill="1" />
+            </group>
+        </group>
+
+    </ui>
+
+</materialdescriptor>

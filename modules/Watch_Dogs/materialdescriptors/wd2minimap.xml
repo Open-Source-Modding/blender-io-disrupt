@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- If required, BuildingAtlasGenerator.cpp needs to be modified to account for new parameters -->
+<materialdescriptor xmlns:xi="#" name="WD2Minimap" displayname="WD2Minimap" showinui="1" id="#(0x3f15094, 0x35131e8f)" version="1.0">
+    <geometryInputs normal="1" color="0" uvChannels="0" />
+
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0" />
+    <parameter name="Opacity" type="float" defaultvalue="1" />
+    <parameter name="OpacityMultiplier" type="float" defaultvalue="1" />
+
+    <parameter name="DiffuseColor" type="color3" defaultvalue="1,1,1" />    
+    <parameter name="DiffuseTexture0" type="sampler2D" tilingName="DiffuseTiling0" UvName="DiffuseUV0" uvTilingName="DiffuseUVTiling0" maxdisplayname="Diffuse texture 0" />
+    <parameter name="DiffuseTexture0State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTiling0" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV0" type="int" />
+    <parameter name="DiffuseUVTiling0" type="float4" provideronly="1" />
+
+    <parameter name="IgnoreMapEffect" type="int" defaultvalue="0" />
+  
+    <parameter name="UseFakeLighting" type="int" />
+    <parameter name="HeightScaleColor" type="color3" defaultvalue="0.5,0.5,0.5" />
+    <parameter name="AmbientColor" type="color3" defaultvalue="0.25,0.25,0.25" />
+    
+    <parameterprovider parametersfilename="Mesh_WD2Minimap.fx">
+        <parameter name="DiffuseTexture0"/>
+        <parameter name="DiffuseTexture0State" />
+        <parameter name="DiffuseUVTiling0" />
+        <parameter name="DiffuseColor" />        
+        <parameter name="Opacity" />
+        <parameter name="OpacityMultiplier" />
+
+        <parameter name="UseFakeLighting" />
+        <parameter name="AmbientColor" />
+        <parameter name="HeightScaleColor" />
+        <parameter name="IgnoreMapEffect" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="DIFFUSEMAP">
+            <condition parameter="DiffuseTexture0" />
+        </shaderoption>
+        <shaderoption name="IGNORE_MAP_EFFECT">
+          <condition parameter="IgnoreMapEffect"  op="equal" value="1" />
+        </shaderoption>
+    </shaderoptions>
+
+        
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <group horizontal="1">
+                <label>   Sorting Layer Bias</label>
+                <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order of the decal.  Materials with smaller values are drawn first.">
+                    <dataBindings increment="1" minvalue="-10" maxvalue="10" />
+                </textbox>
+            </group>
+        </group>
+
+        <label> </label>
+            <group label="Diffuse">
+                <group horizontal="1">
+                    <button dataBindings="DiffuseColor" />
+                    <button dataBindings="DiffuseTexture0" fill="1" />
+                    <textbox dataBindings="DiffuseUV0">
+                        <dataBindings class="UVChannel" />
+                    </textbox>
+                    <group>
+                        <textbox dataBindings="DiffuseTiling0.x">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                        <textbox dataBindings="DiffuseTiling0.y">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+                    <combobox dataBindings="DiffuseTexture0State">
+                        <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                        <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                        <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    </combobox>
+                </group>
+
+                <group horizontal="1">
+                    <label>Opacity</label>
+                    <label> 0</label>
+                    <slider dataBindings="Opacity">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                    <textbox dataBindings="Opacity">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+                </group>
+            </group>
+        <label> </label>
+
+        <group>
+            <group horizontal="1">
+                <checkbox label="Fake Lighting" dataBindings="UseFakeLighting" />
+            </group>
+
+            <group horizontal="1" show_if="UseFakeLighting">
+                <group horizontal="1" >
+                    <label>Ambient</label><button dataBindings="AmbientColor" />
+                    <label>Height</label><button dataBindings="HeightScaleColor" />
+                </group>
+            </group>
+
+            <group horizontal="1">
+              <checkbox label="Ignore Map Effect" dataBindings="IgnoreMapEffect" />
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

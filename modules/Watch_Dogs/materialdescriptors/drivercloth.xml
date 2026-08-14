@@ -1,0 +1,441 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="DriverCloth" showinui="1" id="#(0x1c2085ba, 0xa871f1c6)" deprecated="1" >
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" packedUVChannel="8" />
+
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="HasNeutralMiddleColor" type="bool" />
+    <parameter name="InvertDiffuseTexture2MaskIntensity" type="bool" />
+    <parameter name="SwapDiffuse2UVs" type="bool" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorClamp" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV1" type="int" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="DiffuseTexture2" type="sampler2D" tilingName="DiffuseTiling2" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling2" />
+    <parameter name="DiffuseTexture2State" type="samplerState" defaultvalue="ColorClamp" />
+    <parameter name="DiffuseTiling2" type="float2" defaultvalue="1,1" />  
+    <parameter name="DiffuseOffset2" type="float2" defaultvalue="0,0" />  
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseTexture2BlendingType" type="int" defaultvalue="0" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" />
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="NormalTexture2" type="sampler2D" tilingName="NormalTiling2" UvName="NormalUV1" uvTilingName="NormalUVTiling2" />
+    <parameter name="NormalTexture2State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="NormalTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalOffset2" type="float2" defaultvalue="0,0" />
+    <parameter name="NormalIntensity2" type="float" defaultvalue="1" />
+
+    <parameter name="SpecularTexture1" type="sampler2D" tilingName="SpecularTiling1" UvName="SpecularUV1" uvTilingName="SpecularUVTiling1" />
+    <parameter name="SpecularTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SpecularTexture1State" type="samplerState" defaultvalue="ColorClamp" />
+    <parameter name="SpecularUV1" type="int" />
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.04" />
+
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseUVTiling2" type="float4" provideronly="1" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="NormalUVTiling2" type="float4" provideronly="1" />
+    <parameter name="SpecularUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="RimlightColor" type="color3" defaultvalue="0,0,0" />
+    <parameter name="RimlightPower" type="float" defaultvalue="3" />
+  
+    <parameter name="ReflectionIntensity" type="float4" div="3" />
+    <parameter name="ReflectionType" type="int" defaultvalue="1" />
+
+    <parameter name="AnimationParameters" type="float4" defaultvalue="0,0,0,0" op_x="x/2000" op_y="y/0.1"/>
+    
+    <parameter name="LocalWetness" type="bool" defaultvalue="0" />
+    
+    <parameter name="MaskGreenChannelMode" type="int" defaultvalue="0" />
+
+    <parameter name="ClothWrinkleTargetPartId" type="int" defaultvalue="0" />
+    <parameter name="ClothWrinkleParams" type="float4" defaultvalue="1,1,1,0" op_z="1-w" />
+    
+    <parameter name="WetSpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="WetReflectance" type="float" defaultvalue="0.04" />
+    <parameter name="WetDiffuseMultiplier" type="float" defaultvalue="1" />
+
+    <parameterprovider parametersfilename="Mesh_DriverCloth.fx">
+        <parameter name="DiffuseTexture1">
+            <alias name="DiffuseTexture1Point" />
+        </parameter>
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseUVTiling2" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseTexture2" />
+        <parameter name="DiffuseTexture2State" />
+        <parameter name="DiffuseTexture2BlendingType" />
+        <parameter name="DiffuseOffset2" />
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTexture2" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalUVTiling2" />
+        <parameter name="NormalTexture1State" />
+        <parameter name="NormalTexture2State" />
+        <parameter name="NormalOffset2" />
+        <parameter name="SpecularTexture1" />
+        <parameter name="SpecularUVTiling1" />
+        <parameter name="SpecularTexture1State" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+        <parameter name="NormalIntensity" />
+        <parameter name="NormalIntensity2" />
+        <parameter name="ReflectionIntensity" />
+        <parameter name="ReflectionType" />
+        <parameter name="RimlightColor" />
+        <parameter name="RimlightPower" />
+        <parameter name="HasNeutralMiddleColor" />
+        <parameter name="InvertDiffuseTexture2MaskIntensity" />
+        <parameter name="SwapDiffuse2UVs" />
+        <parameter name="AnimationParameters"/>
+        <parameter name="LocalWetness" />        
+        <parameter name="MaskGreenChannelMode" />
+        <parameter name="ClothWrinkleTargetPartId" />
+        <parameter name="ClothWrinkleParams" />
+        <parameter name="WetSpecularPower" />
+        <parameter name="WetReflectance" />
+        <parameter name="WetDiffuseMultiplier" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Information -->
+        <group label="Information">
+            <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/driver/DriverCloth">DriverCloth material online help</label>
+            <label> </label>
+            <label>Vertex color mappings:</label>
+            <group horizontal="1">
+                <label color="BB0000">    R:</label>
+                <group disable_if="LocalWetness==0" >
+                    <label>Local wetness mask</label>
+                </group>
+                <group show_if="LocalWetness==0" >
+                    <label color="404040"> (unused)</label>
+                </group>
+            </group>
+            <group horizontal="1" >
+                <label color="00BB00">    G:</label>
+                <label>NormalMap2 intensity scale</label>
+            </group>
+            <group horizontal="1">
+                <label color="0000AA">    B:</label>
+                <label>Rimlight intensity scale</label>
+            </group>
+            <group horizontal="1">
+                <label color="000000">    A:</label>
+                <label>Ambient occlusion</label>
+            </group>
+        </group>
+
+        <!-- Settings -->
+        <label> </label>
+        <group horizontal="0" label="Settings">
+            <group>
+                <checkbox label="Two sided" dataBindings="TwoSided" />
+                <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+            </group>
+        </group>
+
+        <!-- Diffuse -->
+        <label> </label>
+        <group label="Diffuse Textures">
+            <group horizontal="1">
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <textbox dataBindings="DiffuseUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+              <button dataBindings="DiffuseTexture2" fill="1" defaultFilePath="graphics/Characters/detail_maps" />
+              <group>
+                <textbox dataBindings="DiffuseTiling2.x">
+                  <dataBindings class="Tiling" />
+                </textbox>
+                <textbox dataBindings="DiffuseTiling2.y">
+                  <dataBindings class="Tiling" />
+                </textbox>
+              </group>
+              <combobox dataBindings="DiffuseTexture2State">
+                <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+              </combobox>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">                
+                    <label>      Blending Type</label>
+                    <combobox dataBindings="DiffuseTexture2BlendingType">
+                        <comboboxitem value="0">Overlay</comboboxitem>
+                        <comboboxitem value="1">Multiply</comboboxitem>
+                    </combobox>
+                    <label>        Offset   U</label>
+                    <textbox dataBindings="DiffuseOffset2.x">
+                        <dataBindings increment="0.01" />
+                    </textbox>
+                    <label>   V</label>
+                    <textbox dataBindings="DiffuseOffset2.y">
+                        <dataBindings increment="0.01" />
+                    </textbox>
+                </group>
+                <group horizontal="1">
+                    <label>      Color1</label>
+                    <button dataBindings="DiffuseColor1" />
+                    <group disable_if="MaskGreenChannelMode==1" horizontal="1">
+                        <label>      Color2</label>
+                        <button dataBindings="DiffuseColor2" />
+                        <label>   .   </label>
+                        <checkbox label="Neutral middle color" dataBindings="HasNeutralMiddleColor" />
+                        <label>      .      </label>
+                    </group>
+                    <checkbox label="Invert mask" dataBindings="InvertDiffuseTexture2MaskIntensity" />
+                    <label></label>
+                    <checkbox label="Rotation Diffuse2" dataBindings="SwapDiffuse2UVs" />
+                </group>
+            </group>
+        </group>
+
+        <!-- Normal -->
+        <label> </label>
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>      Intensity   -2</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="-2.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+        <label> </label>
+        <group label="Normal2  -  NORMALMAP OVERLAY profile, with blue channel set to 128">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture2" fill="1" defaultFilePath="graphics/Characters/detail_maps" />
+                <group>
+                    <textbox dataBindings="NormalTiling2.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling2.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture2State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>      Offset   U</label>
+                <textbox dataBindings="NormalOffset2.x">
+                    <dataBindings increment="0.01" />
+                </textbox>
+                <label>   V</label>
+                <textbox dataBindings="NormalOffset2.y">
+                    <dataBindings increment="0.01" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>      Intensity  -2</label>
+                <slider dataBindings="NormalIntensity2">
+                    <dataBindings increment="0.01" minvalue="-2.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>            
+            </group>
+        </group>
+
+        <!-- Specular -->
+        <label> </label>
+        <group label="Mask">
+            <group horizontal="1">
+                <button dataBindings="SpecularTexture1" fill="1" />
+                <textbox dataBindings="SpecularUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="SpecularTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SpecularTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="SpecularTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Anisotropic (EXPENSIVE)</comboboxitem>
+                </combobox>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label color="BB0000">          R:</label>
+                    <label>Specular Gloss  OR  Specular Mask (*deprecated*)</label>
+                </group>      
+                <group horizontal="1">
+                    <label color="00BB00">          G:</label>
+                        <combobox dataBindings="MaskGreenChannelMode">
+                            <comboboxitem value="0">Color Override</comboboxitem>
+                            <comboboxitem value="1">Reflectance Values</comboboxitem>
+                        </combobox>
+                </group>
+                <group horizontal="1">
+                    <label color="0000AA">          B:</label>
+                    <label>Diffuse 2 intensity</label>
+                </group>
+                <group horizontal="1">
+                    <label color="404040">          A:</label>
+                    <label>Specular occlusion (optional - only works with gloss)</label>
+                </group>      
+            </group>
+
+            <group>
+                    <group disable_if="MaskGreenChannelMode==1">
+                        <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+                        <xi:include href="UI/ReflectanceGroup.xml" />
+                    </group>
+
+                    <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+                    <xi:include href="UI/SpecularPowerGroup.xml" />
+            </group>
+        </group>
+
+        <!-- Reflection -->
+        <label> </label>
+        <group label="Reflection" horizontal="0">
+            <xi:include href="UI/ReflectionGroup.xml" />
+        </group>
+        <label> </label>
+        <group label="Rimlight" horizontal="0">
+            <group horizontal="1">
+            <label>      Color</label>
+            <button dataBindings="RimlightColor" />
+            <label>      Power</label>
+            <label> 1</label>
+            <slider dataBindings="RimlightPower">
+                <dataBindings increment="0.001" minvalue="1.0" maxvalue="20.0" />
+            </slider>
+            <label>20</label>
+            </group>
+        </group>
+
+        <!-- Wind -->
+        <label> </label>
+        <group label="Wind Animation" horizontal="0">
+            <group  horizontal="1">
+                <label>          Amplitude (mm)</label>
+                <label>0</label>
+                <slider dataBindings="AnimationParameters.x" >
+                    <dataBindings increment="1.0" minvalue="0.0" maxvalue="50.0"/>
+                </slider>
+                <label>50</label>
+            </group>
+            <group  horizontal="1">
+                <label>          Ripples              </label>
+                <label>0</label>
+                <slider dataBindings="AnimationParameters.y" >
+                    <dataBindings minvalue="0.0" maxvalue="10.0"/>
+                </slider>
+                <label>10</label>
+            </group>
+            <group  horizontal="1">
+                <label>          Speed                </label>
+                <label>0</label>
+                <slider dataBindings="AnimationParameters.z" >
+                    <dataBindings minvalue="0.0" maxvalue="50.0"/>
+                </slider>
+                <label>50</label>
+            </group>
+        </group>
+
+        <!-- Wet version -->
+        <label> </label>
+        <group horizontal="0" label="Wet version" complexity="1" >
+            <group  horizontal="1">
+                <label>      Diffuse multiplier               </label>
+                <label>0</label>
+                <slider dataBindings="WetDiffuseMultiplier">
+                    <dataBindings minvalue="0.0" maxvalue="1.0"/>
+                </slider>
+                <label>1</label>
+            </group>
+
+            <checkbox label="Local Wetness" dataBindings="LocalWetness" />
+
+            <dataBindingsAlias name="@ReflectanceAlias" dataBindings="WetReflectance" />
+            <xi:include href="UI/ReflectanceGroup.xml" />
+
+            <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="WetSpecularPower" />
+            <xi:include href="UI/SpecularPowerGroup.xml" />
+        </group>
+
+        <!-- Dynamic Cloth Wrinkles -->
+        <label> </label>
+        <group label="Dynamic Cloth Wrinkles - EXPERIMENTAL" horizontal="0" enable_if="NormalTexture1">
+            <xi:include href="UI/ClothWrinkleTargetParts.xml" />
+            <group enable_if="ClothWrinkleTargetPartId > 0">
+                <group horizontal="1">
+                    <label>          Displacement scale     </label>
+                    <textbox dataBindings="ClothWrinkleParams.x" tooltip="Scaling factor for the vertex displacement effect.">
+                        <dataBindings minvalue="0.0" maxvalue="10.0" increment="0.01" />
+                    </textbox>
+                </group>
+                <group horizontal="1">
+                    <label>          Wrinkle normal map scale     </label>
+                    <textbox dataBindings="ClothWrinkleParams.y" tooltip="Scaling factor for the dynamic wrinkle normal map.">
+                        <dataBindings minvalue="0.1" maxvalue="10.0" increment="0.01" />
+                    </textbox>
+                </group>
+                <group horizontal="1">
+                    <label>          UV Channel     </label>
+                    <textbox dataBindings="ClothWrinkleParams.w" tooltip="UV channel used to map the dynamic wrinkle map.">
+                        <dataBindings class="UVChannel" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+        
+    </ui>
+</materialdescriptor>

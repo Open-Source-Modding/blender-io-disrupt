@@ -18,7 +18,7 @@ bl_info = {
     "blender": (5, 0, 0),
     "location": "View3D > Sidebar > XBG Import",
     "description": "Import/edit/re-export models from Avatar: The Game, "
-                   "Far Cry 1/2/3/4/5/Primal/Instincts and Watch Dogs 1/2",
+                   "Far Cry 1/2/3/4/5/Primal/Instincts and Watch Dogs 1/2/Legion",
     "category": "Import-Export",
 }
 
@@ -150,7 +150,10 @@ from .modules.Watch_Dogs.operators_wd import (
     XBG_OT_ImportWD, XBG_OT_ImportWDMab, XBG_OT_InjectWD,
     XBG_OT_WDPeekLODs, XBG_OT_WDSyncNormals,
     XBG_OT_ImportWDSkeleton, XBG_OT_ImportWDHkx)
-from .modules.Watch_Dogs_2.operators_wd2 import XBG_OT_ImportWD2, XBG_OT_ExportWD2
+from .modules.Watch_Dogs_2.operators_wd2 import XBG_OT_ImportWD2, XBG_OT_ImportWD2XBG, XBG_OT_ExportWD2
+from .modules.Watch_Dogs_Legion.operators_wdl import (
+    XBG_OT_ImportWDL, XBG_OT_InjectWDL, XBG_OT_ImportWDLSkeleton,
+    XBG_OT_ImportWDLMab)
 
 from .modules.UI.main import (
     XBG_OT_SelectGame,
@@ -161,6 +164,7 @@ from .modules.UI.main import (
     XBG_PT_FC2Root,
     XBG_PT_FC3Root,
     XBG_PT_WDRoot,
+    XBG_PT_WDLRoot,
 )
 from .modules.UI.panels_fc1 import (
     XBG_PT_FC1Import,
@@ -208,6 +212,12 @@ from .modules.UI.panels_wd import (
     XBG_PT_WDInject,
     XBG_PT_WDDebug,
     XBG_PT_WDModelInfo,
+)
+from .modules.UI.panels_wdl import (
+    XBG_PT_WDLImport,
+    XBG_PT_WDLInject,
+    XBG_PT_WDLModelInfo,
+    XBG_PT_WDLAnimation,
 )
 
 
@@ -323,6 +333,11 @@ classes = (
     # Watch Dogs 2 (import-only, own folder)
     XBG_OT_ImportWD2,
     XBG_OT_ExportWD2,
+    # Watch Dogs Legion
+    XBG_OT_ImportWDL,
+    XBG_OT_InjectWDL,
+    XBG_OT_ImportWDLSkeleton,
+    XBG_OT_ImportWDLMab,
     # UI (order matters: parents before children)
     XBG_OT_SelectGame,
     XBG_PT_Panel,
@@ -374,12 +389,34 @@ classes = (
     XBG_PT_WDInject,
     XBG_PT_WDDebug,
     XBG_PT_WDModelInfo,
+    # Watch Dogs Legion
+    XBG_PT_WDLRoot,
+    XBG_PT_WDLImport,
+    XBG_PT_WDLInject,
+    XBG_PT_WDLModelInfo,
+    XBG_PT_WDLAnimation,
 )
 
+
+def menu_func_import(self, ctx):
+    sep = False
+    for op_id, label in [
+        ("xbg.import_wdl_model", "Watch Dogs Legion Model (.xbg)"),
+        ("xbg.import_wdl_skeleton", "Watch Dogs Legion Skeleton (.skel)"),
+    ]:
+        if not sep:
+            self.layout.separator()
+            sep = True
+        self.layout.operator(op_id, text=label)
+
+def menu_func_export(self, ctx):
+    pass
 
 def register():
     for c in classes:
         bpy.utils.register_class(c)
+    bpy.types.TOPBAR_MT_file_import.append(menu_func_import)
+    bpy.types.TOPBAR_MT_file_export.append(menu_func_export)
     S = bpy.types.Scene
     S.xbg_settings           = bpy.props.PointerProperty(type=XBGImportSettings)
     S.xbg_inject_settings    = bpy.props.PointerProperty(type=XBGInjectSettings)
@@ -477,6 +514,8 @@ def unregister():
     del S.xbg_box_max_fc2
     del S.xbg_sphere_center_fc2
     del S.xbg_sphere_radius_fc2
+    bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
+    bpy.types.TOPBAR_MT_file_export.remove(menu_func_export)
     for c in reversed(classes):
         bpy.utils.unregister_class(c)
 

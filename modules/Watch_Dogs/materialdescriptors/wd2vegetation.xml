@@ -1,0 +1,536 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2Vegetation" displayname="WD2Plant" showinui="1" id="#(0x451eef0a, 0x26fa71b1)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" packedUVChannel="12"/>
+
+    <!-- Settings -->
+    <parameter name="AlphaTestEnabled" type="bool" defaultvalue="1" />
+    <parameter name="TwoSided" type="bool" defaultvalue="1" />
+    <parameter name="CastShadow" type="bool" defaultvalue="1" />
+    <parameter name="WetSurfaceTypeIndex" type="int" defaultvalue="0" />
+
+    <!-- BaseColor -->
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Diffuse texture 1" optional="0"/>
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1"/>
+    <parameter name="DiffuseUV1" type="int" default="0"/>
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColors" type="color4" defaultvalue="1,1,1,1" arraysize="8" />
+    <parameter name="GroundColorMode" type="float2" defaultvalue="0,0" />
+    <parameter name="GroundColorBlendDistance" type="float" defaultvalue="1" op_x="1/x" />
+    <parameter name="GroundColorLuminance" type="float" defaultvalue="1" />
+    <parameter name="GroundColorStrength" type="float" defaultvalue="1" />
+
+    <!-- Normal -->
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+
+    <!-- SurfaceParams -->
+    <parameter name="MaskTexture1" type="sampler2D" tilingName="MaskTiling1" UvName="MaskUV1" uvTilingName="MaskTextureUVTiling1" maxdisplayname="Mask texture" />
+    <parameter name="MaskTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="MaskUV1" type="int" />
+    <parameter name="MaskTextureUVTiling1" type="float4" provideronly="1" />
+    <parameter name="MaskChannelUsageRed" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageGreen" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageBlue" type="float" defaultvalue="0" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.5" />
+    <parameter name="Roughness" type="float" defaultvalue="0.5" />
+    <parameter name="Translucency" type="float" defaultvalue="0.5" />
+
+    <!-- Noise -->
+    <parameter name="NoiseTexture1" type="sampler2D" optional="1"/>
+    <parameter name="NoiseTextureIntensity" type="float" defaultvalue="1" />
+
+    <!-- Wind Animation -->
+    <parameter name="WindAnimation" type="bool" defaultvalue="1" reloadMaterial="1" />
+    <parameter name="WindSource" type="float" defaultvalue="1" />
+    <parameter name="WindAnimFadeDistance" type="float2" defaultvalue="80,0" op_y="1/x" reloadMaterial="1" />
+    <parameter name="WindMainAnimStrength" type="float" defaultvalue="1" />
+    <parameter name="WindSecondaryAnimStrength" type="float" defaultvalue="1" />
+    <parameter name="WindSecondaryAnimFrequency" type="float" defaultvalue="1" />
+    <parameter name="WindAnimDiffuseColorBoost" type="float" defaultvalue="0" />
+    <parameter name="WindLeafAnim" type="bool" defaultvalue="0" />
+    <parameter name="WindLeafAnimStrength" type="float" defaultvalue="1" />
+    <parameter name="WindLeafAnimFrequency" type="float" defaultvalue="0" />
+    <parameter name="WindLeafAnimNoiseTexture" type="sampler2D" maxdisplayname="Leaf Anim Noise Texture">
+        <use_if parameter="WindAnimation" value="1" />
+    </parameter>
+
+    <!-- Collisions -->
+    <parameter name="ObstacleCollisions" type="bool" defaultvalue="1" />
+    <parameter name="ObstacleDisplacementFadeDistance" type="float2" defaultvalue="20,0" op_y="1/x" reloadMaterial="1" />
+    <parameter name="ObstacleDisplacementReduceStretching" type="bool" defaultvalue="0" />
+    <parameter name="ObstacleDisplacementRadiusScale" type="float2" defaultvalue="1,0" op_y="1/x" />
+    <parameter name="ObstacleDisplacementStrength" type="float" defaultvalue="1" />
+    <parameter name="VehicleCrushVerticalRange" type="float2" defaultvalue="1,0" op_y="1/x" />
+    <parameter name="VehicleCrushStrength" type="float" defaultvalue="1" />
+    <parameter name="VehicleCrushFadeDistance" type="float2" defaultvalue="50,0" op_y="1/x" reloadMaterial="1" />
+
+    <parameter name="RandomNormalsInMaskAlpha" type="bool" defaultvalue="0" />
+    <parameter name="RandomNormalsInMaskAlphaIntensity" type="float" defaultvalue="0.5" />
+
+    <parameter name="RandomFactorFromWorldPosition" type="float" defaultvalue="0" />
+    <parameter name="RandomFactorFromPlant" type="float" defaultvalue="1.0" />
+
+    <parameter name="AlignNormalsIntensity" type="float" defaultvalue="0" />
+
+    <!-- Parameter Provider -->
+    <parameterprovider parametersfilename="Mesh_WD2Vegetation.fx">
+        <parameter name="TwoSided" />
+        <parameter name="WetSurfaceTypeIndex" />
+
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseColors" />
+        <parameter name="GroundColorMode" />
+        <parameter name="GroundColorBlendDistance" />
+        <parameter name="GroundColorLuminance" />
+        <parameter name="GroundColorStrength" />
+
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalUV1" type="int" />
+        <parameter name="NormalIntensity" />
+
+        <parameter name="MaskTexture1" />
+        <parameter name="MaskTextureUVTiling1" />
+        <parameter name="MaskChannelUsageRed" />
+        <parameter name="MaskChannelUsageGreen" />
+        <parameter name="MaskChannelUsageBlue" />
+        <parameter name="Reflectance" />
+        <parameter name="Roughness" />
+        <parameter name="Translucency" />
+
+        <parameter name="NoiseTexture1" />
+        <parameter name="NoiseTextureIntensity" />
+
+        <parameter name="WindAnimation" />
+        <parameter name="WindSource" />
+        <parameter name="WindAnimFadeDistance" />
+        <parameter name="WindMainAnimStrength" />
+        <parameter name="WindSecondaryAnimStrength" />
+        <parameter name="WindSecondaryAnimFrequency" />
+        <parameter name="WindAnimDiffuseColorBoost" />
+        <parameter name="WindLeafAnim" />
+        <parameter name="WindLeafAnimStrength" />
+        <parameter name="WindLeafAnimFrequency" />
+        <parameter name="WindLeafAnimNoiseTexture" />
+
+        <parameter name="ObstacleCollisions" />
+        <parameter name="ObstacleDisplacementFadeDistance" />
+        <parameter name="ObstacleDisplacementReduceStretching" />
+        <parameter name="ObstacleDisplacementRadiusScale" />
+        <parameter name="ObstacleDisplacementStrength" />
+        <parameter name="VehicleCrushVerticalRange" />
+        <parameter name="VehicleCrushStrength" />
+        <parameter name="VehicleCrushFadeDistance" />
+        <parameter name="RandomNormalsInMaskAlpha" />
+        <parameter name="RandomNormalsInMaskAlphaIntensity" />
+        <parameter name="RandomFactorFromWorldPosition" />
+        <parameter name="RandomFactorFromPlant" />
+
+        <parameter name="AlignNormalsIntensity" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="NORMALMAP">
+            <condition parameter="NormalTexture1" />
+            <condition parameter="NormalIntensity" op="greaterequal" value="0" />
+        </shaderoption>
+        <shaderoption name="MASKMAP">
+            <condition parameter="MaskTexture1" />
+        </shaderoption>
+        <shaderoption name="NOISEMAP">
+            <condition parameter="NoiseTexture1" />
+        </shaderoption>
+        <shaderoption name="GROUND_COLOR_MASK">
+            <condition parameter="NormalTexture1" />
+            <condition parameter="NormalIntensity" op="greaterequal" value="0" />
+            <condition parameter="GroundColorMode.x" op="equal" value="3" />
+            <condition parameter="GroundColorStrength" op="greater" value="0" />
+        </shaderoption>
+    </shaderoptions>
+
+    <!-- User Interface Definition -->
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Information -->
+        <group label="Information">
+            <label>Vertex color mappings:</label>
+            <group horizontal="1">
+                <label color="BB0000">    R:</label>
+                <label>Main animation weight</label>
+            </group>
+            <group horizontal="1" >
+                <label color="00BB00">    G:</label>
+                <label>Main animation phase shift</label>
+            </group>
+            <group horizontal="1">
+                <label color="0000AA">    B:</label>
+                <label color="404040">Leaf animation phase shift</label>
+            </group>
+            <group horizontal="1">
+                <label color="000000">    A:</label>
+                <label color="404040">Leaf animation weight (from illum in 3dsMax)</label>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Settings -->
+        <group label="Settings">
+            <checkbox label="Alpha test enabled" dataBindings="AlphaTestEnabled" />
+            <checkbox label="Two sided" dataBindings="TwoSided" />
+            <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+            <group horizontal="1">
+                <label width="120" tooltip="Used to align normals with local up vector.">Normal Align Intensity:</label>
+                <slider dataBindings="AlignNormalsIntensity">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </slider>
+            </group>
+            <group horizontal="1">
+                <label width="120">Wet Surface Type:</label>
+                <combobox dataBindings="WetSurfaceTypeIndex">
+                    <comboboxitem value="0">Default</comboboxitem>
+                    <comboboxitem value="-1">Never Wet</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <!-- Diffuse -->
+        <group label="Diffuse">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <group show_if="MaskChannelUsageRed==2">
+                    <button dataBindings="DiffuseColor2" />
+                </group>
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <group>
+                    <textbox dataBindings="DiffuseTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1" >
+                <label>Random diffuse colors:</label>
+                <button dataBindings="DiffuseColors[0]" />
+                <button dataBindings="DiffuseColors[1]" />
+                <button dataBindings="DiffuseColors[2]" />
+                <button dataBindings="DiffuseColors[3]" />
+                <button dataBindings="DiffuseColors[4]" />
+                <button dataBindings="DiffuseColors[5]" />
+                <button dataBindings="DiffuseColors[6]" />
+                <button dataBindings="DiffuseColors[7]" />
+            </group>
+            <group label="Ground Color" horizontal="1" >
+                <label>Mode</label>
+                <combobox dataBindings="GroundColorMode">
+                    <comboboxitem value="0,0">Disabled</comboboxitem>
+                    <comboboxitem value="1,0">Vertical</comboboxitem>
+                    <comboboxitem value="2,1">Spherical</comboboxitem>
+                    <comboboxitem value="3,0">Mask in normal alpha</comboboxitem>
+                </combobox>
+                <group horizontal="1" show_if="GroundColorMode.x!=0" >
+                    <label>Strength</label>
+                    <textbox dataBindings="GroundColorStrength">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+                </group>
+                <group horizontal="1" show_if="GroundColorMode.x!=0" >
+                    <label>  Luminance</label>
+                    <textbox dataBindings="GroundColorLuminance">
+                        <dataBindings increment="0.01" minvalue="0.01" />
+                    </textbox>
+                </group>
+                <group horizontal="1" show_if="GroundColorMode.x==1||GroundColorMode.x==2" >
+                    <label>  Blend distance</label>
+                    <textbox dataBindings="GroundColorBlendDistance">
+                        <dataBindings increment="0.01" minvalue="0.01" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Normal -->
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1" enable_if="NormalTexture1">
+                <label>          Intensity    </label>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- SurfaceParams -->
+        <group label="Surface Parameters">
+            <group horizontal="1">
+                <button dataBindings="MaskTexture1" fill="1" />
+                <textbox dataBindings="MaskUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="MaskTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="MaskTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="142" color="BB0000"></label>
+                <checkbox label="Random Normals (Alpha mask)" dataBindings="RandomNormalsInMaskAlpha" />
+                <label>0</label>
+                <slider dataBindings="RandomNormalsInMaskAlphaIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label alignright="1" width="40" color="BB0000">R:</label>
+                    <group horizontal="1" enable_if="MaskTexture1">
+                        <combobox dataBindings="MaskChannelUsageRed">
+                            <comboboxitem value="2">Colorize</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                            <comboboxitem value="1">Reflectance</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelUsageRed==0 || MaskChannelUsageRed==2">
+                        <label alignright="1" width="90">Reflectance</label>
+                        <label> 0</label>
+                        <slider dataBindings="Reflectance">
+                            <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Reflectance">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="40" color="00BB00">G:</label>
+                    <group horizontal="1" enable_if="MaskTexture1">
+                        <combobox dataBindings="MaskChannelUsageGreen">
+                            <comboboxitem value="1">Roughness</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelUsageGreen==0">
+                        <label alignright="1" width="90">Roughness</label>
+                        <label> 0</label>
+                        <slider dataBindings="Roughness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Roughness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label alignright="1" width="40" color="0000BB">B:</label>
+                    <group horizontal="1" enable_if="MaskTexture1">
+                        <combobox dataBindings="MaskChannelUsageBlue">
+                            <comboboxitem value="1">Translucency</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelUsageBlue==0">
+                        <label alignright="1" width="90">Translucency</label>
+                        <label> 0</label>
+                        <slider dataBindings="Translucency">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Translucency">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <label> </label>
+
+        <!-- Noise -->
+        <group label="Noise">
+            <group horizontal="1">
+                <button dataBindings="NoiseTexture1" fill="1" />
+            </group>
+            <group horizontal="1">
+                <label>          Intensity    </label>
+                <label> 0</label>
+                <slider dataBindings="NoiseTextureIntensity">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="NoiseTextureIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+
+
+        <!-- GPU Animation -->
+        <group label="GPU animation">
+
+            <!-- Wind Animation -->
+            <group label="Wind animation">
+                <checkbox label="Enabled" dataBindings="WindAnimation" />
+                <group horizontal="1" enable_if="WindAnimation" >
+                    <label alignright="1" width="160">Wind source</label>
+                    <textbox dataBindings="WindSource">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+                    <label>       Global</label>
+                    <slider dataBindings="WindSource">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>Simulation</label>
+                </group>
+                <group enable_if="WindAnimation">
+                    <group horizontal="1" >
+                        <label alignright="1" width="160">Main animation strength</label>
+                        <textbox dataBindings="WindMainAnimStrength">
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                        <label alignright="1" width="100">Fade distance</label>
+                        <textbox dataBindings="WindAnimFadeDistance.x" >
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1" >
+                        <label alignright="1" width="160">Secondary animation strength</label>
+                        <textbox dataBindings="WindSecondaryAnimStrength">
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                        <label alignright="1" width="100">Frequency</label>
+                        <textbox dataBindings="WindSecondaryAnimFrequency">
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1" >
+                        <label alignright="1" width="160">Diffuse color boost</label>
+                        <textbox dataBindings="WindAnimDiffuseColorBoost">
+                            <dataBindings increment="0.01" minvalue="0" />
+                        </textbox>
+                    </group>
+                </group>
+
+                <group enable_if="WindAnimation" >
+                    <checkbox label="Use leaf animation" dataBindings="WindLeafAnim" />
+                    <group enable_if="WindLeafAnim" >
+                        <group horizontal="1" >
+                            <label alignright="1" width="160">Leaf wave animation strength</label>
+                            <textbox dataBindings="WindLeafAnimStrength">
+                                <dataBindings increment="0.01" minvalue="0.01" />
+                            </textbox>
+                            <label alignright="1" width="100">Frequency</label>
+                            <textbox dataBindings="WindLeafAnimFrequency">
+                                <dataBindings increment="0.01" minvalue="0.01" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1" >
+                            <label>  Leaf anim noise texture (mandatory)</label>
+                            <button dataBindings="WindLeafAnimNoiseTexture" fill="1" />
+                        </group>
+                    </group>
+                </group>
+            </group>
+
+            <!-- Displacement -->
+            <group label="Obstacle collisions">
+                <checkbox label="Enabled" dataBindings="ObstacleCollisions" />
+                <group enable_if="ObstacleCollisions">
+                    <group horizontal="1" >
+                        <checkbox label="Reduce displacement stretching" dataBindings="ObstacleDisplacementReduceStretching" tooltip="Reduces stretching by re-normalizing mesh length. EXPENSIVE! Not necessary on smaller grass." />
+                    </group>
+                    <group horizontal="1" >
+                        <label alignright="1" width="140">Obstacle radius multiplier</label>
+                        <textbox dataBindings="ObstacleDisplacementRadiusScale.x" tooltip="Scaling factor for the obstacle radius. Can be used to adjust the size of the effect on different types of meshes." >
+                            <dataBindings increment="0.01" minvalue="0.01" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1" >
+                        <label alignright="1" width="140">Displacement strength</label>
+                        <textbox dataBindings="ObstacleDisplacementStrength" tooltip="Strength of the displacement effect when colliding with characters." >
+                            <dataBindings increment="0.01" minvalue="0.0" />
+                        </textbox>
+                        <group horizontal="1" >
+                            <label alignright="1" width="100">Fade distance</label>
+                            <textbox dataBindings="ObstacleDisplacementFadeDistance.x" >
+                                <dataBindings increment="0.01" minvalue="0.01" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group horizontal="1" >
+                        <label alignright="1" width="140">Vehicle crush strength</label>
+                        <textbox dataBindings="VehicleCrushStrength" tooltip="Strength of the crush effect caused by vehicles." >
+                            <dataBindings increment="0.01" minvalue="0.0" />
+                        </textbox>
+                        <group horizontal="1" >
+                            <label alignright="1" width="100">Fade distance</label>
+                            <textbox dataBindings="VehicleCrushFadeDistance.x" >
+                                <dataBindings increment="0.01" minvalue="0.01" />
+                            </textbox>
+                        </group>
+                    </group>
+                    <group horizontal="1" >
+                        <label alignright="1" width="140">Effect vertical range</label>
+                        <textbox dataBindings="VehicleCrushVerticalRange.x" tooltip="Use this value to fade-out the collision effect when the obstacle gets away from the mesh vertically." >
+                            <dataBindings increment="0.01" minvalue="0.1" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <group label="Motion Randomness">
+            <group horizontal="1" >
+                <label>Worldspace wave</label>
+                <label> 0</label>
+                <slider dataBindings="RandomFactorFromWorldPosition">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+            <group horizontal="1" >
+                <label>Instance Randomness</label>
+                <label> 0</label>
+                <slider dataBindings="RandomFactorFromPlant">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

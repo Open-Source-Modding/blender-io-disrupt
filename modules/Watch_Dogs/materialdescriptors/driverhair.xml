@@ -1,0 +1,458 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="DriverHair" displayname="DriverHair" showinui="1" id="#(0x6e9e8db5, 0x7472c8a4)" deprecated="1" >
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" />
+
+    <parameter name="AlphaTestEnabled" type="bool" />
+    <parameter name="AlphaTestValue" type="float" defaultvalue="128" div="255"/>
+    <parameter name="TwoSided" type="bool" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Diffuse texture 1" optional="0" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV1" type="int" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor1BlendingType" type="int" defaultvalue="0" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="SpecularTexture1" type="sampler2D" tilingName="SpecularTiling1" UvName="SpecularUV1" uvTilingName="SpecularUVTiling1" maxdisplayname="Mask texture" />
+    <parameter name="SpecularTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="SpecularTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SpecularUV1" type="int" />
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float" defaultvalue="0.04" />
+    <parameter name="SpecularUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="AlphaTexture1" type="sampler2D" tilingName="AlphaTiling1" UvName="AlphaUV1" uvTilingName="AlphaUVTiling1" maxdisplayname="Alpha texture" />
+    <parameter name="AlphaTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="AlphaTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="AlphaUV1" type="int" />
+    <parameter name="AlphaUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="UseHairFilter" type="bool" defaultvalue="0" />
+    <parameter name="HairFilterDirection" type="float4" defaultvalue="0,1,1,0" op_z="1-w" />
+    <parameter name="HairFilterStrength" type="float" defaultvalue="1" div="4" />
+    <parameter name="UseHairFilterMask" type="bool" defaultvalue="0" />
+    <parameter name="UseColorMask" type="bool" defaultvalue="0" />
+    <parameter name="UseAlternateFilterMethod" type="bool" defaultvalue="0" />
+
+    <parameter name="HasAnimation" type="bool" defaultvalue="0" />
+    <parameter name="AnimationParameters" type="float4" defaultvalue="0.001,2,0,0" />
+    
+    <parameter name="UseAnisoSpecular" type="float2" defaultvalue="0,1" op_y="1-x" />
+    <parameter name="SpecularShiftTexture" type="sampler2D" UvName="SpecularShiftUV" uvTilingName="SpecularShiftUVSel" maxdisplayname="Specular shift texture" />
+    <parameter name="SpecularShiftTilingStrength" type="float3" defaultvalue="1,1,1" />
+    <parameter name="SpecularShiftUV" type="int" />
+    <parameter name="SpecularShiftUVSel" type="float4" provideronly="1" />
+    <parameter name="SpecularNoiseTexture" type="sampler2D" UvName="SpecularNoiseUV" uvTilingName="SpecularNoiseUVSel" maxdisplayname="Specular noise texture" />
+    <parameter name="SpecularNoiseTilingStrength" type="float3" defaultvalue="1,1,0.5" op_z="1-z" />
+    <parameter name="SpecularNoiseUV" type="int" />
+    <parameter name="SpecularNoiseUVSel" type="float4" provideronly="1" />
+    <parameter name="SpecularHairDirSel" type="float2" defaultvalue="0,1" />
+    <parameter name="SpecularShiftGlossiness" type="float4" defaultvalue="0.0,0.1,1,1" />
+    <parameter name="Specular1Intensity" type="float" defaultvalue="1" />
+    <parameter name="Specular2Color" type="color3" defaultvalue="0,0,0" />
+
+    <parameter name="WetSpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="WetReflectance" type="float" defaultvalue="0.04" />
+    <parameter name="WetDiffuseMultiplier" type="float" defaultvalue="1" />
+
+    <parameterprovider parametersfilename="Mesh_DriverHair.fx">
+        <parameter name="AlphaTestValue" />
+
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseColor1BlendingType" />
+
+        <parameter name="SpecularTexture1" />
+        <parameter name="SpecularTexture1State" />
+        <parameter name="SpecularUVTiling1" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalIntensity" />
+
+        <parameter name="AlphaTexture1" />
+        <parameter name="AlphaTexture1State" />
+        <parameter name="AlphaUVTiling1" />
+
+        <parameter name="UseHairFilter" />
+        <parameter name="HairFilterDirection" />
+        <parameter name="HairFilterStrength" />
+        <parameter name="UseHairFilterMask" />
+        <parameter name="UseColorMask" />
+        <parameter name="UseAlternateFilterMethod" />
+
+        <parameter name="HasAnimation" />
+        <parameter name="AnimationParameters" />
+
+        <parameter name="UseAnisoSpecular" />
+        <parameter name="SpecularShiftTexture" />
+        <parameter name="SpecularShiftTilingStrength" />
+        <parameter name="SpecularShiftUVSel" />
+        <parameter name="SpecularNoiseTexture" />
+        <parameter name="SpecularNoiseTilingStrength" />
+        <parameter name="SpecularNoiseUVSel" />
+        <parameter name="SpecularHairDirSel" />
+        <parameter name="SpecularShiftGlossiness" />
+        <parameter name="Specular1Intensity" />
+        <parameter name="Specular2Color" />
+        <parameter name="WetSpecularPower" />
+        <parameter name="WetReflectance" />
+        <parameter name="WetDiffuseMultiplier" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Information -->
+        <group label="Vertex color mappings">
+            <group horizontal="1">
+                <label color="BB0000">          R:</label>
+                <group enable_if="UseColorMask" >
+                    <label>Color mask</label>
+                </group>
+                <group show_if="UseColorMask" >
+                    <label> (0.0 = 100% diffuse color, 1.0 = 100% blend color)</label>
+                </group>
+            </group>
+            <group horizontal="1" >
+                <label color="00BB00">          G:</label>
+                <group enable_if="UseHairFilterMask" >
+                    <label>Hair filtering mask</label>
+                </group>
+                <group show_if="UseHairFilterMask" >
+                    <label> (0.0 = No filtering, 1.0 = Maximum filtering strength)</label>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label color="0000AA">          B:</label>
+                <group enable_if="HasAnimation" >
+                    <label>Animation amplitude</label>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label color="000000">          A:</label>
+                <label>Ambient occlusion</label>
+            </group>
+        </group>
+
+        <!-- Settings -->
+        <group horizontal="1" label="Settings">
+            <group>
+                <checkbox label="Two sided" dataBindings="TwoSided" />
+                <group horizontal="1">
+                    <checkbox label="Alpha test" dataBindings="AlphaTestEnabled" />
+                    <group horizontal="1" show_if="AlphaTestEnabled">
+                        <label>Value</label>
+                        <textbox dataBindings="AlphaTestValue">
+                            <dataBindings increment="1" minvalue="0" maxvalue="255"/>
+                        </textbox>
+                    </group>
+                    <group hide_if="SpecularTexture1 || AlphaTexture1 || AlphaTestEnabled==0" >
+                        <label color="FF0000">       Alpha test needs either a Mask or an Alpha texture.</label>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <!-- Diffuse -->
+        <group label="Diffuse" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <textbox dataBindings="DiffuseUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>      Blending Type</label>
+                <combobox dataBindings="DiffuseColor1BlendingType">
+                    <comboboxitem value="0">Multiply</comboboxitem>
+                    <comboboxitem value="1">Overlay</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <checkbox label="Use color mask" dataBindings="UseColorMask" />
+                <group enable_if="UseColorMask" horizontal="1">
+                    <label>      Blend Color</label>
+                    <button dataBindings="DiffuseColor2" />
+                </group>
+            </group>
+        </group>
+
+        <!-- Specular Mask -->
+        <group label="Mask">
+            <group horizontal="1">
+                <button dataBindings="SpecularTexture1" fill="1"/>
+                <textbox dataBindings="SpecularUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="SpecularTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SpecularTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="SpecularTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                </combobox>
+            </group>
+            <group vertical="1" enable_if="SpecularTexture1">
+                <group horizontal="1">
+                    <label color="BB0000">          R:</label>
+                    <label>Specular occlusion OR Specular intensity (*deprecated*)</label>
+                </group>
+                <group horizontal="1" >
+                    <label color="00BB00">          G:</label>
+                    <label>Gloss map</label>
+                </group>
+                <group horizontal="1">
+                    <label color="0000AA">          B:</label>
+                    <group enable_if="AlphaTestEnabled" >
+                        <group enable_if="AlphaTexture1==0" >
+                            <label>Opacity (optional)</label>
+                        </group>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <!-- Specular Parameters -->
+        <group label="Specular">
+            <group>
+                <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+	        	<xi:include href="UI/ReflectanceGroup.xml" />
+    
+                <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+	            <xi:include href="UI/SpecularPowerGroup.xml" />
+            </group>            
+        </group>
+
+        <group label="Anisotropic Specular">
+            <checkbox label="Enable" dataBindings="UseAnisoSpecular.x" />
+            <group enable_if="UseAnisoSpecular.x">
+                <group horizontal="1">
+                    <button dataBindings="SpecularShiftTexture" fill="1" />
+                    <textbox dataBindings="SpecularShiftUV">
+                        <dataBindings class="UVChannel" />
+                    </textbox>
+                </group>
+                <group horizontal="1">
+                    <label color="BB0000">      R:</label>
+                    <label>Specular Noise   Tiling</label>
+                    <textbox dataBindings="SpecularNoiseTilingStrength.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SpecularNoiseTilingStrength.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <label>    Strength</label>
+                    <label> Min</label>
+                    <slider dataBindings="SpecularNoiseTilingStrength.z">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>Max</label>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00">      G:</label>
+                    <label>Specular Shift     Tiling</label>
+                    <textbox dataBindings="SpecularShiftTilingStrength.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SpecularShiftTilingStrength.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <label>    Strength</label>
+                    <label> Min</label>
+                    <slider dataBindings="SpecularShiftTilingStrength.z">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                    </slider>
+                    <label>Max</label>
+                </group>
+                <group horizontal="1">
+                    <label color="0000BB">      B:</label>
+                    <label color="666666">&lt;unused&gt;</label>
+                </group>
+                <group horizontal="1">
+                    <label>Hair Direction</label>
+                    <group horizontal="1">
+                        <combobox dataBindings="SpecularHairDirSel">
+                            <comboboxitem value="1,0">Tangent (U)</comboboxitem>
+                            <comboboxitem value="0,1">Binormal (V)</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label>First highlight</label>
+                    <label>     Intensity</label>
+                    <textbox dataBindings="Specular1Intensity">
+                        <dataBindings increment="0.01" minvalue="0" maxvalue="1"/>
+                    </textbox>
+                    <group horizontal="1" enable_if="Specular2Color.x>0|Specular2Color.y>0|Specular2Color.z>0">
+                        <label>   Shift</label>
+                        <textbox dataBindings="SpecularShiftGlossiness.x" tooltip="Used to slightly shift the highlight when using two specular highlights.">
+                            <dataBindings increment="0.01" minvalue="-1" maxvalue="1"/>
+                        </textbox>
+                    </group>
+                    <label>   Glossiness Factor</label>
+                    <textbox dataBindings="SpecularShiftGlossiness.z">
+                        <dataBindings increment="0.01" minvalue="0" maxvalue="8"/>
+                    </textbox>
+                </group>
+                <group horizontal="1">
+                    <label>Second highlight</label>
+                    <label>     Color</label>
+                    <button dataBindings="Specular2Color" />
+                    <group horizontal="1" enable_if="Specular2Color.x>0|Specular2Color.y>0|Specular2Color.z>0">
+                        <label>               Shift</label>
+                        <textbox dataBindings="SpecularShiftGlossiness.y" tooltip="Used to slightly shift the highlight when using two specular highlights.">
+                            <dataBindings increment="0.01" minvalue="-1" maxvalue="1"/>
+                        </textbox>
+                        <label>   Glossiness Factor</label>
+                        <textbox dataBindings="SpecularShiftGlossiness.w">
+                            <dataBindings increment="0.01" minvalue="0" maxvalue="8"/>
+                        </textbox>
+                        <group show_if="Specular2Color.x>0|Specular2Color.y>0|Specular2Color.z>0">
+                            <label color="BB0000">     More expensive, use only if necessary!</label>
+                        </group>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <!-- Normal -->
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1" enable_if="NormalTexture1">
+                <label>          Intensity    </label>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+
+        <!-- Alpha map -->
+        <group label="Alpha">
+            <group horizontal="1" enable_if="AlphaTestEnabled || AlphaTexture1">
+                <button dataBindings="AlphaTexture1" fill="1" />
+                <textbox dataBindings="AlphaUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="AlphaTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="AlphaTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="AlphaTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                </combobox>
+            </group>
+            <group show_if="AlphaTexture1">
+                <group hide_if="AlphaTestEnabled">
+                    <label color="FF0000">Do not put an alpha texture if material is not alpha tested</label>
+                </group>
+            </group>
+        </group>
+
+        <!-- Screen-Space Hair Filtering -->
+        <group label="Screen-Space Hair Filtering" >
+            <group horizontal="1">
+                <checkbox label="Enabled" dataBindings="UseHairFilter" />
+                <group horizontal="1" enable_if="UseHairFilter">
+                    <label>Strength</label>
+                    <slider dataBindings="HairFilterStrength">
+                        <dataBindings increment="0.01" minvalue="0.1" maxvalue="4.0" />
+                    </slider>
+                </group>
+                <group horizontal="1" enable_if="UseHairFilter">
+                    <label>UV Channel</label>
+                    <textbox dataBindings="HairFilterDirection.w">
+                        <dataBindings class="UVChannel" />
+                    </textbox>
+                </group>
+                <group horizontal="1" enable_if="UseHairFilter">
+                    <label>Direction</label>
+                    <group horizontal="1">
+                        <combobox dataBindings="HairFilterDirection.xy">
+                            <comboboxitem value="1,0">Tangent (U)</comboboxitem>
+                            <comboboxitem value="0,1">Binormal (V)</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+            </group>
+            <group horizontal="1" disable_if="UseHairFilter==0">
+                <checkbox label="Use vertex mask" dataBindings="UseHairFilterMask" tooltip="Modulate filter strength by green channel of vertex color." />
+            </group>
+            <group horizontal="1" disable_if="UseHairFilter==0">
+                <checkbox label="Use alternate filtering method" dataBindings="UseAlternateFilterMethod" tooltip="Use a different method to filter the hair strands. This method can generate smoother results." />
+            </group>
+        </group>
+
+        <!-- Wetness Control -->
+        <group horizontal="0" label="Wet version" complexity="1" >
+            <group  horizontal="1">
+                <label>      Diffuse multiplier               </label>
+                <label>0</label>
+                <slider dataBindings="WetDiffuseMultiplier">
+                    <dataBindings minvalue="0.0" maxvalue="1.0"/>
+                </slider>
+                <label>1</label>
+            </group>
+
+            <dataBindingsAlias name="@ReflectanceAlias" dataBindings="WetReflectance" />
+        	<xi:include href="UI/ReflectanceGroup.xml" />
+
+            <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="WetSpecularPower" />
+        	<xi:include href="UI/SpecularPowerGroup.xml" />
+        </group>
+    </ui>
+</materialdescriptor>

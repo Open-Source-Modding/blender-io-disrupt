@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2WaterDecal" displayname="WD2WaterDecal" showinui="1" id="#(0x4c87b9c8, 0x3a711fb1)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="0" uvChannels="1" />
+
+    <!-- Settings -->
+    <parameter name="AlphaTestEnabled" type="bool" defaultvalue="0" />
+    <parameter name="BlendingType" type="int" defaultvalue="1" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="5" />
+    <parameter name="MinimumWetness" type="float" defaultvalue="0" />
+    <parameter name="HeightRange" type="float" defaultvalue="0.25" />    
+
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="0,0,0" />
+
+    <parameter name="OpacityTexture" type="sampler2D" maxdisplayname="Opacity texture" optional="0" />
+    <parameter name="OpacityTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="SeparateOpacity" type="float3" defaultvalue="1,1,1" />
+
+    <parameter name="NormalTexture" type="sampler2D" maxdisplayname="Normal texture" normalmap="1" />
+    <parameter name="NormalTextureState" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalIntensity" type="float2" defaultvalue="1,0" />
+    <parameter name="NormalUVTiling1" type="float2" defaultvalue="1,1" />
+
+    <parameter name="SurfaceParametersTexture" type="sampler2D" maxdisplayname="Mask texture" />
+
+    <parameter name="MaskChannelUsageRed" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageGreen" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageBlue" type="float" defaultvalue="0" />
+    
+    <parameter name="Reflectance" type="float" defaultvalue="0.5" />
+    <parameter name="Roughness" type="float" defaultvalue="0.5" />
+    <parameter name="Metalness" type="float" defaultvalue="0" />
+    
+  
+    <!-- Parameter Provider -->
+    <parameterprovider parametersfilename="Mesh_WD2WaterDecal.fx">
+        <parameter name="MinimumWetness" />
+        <parameter name="HeightRange" />
+
+        <parameter name="DiffuseColor1" />
+
+        <parameter name="OpacityTexture" />
+        <parameter name="OpacityTextureState" />
+        <parameter name="SeparateOpacity" />
+
+        <parameter name="NormalTexture" />
+        <parameter name="NormalTextureState" />
+        
+        <parameter name="NormalIntensity" />
+        <parameter name="NormalUVTiling1" type="float2" defaultvalue="1,1" />
+
+        <parameter name="SurfaceParametersTexture" />
+
+        <parameter name="MaskChannelUsageRed" />
+        <parameter name="MaskChannelUsageGreen" />
+        <parameter name="MaskChannelUsageBlue" />
+        
+        <parameter name="Reflectance" />
+        <parameter name="Roughness" />
+        <parameter name="Metalness" />
+    </parameterprovider>
+
+    
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="NORMALMAP">
+            <condition parameter="NormalTexture" />
+        </shaderoption>
+        <shaderoption name="SURFACE_PARAMETERS_TEXTURE">
+            <condition parameter="SurfaceParametersTexture" />
+        </shaderoption>
+    </shaderoptions>
+
+    
+    <!-- User interface -->
+    <ui defaultFilePath="graphics/_Texture/">
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <group horizontal="1">
+                <label width="100">Sorting Layer Bias</label>
+                <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order of the decal.  Materials with smaller values are drawn first.">
+                    <dataBindings increment="1" minvalue="-100" maxvalue="100" />
+                </textbox>
+            </group>            
+            <group horizontal="1">
+                <label width="100">Minimum Wetness</label>
+                <label> 0</label>
+                <slider dataBindings="MinimumWetness" tooltip="Minimum wetness value. Using 1.0 will make the decal always visible.">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+
+        <!-- Opacity -->
+        <group label="Opacity" horizontal="0">
+            <group horizontal="1">
+                <button dataBindings="OpacityTexture" fill="1" />
+                <combobox dataBindings="OpacityTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label width="100">Height Range</label>
+                <label> 0</label>
+                <slider dataBindings="HeightRange" tooltip="Range of opacity as height">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+
+        <!-- Base Color -->
+        <group horizontal="0" label="Base Color">
+            <button dataBindings="DiffuseColor1" />
+            <group horizontal="1">
+                <label>Opacity:   0</label>
+                <slider dataBindings="SeparateOpacity.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+
+        <!-- SurfaceParams -->
+        <group label="Surface Parameters">
+            <group horizontal="1">
+                <button dataBindings="SurfaceParametersTexture" fill="1" />
+            </group>
+            
+            <group vertical="1">
+                <group horizontal="1">
+                    <label>Opacity:   0</label>
+                    <slider dataBindings="SeparateOpacity.z">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                </group>
+    
+                <!-- Red channel -->
+                <group horizontal="1">
+                    <label color="BB0000">   R:</label>
+                    <group horizontal="1" enable_if="SurfaceParametersTexture">
+                        <group horizontal="1" enable_if="Colorize==0">
+                            <combobox dataBindings="MaskChannelUsageRed">
+                                <comboboxitem value="1">Reflectance</comboboxitem>
+                                <comboboxitem value="0">None</comboboxitem>
+                            </combobox>
+                        </group>
+                    </group>
+                    <group horizontal="1" enable_if="SurfaceParametersTexture==0 || MaskChannelUsageRed==0">
+                        <label>    Reflectance: </label>
+                        <label> 0</label>
+                        <slider dataBindings="Reflectance">
+                            <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                            <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Reflectance">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <!-- Green channel -->
+                <group horizontal="1">
+                    <label color="00BB00">   G:</label>
+                    <group horizontal="1" enable_if="SurfaceParametersTexture">
+                        <combobox dataBindings="MaskChannelUsageGreen">
+                            <comboboxitem value="1">Roughness</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="SurfaceParametersTexture==0 || MaskChannelUsageGreen==0">
+                        <label>    Roughness: </label>
+                        <label>  0</label>
+                        <slider dataBindings="Roughness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Roughness">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <!-- Blue channel -->
+                <group horizontal="1">
+                    <label color="0000BB">   B:</label>
+                    <group horizontal="1" enable_if="SurfaceParametersTexture">
+                        <combobox dataBindings="MaskChannelUsageBlue">
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <!-- Normal -->
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture" fill="1" />
+                <group>
+                    <textbox dataBindings="NormalUVTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalUVTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTextureState">
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>Opacity:   0</label>
+                <slider dataBindings="SeparateOpacity.y">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+            <group horizontal="1" enable_if="NormalTexture">
+                <label>Intensity  </label>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+
+    </ui>
+</materialdescriptor>

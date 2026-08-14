@@ -1,0 +1,868 @@
+<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="VolumetricCloudsControl_Layers" family="VolumetricCloudsControl_Layers" showinui="1" version="1">
+  <geometryInputs/>
+
+  <parameter name="Layer1Texture" type="sampler2D" category="Layer 1" displayName="Texture" replaceTexture="black" />
+  <parameter name="Layer1Tiling" type="float2" category="Layer 1" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer1Offset" type="float2" category="Layer 1" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer1Density" type="float" category="Layer 1" displayName="Density" defaultvalue="1.0" />
+  <parameter name="Layer1Type" type="float" category="Layer 1" displayName="Type of Cloud" defaultvalue="0.0" />
+  <parameter name="Layer1Blurriness" type="float" category="Layer 1" displayName="Blurriness" defaultvalue="0.0" />
+
+  <parameter name="Layer1Texture2" type="sampler2D" category="Layer 1" displayName="Texture 2" replaceTexture="black" />
+  <parameter name="Layer1Tiling2" type="float2" category="Layer 1" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer1Offset2" type="float2" category="Layer 1" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer1Texture2Mode" type="int" category="Layer 1" displayName="Mode" defaultvalue="0" />
+  <parameter name="Layer1Texture2Intensity" type="float" category="Layer 1" displayName="Intensity" defaultvalue="0.0" />
+
+  <parameter name="Layer2Texture" type="sampler2D" category="Layer 2" displayName="Texture" replaceTexture="black" />
+  <parameter name="Layer2Tiling" type="float2" category="Layer 2" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer2Offset" type="float2" category="Layer 2" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer2Density" type="float" category="Layer 2" displayName="Density" defaultvalue="1.0" />
+  <parameter name="Layer2Type" type="float" category="Layer 2" displayName="Type of Cloud" defaultvalue="0.0" />
+  <parameter name="Layer2Blurriness" type="float" category="Layer 2" displayName="Blurriness" defaultvalue="0.0" />
+
+  <parameter name="Layer2Texture2" type="sampler2D" category="Layer 2" displayName="Texture 2" replaceTexture="black" />
+  <parameter name="Layer2Tiling2" type="float2" category="Layer 2" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer2Offset2" type="float2" category="Layer 2" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer2Texture2Mode" type="int" category="Layer 2" displayName="Mode" defaultvalue="0" />
+  <parameter name="Layer2Texture2Intensity" type="float" category="Layer 2" displayName="Intensity" defaultvalue="0.0" />
+
+  <parameter name="Layer3Texture" type="sampler2D" category="Layer 3" displayName="Texture" replaceTexture="black" />
+  <parameter name="Layer3Tiling" type="float2" category="Layer 3" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer3Offset" type="float2" category="Layer 3" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer3Density" type="float" category="Layer 3" displayName="Density" defaultvalue="1.0" />
+  <parameter name="Layer3Type" type="float" category="Layer 3" displayName="Type of Cloud" defaultvalue="0.0" />
+  <parameter name="Layer3Blurriness" type="float" category="Layer 3" displayName="Blurriness" defaultvalue="0.0" />
+
+  <parameter name="Layer3Texture2" type="sampler2D" category="Layer 3" displayName="Texture 2" replaceTexture="black" />
+  <parameter name="Layer3Tiling2" type="float2" category="Layer 3" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer3Offset2" type="float2" category="Layer 3" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer3Texture2Mode" type="int" category="Layer 3" displayName="Mode" defaultvalue="0" />
+  <parameter name="Layer3Texture2Intensity" type="float" category="Layer 3" displayName="Intensity" defaultvalue="0.0" />
+
+  <parameter name="Layer4Texture" type="sampler2D" category="Layer 4" displayName="Texture 1" replaceTexture="black" />
+  <parameter name="Layer4Tiling" type="float2" category="Layer 4" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer4Offset" type="float2" category="Layer 4" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer4Density" type="float" category="Layer 4" displayName="Density" defaultvalue="1.0" />
+  <parameter name="Layer4Type" type="float" category="Layer 4" displayName="Type of Cloud" defaultvalue="0.0" />
+  <parameter name="Layer4Blurriness" type="float" category="Layer 4" displayName="Blurriness" defaultvalue="0.0" />
+
+  <parameter name="Layer4Texture2" type="sampler2D" category="Layer 4" displayName="Texture 2" replaceTexture="black" />
+  <parameter name="Layer4Tiling2" type="float2" category="Layer 4" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer4Offset2" type="float2" category="Layer 4" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer4Texture2Mode" type="int" category="Layer 4" displayName="Mode" defaultvalue="0" />
+  <parameter name="Layer4Texture2Intensity" type="float" category="Layer 4" displayName="Intensity" defaultvalue="0.0" />
+
+  <parameter name="Layer5Texture" type="sampler2D" category="Layer 5" displayName="Texture" replaceTexture="black" />
+  <parameter name="Layer5Tiling" type="float2" category="Layer 5" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer5Offset" type="float2" category="Layer 5" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer5Density" type="float" category="Layer 5" displayName="Density" defaultvalue="1.0" />
+  <parameter name="Layer5Type" type="float" category="Layer 5" displayName="Type of Cloud" defaultvalue="0.0" />
+  <parameter name="Layer5Blurriness" type="float" category="Layer 5" displayName="Blurriness" defaultvalue="0.0" />
+
+  <parameter name="Layer5Texture2" type="sampler2D" category="Layer 5" displayName="Texture" replaceTexture="black" />
+  <parameter name="Layer5Tiling2" type="float2" category="Layer 5" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer5Offset2" type="float2" category="Layer 5" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer5Texture2Mode" type="int" category="Layer 5" displayName="Mode" defaultvalue="0" />
+  <parameter name="Layer5Texture2Intensity" type="float" category="Layer 5" displayName="Intensity" defaultvalue="0.0" />
+
+  <parameter name="Layer6Texture" type="sampler2D" category="Layer 6" displayName="Texture" replaceTexture="black" />
+  <parameter name="Layer6Tiling" type="float2" category="Layer 6" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer6Offset" type="float2" category="Layer 6" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer6Density" type="float" category="Layer 6" displayName="Density" defaultvalue="1.0" />
+  <parameter name="Layer6Type" type="float" category="Layer 6" displayName="Type of Cloud" defaultvalue="0.0" />
+  <parameter name="Layer6Blurriness" type="float" category="Layer 6" displayName="Blurriness" defaultvalue="0.0" />
+
+  <parameter name="Layer6Texture2" type="sampler2D" category="Layer 6" displayName="Texture" replaceTexture="black" />
+  <parameter name="Layer6Tiling2" type="float2" category="Layer 6" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer6Offset2" type="float2" category="Layer 6" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer6Texture2Mode" type="int" category="Layer 6" displayName="Mode" defaultvalue="0" />
+  <parameter name="Layer6Texture2Intensity" type="float" category="Layer 6" displayName="Intensity" defaultvalue="0.0" />
+
+  <parameter name="Layer7Texture" type="sampler2D" category="Layer 7" displayName="Texture" replaceTexture="black" />
+  <parameter name="Layer7Tiling" type="float2" category="Layer 7" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer7Offset" type="float2" category="Layer 7" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer7Density" type="float" category="Layer 7" displayName="Density" defaultvalue="1.0" />
+  <parameter name="Layer7Type" type="float" category="Layer 7" displayName="Type of Cloud" defaultvalue="0.0" />
+  <parameter name="Layer7Blurriness" type="float" category="Layer 7" displayName="Blurriness" defaultvalue="0.0" />
+
+  <parameter name="Layer7Texture2" type="sampler2D" category="Layer 7" displayName="Texture" replaceTexture="black" />
+  <parameter name="Layer7Tiling2" type="float2" category="Layer 7" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer7Offset2" type="float2" category="Layer 7" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer7Texture2Mode" type="int" category="Layer 7" displayName="Mode" defaultvalue="0" />
+  <parameter name="Layer7Texture2Intensity" type="float" category="Layer 7" displayName="Intensity" defaultvalue="0.0" />
+
+  <parameter name="Layer8Texture" type="sampler2D" category="Layer 8" displayName="Texture" replaceTexture="black" />
+  <parameter name="Layer8Tiling" type="float2" category="Layer 8" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer8Offset" type="float2" category="Layer 8" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer8Density" type="float" category="Layer 8" displayName="Density" defaultvalue="1.0" />
+  <parameter name="Layer8Type" type="float" category="Layer 8" displayName="Type of Cloud" defaultvalue="0.0" />
+  <parameter name="Layer8Blurriness" type="float" category="Layer 8" displayName="Blurriness" defaultvalue="0.0" />
+
+  <parameter name="Layer8Texture2" type="sampler2D" category="Layer 8" displayName="Texture" replaceTexture="black" />
+  <parameter name="Layer8Tiling2" type="float2" category="Layer 8" displayName="Tiling" defaultvalue="1.0, 1.0" />
+  <parameter name="Layer8Offset2" type="float2" category="Layer 8" displayName="Offset" defaultvalue="0.0, 0.0" />
+  <parameter name="Layer8Texture2Mode" type="int" category="Layer 8" displayName="Mode" defaultvalue="0" />
+  <parameter name="Layer8Texture2Intensity" type="float" category="Layer 8" displayName="Intensity" defaultvalue="0.0" />
+
+  <parameterprovider parametersfilename="VolumetricCloudsControl_Layers.fx">
+    <parameter name="Layer1Texture" />
+    <parameter name="Layer1Tiling" />
+    <parameter name="Layer1Offset" />
+    <parameter name="Layer1Density" />
+    <parameter name="Layer1Type" />
+    <parameter name="Layer1Blurriness" />
+    <parameter name="Layer1Texture2" />
+    <parameter name="Layer1Tiling2" />
+    <parameter name="Layer1Offset2" />
+    <parameter name="Layer1Texture2Mode" />
+    <parameter name="Layer1Texture2Intensity" />
+    <parameter name="Layer2Texture" />
+    <parameter name="Layer2Tiling" />
+    <parameter name="Layer2Offset" />
+    <parameter name="Layer2Density" />
+    <parameter name="Layer2Type" />
+    <parameter name="Layer2Blurriness" />
+    <parameter name="Layer2Texture2" />
+    <parameter name="Layer2Tiling2" />
+    <parameter name="Layer2Offset2" />
+    <parameter name="Layer2Texture2Mode" />
+    <parameter name="Layer2Texture2Intensity" />
+    <parameter name="Layer3Texture" />
+    <parameter name="Layer3Tiling" />
+    <parameter name="Layer3Offset" />
+    <parameter name="Layer3Density" />
+    <parameter name="Layer3Type" />
+    <parameter name="Layer3Blurriness" />
+    <parameter name="Layer3Texture2" />
+    <parameter name="Layer3Tiling2" />
+    <parameter name="Layer3Offset2" />
+    <parameter name="Layer3Texture2Mode" />
+    <parameter name="Layer3Texture2Intensity" />
+    <parameter name="Layer4Texture" />
+    <parameter name="Layer4Tiling" />
+    <parameter name="Layer4Offset" />
+    <parameter name="Layer4Density" />
+    <parameter name="Layer4Type" />
+    <parameter name="Layer4Blurriness" />
+    <parameter name="Layer4Texture2" />
+    <parameter name="Layer4Tiling2" />
+    <parameter name="Layer4Offset2" />
+    <parameter name="Layer4Texture2Mode" />
+    <parameter name="Layer4Texture2Intensity" />
+    <parameter name="Layer5Texture" />
+    <parameter name="Layer5Tiling" />
+    <parameter name="Layer5Offset" />
+    <parameter name="Layer5Density" />
+    <parameter name="Layer5Type" />
+    <parameter name="Layer5Blurriness" />
+    <parameter name="Layer5Texture2" />
+    <parameter name="Layer5Tiling2" />
+    <parameter name="Layer5Offset2" />
+    <parameter name="Layer5Texture2Mode" />
+    <parameter name="Layer5Texture2Intensity" />
+    <parameter name="Layer6Texture" />
+    <parameter name="Layer6Tiling" />
+    <parameter name="Layer6Offset" />
+    <parameter name="Layer6Density" />
+    <parameter name="Layer6Type" />
+    <parameter name="Layer6Blurriness" />
+    <parameter name="Layer6Texture2" />
+    <parameter name="Layer6Tiling2" />
+    <parameter name="Layer6Offset2" />
+    <parameter name="Layer6Texture2Mode" />
+    <parameter name="Layer6Texture2Intensity" />
+    <parameter name="Layer7Texture" />
+    <parameter name="Layer7Tiling" />
+    <parameter name="Layer7Offset" />
+    <parameter name="Layer7Density" />
+    <parameter name="Layer7Type" />
+    <parameter name="Layer7Blurriness" />
+    <parameter name="Layer7Texture2" />
+    <parameter name="Layer7Tiling2" />
+    <parameter name="Layer7Offset2" />
+    <parameter name="Layer7Texture2Mode" />
+    <parameter name="Layer7Texture2Intensity" />
+    <parameter name="Layer8Texture" />
+    <parameter name="Layer8Tiling" />
+    <parameter name="Layer8Offset" />
+    <parameter name="Layer8Density" />
+    <parameter name="Layer8Type" />
+    <parameter name="Layer8Blurriness" />
+    <parameter name="Layer8Texture2" />
+    <parameter name="Layer8Tiling2" />
+    <parameter name="Layer8Offset2" />
+    <parameter name="Layer8Texture2Mode" />
+    <parameter name="Layer8Texture2Intensity" />
+  </parameterprovider>
+
+  <ui>
+    <xi:include href="UI/DataClasses.xml" />
+
+    <group label="Layer 8">
+      <group horizontal="1">
+        <button dataBindings="Layer8Texture" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer8Tiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer8Tiling.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer8Offset.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer8Offset.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1" hide_if="Layer8Texture2Mode==0">
+        <button dataBindings="Layer8Texture2" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer8Tiling2.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer8Tiling2.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer8Offset2.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer8Offset2.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>Density:           </label>
+        <slider dataBindings="Layer8Density">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer8Density">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+        <label>    Texture2 mode  </label>
+        <combobox dataBindings="Layer8Texture2Mode">
+          <comboboxitem value="0">None</comboboxitem>
+          <comboboxitem value="1">Add</comboboxitem>
+          <comboboxitem value="2">Screen</comboboxitem>
+          <comboboxitem value="3">Multiply</comboboxitem>
+          <comboboxitem value="4">Sub</comboboxitem>
+        </combobox>
+      </group>
+      <group horizontal="1">
+        <label>Type of Cloud:</label>
+        <slider dataBindings="Layer8Type">
+          <dataBindings type="float" minvalue="-1" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer8Type">
+          <dataBindings minvalue="-1.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+        <label>    Intensity:           </label>
+        <slider dataBindings="Layer8Texture2Intensity">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer8Texture2Intensity">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+      </group>
+      <group horizontal="1">
+        <label>Blurriness:       </label>
+        <slider dataBindings="Layer8Blurriness">
+          <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer8Blurriness">
+          <dataBindings minvalue="0.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+      </group>
+    </group>
+
+    <group label="Layer 7">
+      <group horizontal="1">
+        <button dataBindings="Layer7Texture" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer7Tiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer7Tiling.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer7Offset.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer7Offset.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <button dataBindings="Layer7Texture2" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer7Tiling2.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer7Tiling2.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer7Offset2.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer7Offset2.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>Density:           </label>
+        <slider dataBindings="Layer7Density">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer7Density">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+        <label>    Texture2 mode  </label>
+        <combobox dataBindings="Layer7Texture2Mode">
+          <comboboxitem value="0">None</comboboxitem>
+          <comboboxitem value="1">Add</comboboxitem>
+          <comboboxitem value="2">Screen</comboboxitem>
+          <comboboxitem value="3">Multiply</comboboxitem>
+          <comboboxitem value="4">Sub</comboboxitem>
+        </combobox>
+      </group>
+      <group horizontal="1">
+        <label>Type of Cloud:</label>
+        <slider dataBindings="Layer7Type">
+          <dataBindings type="float" minvalue="-1" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer7Type">
+          <dataBindings minvalue="-1.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+        <label>    Intensity:           </label>
+        <slider dataBindings="Layer7Texture2Intensity">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer7Texture2Intensity">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+      </group>
+      <group horizontal="1">
+        <label>Blurriness:       </label>
+        <slider dataBindings="Layer7Blurriness">
+          <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer7Blurriness">
+          <dataBindings minvalue="0.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+      </group>
+    </group>
+
+    <group label="Layer 6">
+      <group horizontal="1">
+        <button dataBindings="Layer6Texture" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer6Tiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer6Tiling.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer6Offset.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer6Offset.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <button dataBindings="Layer6Texture2" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer6Tiling2.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer6Tiling2.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer6Offset2.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer6Offset2.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>Density:           </label>
+        <slider dataBindings="Layer6Density">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer6Density">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+        <label>    Texture2 mode  </label>
+        <combobox dataBindings="Layer6Texture2Mode">
+          <comboboxitem value="0">None</comboboxitem>
+          <comboboxitem value="1">Add</comboboxitem>
+          <comboboxitem value="2">Screen</comboboxitem>
+          <comboboxitem value="3">Multiply</comboboxitem>
+          <comboboxitem value="4">Sub</comboboxitem>
+        </combobox>
+      </group>
+      <group horizontal="1">
+        <label>Type of Cloud:</label>
+        <slider dataBindings="Layer6Type">
+          <dataBindings type="float" minvalue="-1" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer6Type">
+          <dataBindings minvalue="-1.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+        <label>    Intensity:           </label>
+        <slider dataBindings="Layer6Texture2Intensity">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer6Texture2Intensity">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+      </group>
+      <group horizontal="1">
+        <label>Blurriness:       </label>
+        <slider dataBindings="Layer6Blurriness">
+          <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer6Blurriness">
+          <dataBindings minvalue="0.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+      </group>
+    </group>
+
+    <group label="Layer 5">
+      <group horizontal="1">
+        <button dataBindings="Layer5Texture" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer5Tiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer5Tiling.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer5Offset.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer5Offset.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <button dataBindings="Layer5Texture2" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer5Tiling2.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer5Tiling2.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer5Offset2.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer5Offset2.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>Density:           </label>
+        <slider dataBindings="Layer5Density">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer5Density">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+        <label>    Texture2 mode  </label>
+        <combobox dataBindings="Layer5Texture2Mode">
+          <comboboxitem value="0">None</comboboxitem>
+          <comboboxitem value="1">Add</comboboxitem>
+          <comboboxitem value="2">Screen</comboboxitem>
+          <comboboxitem value="3">Multiply</comboboxitem>
+          <comboboxitem value="4">Sub</comboboxitem>
+        </combobox>
+      </group>
+      <group horizontal="1">
+        <label>Type of Cloud:</label>
+        <slider dataBindings="Layer5Type">
+          <dataBindings type="float" minvalue="-1" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer5Type">
+          <dataBindings minvalue="-1.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+        <label>    Intensity:           </label>
+        <slider dataBindings="Layer5Texture2Intensity">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer5Texture2Intensity">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+      </group>
+      <group horizontal="1">
+        <label>Blurriness:       </label>
+        <slider dataBindings="Layer5Blurriness">
+          <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer5Blurriness">
+          <dataBindings minvalue="0.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+      </group>
+    </group>
+
+    <group label="Layer 4">
+      <group horizontal="1">
+        <button dataBindings="Layer4Texture" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer4Tiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer4Tiling.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer4Offset.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer4Offset.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <button dataBindings="Layer4Texture2" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer4Tiling2.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer4Tiling2.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer4Offset2.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer4Offset2.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>Density:           </label>
+        <slider dataBindings="Layer4Density">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer4Density">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+        <label>    Texture2 mode  </label>
+        <combobox dataBindings="Layer4Texture2Mode">
+          <comboboxitem value="0">None</comboboxitem>
+          <comboboxitem value="1">Add</comboboxitem>
+          <comboboxitem value="2">Screen</comboboxitem>
+          <comboboxitem value="3">Multiply</comboboxitem>
+          <comboboxitem value="4">Sub</comboboxitem>
+        </combobox>
+      </group>
+      <group horizontal="1">
+        <label>Type of Cloud:</label>
+        <slider dataBindings="Layer4Type">
+          <dataBindings type="float" minvalue="-1" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer4Type">
+          <dataBindings minvalue="-1.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+        <label>    Intensity:           </label>
+        <slider dataBindings="Layer4Texture2Intensity">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer4Texture2Intensity">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+      </group>
+      <group horizontal="1">
+        <label>Blurriness:       </label>
+        <slider dataBindings="Layer4Blurriness">
+          <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer4Blurriness">
+          <dataBindings minvalue="0.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+      </group>
+    </group>
+
+    <group label="Layer 3">
+      <group horizontal="1">
+        <button dataBindings="Layer3Texture" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer3Tiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer3Tiling.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer3Offset.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer3Offset.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <button dataBindings="Layer3Texture2" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer3Tiling2.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer3Tiling2.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer3Offset2.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer3Offset2.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>Density:           </label>
+        <slider dataBindings="Layer3Density">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer3Density">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+        <label>    Texture2 mode  </label>
+        <combobox dataBindings="Layer3Texture2Mode">
+          <comboboxitem value="0">None</comboboxitem>
+          <comboboxitem value="1">Add</comboboxitem>
+          <comboboxitem value="2">Screen</comboboxitem>
+          <comboboxitem value="3">Multiply</comboboxitem>
+          <comboboxitem value="4">Sub</comboboxitem>
+        </combobox>
+      </group>
+      <group horizontal="1">
+        <label>Type of Cloud:</label>
+        <slider dataBindings="Layer3Type">
+          <dataBindings type="float" minvalue="-1" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer3Type">
+          <dataBindings minvalue="-1.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+        <label>    Intensity:           </label>
+        <slider dataBindings="Layer3Texture2Intensity">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer4Texture2Intensity">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+      </group>
+      <group horizontal="1">
+        <label>Blurriness:       </label>
+        <slider dataBindings="Layer3Blurriness">
+          <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer3Blurriness">
+          <dataBindings minvalue="0.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+      </group>
+    </group>
+
+    <group label="Layer 2">
+      <group horizontal="1">
+        <button dataBindings="Layer2Texture" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer2Tiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer2Tiling.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer2Offset.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer2Offset.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <button dataBindings="Layer2Texture2" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer2Tiling2.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer2Tiling2.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer2Offset2.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer2Offset2.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>Density:           </label>
+        <slider dataBindings="Layer2Density">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer2Density">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+        <label>    Texture2 mode  </label>
+        <combobox dataBindings="Layer2Texture2Mode">
+          <comboboxitem value="0">None</comboboxitem>
+          <comboboxitem value="1">Add</comboboxitem>
+          <comboboxitem value="2">Screen</comboboxitem>
+          <comboboxitem value="3">Multiply</comboboxitem>
+          <comboboxitem value="4">Sub</comboboxitem>
+        </combobox>
+      </group>
+      <group horizontal="1">
+        <label>Type of Cloud:</label>
+        <slider dataBindings="Layer2Type">
+          <dataBindings type="float" minvalue="-1" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer2Type">
+          <dataBindings minvalue="-1.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+        <label>    Intensity:           </label>
+        <slider dataBindings="Layer2Texture2Intensity">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer2Texture2Intensity">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+      </group>
+      <group horizontal="1">
+        <label>Blurriness:       </label>
+        <slider dataBindings="Layer2Blurriness">
+          <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer2Blurriness">
+          <dataBindings minvalue="0.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+      </group>
+    </group>
+
+    <group label="Layer 1">
+      <group horizontal="1">
+        <button dataBindings="Layer1Texture" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer1Tiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer1Tiling.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer1Offset.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer1Offset.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <button dataBindings="Layer1Texture2" fill="1" />
+        <group horizontal="0">
+          <textbox dataBindings="Layer1Tiling2.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="Layer1Tiling2.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+        <group horizontal="0">
+          <textbox dataBindings="Layer1Offset2.x">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+          <textbox dataBindings="Layer1Offset2.y">
+            <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>Density:           </label>
+        <slider dataBindings="Layer1Density">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer1Density">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+        <label>    Texture2 mode  </label>
+        <combobox dataBindings="Layer1Texture2Mode">
+          <comboboxitem value="0">None</comboboxitem>
+          <comboboxitem value="1">Add</comboboxitem>
+          <comboboxitem value="2">Screen</comboboxitem>
+          <comboboxitem value="3">Multiply</comboboxitem>
+          <comboboxitem value="4">Sub</comboboxitem>
+        </combobox>
+      </group>
+      <group horizontal="1">
+        <label>Type of Cloud:</label>
+        <slider dataBindings="Layer1Type">
+          <dataBindings type="float" minvalue="-1" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer1Type">
+          <dataBindings minvalue="-1.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+        <label>    Intensity:           </label>
+        <slider dataBindings="Layer1Texture2Intensity">
+          <dataBindings type="float" minvalue="0" maxvalue="2" defaultvalue="1" />
+        </slider>
+        <textbox dataBindings="Layer1Texture2Intensity">
+          <dataBindings minvalue="0.0" maxvalue="2" defaultvalue="1" />
+        </textbox>
+      </group>
+      <group horizontal="1">
+        <label>Blurriness:       </label>
+        <slider dataBindings="Layer1Blurriness">
+          <dataBindings type="float" minvalue="0" maxvalue="1" defaultvalue="0" />
+        </slider>
+        <textbox dataBindings="Layer1Blurriness">
+          <dataBindings minvalue="0.0" maxvalue="1" defaultvalue="0" />
+        </textbox>
+      </group>
+    </group>
+
+  </ui>
+</materialdescriptor>

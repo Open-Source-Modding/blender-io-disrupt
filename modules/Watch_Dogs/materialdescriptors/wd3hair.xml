@@ -1,0 +1,541 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD3Hair" displayname="WD3Hair" showinui="1" id="#(0x7c959541, 0x54cb5ef1)">
+    <geometryInputs normal="1" tangent="1" binormal="1" uvChannels="2" />
+
+    <!-- Settings -->
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="CastShadow" type="bool" defaultvalue="1" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+    <parameter name="Transmittance" type="float" defaultvalue="1" />
+    <parameter name="AlphaTestEnabled" type="bool" defaultvalue="1" />
+    <parameter name="AlphaTestValue" type="float" defaultvalue="128" div="255"/>
+    <parameter name="ShadowAlphaTestValue" type="float" defaultvalue="128" div="255"/>
+    <parameter name="AlphaBlendEnabled" type="bool" defaultvalue="0" />
+    <parameter name="AlphaBlendValue" type="float" defaultvalue="1" div="255"/>
+    <parameter name="AlphaBlendTransition" type="float" defaultvalue="192" div="255"/>
+    <parameter name="AlphaBlendFadeOutStart" type="float" defaultvalue="4"/>
+    <parameter name="AlphaBlendFadeOutEnd" type="float" defaultvalue="5"/>
+    <parameter name="WetSurfaceTypeIndex" type="int" defaultvalue="0" />
+    <parameter name="AlphaTestDitheringEnabled" oldnames="TemporalDitheringEnabled" type="bool" defaultvalue="1"/>
+
+    <!-- BaseColor -->
+    <parameter name="DiffuseTexture1" oldnames="AlbedoTexture1" type="sampler2D" tilingName="DiffuseTextureTiling1" UvName="DiffuseTextureUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Albedo texture 1" optional="1" />
+    <parameter name="DiffuseTexture1State" oldnames="AlbedoTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTextureTiling1" oldames="AlbedoTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseTextureUV1" oldnames="AlbedoUV1" type="int" />
+    <parameter name="DiffuseUVTiling1" oldnames="AlbedoUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseBias1" oldnames="AlbedoMipBias" type="float" />
+    <parameter name="DiffuseColor1" oldnames="AlbedoColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor2" oldnames="AlbedoColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor1BlendingType" oldnames="AlbedoColor1BlendingType" type="int" defaultvalue="0" />
+    <parameter name="DiffuseIntensity2" oldnames="AlbedoAOStrength" type="float" defaultvalue="0" />
+    <parameter name="DiffuseIntensity1" type="float" defaultvalue="0" />
+    <parameter name="DiffuseColor3" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor4" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="GradientTexture1" type="sampler2D" tilingName="DiffuseTextureTiling1" UvName="DiffuseTextureUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Gradient texture 1" optional="1" />
+    <parameter name="GradientIndex" type="int" />
+
+    <!-- Normal -->
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" optional="1" />
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="NormalBias1" oldnames="NormalMipBias" type="float" />
+    <parameter name="NormalIntensity1" oldnames="NormalIntensity" type="float" defaultvalue="1" />
+
+    <!-- Surface Parameters -->
+    <parameter name="MaskTexture1" oldnames="MaskTexture" type="sampler2D" tilingName="MaskTiling1" UvName="MaskUV1" uvTilingName="MaskTextureUVTiling1" maxdisplayname="Mask texture" optional="0" />
+    <parameter name="MaskTexture1State" oldnames="MaskTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="MaskTiling1" oldnames="MaskTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="MaskUV1" oldnames="MaskUV" type="int" />
+    <parameter name="MaskTextureUVTiling1" oldnames="MaskUVTiling" type="float4" provideronly="1" />
+    <parameter name="MaskBias1" oldnames="MaskBias" type="float" />
+
+    <!-- Hair -->
+    <parameter name="HairTangentTexture" type="sampler2D" tilingName="HairTangentTiling" UvName="HairTangentUV" uvTilingName="HairTangentUVTiling" maxdisplayname="Hair Tangent" normalmap="1" optional="1" />
+    <parameter name="HairTangentTextureState" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="HairTangentTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="HairTangentUV" type="int" />
+    <parameter name="HairTangentUVTiling" type="float4" provideronly="1" />
+    <parameter name="HairTangentBias" oldnames="HairTangentMipBias" type="float" />
+
+    <parameter name="Roughness" type="float" defaultvalue="0.5" />
+    <parameter name="HairRoughnessVariation" type="float" defaultvalue="0" oldnames="HairStrandRoughnessVariation"/>
+    <parameter name="HairAO" type="float" defaultvalue="1" />
+    <parameter name="HairRootOcclusion" type="float" defaultvalue="1" />
+    <parameter name="HairEdgeExponent" type="float" defaultvalue="0.25"/>
+    <parameter name="HairEdgeFade" type="float" defaultvalue="1"/>
+    <parameter name="HairTangentShift" type="float" defaultvalue="1" />
+    <parameter name="HairTangentShiftVariation" type="float" defaultvalue="0" />
+
+    <!-- Hair filter -->
+    <parameter name="UseHairFilter" type="bool" defaultvalue="0" />
+    <parameter name="HairFilterStrength" type="float" defaultvalue="1" div="4" />
+  
+    <parameterprovider parametersfilename="Mesh_WD3Hair.fx">
+        <parameter name="AlphaTestValue" />
+        <parameter name="ShadowAlphaTestValue" />
+        <parameter name="Transmittance" />
+        <parameter name="AlphaBlendEnabled" />
+        <parameter name="AlphaBlendValue" />
+        <parameter name="AlphaBlendTransition" />
+        <parameter name="AlphaBlendFadeOutStart" />
+        <parameter name="AlphaBlendFadeOutEnd" />
+        <parameter name="WetSurfaceTypeIndex" />
+        <parameter name="AlphaTestDitheringEnabled" />
+
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseBias1" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseColor1BlendingType" />
+        <parameter name="DiffuseIntensity2" />
+        <parameter name="DiffuseIntensity1" />
+        <parameter name="DiffuseColor3" />
+        <parameter name="DiffuseColor4" />
+
+        <parameter name="GradientTexture1" />
+        <parameter name="GradientIndex" />
+
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTexture1State" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalBias1" />
+        <parameter name="NormalIntensity1" />
+
+        <parameter name="MaskTexture1" />
+        <parameter name="MaskTexture1State" />
+        <parameter name="MaskTextureUVTiling1" />
+        <parameter name="MaskBias1" />
+
+        <parameter name="HairTangentTexture" />
+        <parameter name="HairTangentTextureState" />
+        <parameter name="HairTangentUVTiling" />
+        <parameter name="HairTangentBias" />
+
+        <parameter name="Roughness" />
+        <parameter name="HairRoughnessVariation" />
+        <parameter name="HairAO" />
+        <parameter name="HairRootOcclusion" />
+        <parameter name="HairEdgeExponent" />
+        <parameter name="HairEdgeFade" />
+        <parameter name="HairTangentShift" />
+        <parameter name="HairTangentShiftVariation" />
+      
+        <parameter name="UseHairFilter" />
+        <parameter name="HairFilterStrength" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="ALBEDOMAP">
+            <condition parameter="DiffuseTexture1" />
+            <condition parameter="DiffuseColor1BlendingType" op="greater" value="0" />
+        </shaderoption>
+        <shaderoption name="NORMALMAP">
+            <condition parameter="NormalTexture1" />
+            <condition parameter="NormalIntensity1" op="greater" value="0" />
+        </shaderoption>
+        <shaderoption name="GRADIENTMAP">
+            <condition parameter="GradientTexture1" />
+            <condition parameter="DiffuseColor1BlendingType" op="equal" value="5"/>
+        </shaderoption>
+        <shaderoption name="TANGENTMAP">
+            <condition parameter="HairTangentTexture" />
+        </shaderoption>
+    </shaderoptions>
+
+    <!-- User Interface Definition -->
+    <ui defaultFilePath="graphics/Characters/wd3/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <group horizontal="1">
+                <checkbox label="Two sided" dataBindings="TwoSided" />
+                <checkbox label="Alpha Blend" dataBindings="AlphaBlendEnabled" />
+                <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+                <checkbox label="Alpha Test Dithering" dataBindings="AlphaTestDitheringEnabled" />
+                <group horizontal="1">
+                    <label>Sorting Layer Bias:</label>
+                    <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order.  Materials with smaller values are drawn first.">
+                        <dataBindings increment="1" minvalue="-4" maxvalue="4" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>Wet Surface Type:</label>
+                <combobox dataBindings="WetSurfaceTypeIndex">
+                    <comboboxitem value="0">Default</comboboxitem>
+                    <comboboxitem value="-1">Never Wet</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <!-- Base Color -->
+        <group label="Base Color" horizontal="0">
+            <group horizontal="1">
+                <label>Blending Type:</label>
+                <combobox dataBindings="DiffuseColor1BlendingType">
+                    <comboboxitem value="0">Flat</comboboxitem>
+                    <comboboxitem value="1">No Tint</comboboxitem>
+                    <comboboxitem value="2">Multiply</comboboxitem>
+                    <comboboxitem value="3">Overlay</comboboxitem>
+                    <comboboxitem value="4">Gradient</comboboxitem>
+                    <comboboxitem value="5">Gradient Texture</comboboxitem>
+                </combobox>
+            </group>
+            
+            <group horizontal="1" show_if="DiffuseColor1BlendingType>0">
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <textbox dataBindings="DiffuseTextureUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTextureTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTextureTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <group>
+                    <label>Bias: </label>
+                    <textbox databindings="DiffuseBias1">
+                        <databindings increment="0.01"/>
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+
+            <group horizontal="1" show_if="DiffuseColor1BlendingType!=1">
+                <button dataBindings="DiffuseColor1" />
+                <label>Blend Color</label>
+            </group>
+            <group horizontal="1" show_if="DiffuseColor1BlendingType==4">
+                <group  horizontal="1">
+                    <button dataBindings="DiffuseColor2" />
+                    <label>Gradient Color</label>
+                </group>
+            </group>
+            <group horizontal="1" show_if="DiffuseColor1BlendingType==5">
+                <group horizontal="1">
+                    <label alignright="1" width="90">Roughness</label>
+                    <label>  0</label>
+                    <slider dataBindings="GradientIndex">
+                        <dataBindings increment="1" minvalue="0" maxvalue="31" />
+                    </slider>
+                    <label>31 </label>
+                    <label>Gradient Texture (64x32)</label>
+                    <button dataBindings="GradientTexture1" fill="1" />
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>Variance Blend Strength:</label>
+                <textbox dataBindings="DiffuseIntensity1">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="DiffuseIntensity1">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+                <button dataBindings="DiffuseColor3" />
+                <label>Variance Blend Color</label>
+            </group>
+            <group horizontal="1">
+                <label>Root Color Strength:</label>
+                <textbox dataBindings="DiffuseIntensity2">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="DiffuseIntensity2">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+                <button dataBindings="DiffuseColor4" />
+                <label>Root Blend Color</label>
+            </group>
+        </group>
+
+        <!-- NormalMap -->
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <label>Tiling</label>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <group>
+                    <label>Bias</label>
+                    <textbox databindings="NormalBias1">
+                        <databindings increment="0.01" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture1State">
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <label>Intensity:</label>
+                <textbox databindings="NormalIntensity1">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity1">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+        </group>
+
+        <!-- SurfaceParams -->
+        <group label="Surface Parameters">
+            <group horizontal="1">
+                <button dataBindings="MaskTexture1" fill="1" />
+                <textbox dataBindings="MaskUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <label>Tiling</label>
+                    <textbox dataBindings="MaskTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="MaskTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <group>
+                    <label>Bias</label>
+                    <textbox databindings="MaskBias1">
+                        <databindings increment="0.01" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="MaskTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+
+            <group horizontal="1" show_if="AlphaTestEnabled">
+                <group horizontal="1" label="Alpha Test">
+                    <textbox dataBindings="AlphaTestValue">
+                        <dataBindings increment="1" minvalue="0" maxvalue="255" />
+                    </textbox>
+                    <label> 0</label>
+                    <slider dataBindings="AlphaTestValue">
+                        <dataBindings increment="1" minvalue="0" maxvalue="255"/>
+                    </slider>
+                    <label>255</label>
+                </group>
+
+                <group horizontal="1" label="Shadow Alpha Test">
+                    <textbox dataBindings="ShadowAlphaTestValue">
+                        <dataBindings increment="1" minvalue="0" maxvalue="255" />
+                    </textbox>
+                    <label> 0</label>
+                    <slider dataBindings="ShadowAlphaTestValue">
+                        <dataBindings increment="1" minvalue="0" maxvalue="255"/>
+                    </slider>
+                    <label>255</label>
+                </group>
+            </group>
+
+            <group show_if="AlphaBlendEnabled" label="Alpha Blend LOD">
+                <group horizontal="1">
+                    <label>Start:</label>
+                    <textbox dataBindings="AlphaBlendFadeOutStart">
+                        <dataBindings increment="0.1" minvalue="1" maxvalue="10" />
+                    </textbox>
+                    <label> 1</label>
+                    <slider dataBindings="AlphaBlendFadeOutStart">
+                        <dataBindings increment="0.1" minvalue="1" maxvalue="10"/>
+                    </slider>
+                    <label>10</label>
+
+                    <label>   End:</label>
+                    <textbox dataBindings="AlphaBlendFadeOutEnd">
+                        <dataBindings increment="0.1" minvalue="1" maxvalue="10" />
+                    </textbox>
+                    <label> 1</label>
+                    <slider dataBindings="AlphaBlendFadeOutEnd">
+                        <dataBindings increment="0.1" minvalue="1" maxvalue="10"/>
+                    </slider>
+                    <label>10</label>
+                </group>
+            </group>
+
+            <group label="Edge Fade">
+                <group horizontal="1">
+                    <label>Edge Exponent:      </label>
+                    <textbox databindings="HairEdgeExponent">
+                        <databindings increment="0.01" minvalue="0.05" maxvalue="1.0" />
+                    </textbox>
+                    <label> 0</label>
+                    <slider dataBindings="HairEdgeExponent">
+                        <dataBindings increment="0.01" minvalue="0.05" maxvalue="1.0" />
+                    </slider>
+                    <label>1  </label>
+                </group>
+
+                <group horizontal="1">
+                    <label>Edge Fade Strength:</label>
+                    <textbox databindings="HairEdgeFade">
+                        <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+                    <label> 0</label>
+                    <slider dataBindings="HairEdgeFade">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1  </label>
+                </group>
+            </group>
+
+            <group horizontal="1">
+                <label>Base Roughness:     </label>
+                <textbox databindings="Roughness">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="Roughness">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+            </group>
+
+            <group horizontal="1">
+                <label>Strand Roughness Variation Strength:</label>
+                <textbox dataBindings="HairRoughnessVariation">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1" />
+                </textbox>
+                <label>0</label>
+                <slider dataBindings="HairRoughnessVariation">
+                    <dataBindings increment="0.001" minvalue="0" maxvalue="1"/>
+                </slider>
+                <label>1</label>
+            </group>
+
+            <group horizontal="1">
+                <label>Scatter Strength:</label>
+                <textbox dataBindings="Transmittance">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>0</label>
+                <slider dataBindings="Transmittance">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+
+            <group horizontal="1">
+                <label>Strand AO Strength:</label>
+                <textbox dataBindings="HairAO">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>0</label>
+                <slider dataBindings="HairAO">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+
+            <group horizontal="1">
+                <label>Root AO Strength:</label>
+                <textbox dataBindings="HairRootOcclusion">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>0</label>
+                <slider dataBindings="HairRootOcclusion">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+
+        <!-- Hair Tangent -->
+        <group label="Hair Tangent">
+            <group horizontal="1">
+                <button dataBindings="HairTangentTexture" fill="1" />
+                <textbox dataBindings="HairTangentUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <label>Tiling</label>
+                    <textbox dataBindings="HairTangentTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="HairTangentTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <group>
+                    <label>Bias</label>
+                    <textbox databindings="HairTangentBias">
+                        <databindings increment="0.01" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="HairTangentTextureState">
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+
+            <group horizontal="1">
+                <label>Tangent Shift:</label>
+                <textbox dataBindings="HairTangentShift">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>0</label>
+                <slider dataBindings="HairTangentShift">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+
+            <group horizontal="1">
+                <label>Tangent Shift Variation:</label>
+                <textbox dataBindings="HairTangentShiftVariation">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>0</label>
+                <slider dataBindings="HairTangentShiftVariation">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+        </group>
+      
+        <!-- Screen-Space Hair Filtering -->
+        <group label="Screen-Space Hair Filtering" >
+            <group horizontal="1">
+                <checkbox label="Enabled" dataBindings="UseHairFilter" />
+                <group horizontal="1" enable_if="UseHairFilter">
+                    <label>Strength</label>
+                    <slider dataBindings="HairFilterStrength">
+                        <dataBindings increment="0.01" minvalue="0.1" maxvalue="4.0" />
+                    </slider>
+                </group>
+            </group>
+        </group>
+    </ui>
+</materialdescriptor>

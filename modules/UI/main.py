@@ -26,6 +26,7 @@ GAMES = [
     ('FC6',    "Far Cry 6",        False),
     ('WD1',    "Watch Dogs 1",     True),
     ('WD2',    "Watch Dogs 2",     True),
+    ('WD3',    "Watch Dogs Legion", True),
 ]
 
 GAME_LABELS = {gid: label for gid, label, _ in GAMES}
@@ -248,6 +249,30 @@ class XBG_PT_WDRoot(bpy.types.Panel):
     @classmethod
     def poll(cls, ctx):
         return active_game(ctx) in ('WD1', 'WD2')
+
+    def draw(self, ctx):
+        l = self.layout
+        ds = ctx.scene.xbg_debug_settings
+        row = l.row()
+        row.scale_y = 1.3
+        icon = 'SETTINGS' if ds.advanced_mode else 'PREFERENCES'
+        row.prop(ds, "advanced_mode", text="Advanced Mode", icon=icon,
+                 toggle=True)
+
+
+class XBG_PT_WDLRoot(bpy.types.Panel):
+    """Container for the Watch Dogs Legion toolset (panels in panels_wdl.py)."""
+    bl_label = "Watch Dogs Legion Tools"
+    bl_idname = "OBJECT_PT_xbg_wdl"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "XBG Import"
+    bl_parent_id = "OBJECT_PT_xbg_import"
+    bl_options = {'HIDE_HEADER'}
+
+    @classmethod
+    def poll(cls, ctx):
+        return active_game(ctx) == 'WD3'
 
     def draw(self, ctx):
         l = self.layout

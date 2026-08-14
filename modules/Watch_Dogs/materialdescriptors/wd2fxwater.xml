@@ -1,0 +1,398 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2FxWater" displayname="WD2FxWater" showinui="1" category="Particle" id="#(0x31cec009, 0x3d1a42a7)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="8" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Base texture" optional="0" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorClamp" />
+
+    <parameter name="DiffuseTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseUV1" type="int" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+
+    <parameter name="AlphaTexture1" type="sampler2D" tilingName="DiffuseTiling1" UvName="DiffuseUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Alpha texture" />
+    <parameter name="AlphaTexture1State" type="samplerState" defaultvalue="ColorClamp" />
+
+    <parameter name="Sun" type="bool" defaultvalue="1" />
+
+    <parameter name="Soft" type="bool" defaultvalue="0" />
+    <parameter name="SoftDistance" type="float" defaultvalue="0.0" op_x="1/x" />
+
+    <parameter name="Refraction" type="float3" defaultvalue="1,1,1" op_x="1-x" op_y="1-y" />
+    <parameter name="Reflectance" type="float" defaultvalue="1.0" />
+    <parameter name="Roughness" type="float" defaultvalue="0.001" />
+    <parameter name="Metalness" type="float" defaultvalue="0.0" />
+    <parameter name="Transparency" type="float" defaultvalue="1.0" />
+    <parameter name="Density" type="float" defaultvalue="0.0" />
+    <parameter name="SSS" type="float" defaultvalue="0.0" />
+    
+    <!-- Colors -->
+    <parameter name="DiffuseColor1" type="color4" defaultvalue="1,1,1,1" />
+    <parameter name="DiffuseColor2" type="color4" defaultvalue="1,1,1,1" />
+    <parameter name="ColorMix" type="float2" defaultvalue="2,4" />
+    <parameter name="ColorType" type="int" defaultvalue="0" />
+    
+    <parameter name="AlphaOffset" type="float" defaultvalue="0" />
+    <parameter name="AlphaThickness" type="float" defaultvalue="0.1" op_x="x/10" />
+    
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+    
+    <parameter name="InnerRoughness" type="float" defaultvalue="0.001" />
+    <parameter name="InnerStrength" type="float" defaultvalue="2" />
+
+    <parameter name="AnimationTiling" type="float2" defaultvalue="1,1" op_x="1/x" op_y="1/y" />
+    <parameter name="AnimationFramerate" type="float" defaultvalue="1" reloadMaterial="1" />
+    <parameter name="AnimationBlend" type="bool" defaultvalue="0" />
+    <parameter name="AnimationFit" type="bool" defaultvalue="0" reloadMaterial="1" />
+
+    <parameter name="ResponsiveAAStrength" type="float" defaultvalue="2.0"/>
+
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+    <!-- Shader parameters -->
+    <parameterprovider parametersfilename="Particle_WD2FxWater.fx">
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="AlphaTexture1" />
+        <parameter name="AlphaTexture1State" />
+        <parameter name="Sun" />
+        <parameter name="Soft" />
+        <parameter name="SoftDistance" />
+        <parameter name="Refraction" />
+        <parameter name="Reflectance" />
+        <parameter name="Roughness" />
+        <parameter name="Metalness" />
+        <parameter name="Transparency" />
+        <parameter name="Density" />
+        <parameter name="SSS" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="ColorMix" />
+        <parameter name="ColorType" />
+        <parameter name="AlphaOffset" />
+        <parameter name="AlphaThickness" />
+        <parameter name="NormalIntensity" />
+        <parameter name="InnerRoughness" />
+        <parameter name="InnerStrength" />
+        <parameter name="AnimationTiling" />
+        <parameter name="AnimationFramerate" />
+        <parameter name="AnimationBlend" />
+        <parameter name="AnimationFit" />
+        <parameter name="ResponsiveAAStrength" />
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="SOFT">
+            <condition parameter="Soft" />
+        </shaderoption>
+        <shaderoption name="SUN">
+            <condition parameter="Sun" />
+        </shaderoption>
+        <shaderoption name="FRESNELCOLORING">
+            <condition parameter="ColorType" op="equal" value="1" />
+        </shaderoption>
+        <shaderoption name="TEXANIM_LERP">
+            <condition parameter="AnimationBlend" />
+        </shaderoption>
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+    </shaderoptions>
+
+    <!-- Material UI definition -->
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Base settings">
+            <!-- Responsive AA -->
+            <label alignright="1" width="120">Responsive AA Strength</label>
+            <textbox dataBindings="ResponsiveAAStrength">
+                <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+            </textbox>
+            <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+        </group>
+        <!-- Settings -->
+        <group horizontal="0" label="Normal">
+            <button dataBindings="DiffuseTexture1" fill="1" />
+            <label/>
+            <group horizontal="1" disable_if="ColorType==0">
+                <label alignright="0">Normal Intensity:</label>
+                <label alignright="1" width="39">0</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label width="20">2</label>
+                <textbox databindings="NormalIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="10.0" />
+                </textbox>
+            </group>
+        </group>
+
+        <xi:include href="UI/ParticleAnimationGroup.xml" />
+        
+        <label/>
+        
+        <group horizontal="0" label="Alpha">
+            <button dataBindings="AlphaTexture1" fill="1" />
+            <label/>
+            <group horizontal="1">
+                <label alignright="0">Offset:</label>
+                <label alignright="1" width="92">-1</label>
+                <slider dataBindings="AlphaOffset">
+                    <dataBindings increment="0.001" minvalue="-1" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <group horizontal="1">
+                    <textbox databindings="AlphaOffset">
+                        <databindings increment="0.001" minvalue="-1" maxvalue="1.0" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label alignright="0">Softness:</label>
+                <label alignright="1" width="80">0</label>
+                <slider dataBindings="AlphaThickness">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" />
+                </slider>
+                <label width="20">1</label>
+                <group horizontal="1">
+                    <textbox databindings="AlphaThickness">
+                        <databindings increment="0.01" minvalue="0" maxvalue="1" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+        
+        <label/>
+        
+        <group label="Settings" horizontal="0">
+            <group horizontal="1">
+                <checkbox label="Affected by sun" dataBindings="Sun" />
+            </group>
+            <group horizontal="1">
+                <checkbox label="Depth Fade" width="100" dataBindings="Soft" />
+                <group horizontal="1" enable_if="Soft">
+                    <textbox databindings="SoftDistance">
+                        <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+
+        <label/>
+        
+        <group label="Coloring">
+            <group horizontal="0">
+                <group horizontal="1">
+                    <label alignright="0" width="50">Source: </label>
+                    <combobox dataBindings="ColorType">
+                        <comboboxitem value="0">From Emitter</comboboxitem>
+                        <comboboxitem value="1">Fresnel Based</comboboxitem>
+                    </combobox>
+                </group>
+                <group horizontal="1" disable_if="ColorType==0">
+                    <label alignright="1" width="50">Color A: </label>
+                    <button dataBindings="DiffuseColor1" />
+                    <label alignright="1" width="50">Alpha:</label>
+                    <slider dataBindings="DiffuseColor1.w">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label width="20"/>
+                    <textbox databindings="DiffuseColor1.w">
+                        <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                    </textbox>
+                </group>
+                <group horizontal="1" disable_if="ColorType==0">
+                    <label alignright="1" width="50">Color B: </label>
+                    <button dataBindings="DiffuseColor2" />
+                    <label alignright="1" width="50">Alpha:</label>
+                    <slider dataBindings="DiffuseColor2.w">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label width="20"/>
+                    <textbox databindings="DiffuseColor2.w">
+                        <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                    </textbox>
+                </group>
+                <group horizontal="1" disable_if="ColorType==0">
+                    <label alignright="1" width="136">Mix Horizontal:</label>
+                    <slider dataBindings="ColorMix.x">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="8.0" />
+                    </slider>
+                    <label width="20"/>
+                    <textbox databindings="ColorMix.x">
+                        <databindings increment="0.01" minvalue="0" maxvalue="32.0" />
+                    </textbox>
+                </group>
+                <group horizontal="1" disable_if="ColorType==0">
+                    <label alignright="1" width="136">Mix Vertical:</label>
+                    <slider dataBindings="ColorMix.y">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="8.0" />
+                    </slider>
+                    <label width="20"/>
+                    <textbox databindings="ColorMix.y">
+                        <databindings increment="0.01" minvalue="0" maxvalue="32.0" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+        
+        <label/>
+        
+        <group label="PBR">
+            <group horizontal="1">
+                <label width="80">Reflectance:</label>
+                <label width="50" alignright="1">0.25</label>
+                <slider dataBindings="Reflectance">
+                    <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="Reflectance">
+                    <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Roughness:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="Roughness">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="Roughness">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Metalness:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="Metalness">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="Metalness">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+        
+        <label/>
+        
+        <group label="Liquid">
+            <group horizontal="1">
+                <label width="80">Transparency:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="Transparency">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="Transparency">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Density:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="Density">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="Density">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">SSS:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="SSS">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="SSS">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+        
+        <label/>
+        
+        <group label="Refraction">
+            <group horizontal="1">
+                <label width="80">Index Middle:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="Refraction.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label width="20">2</label>
+                <textbox databindings="Refraction.x">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </textbox>
+            </group>
+            <group horizontal="1" disable_if="ColorType==0">
+                <label width="80">Index Side:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="Refraction.y">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label width="20">2</label>
+                <textbox databindings="Refraction.y">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Strength:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="Refraction.z">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="4.0" />
+                </slider>
+                <label width="20">4</label>
+                <textbox databindings="Refraction.z">
+                    <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                </textbox>
+            </group>
+        </group>
+        
+        <label/>
+        
+        <group label="Inner Specular">
+            <group horizontal="1">
+                <label width="80">Roughness:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="InnerRoughness">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="InnerRoughness">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Strength:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="InnerStrength">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="20.0" />
+                </slider>
+                <label width="20">20</label>
+                <textbox databindings="InnerStrength">
+                    <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                </textbox>
+            </group>
+        </group>
+        
+        <label/>
+
+      <group label="Custom data over particle lifetime">
+        <label color="BB0000">X: (unused)</label>
+        <label color="00BB00">Y: (unused)</label>
+        <label color="0000AA">Z: (unused)</label>
+        <label color="404040">W: (unused)</label>
+      </group>
+      <group label="Custom data over emitter lifetime">
+        <label color="BB0000">X: (unused)</label>
+        <label color="00BB00">Y: (unused)</label>
+        <label color="0000AA">Z: (unused)</label>
+        <label color="404040">W: (unused)</label>
+      </group>
+    </ui>
+</materialdescriptor>

@@ -1,0 +1,814 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="KODOGlass" showinui="1" id="#(0x59b21c48, 0x4a22f0be)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="0" uvChannels="3" packedUVChannel="10" bonecount="2" reduceMatrixPerDrawCallBy="14" vehicleExtraUVChannel1="3" vehicleExtraUVChannel2="4" />
+
+    <parameter name="CastShadow" type="bool" defaultvalue="1" />
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="IsEmissive" type="bool" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+    <parameter name="WetSurfaceTypeIndex" type="int" defaultvalue="0" />
+
+    <parameter name="SurfaceAlbedo" type="color3" defaultvalue="0.01,0.01,0.01" />
+
+    <parameter name="AbsorptionTexture" type="sampler2D" maxdisplayname="Absorption texture" optional="1" />
+    <parameter name="AbsorptionTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="AbsorptionTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="AbsorptionColor" type="color3" defaultvalue="0.921582,0.947307,0.913099" />
+    <parameter name="AbsorptionColorPreset" type="color3" defaultvalue="0,0,0" />
+
+    <parameter name="AbsorptionDistanceTexture" type="sampler2D" maxdisplayname="Absorption Distance Texture" optional="1" />
+    <parameter name="AbsorptionDistanceTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="AbsorptionDistanceTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="AbsorptionDistance" type="float" defaultvalue="10" />
+    <parameter name="AbsorptionDistanceModulateByVAlpha" type="bool" defaultvalue="0" />
+
+    <parameter name="ThicknessTexture" type="sampler2D" maxdisplayname="Thickness Texture" optional="1" />
+    <parameter name="ThicknessTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="ThicknessTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="Thickness" type="float" defaultvalue="10" />
+    <parameter name="MaxFreePath" type="float" defaultvalue="10" />
+
+    <parameter name="BaseColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="BaseColorAlpha" type="float" defaultvalue="0" />
+    <parameter name="BaseColorTexture" type="sampler2D" tilingName="BaseColorTiling" UvName="BaseColorUV" uvTilingName="BaseColorUVTiling" maxdisplayname="Base Color Texture" optional="1" />
+    <parameter name="BaseColorTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="BaseColorUV" type="int" />
+    <parameter name="BaseColorUVTiling" type="float4" provideronly="1" />
+    <parameter name="BaseColorTextureState" type="samplerState" defaultvalue="ColorWrap" />
+
+    <parameter name="SurfaceParametersTexture" type="sampler2D" tilingName="SurfaceParametersTiling" UvName="SurfaceParametersUV" uvTilingName="SurfaceParametersUVTiling" maxdisplayname="Surface Parameters Texture" optional="1" />
+    <parameter name="SurfaceParametersTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="SurfaceParametersTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="SurfaceParametersUV" type="int" />
+    <parameter name="SurfaceParametersUVTiling" type="float4" provideronly="1" />
+
+    <parameter name="RoughnessDustAdjustment" oldnames="RoughnessDirtAdjustment" type="float" defaultvalue="0" />
+    <parameter name="ReflectanceDustAdjustment" oldnames="ReflectanceDirtAdjustment" type="float" defaultvalue="0" />
+
+	<parameter name="RoughnessMudAdjustment" oldnames="RoughnessMudAdjustment" type="float" defaultvalue="0" />
+
+    <parameter name="MaskChannelUsageRed" oldnames="ReflectanceFromTexture" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageGreen" oldnames="RoughnessFromTexture" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageBlue" oldnames="MetalnessFromTexture" type="float" defaultvalue="1" />
+    <parameter name="MaskChannelUsageAlpha" oldnames="DirtMaskFromTexture" type="float" defaultvalue="0" />
+
+    <parameter name="Reflectance" type="float" defaultvalue="0.5" />
+    <parameter name="Roughness" type="float" defaultvalue="0.3" />
+    <parameter name="Metalness" type="float" defaultvalue="0" />
+    <parameter name="DustIntensity" oldnames="DirtIntensity,DirtMask" type="float" defaultvalue="0" />
+    <parameter name="DustColor" oldnames="DirtColor" type="color3" defaultvalue="0.5,0.5,0.5" />
+    <parameter name="MudIntensity" type="float" defaultvalue="0" />
+    <parameter name="MudFalloff" type="float" defaultvalue="0" />
+    <parameter name="MudAlphaValue" type="float" defaultvalue="0" />
+    <parameter name="MudColor" type="color3" defaultvalue="0.5,0.5,0.5" />
+
+    <parameter name="NormalMapTexture" type="sampler2D" maxdisplayname="Normal Map Texture" optional="1" />
+    <parameter name="NormalMapTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="NormalMapTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalMapIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="DamageStateEnabled" type="bool" defaultvalue="0" />
+    <parameter name="DamageStateUVSlide" type="float3" defaultvalue="0,0,0" />
+
+
+    <!-- Emissive -->
+    <parameter name="EmissiveTexture" type="sampler2D" tilingName="EmissiveTiling" UvName="EmissiveUV" uvTilingName="EmissiveUVTiling" maxdisplayname="Emissive texture">
+    </parameter>
+    <parameter name="EmissiveTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="EmissiveTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="EmissiveUV" type="int" />
+    <parameter name="EmissiveUVTiling" type="float4" provideronly="1"  />
+    <parameter name="EmissiveColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="EmissiveDepth" type="float2" defaultvalue="0.5,0.5" />
+    <parameter name="EmissiveParallax" type="float" defaultvalue="0.5" />   
+    <parameter name="EmissiveIntensity" type="float4" defaultvalue="9,-99,0,0" op_x="ev100" op_y="ev100"/>
+    <parameter name="EmissiveFadeoutParams" type="float2" defaultvalue="4096,4096" />
+
+    <!-- Texture Animation -->
+    <parameter name="AnimType" type="int" />
+    <parameter name="UVSpeed" type="float2" />
+    <parameter name="UVSpeed2" type="float2" />
+    <parameter name="NbFramesX" type="int" defaultvalue="1" oldnames="NbFrames"/>
+    <parameter name="NbFramesY" type="int" defaultvalue="1" />
+    <parameter name="Framerate" type="float" />
+    <parameter name="BlendFrames" type="bool">
+        <use_if parameter="AnimType" value="2" />
+    </parameter>
+    <parameter name="BlendDelay" type="float" />
+    
+    <!-- SmartGlass -->
+    <parameter name="SmartGlass" type="bool" defaultvalue="0" />
+    <parameter name="SG_Aberration" type="float" defaultvalue="0" />
+    <parameter name="SG_ScreenDoor" type="float2" defaultvalue="1,1" />
+    <parameter name="SG_SD_Smooth" type="float2" defaultvalue="0,1" />
+    <parameter name="SG_SD_FadeDist" type="float2" defaultvalue="1,10" />
+    <parameter name="SG_Strobe_Sin" type="float3" defaultvalue="1,2,3" />
+    <parameter name="SG_Strobe_Opacity" type="float" defaultvalue="0" />
+
+    <!-- MSAA Optimization -->
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+    
+    <parameterprovider parametersfilename="Mesh_KODOGlass.fx">
+        <parameter name="WetSurfaceTypeIndex" />
+        <parameter name="IsEmissive" />
+
+        <parameter name="SurfaceAlbedo" />
+
+        <parameter name="AbsorptionTexture" />
+        <parameter name="AbsorptionTextureState" />
+        <parameter name="AbsorptionTiling" />
+        <parameter name="AbsorptionColor" />
+        <parameter name="AbsorptionColorPreset" />
+
+        <parameter name="AbsorptionDistanceTexture" />
+        <parameter name="AbsorptionDistanceTextureState" />
+        <parameter name="AbsorptionDistanceTiling" />
+        <parameter name="AbsorptionDistance" />
+
+        <parameter name="ThicknessTexture" />
+        <parameter name="ThicknessTextureState" />
+        <parameter name="ThicknessTiling" />
+        <parameter name="Thickness" />
+        <parameter name="MaxFreePath" />
+        <parameter name="AbsorptionDistanceModulateByVAlpha" />
+
+        <parameter name="BaseColor" />
+        <parameter name="BaseColorAlpha" />
+        <parameter name="BaseColorTexture" />
+        <parameter name="BaseColorTextureState" />
+        <parameter name="BaseColorUVTiling" />
+
+        <parameter name="SurfaceParametersTexture" />
+        <parameter name="SurfaceParametersTextureState" />
+        <parameter name="SurfaceParametersUVTiling" />
+
+        <parameter name="RoughnessDustAdjustment" />
+        <parameter name="ReflectanceDustAdjustment" />
+
+		<parameter name="RoughnessMudAdjustment" />
+
+		<parameter name="MaskChannelUsageRed" />
+	    <parameter name="MaskChannelUsageGreen" />
+	    <parameter name="MaskChannelUsageBlue" />
+	    <parameter name="MaskChannelUsageAlpha" />
+
+        <parameter name="Reflectance" />
+        <parameter name="Roughness" />
+        <parameter name="Metalness" />
+
+        <parameter name="DustIntensity" />
+        <parameter name="DustColor" />
+        <parameter name="MudIntensity" />
+        <parameter name="MudFalloff" />		
+		<parameter name="MudAlphaValue" />
+        <parameter name="MudColor" />
+
+        <parameter name="NormalMapTexture" />
+        <parameter name="NormalMapTextureState" />
+        <parameter name="NormalMapTiling" />
+        <parameter name="NormalMapIntensity" />
+
+        <parameter name="DamageStateEnabled" />
+        <parameter name="DamageStateUVSlide" />
+
+        <parameter name="EmissiveTexture" />
+        <parameter name="EmissiveTextureState" />
+        <parameter name="EmissiveColor" />
+        <parameter name="EmissiveDepth" />        
+        <parameter name="EmissiveIntensity" />
+        <parameter name="EmissiveUVTiling" />
+        <parameter name="EmissiveFadeoutParams" />
+        
+        <parameter name="AnimType" />
+        <parameter name="UVSpeed" />
+        <parameter name="UVSpeed2" />
+        <parameter name="NbFramesX" />
+        <parameter name="NbFramesY" />
+        <parameter name="BlendFrames" />
+        <parameter name="Framerate" />
+        <parameter name="BlendDelay" />
+        
+        <parameter name="SmartGlass" />
+        <parameter name="SG_Aberration" />
+        <parameter name="SG_ScreenDoor" />
+        <parameter name="SG_SD_Smooth" />
+        <parameter name="SG_SD_FadeDist" />
+        <parameter name="SG_Strobe_Sin" />
+        <parameter name="SG_Strobe_Opacity" />
+
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <shaderoptions>
+        <shaderoption name="ABSORPTION_USE_TEXTURE">
+            <condition parameter="AbsorptionTexture" />
+        </shaderoption>
+        <shaderoption name="ABSORPTION_DISTANCE_USE_TEXTURE">
+            <condition parameter="AbsorptionDistanceTexture" />
+        </shaderoption>
+        <shaderoption name="THICKNESS_USE_TEXTURE">
+            <condition parameter="ThicknessTexture" />
+        </shaderoption>
+        <shaderoption name="USE_BASE_COLOR_TEXTURE">
+            <condition parameter="BaseColorTexture" />
+        </shaderoption>
+        <shaderoption name="USE_SURFACE_PARAMETERS_TEXTURE">
+            <condition parameter="SurfaceParametersTexture" />
+        </shaderoption>
+        <shaderoption name="USE_NORMAL_MAP_TEXTURE">
+            <condition parameter="NormalMapTexture" />
+        </shaderoption>
+        <shaderoption name="EMISSIVE">
+            <condition parameter="IsEmissive" />
+        </shaderoption>
+        <shaderoption name="ANIMATED">
+            <condition parameter="IsEmissive" />
+            <condition parameter="AnimType" />
+        </shaderoption>
+        <shaderoption name="BLEND_FRAMES">
+            <condition parameter="IsEmissive" />
+            <condition parameter="AnimType" />
+            <condition parameter="BlendFrames" />            
+        </shaderoption>
+        <shaderoption name="SMARTGLASS">
+            <condition parameter="IsEmissive" />
+            <condition parameter="SmartGlass" />
+        </shaderoption>
+    <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Settings">
+            <checkbox label="Two sided" dataBindings="TwoSided" />
+            <checkbox label="Is Emissive" dataBindings="IsEmissive" />            
+            <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+            <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+            <group horizontal="1">
+                <label>Sorting Layer Bias</label>
+                <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order.  Materials with smaller values are drawn first.">
+                    <dataBindings increment="1" minvalue="-4" maxvalue="4" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>Wet Surface Type: </label>
+                <combobox dataBindings="WetSurfaceTypeIndex">
+                    <comboboxitem value="0">Default</comboboxitem>
+                    <comboboxitem value="-1">Never Wet</comboboxitem>
+                    <comboboxitem value="1">Car Window</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Absorption" vertical="1" fill="1">
+            <group horizontal="1">
+                <label>Preset: </label>
+                <group horizontal="1">
+                    <combobox dataBindings="AbsorptionColorPreset">
+                        <comboboxitem value="0.921582,0.947307,0.913099">Clear Glass</comboboxitem>
+                        <comboboxitem value="0.938686,0.938686,0.896269">Low-Iron Glass/Silver</comboboxitem>
+                        <comboboxitem value="0.921582,0.947307,0.913099">Pure Silica/Silver</comboboxitem>
+                        <comboboxitem value="0.97702,0.98372,0.97273">N-BK7 (SCHOTT)</comboboxitem>
+                        <comboboxitem value="0.96369,0.96060,0.88010">BAF10 (SCHOTT)</comboboxitem>
+                        <comboboxitem value="0.98015,0.98015,0.96147">BAK1 (SCHOTT)</comboboxitem>
+                        <comboboxitem value="0.98490,0.98805,0.97362">KF51A (SCHOTT)</comboboxitem>
+                        <comboboxitem value="0.91784,0.89474,0.66547">LASF9 (SCHOTT)</comboboxitem>
+                        <comboboxitem value="0.95522,0.95397,0.84314">SF5 (SCHOTT)</comboboxitem>
+                        <comboboxitem value="0.91189,0.89807,0.69756">SF10 (SCHOTT)</comboboxitem>
+                        <comboboxitem value="0.92845,0.91702,0.72790">SF11 (SCHOTT)</comboboxitem>
+                        <comboboxitem value="0.33488,0.60707,0.63423">Soda Lime Glass (SCHOTT)</comboboxitem>
+                        <comboboxitem value="0.91784,0.89474,0.66547">LaSF N-LASF9 (SCHOTT)</comboboxitem>
+                        <comboboxitem value="0.965322,0.96504,0.964472">Optical constants of Fused silica (fused quartz)</comboboxitem>
+                        <comboboxitem value="0.954638,0.954211,0.953322">ZERODUR (SCHOTT) - multiple purpose</comboboxitem>
+                        <comboboxitem value="0.957159,0.956776,0.955949">B 270 Superwhite (SCHOTT) - multiple purpose</comboboxitem>
+                        <comboboxitem value="0.963711,0.963414,0.96279">BOROFLOAT 33 (SCHOTT) - multiple purpose</comboboxitem>
+                        <comboboxitem value="0.959408,0.959053,0.958323">Pilkington Optiwhite (Low iron glass)</comboboxitem>
+                        <comboboxitem value="0.958838,0.958488,0.95778">EAGLE XG - display - CORNING</comboboxitem>
+                        <comboboxitem value="0,0,0">Custom</comboboxitem>
+                    </combobox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <group horizontal="1" show_if="AbsorptionColorPreset.x==0">
+                    <button dataBindings="AbsorptionColor" />
+                </group>
+                <group horizontal="1">
+                    <button dataBindings="AbsorptionTexture" />
+                    <group>
+                        <textbox dataBindings="AbsorptionTiling.x">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                        <textbox dataBindings="AbsorptionTiling.y">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+                    <combobox dataBindings="AbsorptionTextureState">
+                        <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                        <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                        <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                        <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                    </combobox>
+                </group>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Absorption Distance" fill="1">
+            <group horizontal="1">
+                <textbox dataBindings="AbsorptionDistance" minvalue="0.0" maxvalue="65536.0" />
+                <button dataBindings="AbsorptionDistanceTexture" />
+                <group>
+                    <textbox dataBindings="AbsorptionDistanceTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="AbsorptionDistanceTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="AbsorptionDistanceTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <checkbox label="Modulate by Vertex illumination" dataBindings="AbsorptionDistanceModulateByVAlpha" />
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Thickness" fill="1" horizontal="0">
+            <group horizontal="1">
+                <textbox dataBindings="Thickness" minvalue="0.0" maxvalue="65536.0" />
+                <button dataBindings="ThicknessTexture" />
+                <group>
+                    <textbox dataBindings="ThicknessTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="ThicknessTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="ThicknessTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1">
+                <textbox dataBindings="MaxFreePath" minvalue="0.0" maxvalue="65536.0" />
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Base Color" horizontal="1" fill="1">
+            <group horizontal="1">
+                <button dataBindings="BaseColor" />
+                <button dataBindings="BaseColorTexture" />
+                <textbox dataBindings="BaseColorUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="BaseColorTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="BaseColorTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="BaseColorTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                    <comboboxitem value="ColorWrapHClampV">Wrap H - Clamp V</comboboxitem>
+                </combobox>
+
+                <label>Alpha: </label>
+                <textbox databindings="BaseColorAlpha">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Surface Parameters" vertical="1" fill="1">
+
+            <group horizontal="1">
+                <label>Surface Base</label>
+                <button dataBindings="SurfaceAlbedo" />
+				<label color="AA0000">Dont Change - Fine Tuning</label>
+            </group>
+
+            <group horizontal="1">
+                <button dataBindings="SurfaceParametersTexture" />
+                <textbox dataBindings="SurfaceParametersUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="SurfaceParametersTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="SurfaceParametersTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="SurfaceParametersTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                    <comboboxitem value="ColorWrapHClampV">Wrap H - Clamp V</comboboxitem>
+                </combobox>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="1" width="40" color="BB0000">R:</label>
+                <group horizontal="1">
+                    <group horizontal="1">
+                        <combobox dataBindings="MaskChannelUsageRed">
+							<comboboxitem value="2">Dust Mask</comboboxitem>
+                            <comboboxitem value="1">Reflectance</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <group horizontal="1" disable_if="MaskChannelUsageRed==1">
+                        <label alignright="1" width="90">Reflectance</label>
+                        <label> 0</label>
+                        <slider dataBindings="Reflectance">
+                            <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                            <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Reflectance">
+                            <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="1" width="40" color="00BB00">G:</label>
+                <group horizontal="1">
+                    <group horizontal="1">
+                        <combobox dataBindings="MaskChannelUsageGreen">
+                            <comboboxitem value="2">Dust Mask</comboboxitem>
+                            <comboboxitem value="1">Roughness</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <group horizontal="1" disable_if="MaskChannelUsageGreen==1">
+                        <label alignright="1" width="90">Roughness</label>
+                        <label> 0</label>
+                        <slider dataBindings="Roughness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Roughness">
+                            <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="1" width="40" color="0000BB">B:</label>
+                <group horizontal="1">
+                    <group horizontal="1">
+                        <combobox dataBindings="MaskChannelUsageBlue">
+                            <comboboxitem value="3">Mud Mask</comboboxitem>
+							<comboboxitem value="2">Dust Mask</comboboxitem>
+                            <comboboxitem value="1">Metalness</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <group horizontal="1" disable_if="MaskChannelUsageBlue==1">
+                        <label alignright="1" width="90">Metal Mask</label>
+                        <label> 0</label>
+                        <slider dataBindings="Metalness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="Metalness">
+                            <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+
+            <group horizontal="1">
+                <label alignright="1" width="40" color="BBBBBB">A:</label>
+                <group horizontal="1">
+                    <group horizontal="1">
+                        <combobox dataBindings="MaskChannelUsageAlpha">
+                            <comboboxitem value="2">Is Glass Here</comboboxitem>
+                            <comboboxitem value="1">Dust Mask</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Dust" vertical="1" fill="1">
+            <group horizontal="1">
+                <label>Dust Color</label>
+                <button dataBindings="DustColor" />
+            </group>
+			<group horizontal="1">
+				<label alignright="1" width="150">Dust Intensity:</label>
+				<label> 0</label>
+				<slider dataBindings="DustIntensity">
+					<dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+				</slider>
+				<label>1  </label>
+				<textbox databindings="DustIntensity">
+					<databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+				</textbox>
+			</group>
+            <group horizontal="1">
+                <label alignright="1" width="150">Roughness Dust Adjustment: </label>
+                <label> 0</label>
+                <slider dataBindings="RoughnessDustAdjustment">
+                    <dataBindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="RoughnessDustAdjustment">
+                    <databindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="150">Reflectance Dust Adjustment:</label>
+                <label> 0</label>
+                <slider dataBindings="ReflectanceDustAdjustment">
+                    <dataBindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="ReflectanceDustAdjustment">
+                    <databindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Mud" vertical="1" fill="1">
+            <group horizontal="1">
+                <label>Mud Color</label>
+                <button dataBindings="MudColor" />
+            </group>
+            <group horizontal="1">
+                <label alignright="1" width="150">Mud Intensity:</label>
+                <label> 0</label>
+                <slider dataBindings="MudIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="MudIntensity">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        <group horizontal="1">
+				<label alignright="1" width="150">Mud Falloff:</label>
+                <label> 0</label>
+                <slider dataBindings="MudFalloff">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="MudFalloff">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+			</group>
+			<group horizontal="1">
+                <label alignright="1" width="150">Roughness Mud Adjustment: </label>
+                <label> 0</label>
+                <slider dataBindings="RoughnessMudAdjustment">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="RoughnessMudAdjustment">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Normal Map" horizontal="1" fill="1">
+            <group vertical="1">
+                <group horizontal="1">
+                    <button dataBindings="NormalMapTexture" />
+                    <group>
+                        <textbox dataBindings="NormalMapTiling.x">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                        <textbox dataBindings="NormalMapTiling.y">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+                    <combobox dataBindings="NormalMapTextureState">
+                        <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                        <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                        <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                        <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                        <comboboxitem value="ColorWrapHClampV">Wrap H - Clamp V</comboboxitem>
+                    </combobox>
+                </group>
+                <group horizontal="1" enable_if="NormalMapTexture">
+                    <label>Intensity: </label>
+                    <textbox databindings="NormalMapIntensity">
+                        <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                    </textbox>
+                    <label> 0</label>
+                    <slider dataBindings="NormalMapIntensity">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                    </slider>
+                    <label>2</label>
+                </group>
+            </group>
+        </group>
+
+        <label> </label>
+        <group label="Damage States" enable_if="BaseColorTexture" >
+            <checkbox label="Enabled" dataBindings="DamageStateEnabled" />
+            <group horizontal="1" enable_if="DamageStateEnabled" >
+                <label>    U slide amount</label>
+                <textbox databindings="DamageStateUVSlide.x" tooltip="How much to slide the U texture coordinate to go from one state to the next." >
+                    <dataBindings increment="0.0001" minvalue="-1.0" maxvalue="1.0" />
+                </textbox>
+                 <label>    V slide amount</label>
+                <textbox databindings="DamageStateUVSlide.y" tooltip="How much to slide the V texture coordinate to go from one state to the next." >
+                    <dataBindings increment="0.0001" minvalue="-1.0" maxvalue="1.0" displayvaluemul="-1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1" enable_if="DamageStateEnabled" >
+                <label>    Default state</label>
+                <textbox databindings="DamageStateUVSlide.z" tooltip="Index of the default state, normally zero. Can be used to test UV mappings." >
+                    <dataBindings type="int" minvalue="0" maxvalue="32" />
+                </textbox>
+                <group show_if="DamageStateUVSlide.z > 0" >
+                    <label color="BB0000">       For testing purposes only. Should be reset to zero before saving.</label>
+                </group>
+            </group>
+        </group>
+
+        <!-- Emissive -->
+        <label> </label>
+        <group label="Emissive" show_if="IsEmissive">            
+            <group horizontal="1">
+                <button dataBindings="EmissiveTexture" fill="1" />
+                <group horizontal="1" enable_if="EmissiveTexture">
+                    <textbox dataBindings="EmissiveUV">
+                        <dataBindings class="UVChannel" />
+                    </textbox>
+                    <group>
+                        <textbox dataBindings="EmissiveTiling.x">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                        <textbox dataBindings="EmissiveTiling.y">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>                    
+                </group>
+                <combobox dataBindings="EmissiveTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group label="EV">                
+                <group horizontal="1">
+                    <label>Emissive Color:</label>
+                    <button dataBindings="EmissiveColor" />
+                    <label>EV</label>
+                    <textbox dataBindings="EmissiveIntensity.x">
+                        <databindings increment="0.01" minvalue="-99.0" maxvalue="99.0" />
+                    </textbox>
+                    <label>Relative EV</label>
+                    <textbox dataBindings="EmissiveIntensity.y">
+                        <databindings increment="0.01" minvalue="-99.0" maxvalue="99.0" />
+                    </textbox>
+                </group>
+            </group>
+            <group label="Parallax">
+                <group horizontal="1">
+                    <label>Depth</label>
+                    <label>0</label>
+                    <slider dataBindings="EmissiveDepth.x">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                    <label>Parallax</label>
+                    <label>0</label>
+                    <slider dataBindings="EmissiveDepth.y">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                </group>
+            </group>            
+            <group label="Distance Fade">
+                <group horizontal="1">
+                    <label>Start</label>
+                    <textbox dataBindings="EmissiveFadeoutParams.x">
+                        <dataBindings increment="0.1" maxvalue="4096" />
+                    </textbox>
+                    <label>    End</label>
+                    <textbox dataBindings="EmissiveFadeoutParams.y">
+                        <dataBindings increment="0.1" maxvalue="4096" />
+                    </textbox>
+                </group>
+            </group>
+            
+            <label> </label>
+            
+            <xi:include href="UI/TextureAnimationGroup.xml" />
+            
+            <label> </label>
+            <group label="Smart Screen">
+                <checkbox label="Enable" dataBindings="SmartGlass" />
+                <group show_if="SmartGlass">
+                    <group label="Aberration" horizontal="1">
+                        <label width="100" alignright="1">Strength:</label>
+                        <textbox dataBindings="SG_Aberration">
+                            <dataBindings increment="0.001" />
+                        </textbox>
+                        <label> </label>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="ScreenDoor" >
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Size - X:</label>
+                            <textbox dataBindings="SG_ScreenDoor.x">
+                                <dataBindings increment="0.1" minvalue="0" maxvalue="1000" />
+                            </textbox>
+                            <label width="30" alignright="1">Y:</label>
+                            <textbox dataBindings="SG_ScreenDoor.y">
+                                <dataBindings increment="0.1" minvalue="0" maxvalue="1000" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">SmoothStep - Min:</label>
+                            <textbox dataBindings="SG_SD_Smooth.x">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                            <label width="30" alignright="1">Max:</label>
+                            <textbox dataBindings="SG_SD_Smooth.y">
+                                <databindings increment="0.001" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                            <label> </label>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Fade Dist - Min:</label>
+                            <textbox dataBindings="SG_SD_FadeDist.x">
+                                <dataBindings increment="0.1" minvalue="0" maxvalue="1000" />
+                            </textbox>
+                            <label width="30" alignright="1">Max:</label>
+                            <textbox dataBindings="SG_SD_FadeDist.y">
+                                <dataBindings increment="0.1" minvalue="0" maxvalue="1000" />
+                            </textbox>
+                            <label> </label>
+                        </group>
+                    </group>
+                    
+                    <label> </label>
+                    <group label="Strobe">
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Sin 1:</label>
+                            <textbox dataBindings="SG_Strobe_Sin.x">
+                                <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Sin 2:</label>
+                            <textbox dataBindings="SG_Strobe_Sin.y">
+                                <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                            <label width="50" alignright="1">Sin 3:</label>
+                            <textbox dataBindings="SG_Strobe_Sin.z">
+                                <databindings increment="0.01" minvalue="0" maxvalue="100.0" />
+                            </textbox>
+                        </group>
+                        <group horizontal="1">
+                            <label width="100" alignright="1">Opacity:</label>
+                            <textbox dataBindings="SG_Strobe_Opacity">
+                                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                            </textbox>
+                        </group>
+                    </group>
+                </group>
+            </group>
+            <label> </label>
+        </group>
+    </ui>
+</materialdescriptor>

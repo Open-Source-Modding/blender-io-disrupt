@@ -1,0 +1,658 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2Rock" displayname="WD2Rock" showinui="1" id="#(0x64edc3ac, 0x1892fffa)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" />
+    <parameter name="TwoSided" type="bool" />
+
+    <parameter name="TextureTiling" type="float4" defaultvalue="1,1,1,1" />
+
+
+    <!-- Layer 1 parameters -->
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture 1" normalmap="1" />
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="NormalIntensity1" type="float" defaultvalue="1" />
+    
+    <!-- Layer 2 parameters -->
+    <parameter name="DiffuseTexture2" type="sampler2D" tilingName="DiffuseTextureTiling2" UvName="DiffuseTextureUV2" uvTilingName="DiffuseUVTiling2" maxdisplayname="Base texture 2" optional="0" />
+    <parameter name="DiffuseTexture2State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseTextureTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseTextureUV2" type="int" />
+    <parameter name="DiffuseUVTiling2" type="float4" provideronly="1" />
+    
+    <parameter name="NormalTexture2" type="sampler2D" tilingName="NormalTiling2" UvName="NormalUV2" uvTilingName="NormalUVTiling2" maxdisplayname="Normal texture 2" normalmap="1" />
+    <parameter name="NormalTexture2State" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalTiling2" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV2" type="int" />
+    <parameter name="NormalUVTiling2" type="float4" provideronly="1" />
+    <parameter name="NormalIntensity2" type="float" defaultvalue="1" />
+    
+    <!-- Surface parameters-->
+    <parameter name="SurfaceTexture1" type="sampler2D" tilingName="SurfaceTextureTiling1" UvName="SurfaceTextureUV1" uvTilingName="SurfaceUVTiling1" maxdisplayname="Surface texture 1" optional="1" />
+    <parameter name="SurfaceTextureTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="SurfaceTextureUV1" type="int" />
+    <parameter name="SurfaceUVTiling1" type="float4" provideronly="1" />
+    <parameter name="TopRockSurfaceTransitionMode" type="int" defaultvalue="1" />
+    <parameter name="Reflectance" oldnames="MaskParameters.x" type="float" defaultvalue="0.5" />
+    <parameter name="Roughness" oldnames="MaskParameters.y" type="float" defaultvalue="1" />
+    <parameter name="Metalness" oldnames="MaskParameters.z" type="float" defaultvalue="0" />
+
+    <!-- Diffuse color 2 paramters-->
+    <parameter name="DiffuseTextureTopRock" type="sampler2D" tilingName="DiffuseTextureTopRockTiling" UvName="DiffuseTopRockUV" uvTilingName="DiffuseTextureTopRockUVTiling" maxdisplayname="Diffuse Top Rock texture" optional="1" />
+    <parameter name="DiffuseTextureTopRockState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseColorTopRock" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseTopRockUV" type="int" />
+    <parameter name="DiffuseTextureTopRockTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseTextureTopRockUVTiling" type="float4" provideronly="1" />
+    <parameter name="ThresholdTopRock" type="float" defaultvalue="1" />
+    <parameter name="ContrastTopRock" type="float" defaultvalue="1" />
+    
+    <parameter name="NormalTextureTopRock" type="sampler2D" maxdisplayname="Normal Top Rock texture" optional="1" normalmap="1" />
+    <parameter name="NormalTextureTopRockTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalIntensityTopRock" type="float" defaultvalue="1" />
+
+    <parameter name="WorldSpaceCover" type="bool"/>
+
+    <parameter name="WorldColorTexture" type="sampler2D" tilingName="WorldColorTextureTiling" UvName="WorldColorUV" uvTilingName="WorldColorUVTiling" maxdisplayname="World Color texture" optional="1" />
+    <parameter name="WorldColorTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="WorldColorTextureTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="WorldColorAlphaTiling" type="float2" defaultvalue ="15,15" />
+    <parameter name="WorldColorUV" type="int" />
+    <parameter name="WorldColorUVTiling" type="float4" provideronly="1" />
+    <parameter name="WorldColorTextureBlending" type="float" defaultvalue="1" />
+    <parameter name="WorldColorTextureOverlay" type="bool" />
+    <parameter name="WorldColorBlendingMode" type="int" defaultvalue="1" />
+
+    <parameter name="NormalmapInfluence" type="float" defaultvalue="0" />
+
+    <parameter name="Reflectance1" type="float" defaultvalue="0" />
+
+    <parameter name="Reflectance2" type="float" defaultvalue="0" />
+
+    <parameter name="ShaderMode" type="int" defaultvalue="0" />
+
+    <parameter name="BaseDarkeningParameters" type="float2" defaultvalue="0,0" />
+    <parameter name="BaseDarkeningColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="Level" type="float" defaultvalue="0" />
+    <parameter name="UnderWaterLevel" type="float" defaultvalue="0" />
+    <parameter name="Contrast" type="float" defaultvalue="0" />
+    <parameter name="ContrastUnderWater" type="float" defaultvalue="0" />
+    <parameter name="RoughnessVariation" type="float" defaultvalue="0" />
+    <parameter name="ReflectanceHeightOffset" type="float" defaultvalue="0" />
+
+    <parameter name="DetailMapIntensity" type="float" defaultvalue="0" />
+    <parameter name="DetailMapNoise" type="float" defaultvalue="0" />
+
+    <parameter name="NormalBlendMode" type="int" defaultvalue="0" />
+
+    <!-- Stains color paramters-->
+    <parameter name="StainColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="MapInfluencePower" type="float" defaultvalue="1" />
+    <parameter name="MapRoughness" type="float" defaultvalue="1" />
+    <parameter name="ApplyMapRoughness" type="bool" defaultvalue="0"/>
+    <parameter name="UseTexture" type="bool" defaultvalue="0"/>
+    <parameter name="NormalmapInfluenceOnStain" type="float" defaultvalue="0" />
+    <parameter name="WorldColorOnMask" type="float" defaultvalue="0" />
+    <parameter name="IsAlphaWorldScaled" type="bool" defaultvalue="0"/>
+  
+
+  <parameterprovider parametersfilename="Mesh_WD2Rock.fx">
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalIntensity1" />
+        <parameter name="NormalTexture1State" />
+        <parameter name="DiffuseTexture2" />
+        <parameter name="DiffuseUVTiling2" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseTexture2State" />
+        <parameter name="NormalTexture2" />
+        <parameter name="NormalUVTiling2" />
+        <parameter name="NormalIntensity2" />
+        <parameter name="NormalTexture2State" />
+        <parameter name="SurfaceUVTiling1" />
+        <parameter name="SurfaceTexture1" />
+        <parameter name="Reflectance1" />
+        <parameter name="Reflectance2" />
+        <parameter name="WorldSpaceCover" />
+        <parameter name="ShaderMode" />
+
+        <parameter name="StainColor" />
+        <parameter name="UseTexture" />
+        <parameter name="Reflectance" />
+        <parameter name="Roughness" />
+        <parameter name="Metalness" />
+        <parameter name="MapInfluencePower" />
+        <parameter name="MapRoughness" />
+        <parameter name="ApplyMapRoughness" />
+        <parameter name="NormalmapInfluenceOnStain" />
+        <parameter name="IsAlphaWorldScaled" />
+        <parameter name="WorldColorOnMask" />
+        
+
+        <parameter name="WorldColorTexture" />
+        <parameter name="WorldColorTextureState" />
+        <parameter name="WorldColorTextureTiling" />
+        <parameter name="WorldColorAlphaTiling" />
+        <parameter name="WorldColorUV" />
+        <parameter name="WorldColorUVTiling" />
+        <parameter name="WorldColorTextureBlending" />
+        <parameter name="WorldColorTextureOverlay" />
+        <parameter name="WorldColorBlendingMode" />
+
+        <parameter name="DiffuseTextureTopRock" />
+        <parameter name="DiffuseTopRockUV" />
+        <parameter name="DiffuseTextureTopRockUVTiling" />
+        <parameter name="DiffuseTextureTopRockTiling" />
+        <parameter name="DiffuseColorTopRock" />
+        <parameter name="NormalTextureTopRock" />
+        <parameter name="NormalTextureTopRockTiling" />
+        <parameter name="ThresholdTopRock" />
+        <parameter name="ContrastTopRock" />
+        <parameter name="NormalIntensityTopRock" />
+        <parameter name="DiffuseTextureTopRockState" />
+
+        <parameter name="TopRockSurfaceTransitionMode" />
+
+        <parameter name="NormalmapInfluence" />
+
+        <parameter name="BaseDarkeningParameters"/>
+        <parameter name="BaseDarkeningColor"/>
+
+        <parameter name="Level" />
+        <parameter name="UnderWaterLevel" />
+        <parameter name="Contrast" />
+        <parameter name="ContrastUnderWater" />
+        <parameter name="RoughnessVariation" />
+        <parameter name="ReflectanceHeightOffset" />
+
+        <parameter name="DetailMapIntensity" />
+        <parameter name="DetailMapNoise" />
+
+        <parameter name="NormalBlendMode" />
+    </parameterprovider>
+
+    <shaderoptions>
+        <shaderoption name="ROCK">
+            <condition parameter="ShaderMode" op="equal" value="0" />
+        </shaderoption>
+        <shaderoption name="NORMAL_TOP_ROCK">
+            <condition parameter="NormalTextureTopRock" />
+            <condition parameter="DiffuseTextureTopRock" />
+            <condition parameter="ShaderMode" op="equal" value="0" />
+            <condition parameter="NormalIntensityTopRock" op="greater" value="0" />
+        </shaderoption>
+        <shaderoption name="ISALPHAWORLDSCALED">
+          <condition parameter="IsAlphaWorldScaled" op="equal" value="1" />
+        </shaderoption>
+        <shaderoption name="USESTAINCOLOR">
+          <condition parameter="MapInfluencePower" op="greater" value="0" />
+        </shaderoption>
+        <shaderoption name="APPLYMAPROUGHNESS">
+          <condition parameter="ApplyMapRoughness" op="equal" value="1" />
+          <condition parameter="MapInfluencePower" op="greater" value="0" />
+        </shaderoption>
+        <shaderoption name="USETEXTURE">
+          <condition parameter ="UseTexture" op="equal" value="1"/>
+          <condition parameter="MapInfluencePower" op="greater" value="0" />
+        </shaderoption>
+      <shaderoption name="WORLDCOLORBLENDINGMODE" parameter="WorldColorBlendingMode">
+          <condition parameter ="WorldColorBlendingMode" op="greaterequal" value="0"/>
+      </shaderoption>
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/_Texture/">
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group horizontal="1">
+          <combobox dataBindings="ShaderMode">
+              <comboboxitem value="0">Rock</comboboxitem>
+              <comboboxitem value="1">Cliff</comboboxitem>
+          </combobox>
+          <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/wd3/WD2Rock+Material">Rock Shader Documentation</label>
+        </group>
+
+        <group horizontal="0">
+            <group horizontal="1" label="Base Color (Generic)">
+                <button dataBindings="DiffuseColor2" />
+                <button dataBindings="DiffuseTexture2" fill="1" />
+                <textbox dataBindings="DiffuseTextureUV2">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTextureTiling2.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTextureTiling2.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture2State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group>
+                <label alignright="1" height="20" color="BB0000"> </label>
+            </group>
+            <group label="Surface">
+              <group horizontal="1" hide_if="ShaderMode==1">
+                <button dataBindings="SurfaceTexture1" fill="1" />
+                <textbox dataBindings="SurfaceTextureUV1">
+                  <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                  <textbox dataBindings="SurfaceTextureTiling1.x">
+                    <dataBindings class="Tiling" />
+                  </textbox>
+                  <textbox dataBindings="SurfaceTextureTiling1.y">
+                    <dataBindings class="Tiling" />
+                  </textbox>
+                </group>
+              </group>
+              <group vertical="1" hide_if="ShaderMode==0">
+                <group horizontal="1">
+                  <label>Reflectance :    0.25</label>
+                  <slider dataBindings="Reflectance">
+                    <dataBindings increment="0.01" minvalue="0.251" maxvalue="1.0" />
+                  </slider>
+                  <label>1</label>
+                  <textbox databindings="Reflectance">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                  </textbox>
+                </group>
+                <group horizontal="1">
+                  <label>Roughness :    0</label>
+                  <slider dataBindings="Roughness">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                  </slider>
+                  <label>1</label>
+                  <textbox databindings="Roughness">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                  </textbox>
+                </group>
+              </group>
+            </group>
+            <group>
+                <label alignright="1" height="20" color="BB0000"> </label>
+            </group>
+            <group label="Normal (Generic)">
+              <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                  <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                  <textbox dataBindings="NormalTiling1.x">
+                    <dataBindings class="Tiling" />
+                  </textbox>
+                  <textbox dataBindings="NormalTiling1.y">
+                    <dataBindings class="Tiling" />
+                  </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture1State">
+                  <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                  <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+              </group>
+              <group horizontal="1">
+                <label>     Intensity:   </label>
+                <textbox databindings="NormalIntensity1">
+                  <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity1">
+                  <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+              </group>
+            </group>
+            <group>
+                <label alignright="1" height="20" color="BB0000"> </label>
+            </group>
+            <group label="Normal (Specific)" hide_if="ShaderMode==0">
+              <group horizontal="1">
+                <button dataBindings="NormalTexture2" fill="1" />
+                <textbox dataBindings="NormalUV2">
+                  <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                  <textbox dataBindings="NormalTiling2.x">
+                    <dataBindings class="Tiling" />
+                  </textbox>
+                  <textbox dataBindings="NormalTiling2.y">
+                    <dataBindings class="Tiling" />
+                  </textbox>
+                </group>
+                <combobox dataBindings="NormalTexture2State">
+                  <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                  <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+              </group>
+              <group horizontal="1">
+                <label>     Intensity:   </label>
+                <textbox databindings="NormalIntensity2">
+                  <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensity2">
+                  <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+              </group>
+            </group>
+            <group>
+                <label alignright="1" height="20" color="BB0000"> </label>
+            </group>
+            <group label="Colorize Mask" hide_if="ShaderMode==0">
+              <group horizontal="1">
+                <combobox dataBindings="UseTexture">
+                  <comboboxitem value="0">Colorize with uniform color</comboboxitem>
+                  <comboboxitem value="1">Colorize with texture</comboboxitem>
+                </combobox>
+              </group>
+              <group>
+                <label>*Normal (specific) alpha channel mandatory</label>
+              </group>
+              <group horizontal="1" hide_if="ShaderMode==0">
+                <label hide_if="UseTexture==1">Color</label>
+                <button dataBindings="StainColor" />
+                <group horizontal="1" hide_if="UseTexture==0">
+                  <button dataBindings="DiffuseTextureTopRock" fill="1" />
+                  <textbox dataBindings="DiffuseTopRockUV">
+                    <dataBindings class="UVChannel" />
+                  </textbox>
+                  <group>
+                    <textbox dataBindings="DiffuseTextureTopRockTiling.x">
+                      <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTextureTopRockTiling.y">
+                      <dataBindings class="Tiling" />
+                    </textbox>
+                  </group>
+                  <combobox dataBindings="DiffuseTextureTopRockState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                  </combobox>
+                </group>
+              </group>
+              <group horizontal="1" hide_if="ShaderMode==0">
+                <label>    Mask Strength   </label>
+                <textbox databindings="MapInfluencePower">
+                  <databindings increment="0.05" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="MapInfluencePower">
+                  <dataBindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+              </group>
+              <group horizontal="1" hide_if="UseTexture==0">
+                <label>    Normal Influence</label>
+                <textbox databindings="NormalmapInfluenceOnStain">
+                  <databindings increment="0.001" minvalue="0.0" maxvalue="10" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalmapInfluenceOnStain">
+                  <dataBindings increment="0.001" minvalue="0.0" maxvalue="10" />
+                </slider>
+                <label>10</label>
+              </group>
+              <group horizontal="1" hide_if="ShaderMode==0">
+                <label alignright="1" width="11" color="BB0000"> </label>
+                <checkbox label="Map Roughness" dataBindings="ApplyMapRoughness"/>
+                <label>Map Roughness :   -1</label>
+                <slider dataBindings="MapRoughness">
+                  <dataBindings increment="0.01" minvalue="-1" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+                <textbox databindings="MapRoughness">
+                  <databindings increment="0.05" minvalue="-1" maxvalue="2.0" />
+                </textbox>
+              </group>
+            </group>
+          </group>
+          <group>
+              <label alignright="1" height="20" color="BB0000"> </label>
+          </group>
+        <group horizontal="0" label="World Scaled Colorization" hide_if="ShaderMode==0">
+            <group horizontal="1">
+                <button dataBindings="WorldColorTexture" fill="1" />
+                <group hide_if="IsAlphaWorldScaled==0">
+                    <textbox dataBindings="WorldColorUV" >
+                        <dataBindings class="UVChannel" />
+                    </textbox>
+                </group>
+                <group>
+                    <textbox dataBindings="WorldColorTextureTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="WorldColorTextureTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>                
+                <combobox dataBindings="WorldColorTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group>
+                <label alignright="1" height="10" color="BB0000"> </label>
+            </group>
+            <group horizontal="1">
+                <label>Alpha Tiling</label>
+                <group>
+                  <textbox dataBindings="WorldColorAlphaTiling.x">
+                    <dataBindings class="Tiling" />
+                  </textbox>
+                  <textbox dataBindings="WorldColorAlphaTiling.y">
+                    <dataBindings class="Tiling" />
+                  </textbox>
+                </group>
+                <combobox dataBindings="WorldColorTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group>
+              <label alignright="1" height="10" color="BB0000"> </label>
+            </group>
+            <label>World Color Blending Mode</label>
+            <combobox dataBindings="WorldColorBlendingMode">
+                <comboboxitem value="1">Multiply</comboboxitem>
+                <comboboxitem value="2">Apply</comboboxitem>
+                <comboboxitem value="3">Overlay</comboboxitem>
+            </combobox>
+            <group>
+              <label alignright="1" height="10" color="BB0000"> </label>
+            </group>
+            <group horizontal="1">
+              <checkbox label="Only Alpha Is World Scaled" dataBindings="IsAlphaWorldScaled"/>
+            </group>
+            <group horizontal="1">
+                <label>Normal Influence</label>
+                <label> 0</label>
+                <slider dataBindings="NormalmapInfluence">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="10" />
+                </slider>
+                <label>10</label>
+                <textbox databindings="NormalmapInfluence">
+                    <databindings increment="0.001" minvalue="0.0" maxvalue="10" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>World Color Intensity</label>
+                <label> 0</label>
+                <slider dataBindings="WorldColorTextureBlending">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+                <textbox databindings="WorldColorTextureBlending">
+                    <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>World Color On Mask</label>
+                <label> Only Off Mask   -1</label>
+                <slider dataBindings="WorldColorOnMask">
+                    <dataBindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </slider>
+                <label>1   Only On Mask</label>
+                <textbox databindings="WorldColorOnMask">
+                    <databindings increment="0.01" minvalue="-1.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+        <group>
+            <label alignright="1" height="20" color="BB0000"> </label>
+        </group>
+        <group horizontal="0" label="Water Line" hide_if="ShaderMode==0">
+            <group horizontal="1">
+                <label>Color</label>
+                <button dataBindings="BaseDarkeningColor" />
+            </group>
+            <group horizontal="1">
+              <label>Roughness Variation  </label>
+              <textbox databindings="RoughnessVariation">
+                <databindings increment="0.01" minvalue="-1" maxvalue="1" />
+              </textbox>
+              <label>-1</label>
+              <slider dataBindings="RoughnessVariation">
+                <dataBindings increment="0.01" minvalue="-1" maxvalue="1" />
+              </slider>
+              <label>1</label>
+            </group>
+            <group horizontal="1">
+                <label>Falloff up                 </label>
+                <textbox databindings="Contrast">
+                    <databindings increment="0.01" minvalue="0" maxvalue="10" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="Contrast">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="10" />
+                </slider>
+                <label>10</label>
+            </group>
+            <group horizontal="1">
+                <label>Level up                   </label>
+                <textbox databindings="Level">
+                    <databindings increment="0.01" minvalue="0" maxvalue="256" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="Level">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="256" />
+                </slider>
+                <label>256</label>                
+            </group>
+            <group horizontal="1">
+                <label>Level down               </label>
+                <textbox databindings="UnderWaterLevel">
+                    <databindings increment="0.01" minvalue="0" maxvalue="256" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="UnderWaterLevel">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="256" />
+                </slider>
+                <label>256</label>                
+            </group>
+            <group horizontal="1">
+              <label>Falloff down             </label>
+              <textbox databindings="ContrastUnderWater">
+                <databindings increment="0.01" minvalue="0" maxvalue="10" />
+              </textbox>
+              <label> 0</label>
+              <slider dataBindings="ContrastUnderWater">
+                <dataBindings increment="0.01" minvalue="0.0" maxvalue="10" />
+              </slider>
+              <label>10</label>
+            </group>
+        </group>
+        <group horizontal="0" label="Base Color Top (rocks)" hide_if="ShaderMode==1">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColorTopRock" />
+                <button dataBindings="DiffuseTextureTopRock" fill="1" />
+                <group>
+                    <textbox dataBindings="DiffuseTextureTopRockTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTextureTopRockTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>               Threshold</label>
+                <textbox databindings="ThresholdTopRock">
+                    <databindings increment="0.01" minvalue="-0.5" maxvalue="0.5" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="ThresholdTopRock">
+                    <dataBindings increment="0.01" minvalue="-0.5" maxvalue="0.5" />
+                </slider>
+                <label>1</label>
+            </group>
+            <group horizontal="1">
+                <label>                 Contrast</label>
+                <textbox databindings="ContrastTopRock">
+                    <databindings increment="0.01" minvalue="0" maxvalue="100" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="ContrastTopRock">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="100" />
+                </slider>
+                <label>100</label>
+            </group>
+
+            <group horizontal="1">
+                <label>Roughness Variation</label>
+                <textbox databindings="RoughnessVariation">
+                    <databindings increment="0.01" minvalue="-1" maxvalue="1" />
+                </textbox>
+                <label>-1</label>
+                <slider dataBindings="RoughnessVariation">
+                    <dataBindings increment="0.01" minvalue="-1" maxvalue="1" />
+                </slider>
+                <label>+1</label>
+            </group>
+            <group horizontal="1">
+                <label>Surface Red Channel Transition Mask:</label>
+                <combobox dataBindings="TopRockSurfaceTransitionMode">
+                    <comboboxitem value="1">None</comboboxitem>
+                    <comboboxitem value="0">Substract</comboboxitem>
+                    <comboboxitem value="2">Multiply</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <group horizontal="0" label="Normal Top (rocks)" hide_if="ShaderMode==1">
+            <group horizontal="1">
+                <button dataBindings="NormalTextureTopRock" fill="1" />
+                <group>
+                    <textbox dataBindings="NormalTextureTopRockTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTextureTopRockTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1">
+                <label>     Intensity:   </label>
+                <textbox databindings="NormalIntensityTopRock">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+                <label> 0</label>
+                <slider dataBindings="NormalIntensityTopRock">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>2</label>
+            </group>
+            <label>Normal blend mode</label>
+            <combobox dataBindings="NormalBlendMode">
+                <comboboxitem value="0">Replace</comboboxitem>
+                <comboboxitem value="1">Blend</comboboxitem>
+            </combobox>
+        </group>
+    </ui>
+</materialdescriptor>

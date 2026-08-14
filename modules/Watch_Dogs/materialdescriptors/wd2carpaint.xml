@@ -1,0 +1,498 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2CarPaint" displayname="WD2CarPaint" showinui="1" id="#(0x519d607b, 0x20bc7717)">
+    <geometryInputs normal="1" normalModified="1" tangent="1" binormal="1" color="1" uvChannels="2" bonecount="1" reduceMatrixPerDrawCallBy="14" />
+
+    <!-- Settings -->
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="CastShadow" type="bool" defaultvalue="1" />
+    <parameter name="WetSurfaceTypeIndex" type="int" defaultvalue="0" />
+
+    <!-- BaseColor -->
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTextureTiling1" UvName="DiffuseTextureUV1" uvTilingName="DiffuseUVTiling1" maxdisplayname="Base Color texture 1" optional="1" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTextureTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseTextureUV1" type="int" />
+    <parameter name="DiffuseUVTiling1" type="float4" provideronly="1" />
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+
+    <parameter name="TangentSpaceChannel" type="int" defaultvalue="2" />
+    <parameter name="NormalMapTexture1" type="sampler2D" tilingName="NormalMapTextureTiling1" UvName="TangentSpaceChannel" uvTilingName="NormalMapUVTiling1" maxdisplayname="Normal Map texture 1" optional="1" />
+    <parameter name="NormalMapTexture1State" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="NormalMapTextureTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalMapUVTiling1" type="float4" provideronly="1" />
+    <parameter name="NormalMapIntensity1" type="float" defaultvalue="1" />
+
+    <parameter name="ClearCoatParametersTexture1"       type="sampler2D" tilingName="ClearCoatParametersTextureTiling1" UvName="ClearCoatParametersTextureUV1" uvTilingName="ClearCoatParametersUVTiling1" maxdisplayname="Clear Coat Parameters Texture 1" optional="1" />
+    <parameter name="ClearCoatParametersTexture1State"  type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="ClearCoatParametersTextureTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="ClearCoatParametersTextureUV1"     type="int" />
+    <parameter name="ClearCoatParametersUVTiling1"      type="float4" provideronly="1" />
+    <parameter name="MaskClearCoatChannelUsageGreen"    type="float" defaultvalue="0" />
+
+    <parameter name="BaseParametersTexture1"        type="sampler2D" tilingName="BaseParametersTextureTiling1" UvName="BaseParametersTextureUV1" uvTilingName="BaseParametersUVTiling1" maxdisplayname="Base Parameters Texture 1" optional="1" />
+    <parameter name="BaseParametersTexture1State"   type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="BaseParametersTextureTiling1"  type="float2" defaultvalue="1,1" />
+    <parameter name="BaseParametersTextureUV1"      type="int" />
+    <parameter name="BaseParametersUVTiling1"       type="float4" provideronly="1" />
+    <parameter name="MaskBaseChannelUsageGreen"     type="float" defaultvalue="0" />
+    <parameter name="MaskBaseChannelUsageBlue"      type="float" defaultvalue="0" />
+
+    <parameter name="DamageNormalMapTexture" type="sampler2D" tilingName="DamangeNormalMapTiling" UvName="TangentSpaceChannel" uvTilingName="DamageNormalMapUVTiling" maxdisplayname="Damage Normal Map texture" optional="1" />
+    <parameter name="DamageNormalMapTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DamangeNormalMapTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="DamageNormalMapUVTiling" type="float4" provideronly="1" />
+    <parameter name="DamageNormalMapIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="DamageTexture" type="sampler2D" tilingName="DamageTextureTiling" UvName="DamageTextureUV" uvTilingName="DamageUVTiling" maxdisplayname="Damage texture" optional="1" />
+    <parameter name="DamageTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DamageTextureTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="DamageTextureUV" type="int" />
+    <parameter name="DamageUVTiling" type="float4" provideronly="1" />
+
+    <parameter name="DisableScratchDustMud" type="bool" defaultvalue="0" />
+    <parameter name="ScratchColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DustColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DustIntensity" type="float" defaultvalue="1" />
+    <parameter name="MudColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="MudIntensity" type="float" defaultvalue="1" />
+
+    <!-- Clear Coat -->
+    <parameter name="ClearCoatRoughness"       type="float" defaultvalue="0.0" />
+    <parameter name="ClearCoatColorSaturation" type="float" defaultvalue="0.9" />
+
+    <!-- Base Coat -->
+    <parameter name="BaseRoughness" type="float" defaultvalue="0.35" />
+    <parameter name="BaseMetalness" type="float" defaultvalue="0.0" oldnames="Metalness1" />
+
+    <!-- Burn material options -->
+    <parameter name="BurnColorGrade" type="float" defaultvalue="0.0356013" />
+    <parameter name="BurnFactorChannel" type="float3" defaultvalue="0,1,1" />
+    <parameter name="BurnMaskRemapSrc" type="float" defaultvalue="0.3" />
+    <parameter name="BurnMaskRemapDst" type="float" defaultvalue="0.1" />
+    <parameter name="BurnMaskOffset" type="float" defaultvalue="0" />
+    <parameter name="BurnMaskScale" type="float" defaultvalue="5" />
+    <parameter name="BurnMaterialMaxGrade" type="float" defaultvalue="0.75" />
+    <parameter name="BurnMaskTextureUVChannel" type="int" defaultvalue="2"/>
+
+    <!-- Parameter Provider -->
+    <parameterprovider parametersfilename="Mesh_WD2CarPaint.fx">
+        <parameter name="WetSurfaceTypeIndex" />
+
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTexture1State" />
+        <parameter name="DiffuseUVTiling1" />
+        <parameter name="DiffuseColor1" />
+
+        <parameter name="NormalMapTexture1" />
+        <parameter name="NormalMapTexture1State" />
+        <parameter name="NormalMapUVTiling1" />
+        <parameter name="NormalMapIntensity1" />
+
+        <parameter name="ClearCoatParametersTexture1" />
+        <parameter name="ClearCoatParametersTexture1State" />
+        <parameter name="ClearCoatParametersTextureTiling1" />
+        <parameter name="ClearCoatParametersTextureUV1" />
+        <parameter name="ClearCoatParametersUVTiling1" />
+
+        <parameter name="MaskClearCoatChannelUsageGreen" />
+
+        <parameter name="BaseParametersTexture1" />
+        <parameter name="BaseParametersTexture1State" />
+        <parameter name="BaseParametersTextureTiling1" />
+        <parameter name="BaseParametersTextureUV1" />
+        <parameter name="BaseParametersUVTiling1" />
+        <parameter name="MaskBaseChannelUsageGreen" />
+        <parameter name="MaskBaseChannelUsageBlue" />
+
+        <parameter name="ClearCoatRoughness" />
+        <parameter name="ClearCoatColorSaturation" />
+
+        <parameter name="BaseRoughness" />
+        <parameter name="BaseMetalness" />
+
+        <parameter name="DamageNormalMapTexture" />
+        <parameter name="DamageNormalMapTextureState" />
+        <parameter name="DamageNormalMapUVTiling" />
+        <parameter name="DamageNormalMapIntensity" />
+
+        <parameter name="DamageTexture" />
+        <parameter name="DamageTextureState" />
+        <parameter name="DamageUVTiling" />
+
+        <parameter name="DisableScratchDustMud" />
+        <parameter name="ScratchColor" />
+        <parameter name="DustColor" />
+        <parameter name="DustIntensity" />
+        <parameter name="MudColor" />
+        <parameter name="MudIntensity" />
+
+        <parameter name="BurnColorGrade" />
+        <parameter name="BurnFactorChannel" />
+        <parameter name="BurnMaskRemapSrc" />
+        <parameter name="BurnMaskRemapDst" />
+        <parameter name="BurnMaskOffset" />
+        <parameter name="BurnMaskScale" />
+        <parameter name="BurnMaterialMaxGrade" />
+        <parameter name="BurnMaskTextureUVChannel" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="BASECOLOR">
+            <condition parameter="DiffuseTexture1" />
+        </shaderoption>
+        <shaderoption name="NORMALMAP1">
+            <condition parameter="NormalMapTexture1" />
+        </shaderoption>
+        <shaderoption name="DAMAGE_NORMALMAP">
+            <condition parameter="DamageNormalMapTexture" />
+        </shaderoption>
+        <shaderoption name="CLEARCOATTEXTUREPARAMETERS">
+            <condition parameter="ClearCoatParametersTexture1" />
+        </shaderoption>
+        <shaderoption name="BASETEXTUREPARAMETERS">
+            <condition parameter="BaseParametersTexture1" />
+        </shaderoption>
+        <shaderoption name="DAMAGE_TEXTURE">
+            <condition parameter="DamageTexture" />
+        </shaderoption>
+    </shaderoptions>
+
+    <!-- User Interface Definition -->
+    <ui defaultFilePath="graphics/_Texture/">
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Settings -->
+        <group horizontal="0" label="Settings">
+            <checkbox label="Cast Shadow" dataBindings="CastShadow" />
+        </group>
+        <group horizontal="1">
+            <label>NormalMap UV Channel: </label>
+            <textbox dataBindings="TangentSpaceChannel">
+                <dataBindings class="UVChannel" />
+            </textbox>
+        </group>
+        <group horizontal="0" label="" hide_if="TwoSided==0">
+            <label />
+        </group>
+        <group horizontal="1">
+            <label>Wet Surface Type: </label>
+            <combobox dataBindings="WetSurfaceTypeIndex">
+                <comboboxitem value="0">Default</comboboxitem>
+                <comboboxitem value="-1">Never Wet</comboboxitem>
+            </combobox>
+        </group>
+
+        <!-- Base Color -->
+        <group horizontal="0" label="Base Color">
+            <group horizontal="1">
+                <button dataBindings="DiffuseColor1" />
+                <button dataBindings="DiffuseTexture1" fill="1" />
+                <textbox dataBindings="DiffuseTextureUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTextureTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTextureTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <!-- Normal Maps -->
+        <group horizontal="0" label="Normal Map">
+            <!-- Normal Map 1 -->
+            <group horizontal="1">
+                <button dataBindings="NormalMapTexture1" fill="1" />
+                <textbox dataBindings="TangentSpaceChannel" readonly="1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalMapTextureTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalMapTextureTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalMapTexture1State">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1" enable_if="NormalMapTexture1">
+                <label>    Intensity: </label>
+                <label>  0</label>
+                <slider dataBindings="NormalMapIntensity1">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="NormalMapIntensity1">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </textbox>
+            </group>
+        </group>
+
+        <!-- Burn Options -->
+        <group label="Burn Options">
+            <group horizontal="1">
+                <label>Color Grade:</label>
+                <textbox databindings="BurnColorGrade">
+                    <databindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>Mask Remap Src Value:</label>
+                <textbox dataBindings="BurnMaskRemapSrc">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>Mask Remap Dst Value:</label>
+                <textbox dataBindings="BurnMaskRemapDst">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>UV Channel:</label>
+                <textbox dataBindings="BurnMaskTextureUVChannel">
+                    <dataBindings increment="1" minvalue="1" maxvalue="2" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>Mask Offset:</label>
+                <textbox dataBindings="BurnMaskOffset">
+                    <dataBindings increment="0.01" minvalue="-15.0" maxvalue="15.0" />
+                </textbox>
+                <label>Mask Scale:</label>
+                <textbox dataBindings="BurnMaskScale">
+                    <dataBindings increment="0.01" minvalue="-15.0" maxvalue="15.0" />
+                </textbox>
+                <label>Material Max Grade:</label>
+                <textbox databindings="BurnMaterialMaxGrade">
+                    <databindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+                <label>Channel:</label>
+                <combobox dataBindings="BurnFactorChannel">
+                  <comboboxitem value="1,0,0">Scratch</comboboxitem>
+                  <comboboxitem value="0,1,0">Dust</comboboxitem>
+                  <comboboxitem value="0,0,1">Mud</comboboxitem>
+                  <comboboxitem value="1,1,0">MAX(Scratch,Dust)</comboboxitem>
+                  <comboboxitem value="1,0,1">MAX(Scratch,Mud)</comboboxitem>
+                  <comboboxitem value="0,1,1">MAX(Dust,Mud)</comboboxitem>
+                  <comboboxitem value="1,1,1">MAX(Scratch,Dust,Mud)</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <!-- Clear Coat Params -->
+        <group label="Clear Coat Parameters">
+            <group horizontal="1">
+                <button dataBindings="ClearCoatParametersTexture1" fill="1" />
+                <textbox dataBindings="ClearCoatParametersTextureUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="ClearCoatParametersTextureTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="ClearCoatParametersTextureTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label color="00BB00">   G:</label>
+                    <group horizontal="1" enable_if="ClearCoatParametersTexture1==1">
+                        <combobox dataBindings="MaskClearCoatChannelUsageGreen">
+                            <comboboxitem value="1">Roughness</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="ClearCoatParametersTexture1==0 || MaskClearCoatChannelUsageGreen==0">
+                        <label>    Roughness: </label>
+                        <label>  0</label>
+                        <slider dataBindings="ClearCoatRoughness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="ClearCoatRoughness">
+                            <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label>Color Saturation: </label>
+                    <label>0</label>
+                    <slider dataBindings="ClearCoatColorSaturation">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                    <textbox databindings="ClearCoatColorSaturation">
+                        <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+
+        <group label="Base Coat Parameters">
+            <group horizontal="1">
+                <button dataBindings="BaseParametersTexture1" fill="1" />
+                <textbox dataBindings="BaseParametersTextureUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="BaseParametersTextureTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="BaseParametersTextureTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group vertical="1">
+                <group horizontal="1">
+                    <label color="00BB00">   G:</label>
+                    <group horizontal="1" enable_if="BaseParametersTexture1==1">
+                        <combobox dataBindings="MaskBaseChannelUsageGreen">
+                            <comboboxitem value="1">Roughness</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="BaseParametersTexture1==0 || MaskBaseChannelUsageGreen==0">
+                        <label>    Roughness: </label>
+                        <label>  0</label>
+                        <slider dataBindings="BaseRoughness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="BaseRoughness">
+                            <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="0000BB">   B:</label>
+                    <group horizontal="1" enable_if="BaseParametersTexture1==1">
+                        <combobox dataBindings="MaskBaseChannelUsageBlue">
+                            <comboboxitem value="1">Metalness</comboboxitem>
+                            <comboboxitem value="0">None</comboboxitem>
+                        </combobox>
+                    </group>
+                    <group horizontal="1" enable_if="BaseParametersTexture1==0 || MaskBaseChannelUsageBlue==0">
+                        <label>    Metalness:  </label>
+                        <label> 0</label>
+                        <slider dataBindings="BaseMetalness">
+                            <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </slider>
+                        <label>1  </label>
+                        <textbox databindings="BaseMetalness">
+                            <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <!-- Damage normal -->
+        <group horizontal="0" label="Damage normal">
+            <!-- Normal Map 2 -->
+            <group horizontal="1">
+                <button dataBindings="DamageNormalMapTexture" fill="1" />
+                <textbox dataBindings="TangentSpaceChannel" readonly="1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DamangeNormalMapTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DamangeNormalMapTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DamageNormalMapTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <group horizontal="1" enable_if="DamageNormalMapTexture">
+                <label>    Intensity: </label>
+                <label>  0</label>
+                <slider dataBindings="DamageNormalMapIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label>1  </label>
+                <textbox databindings="DamageNormalMapIntensity">
+                    <databindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </textbox>
+            </group>
+        </group>
+
+        <!-- Dust & Scratches -->
+        <group horizontal="0" label="Dust and Scratches">
+            <!-- Normal Map 2 -->
+            <group horizontal="1">
+                <button dataBindings="DamageTexture" fill="1" />
+                <textbox dataBindings="DamageTextureUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DamageTextureTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DamageTextureTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DamageTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+
+            <group vertical="1">
+                <group horizontal="1">
+                    <checkbox label="Disable Scratch+Dust+Mud" dataBindings="DisableScratchDustMud" />
+                </group>
+                <group horizontal="1">
+                    <label color="BB0000" alignright="0" width="80">  R: Scratches</label>
+                    <label>    Color: </label> <button dataBindings="ScratchColor" />
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00" alignright="0" width="80">  G: Dust</label>
+                    <label>    Color: </label> <button dataBindings="DustColor" />
+                    <label>    Intensity: </label>
+                    <label>  0</label>
+                    <slider dataBindings="DustIntensity">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                </group>
+                <group horizontal="1">
+                    <label color="0000BB" alignright="0" width="80">  B: Mud</label>
+                    <label>    Color: </label> <button dataBindings="MudColor" />
+                    <label>    Intensity: </label>
+                    <label>  0</label>
+                    <slider dataBindings="MudIntensity">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label>1</label>
+                </group>
+            </group>
+
+        </group>
+
+    </ui>
+</materialdescriptor>

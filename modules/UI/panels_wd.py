@@ -49,6 +49,15 @@ class XBG_PT_WDImport(bpy.types.Panel):
             col.label(text="Raw text GEOM source", icon='FILE_TEXT')
             col.label(text="Skeleton · weights · UVs · normals")
 
+            l.separator()
+            r2 = l.row()
+            r2.scale_y = 1.3
+            r2.operator("xbg.import_wd2_xbg_model",
+                        text="Import WD2 Compiled (.xbg)", icon='IMPORT')
+            col2 = l.column(align=True)
+            col2.label(text="Compiled MOEG binary + .skel", icon='FILE_CACHE')
+            col2.label(text="Skeleton · weights · UVs · materials")
+
         if game == 'WD1':
             l.separator()
             r2 = l.row()

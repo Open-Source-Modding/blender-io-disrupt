@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="DriverEye" showinui="1" id="#(0x5d1a284f, 0x170d5c0d)" deprecated="1" >
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="1" />
+
+    <parameter name="BlendingType" type="int" defaultvalue="8" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+    <parameter name="DepthOffset" type="float" defaultvalue="0" div="1000" />
+    <parameter name="AmbientOcclusionColor" type="color3" defaultvalue="0,0,0" />
+
+    <parameter name="EmissiveColor" type="color3" defaultvalue="0,0,0" />
+
+    <parameter name="MaskTexture" type="sampler2D" tilingName="MaskTiling" UvName="MaskUV" uvTilingName="MaskUVTiling" maxdisplayname="Mask texture" />
+    <parameter name="MaskTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="MaskUV" type="int" />
+    <parameter name="MaskUVTiling" type="float4" provideronly="1" />
+
+    <parameter name="NormalTexture1" type="sampler2D" tilingName="NormalTiling1" UvName="NormalUV1" uvTilingName="NormalUVTiling1" maxdisplayname="Normal texture" normalmap="1" optional="1" />
+    <parameter name="NormalTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalUV1" type="int" />
+    <parameter name="NormalUVTiling1" type="float4" provideronly="1" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+
+    <parameter name="PerPixelGlossiness" type="bool" defaultvalue="0" />
+    <parameter name="SpecularPower" type="float4" defaultvalue="16,0,1,0" op_z="x/8192" op_w="y/8192" />
+    <parameter name="Reflectance" type="float3" defaultvalue="0.04,0,1" />
+
+    <parameter name="ReflectionIntensityAndStretch" type="float3" defaultvalue="1,0,0" />
+    <parameter name="ReflectionVerticalFade" type="float4" defaultvalue="0,0.001,0,0.001" op_x="1-x" op_z="1-z" />
+    <parameter name="ReflectionAtlasIndex" type="float" defaultvalue="0" />
+    <parameter name="ReflectionType" type="int" defaultvalue="1" />
+    <parameter name="ReflectionTexture" type="sampler2D" />
+    <parameter name="ReflectionTextureHDR" type="bool" defaultvalue="0" />
+
+    <parameterprovider parametersfilename="Mesh_DriverEye.fx">
+        <parameter name="DepthOffset" />
+        <parameter name="AmbientOcclusionColor" />
+
+        <parameter name="EmissiveColor" />
+
+        <parameter name="MaskTexture" />
+        <parameter name="MaskUVTiling" />
+        
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalUVTiling1" />
+        <parameter name="NormalIntensity" />
+
+        <parameter name="PerPixelGlossiness" />
+        <parameter name="SpecularPower" />
+        <parameter name="Reflectance" />
+
+        <parameter name="ReflectionIntensityAndStretch" />
+        <parameter name="ReflectionVerticalFade" />
+        <parameter name="ReflectionAtlasIndex" />
+        <parameter name="ReflectionType" />
+        <parameter name="ReflectionTexture" sizeparameter="1" />
+        <parameter name="ReflectionTextureHDR" />
+    </parameterprovider>
+
+    <ui defaultFilePath="graphics/_Texture/" >
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Information -->
+        <group label="Information">
+            <label link="https://mdc-web-tomcat17.ubisoft.org/confluence/display/driver/DriverEye">DriverEye material online help</label>
+            <label> </label>
+            <label>Vertex color mappings:</label>
+            <group horizontal="1">
+                <label color="BB0000">    R:</label>
+                <group enable_if="UseColorMask" >
+                    <label>Depth offset scale</label>
+                </group>
+                <group show_if="DepthOffset==0" >
+                    <label color="404040"> (unused)</label>
+                </group>
+            </group>
+            <group horizontal="1" >
+                <label color="00BB00">    G:</label>
+                <label color="404040">(unused)</label>
+            </group>
+            <group horizontal="1">
+                <label color="0000AA">    B:</label>
+                <label color="404040">(unused)</label>
+            </group>
+            <group horizontal="1">
+                <label color="000000">    A:</label>
+                <label color="404040">(unused)</label>
+            </group>
+        </group>
+
+        <!-- Settings -->
+        <label> </label>
+        <group label="Settings">
+            <group horizontal="1" >
+                <label>Sorting Layer Bias</label>
+                <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order of the decal.  Materials with smaller values are drawn first.">
+                    <dataBindings increment="1" minvalue="-10" maxvalue="10" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>Depth Offset (in mm)</label>
+                <textbox dataBindings="DepthOffset" tooltip="How much the vertices should be moved towards the camera. Used to avoid clipping with the layer underneath.">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="10"/>
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label>Ambient Occlusion Color</label>
+                <button dataBindings="AmbientOcclusionColor" tooltip="Color of the ambient occlusion. Current-gen platforms will only use the luminance." />
+            </group>
+            <group horizontal="1">
+                <label>Emissive Color</label>
+                <button dataBindings="EmissiveColor" tooltip="Emissive color to be added on top of the reflection." />
+            </group>
+        </group>
+
+        <!-- Mask texture -->
+        <label> </label>
+        <group label="Mask">
+            <group horizontal="1">
+                <button dataBindings="MaskTexture" fill="1" />
+                <textbox dataBindings="MaskUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="MaskTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="MaskTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group vertical="1" enable_if="MaskTexture">
+                <group horizontal="1">
+                    <label color="BB0000">    R:</label>
+                    <label>Glossiness</label>
+                    <group hide_if="PerPixelGlossiness">
+                        <label color="404040"> (unused)</label>
+                    </group>
+                </group>
+                <group horizontal="1">
+                    <label color="00BB00">    G:</label>
+                    <label>Reflection mask</label>
+                </group>
+                <group horizontal="1">
+                    <label color="0000AA">    B:</label>
+                    <label>Ambient occlusion</label>
+                </group>
+                <group horizontal="1">
+                    <label color="000000">    A:</label>
+                    <group horizontal="1">
+                        <label>Unused</label>
+                    </group>
+                </group>
+            </group>
+        </group>
+
+        <!-- Normal -->
+        <label> </label>
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture1" fill="1" />
+                <textbox dataBindings="NormalUV1">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTiling1.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTiling1.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+            </group>
+            <group horizontal="1" enable_if="NormalTexture1">
+                <label>Intensity</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+            </group>
+        </group>
+
+        <!-- Specular -->
+        <label> </label>
+        <group label="Specular">
+            <checkbox label="  Use per-pixel glossiness" dataBindings="PerPixelGlossiness" />
+            <dataBindingsAlias name="@SpecularPowerAlias" dataBindings="SpecularPower" />
+        	<xi:include href="UI/SpecularPowerGroup.xml" />
+            <dataBindingsAlias name="@ReflectanceAlias" dataBindings="Reflectance" />
+			<xi:include href="UI/ReflectanceGroup.xml" />
+        </group>            
+        
+        <!-- Reflection -->
+        <label> </label>
+        <group label="Reflection" horizontal="0">
+            <group horizontal="1">
+                <label>Type</label>
+                <combobox dataBindings="ReflectionType">
+                    <comboboxitem value="0">World Static</comboboxitem>
+                    <comboboxitem value="1">World Dynamic</comboboxitem>
+                    <comboboxitem value="2">Matcap</comboboxitem>
+                </combobox>
+            </group>
+            
+            <!-- Common reflection params -->
+            <group horizontal="1">
+                <label>Intensity       </label>
+                <label>0</label>
+                <slider dataBindings="ReflectionIntensityAndStretch.x">
+                    <dataBindings minvalue="0.0" maxvalue="3.0" displayvaluediv="3"/>
+                </slider>
+                <label>1</label>
+            </group>
+            
+            <label> </label>
+            <label>Upper reflection fade:</label>
+            <group horizontal="1">
+                <label>   Fade start </label>
+                <label>0</label>
+                <slider dataBindings="ReflectionVerticalFade.z">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+            <group horizontal="1">
+                <label>   Fade size  </label>
+                <label>0</label>
+                <slider dataBindings="ReflectionVerticalFade.w">
+                    <dataBindings increment="0.001" minvalue="0.001" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+
+            <label> </label>
+            <label>Lower reflection fade:</label>
+            <group horizontal="1">
+                <label>   Fade start </label>
+                <label>0</label>
+                <slider dataBindings="ReflectionVerticalFade.x">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+            <group horizontal="1">
+                <label>   Fade size  </label>
+                <label>0</label>
+                <slider dataBindings="ReflectionVerticalFade.y">
+                    <dataBindings increment="0.001" minvalue="0.001" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+
+            <!-- Paraboloid reflection params -->
+            <label> </label>
+            <label>Paraboloid reflection:</label>
+            <group horizontal="1" disable_if="ReflectionType!=1">
+                <label>   Stretch amount </label>
+                <label>0</label>
+                <slider dataBindings="ReflectionIntensityAndStretch.z">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label>1</label>
+            </group>
+
+            <!-- Matcap reflection params -->
+            <label> </label>
+            <label>Matcap reflection:</label>
+            <button dataBindings="ReflectionTexture" fill="1" />
+            <group horizontal="1">
+                <label>Atlas index     </label>
+                <textbox dataBindings="ReflectionAtlasIndex">
+                    <dataBindings increment="1" minvalue="0" />
+                </textbox>
+            </group>
+            <checkbox label="Intensity in alpha channel" dataBindings="ReflectionTextureHDR" />
+            <group horizontal="1" enable_if="ReflectionTextureHDR">
+                <label>   Intensity range</label>
+                <textbox dataBindings="ReflectionIntensityAndStretch.y">
+                    <dataBindings increment="0.01" minvalue="0.0" />
+                </textbox>
+            </group>
+        </group>
+
+    </ui>
+</materialdescriptor>

@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD3FakeFog" showinui="1" id="#(0x11bc525a, 0x316e1b16)">
+  <geometryInputs normal="1" tangent="0" binormal="0" color="1" />
+    <parameter name="BlendingType" type="int" defaultvalue="1"/>
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="SortingLayerBias" type="int" defaultvalue="0"/>
+
+    <parameter name="ResponsiveAAStrength" type="float" defaultvalue="2.0"/>
+
+    <parameter name="MSAAOptimizationHighQuality" type="bool" defaultvalue="1" />
+
+    <!-- Base color -->
+    <parameter name="BaseColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="FogParameter" type="float4" defaultvalue="10,30,40,1" />
+    <parameter name="AttachToCam" type="bool" />
+
+    <parameterprovider parametersfilename="Mesh_WD3FakeFog.fx">
+        <parameter name="BaseColor" />
+        <parameter name="FogParameter" />
+        <parameter name="AttachToCam" />
+        <parameter name="ResponsiveAAStrength" />
+        <parameter name="MSAAOptimizationHighQuality" />
+    </parameterprovider>
+
+    <shaderoptions>      
+        <shaderoption name="MSAA_TRANSPARENCIES_HIGH">
+            <condition parameter="MSAAOptimizationHighQuality" />
+        </shaderoption>
+    </shaderoptions>
+
+    <ui defaultFilePath="graphics/_Textures/" >
+        <xi:include href="UI/DataClasses.xml" />
+        <group label="Settings">
+            <!-- Responsive AA -->
+            <label alignright="1" width="120">Responsive AA Strength</label>
+            <textbox dataBindings="ResponsiveAAStrength">
+                <databindings increment="0.01" minvalue="0.0" maxvalue="10.0" />
+            </textbox>
+              <!-- MSAA Optimization -->
+            <checkbox label="Use MSAA high quality optimization" dataBindings="MSAAOptimizationHighQuality" tooltip="Parameter to control MSAA optimization quality. If unchecked shader evaluated once for a group of 2x2 pixels." />
+            <checkbox label="Two sided" dataBindings="TwoSided" />
+            <group horizontal="1">
+                <label>Sorting Layer Bias</label>
+                <textbox dataBindings="SortingLayerBias" tooltip="Changes the draw order.  Materials with smaller values are drawn first.">
+                    <dataBindings increment="1" minvalue="-4" maxvalue="4" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+            <label>Blending type</label>
+            <group horizontal="1">
+              <combobox dataBindings="BlendingType">
+                <comboboxitem value="1">Alpha</comboboxitem>
+                <comboboxitem value="2">Additive</comboboxitem>
+              </combobox>
+            </group>
+          </group>
+        </group>
+
+        <label> </label>        
+        <group label="Base Color">
+            <group horizontal="1">
+                <button dataBindings="BaseColor" />
+            </group>
+        </group>
+        
+        <group label="Fog">
+            <group horizontal="1">
+                <checkbox label="Attach to Camera" dataBindings="AttachToCam" tooltip="attach the fog to the XY of the camera" />
+            </group> 
+          <group horizontal="1">
+            <label width="50">Near</label>
+            <textbox dataBindings="FogParameter.x">
+              <dataBindings minvalue="0.0f" maxvalue="500.0" />
+            </textbox>
+             </group> 
+            <group horizontal="1">
+            <label width="50">Far</label>
+            <textbox dataBindings="FogParameter.y">
+              <dataBindings minvalue="0.0f" maxvalue="500.0" />
+            </textbox>
+             </group> 
+            <group horizontal="1">
+            <label width="50">Height</label>
+                <textbox dataBindings="FogParameter.z">
+              <dataBindings minvalue="0.0f" maxvalue="500.0" />
+            </textbox>
+             </group> 
+             <group horizontal="1">
+            <label width="50">Noise</label>
+                <textbox dataBindings="FogParameter.w">
+              <dataBindings minvalue="0.0f" maxvalue="1.0" />
+            </textbox>
+             </group> 
+        </group>       
+    </ui>
+</materialdescriptor>

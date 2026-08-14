@@ -1,0 +1,133 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2ImpactDecal" displayname="WD2ImpactDecal" showinui="1" id="#(0x294703c8, 0x52e87b8f)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="1" />
+
+    <parameter name="TwoSided" type="bool" />
+    <parameter name="BlendingType" type="int" defaultvalue="1" />
+  	<parameter name="Soft" type="bool" />
+
+    <parameter name="ParallaxEnabled" type="bool" defaultvalue="0" />
+    <parameter name="ParallaxHeightAndOffset" type="float2" defaultvalue="0.1,0" />
+
+    <parameter name="DiffuseTexture1" type="sampler2D" tilingName="DiffuseTextureTiling1" maxdisplayname="Base texture 1" />
+    <parameter name="DiffuseTextureTiling1" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseTexture1State" type="samplerState" defaultvalue="ColorBlackTransparentBorder" />
+
+    <parameter name="MaskTexture1" type="sampler2D" />
+    <parameter name="MaskTexture1State" type="samplerState" defaultvalue="ColorClamp" />
+
+  <parameter name="NormalTexture1" type="sampler2D" />
+    <parameter name="NormalTexture1State" type="samplerState" defaultvalue="NormalClamp" />
+
+    <parameter name="FadeEnabled" type="bool" defaultvalue="1" />
+    <parameter name="Lifetime" type="float3" defaultvalue="15,0,0" />
+
+    <parameterprovider parametersfilename="WD2ImpactDecal.fx">
+        <parameter name="ParallaxEnabled" />
+        <parameter name="ParallaxHeightAndOffset" />
+    
+        <parameter name="DiffuseTexture1" />
+        <parameter name="DiffuseTextureTiling1" />
+        <parameter name="DiffuseTexture1State" />
+
+        <parameter name="NormalTexture1" />
+        <parameter name="NormalTexture1State" />
+
+        <parameter name="MaskTexture1" />
+        <parameter name="MaskTexture1State" />
+
+        <parameter name="FadeEnabled" />
+        <parameter name="Lifetime" />
+    </parameterprovider>
+    
+    <ui defaultFilePath="graphics/_Texture/">
+        <xi:include href="UI/DataClasses.xml" />
+        <group horizontal="1" label="Settings">
+            <checkbox label="Two sided" dataBindings="TwoSided" />
+            <checkbox label="Soft" dataBindings="Soft" />
+            <group>
+                <label>Blending type</label>
+                <combobox dataBindings="BlendingType">
+                    <comboboxitem value="1">Alpha</comboboxitem>
+					<comboboxitem value="7">Multiply</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+
+        <group horizontal="0" label="Base Color">
+          <group horizontal="1">
+            <button dataBindings="DiffuseTexture1" fill="1" />
+            <group>
+              <textbox dataBindings="DiffuseTextureTiling1.x">
+                <dataBindings class="Tiling" />
+              </textbox>
+              <textbox dataBindings="DiffuseTextureTiling1.y">
+                <dataBindings class="Tiling" />
+              </textbox>
+            </group>
+            <combobox dataBindings="DiffuseTexture1State">
+              <comboboxitem value="ColorBlackTransparentBorder">Black Transparent Border</comboboxitem>
+              <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+              <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+              <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+              <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+            </combobox>
+          </group>
+        </group>
+
+        <group label="Surface Parameters" horizontal="1">
+          <group horizontal="1">
+            <button dataBindings="MaskTexture1" fill="1" />
+            <combobox dataBindings="MaskTexture1State">
+              <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+              <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+            </combobox>
+          </group>
+        </group>
+
+        <group horizontal="1" label="Normal">
+          <group horizontal="1">
+            <button dataBindings="NormalTexture1" fill="1" />
+            <combobox dataBindings="NormalTexture1State">
+              <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+              <comboboxitem value="NormalClamp">Clamp</comboboxitem>
+            </combobox>
+          </group>
+        </group>
+
+        <group horizontal="1" label="Parallax">
+            <checkbox label="Enabled" dataBindings="ParallaxEnabled" />
+            <group>
+                <group horizontal="1">
+                    <label>Height</label>
+                    <textbox dataBindings="ParallaxHeightAndOffset.x" />
+                </group>
+                <group horizontal="1">
+                    <label>Offset</label>
+                    <textbox dataBindings="ParallaxHeightAndOffset.y" />
+                </group>
+            </group>
+        </group>
+
+      <group horizontal="0" label="Lifetime (seconds)">
+          <label color="FF0000">Effective total duration is lifetime + fade out</label>
+          <label color="FF0000">Fade-in is part of lifetime</label>
+
+          <checkbox label="Fade Enabled" dataBindings="FadeEnabled" />
+          <group horizontal="1" >
+              <label>Lifetime</label>
+              <textbox dataBindings="Lifetime.x" >
+                  <dataBindings minvalue="0.0" />
+              </textbox>
+              <label>Fade in duration</label>
+              <textbox dataBindings="Lifetime.y">
+                  <dataBindings minvalue="0.0" />
+              </textbox>
+              <label>Fade out duration</label>
+              <textbox dataBindings="Lifetime.z">
+                  <dataBindings minvalue="0.0" />
+              </textbox>
+          </group>
+      </group>
+    </ui>
+</materialdescriptor>

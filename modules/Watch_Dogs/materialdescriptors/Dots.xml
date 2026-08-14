@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor name="Dots" displayname="Dots" showinui="1" id="#(0x99c0b9c7, 0x99fa71b0)" deprecated="1" >
+    <geometryInputs normal="0" tangent="0" binormal="0" color="0" uvChannels="0" />
+
+    <parameterprovider parametersfilename="Mesh_Dots.fx">
+    </parameterprovider>    
+    <ui>
+    </ui>
+    
+</materialdescriptor>

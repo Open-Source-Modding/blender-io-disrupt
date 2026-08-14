@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="TerrainLayer" displayname="TerrainLayer" showinui="1" id="#(0x254f31d, 0x409a2833)">
+  <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="1" />
+  <!-- BaseColor -->
+  <parameter name="DiffuseTexture1" type="sampler2D" maxdisplayname="Base texture 1" optional="0" />
+  <parameter name="DiffuseTextureTiling" type="float2" defaultvalue="1,1" />
+
+    <!-- Mul2X RGB -->
+  <!-- SurfaceParams -->
+  <parameter name="MaskTexture1" type="sampler2D" maxdisplayname="Mask texture" optional="0" />
+  <parameter name="MaskTiling" type="float2" defaultvalue="1,1" />
+  <parameter name="MaskChannelsContent" type="float4" defaultvalue="0,0,0,0" />
+  <parameter name="MaskParameters" type="float4" defaultvalue="0.5,0.5,0,1" />
+  <parameter name="WetSurfaceTypeIndex" type="int" defaultvalue="0" />
+
+    <!-- Normal -->
+  <parameter name="NormalTexture1" type="sampler2D" maxdisplayname="Normal texture" normalmap="1" />
+  <parameter name="NormalTiling" type="float2" defaultvalue="1,1" />
+  <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+
+  <parameter name="DetailedSandLayer" type="bool" defaultvalue="0"/>
+  <parameter name="SandLevel" type="float" defaultvalue="0.65" />
+  <parameter name="SandWaterTransition" type="float" defaultvalue="0.54" />
+  <parameter name="UnderWaterSandTransition" type="float" defaultvalue="0.3" />
+  <parameter name="NormalMapTransition" type="float" defaultvalue="0.95" />
+  <parameter name="NormalMapAttenuation" type="float" defaultvalue="0.35" />
+
+  <parameterprovider parametersfilename="TerrainLayer.fx">
+    <parameter name="DiffuseTexture1" />
+    <parameter name="DiffuseTextureTiling" />
+    <parameter name="NormalTexture1" />
+    <parameter name="NormalTiling" />
+    <parameter name="NormalIntensity" />
+    <parameter name="MaskTexture1" />
+    <parameter name="MaskTiling" />
+    <parameter name="MaskChannelsContent" />
+    <parameter name="MaskParameters" />
+    <parameter name="DetailedSandLayer" />
+    <parameter name="SandLevel" />
+    <parameter name="SandWaterTransition" />
+    <parameter name="UnderWaterSandTransition" />
+    <parameter name="NormalMapTransition" />
+    <parameter name="NormalMapAttenuation" />
+  </parameterprovider>
+  <ui defaultFilePath="graphics/_Texture/">
+    <xi:include href="UI/DataClasses.xml" />
+    <!-- Base Color -->
+    <group label="Base Color">
+      <group horizontal="1">
+        <button dataBindings="DiffuseTexture1" fill="1" />
+        <group>
+          <textbox dataBindings="DiffuseTextureTiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="DiffuseTextureTiling.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+      </group>
+    </group>
+      
+    <!-- SurfaceParams -->
+    <group label="Surface Parameters">
+      <group horizontal="1">
+        <button dataBindings="MaskTexture1" fill="1" />
+        <group>
+          <textbox dataBindings="MaskTiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="MaskTiling.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+      </group>
+      <group vertical="1">
+        <group horizontal="1">
+          <label alignright="1" width="40" color="BB0000">R:</label>
+          <group horizontal="1" enable_if="MaskTexture1==1">
+            <combobox dataBindings="MaskChannelsContent.x">
+              <comboboxitem value="1">Reflectance</comboboxitem>
+              <comboboxitem value="0">None</comboboxitem>
+            </combobox>
+          </group>
+          <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelsContent.x==0">
+            <label alignright="1" width="90">Reflectance</label>
+            <label> 0</label>
+            <slider dataBindings="MaskParameters.x">
+                <!-- With the slider, don't allow to go below what would give 0.02 reflectance: (0.25 * 0.08) = 0.02 -->
+                <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+            </slider>
+            <label>1  </label>
+            <textbox databindings="MaskParameters.x">
+                <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+            </textbox>
+          </group>
+        </group>
+        <group horizontal="1">
+          <label alignright="1" width="40" color="00BB00">G:</label>
+          <group horizontal="1" enable_if="MaskTexture1==1">
+            <combobox dataBindings="MaskChannelsContent.y">
+              <comboboxitem value="1">Roughness</comboboxitem>
+              <comboboxitem value="0">None</comboboxitem>
+            </combobox>
+          </group>
+          <group horizontal="1" enable_if="MaskTexture1==0 || MaskChannelsContent.y==0">
+            <label alignright="1" width="90">Roughness</label>
+            <label> 0</label>
+            <slider dataBindings="MaskParameters.y">
+              <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+            </slider>
+            <label>1  </label>
+            <textbox databindings="MaskParameters.y">
+              <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+            </textbox>
+          </group>
+        </group>
+        <group horizontal="1">
+          <label alignright="1" width="40" color="0000BB">B:</label>
+          <label>Weight mask</label>
+        </group>
+        <group horizontal="1">
+          <label alignright="1" width="40" color="404040">A:</label>
+          <label>Not used</label>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>Wet Surface Type: </label>
+        <combobox dataBindings="WetSurfaceTypeIndex">
+          <comboboxitem value="0">Default</comboboxitem>
+          <comboboxitem value="1">Low porosity</comboboxitem>
+          <comboboxitem value="3">Medium porosity</comboboxitem>
+          <comboboxitem value="2">High porosity</comboboxitem>
+        </combobox>
+      </group>
+    </group>
+    <!-- NormalMap -->
+    <group label="Normal">
+      <group horizontal="1">
+        <button dataBindings="NormalTexture1" fill="1" />
+        <group>
+          <textbox dataBindings="NormalTiling.x">
+            <dataBindings class="Tiling" />
+          </textbox>
+          <textbox dataBindings="NormalTiling.y">
+            <dataBindings class="Tiling" />
+          </textbox>
+        </group>
+      </group>
+      <group horizontal="1">
+        <label>     Intensity:   </label>
+        <textbox databindings="NormalIntensity">
+          <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+        </textbox>
+        <label> 0</label>
+        <slider dataBindings="NormalIntensity">
+          <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+        </slider>
+        <label>2</label>
+      </group>
+    </group>
+
+    <!-- Detailed sands params -->
+    <group>
+      <!-- is detailed sand -->
+      <checkbox label="Is a detailed sand layer" dataBindings="DetailedSandLayer"/>
+      <!-- Threshold between dry sand and wet sand -->
+      <group horizontal="1">
+        <label>     Sand Level:   </label>
+        <textbox databindings="SandLevel">
+          <databindings increment="0.01" minvalue="-5.0" maxvalue="5.0" />
+        </textbox>
+        <label> -5</label>
+        <slider dataBindings="SandLevel">
+          <dataBindings increment="0.01" minvalue="-5.0" maxvalue="5.0" />
+        </slider>
+        <label>5</label>
+      </group>
+      <!-- breadth of the sand to water transition -->
+      <group horizontal="1">
+        <label>     Sand to Water Transition:   </label>
+        <textbox databindings="SandWaterTransition">
+          <databindings increment="0.01" minvalue="0.0" maxvalue="0.99" />
+        </textbox>
+        <label> 0</label>
+        <slider dataBindings="SandWaterTransition">
+          <dataBindings increment="0.01" minvalue="0.0" maxvalue="0.99" />
+        </slider>
+        <label>0.99</label>
+      </group>
+      <!-- breadth of the water to underwater sand transition -->
+      <group horizontal="1">
+        <label>     Water to Sand Transition:   </label>
+        <textbox databindings="UnderWaterSandTransition">
+          <databindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+        </textbox>
+        <label> 0</label>
+        <slider dataBindings="UnderWaterSandTransition">
+          <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+        </slider>
+        <label>1</label>
+      </group>
+      <!-- breath of the band where there is only roughness and the rest where there is roughness and normal -->
+      <group horizontal="1">
+        <label>     Normal Map Transition:   </label>
+        <textbox databindings="NormalMapTransition">
+          <databindings increment="0.01" minvalue="0.7" maxvalue="0.999" />
+        </textbox>
+        <label> 0.7</label>
+        <slider dataBindings="NormalMapTransition">
+          <dataBindings increment="0.01" minvalue="0.7" maxvalue="0.999" />
+        </slider>
+        <label>0.999</label>
+      </group>
+      <!-- attenuation of the water normal on the puddle -->
+      <group horizontal="1">
+        <label>     Normal Map Attenuation:   </label>
+        <textbox databindings="NormalMapAttenuation">
+          <databindings increment="0.01" minvalue="0.0" maxvalue="1" />
+        </textbox>
+        <label> 0</label>
+        <slider dataBindings="NormalMapAttenuation">
+          <dataBindings increment="0.01" minvalue="0.0" maxvalue="1" />
+        </slider>
+        <label>1</label>
+      </group>
+    </group>
+  </ui>
+</materialdescriptor>

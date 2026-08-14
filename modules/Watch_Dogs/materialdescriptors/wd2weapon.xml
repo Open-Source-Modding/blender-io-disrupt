@@ -1,0 +1,530 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2Weapon" displayname="WD2Weapon" showinui="1" id="#(0x32f117e2, 0x494d2e44)">
+    <geometryInputs normal="1" tangent="1" binormal="1" color="1" uvChannels="2" />
+    
+    <!-- BaseColor -->
+    <parameter name="DiffuseTexture" type="sampler2D" tilingName="DiffuseTextureTiling" UvName="DiffuseTextureUV" maxdisplayname="Base texture" optional="0" />
+    <parameter name="DiffuseTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="DiffuseTextureTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="DiffuseTextureUV" type="int" />
+    
+    <!-- Normal -->
+    <parameter name="NormalTexture" type="sampler2D" tilingName="NormalTextureTiling" UvName="NormalTextureUV" maxdisplayname="Normal texture" optional="0" normalmap="0" />
+    <parameter name="NormalTextureState" type="samplerState" defaultvalue="NormalWrap" />
+    <parameter name="NormalTextureTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="NormalTextureUV" type="int" />
+    <parameter name="NormalIntensity" type="float" defaultvalue="1" />
+
+    <!--PatternTexture -->
+    <parameter name="PatternTexture" type="sampler2D" tilingName="PatternTextureTiling" UvName="PatternTextureUV" maxdisplayname="Pattern texture" />
+    <parameter name="PatternTextureState" type="samplerState" defaultvalue="ColorWrap" />
+    <parameter name="PatternTextureTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="PatternTextureUV" type="int" />
+    <parameter name="PatternTextureOffset" type="float2" defaultvalue="0,0" />
+    <parameter name="PatternTextureAngle" type="float" defaultvalue="0" />
+    <parameter name="PatternZone1" type="bool" defaultvalue="1" />
+    <parameter name="PatternZone2" type="bool" defaultvalue="0" />
+    <parameter name="PatternZone3" type="bool" defaultvalue="0" />
+    <parameter name="PatternZone4" type="bool" defaultvalue="0" />
+    <parameter name="PatternUVType" type="int" defaultvalue="0" />
+    <parameter name="PatternSingleSide" type="bool" defaultvalue="0" />
+    <parameter name="PatternSSReverse" type="bool" defaultvalue="0" />
+    <parameter name="PatternSSFalloff" type="float" defaultvalue="1" />
+    <parameter name="PatternChannel" type="int" defaultvalue="4" />
+    <parameter name="PatternColor" type="color3" defaultvalue="1,1,1" />
+
+    <!-- SurfaceParams -->
+    <parameter name="PBR1" type="float3" defaultvalue="0.5,0.5,0" />
+    <parameter name="PBR2" type="float3" defaultvalue="0.5,0.5,0" />
+    <parameter name="PBR3" type="float3" defaultvalue="0.5,0.5,0" />
+    <parameter name="PBR4" type="float3" defaultvalue="0.5,0.5,0" />
+    
+    <!-- Wear -->
+    <parameter name="Wear" type="float" defaultvalue="0" op_x="1-x" />
+    <parameter name="Dirt" type="float" defaultvalue="0" />
+    <parameter name="DirtColor" type="color3" defaultvalue="1,1,1" />
+
+    <!-- Colors -->
+    <parameter name="DiffuseColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor3" type="color3" defaultvalue="1,1,1" />
+    <parameter name="DiffuseColor4" type="color3" defaultvalue="1,1,1" />
+    <parameter name="WearColor1" type="color3" defaultvalue="1,1,1" />
+    <parameter name="WearColor2" type="color3" defaultvalue="1,1,1" />
+    <parameter name="WearColor3" type="color3" defaultvalue="1,1,1" />
+    <parameter name="WearColor4" type="color3" defaultvalue="1,1,1" />
+    
+    <!-- Emissive -->
+    <parameter name="EmissiveSwitch" type="bool" defaultvalue="0" />
+    <parameter name="EmissiveColor" type="color3" defaultvalue="1,1,1" />
+    <parameter name="EmissiveScale" type="float" defaultvalue="0" />
+    <parameter name="EmissiveIntensity" type="float3" defaultvalue="10,10,1" op_z="irradiance"/>
+    
+    <!-- Parameter Provider -->
+    <parameterprovider parametersfilename="Mesh_WD2Weapon.fx">
+        <parameter name="DiffuseTexture" />
+        <parameter name="DiffuseTextureState" />
+        <parameter name="DiffuseTextureTiling" />
+        <parameter name="DiffuseTextureUV" />
+        <parameter name="NormalTexture" />
+        <parameter name="NormalTextureState" />
+        <parameter name="NormalTextureTiling" />
+        <parameter name="NormalTextureUV" />
+        <parameter name="NormalIntensity" />
+        <parameter name="PatternTexture" />
+        <parameter name="PatternTextureState" />
+        <parameter name="PatternTextureTiling" />
+        <parameter name="PatternTextureUV" />
+        <parameter name="PatternTextureOffset" />
+        <parameter name="PatternTextureAngle" />
+        <parameter name="PatternZone1" />
+        <parameter name="PatternZone2" />
+        <parameter name="PatternZone3" />
+        <parameter name="PatternZone4" />
+        <parameter name="PatternUVType" />
+        <parameter name="PatternSingleSide" />
+        <parameter name="PatternSSReverse" />
+        <parameter name="PatternSSFalloff" />
+        <parameter name="PatternChannel" />
+        <parameter name="PatternColor" />
+        <parameter name="PBR1" />
+        <parameter name="PBR2" />
+        <parameter name="PBR3" />
+        <parameter name="PBR4" />
+        <parameter name="Wear" />
+        <parameter name="Dirt" />
+        <parameter name="DirtColor" />
+        <parameter name="DiffuseColor1" />
+        <parameter name="DiffuseColor2" />
+        <parameter name="DiffuseColor3" />
+        <parameter name="DiffuseColor4" />
+        <parameter name="WearColor1" />
+        <parameter name="WearColor2" />
+        <parameter name="WearColor3" />
+        <parameter name="WearColor4" />
+        <parameter name="EmissiveSwitch" />
+        <parameter name="EmissiveColor" />
+        <parameter name="EmissiveScale" />
+        <parameter name="EmissiveIntensity" />
+    </parameterprovider>
+
+    <!-- Conditional Shader Options -->
+    <shaderoptions>
+        <shaderoption name="PATTERNMAP">
+            <condition parameter="PatternTexture" />
+        </shaderoption>
+        <shaderoption name="GBUFFER_EMISSIVE">
+            <condition parameter="EmissiveSwitch" />
+        </shaderoption>
+    </shaderoptions>
+    
+    <!-- User Interface Definition -->
+    <ui defaultFilePath="graphics/_Texture/">
+        <xi:include href="UI/DataClasses.xml" />
+
+        <!-- Vertex Color -->
+        <group horizontal="0" label="Vertex Color">
+            <group horizontal="1">
+                <label color="BB0000">R:</label>
+                <label color="000000">Barrel Heat   //</label>
+                <label color="00BB00">G:</label>
+                <label color="000000">Dirt Mask   //</label>
+                <label color="0000AA">B:</label>
+                <label color="000000">Zone Mask   //</label>
+                <label color="000000">A:</label>
+                <label color="808080">(unused)   //</label>
+                <label color="000000">Illumination:</label>
+                <label color="000000">Specular Occlusion</label>
+            </group>
+        </group>
+        <label /> <!-- Labels like that are used to add "air" to the UI -->
+        
+        <!-- Base Color -->
+        <group horizontal="0" label="Mask">
+            <group horizontal="1">
+                <label color="BB0000">R:</label>
+                <label color="000000">Texture   //</label>
+                <label color="00BB00">G:</label>
+                <label color="000000">Wear Mask   //</label>
+                <label color="0000AA">B:</label>
+                <label color="404040">(unused)   //</label>
+                <label color="000000">A:</label>
+                <label color="404040">(unused)</label>
+            </group>
+            <group horizontal="1">
+                <button dataBindings="DiffuseTexture" fill="1" />
+                <textbox dataBindings="DiffuseTextureUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="DiffuseTextureTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="DiffuseTextureTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="DiffuseTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+        </group>
+        <label />
+
+        <!-- NormalMap -->
+        <group label="Normal">
+            <group horizontal="1">
+                <button dataBindings="NormalTexture" fill="1" />
+                <textbox dataBindings="NormalTextureUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="NormalTextureTiling.x">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                    <textbox dataBindings="NormalTextureTiling.y">
+                        <dataBindings class="Tiling" />
+                    </textbox>
+                </group>
+                <combobox dataBindings="NormalTextureState">
+                    <comboboxitem value="NormalWrap">Wrap</comboboxitem>
+                    <comboboxitem value="NormalWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                </combobox>
+            </group>
+            <label />
+            <group horizontal="1">
+                <label alignright="0">Normal Intensity:</label>
+                <label alignright="1" width="39">0</label>
+                <slider dataBindings="NormalIntensity">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="2.0" />
+                </slider>
+                <label width="20">2</label>
+                <textbox databindings="NormalIntensity">
+                    <databindings increment="0.01" minvalue="0" maxvalue="2.0" />
+                </textbox>
+            </group>
+        </group>
+        <label />
+
+        <!-- Pattern -->
+        <group horizontal="0" label="Pattern">
+            <group horizontal="1">
+                <button dataBindings="PatternTexture" fill="1" />
+                <textbox dataBindings="PatternTextureUV">
+                    <dataBindings class="UVChannel" />
+                </textbox>
+                <group>
+                    <textbox dataBindings="PatternTextureTiling.x">
+                        <!-- <dataBindings class="Tiling" /> Disabled in order to support negative scales -->
+                    </textbox>
+                    <textbox dataBindings="PatternTextureTiling.y">
+                        <!-- <dataBindings class="Tiling" /> Disabled in order to support negative scales -->
+                    </textbox>
+                </group>
+                <combobox dataBindings="PatternTextureState">
+                    <comboboxitem value="ColorWrap">Wrap</comboboxitem>
+                    <comboboxitem value="ColorWrapAniso">Wrap Aniso (Expensive)</comboboxitem>
+                    <comboboxitem value="ColorClamp">Clamp</comboboxitem>
+                    <comboboxitem value="ColorClampAniso">Clamp Aniso (Expensive)</comboboxitem>
+                    <comboboxitem value="ColorMirror">Mirror</comboboxitem>
+                    <comboboxitem value="ColorBlackTransparentBorder">Transparent Border - Black</comboboxitem>
+                    <comboboxitem value="ColorWhiteTransparentBorder">Deprecated - White Transparent Border</comboboxitem>
+                </combobox>
+            </group>
+            <group show_if="PatternTexture">
+                <label />
+            </group>
+            <group horizontal="1" show_if="PatternTexture">
+                <label width="75">Channel:</label>
+                <combobox dataBindings="PatternChannel">
+                    <comboboxitem value="0">Red</comboboxitem>
+                    <comboboxitem value="1">Green</comboboxitem>
+                    <comboboxitem value="2">Blue</comboboxitem>
+                    <comboboxitem value="3">RGB</comboboxitem>
+                </combobox>
+                <label alignright="1" width="50">Color:</label>
+                <label width="12"/>
+                <button dataBindings="PatternColor" />
+            </group>
+            <group horizontal="1" show_if="PatternTexture">
+                <label width="75">UV Type:</label>
+                <combobox dataBindings="PatternUVType">
+                    <comboboxitem value="0">From Mesh</comboboxitem>
+                    <comboboxitem value="1">Planar - X</comboboxitem>
+                </combobox>
+                <label alignright="1" width="50">Zone:</label>
+                <label alignright="1" width="15" >1</label>
+                <checkbox label=" " dataBindings="PatternZone1" />
+                <label alignright="1" width="10" >2</label>
+                <checkbox label=" " dataBindings="PatternZone2" />
+                <label alignright="1" width="10" >3</label>
+                <checkbox label=" " dataBindings="PatternZone3" />
+                <label alignright="1" width="10" >4</label>
+                <checkbox label=" " dataBindings="PatternZone4" />
+            </group>
+            <group horizontal="1" show_if="PatternTexture">
+                <label width="75">UV Offset:</label>
+                <textbox dataBindings="PatternTextureOffset.x" />
+                <textbox dataBindings="PatternTextureOffset.y" />
+                <label alignright="1" width="60" >Angle:</label>
+                <textbox dataBindings="PatternTextureAngle">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="6.283185307179586476925286766559" displayvaluemul="57.295779513082320876798154814092" />
+                </textbox>
+
+            </group>
+            <group horizontal="1" show_if="PatternTexture">
+                <checkbox label="Single Side" dataBindings="PatternSingleSide" />
+                <group horizontal="1" enable_if="PatternSingleSide">
+                    <checkbox label="Reverse" dataBindings="PatternSSReverse" />
+                    <label alignright="1" width="60">Falloff:</label>
+                    <textbox databindings="PatternSSFalloff">
+                        <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                    </textbox>
+                </group>
+            </group>
+        </group>
+        <label />
+        
+        <!-- Wear and Dirt -->
+        <group horizontal="0" label="Wear and Dirt">
+            <group horizontal="1">
+                <label>Wear:</label>
+                <label width="96" alignright="1">0</label>
+                <slider dataBindings="Wear">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="Wear">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="40">Dirt:</label>
+                <button dataBindings="DirtColor" />
+                <label width="60" alignright="1">0</label>
+                <slider dataBindings="Dirt">
+                    <dataBindings increment="0.04" minvalue="0" maxvalue="4.0" displayvaluemul="0.25" /> <!-- Display 0 to 1 but send to shader 0 to 4 -->
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="Dirt">
+                    <dataBindings increment="0.04" minvalue="0" maxvalue="4.0" displayvaluemul="0.25" />
+                </textbox>
+            </group>
+        </group>
+        <label />
+        
+        <!-- Emissive -->
+        <group horizontal="0" label="Emissive" complexity="1"> <!-- What is complexity? -->
+            <checkbox label="Enable" dataBindings="EmissiveSwitch" />
+            <group horizontal="1" show_if="EmissiveSwitch">
+                <label width="40">Color:</label>
+                <button dataBindings="EmissiveColor" />
+                <group horizontal="1">
+                    <label width="60" alignright="1">0</label>
+                    <slider dataBindings="EmissiveScale">
+                        <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                    </slider>
+                    <label width="20">1</label>
+                    <textbox databindings="EmissiveScale">
+                        <databindings increment="0.01" minvalue="0" maxvalue="1.0" />
+                    </textbox>
+                </group>
+            </group>
+            <group show_if="EmissiveSwitch">
+                <label />
+            </group>
+            <group horizontal="1" show_if="EmissiveSwitch">
+                <group horizontal="1" label="Irradiance">
+                    <group horizontal="1">
+                        <label>Power:</label>
+                        <textbox dataBindings="EmissiveIntensity.x">
+                            <dataBindings maxvalue="100000000" />
+                        </textbox>
+                    </group>
+                    <group horizontal="1">
+                        <label alignright="1" width="80">Area cm2:</label>
+                        <textbox dataBindings="EmissiveIntensity.y">
+                            <dataBindings maxvalue="100000000" />
+                        </textbox>
+                    </group>
+                </group>
+            </group>
+        </group>
+        <label />
+        
+        <!-- PBR -->
+        <group horizontal="0" label="Zone 1 - VC Blue 0%">
+            <group horizontal="1">
+                <label width="40">Color:</label>
+                <button dataBindings="DiffuseColor1" />
+                <label width="50" alignright="1">Wear:</label>
+                <button dataBindings="WearColor1" />
+            </group>
+            <group horizontal="1" enable_if="PBR1.z&lt;1">
+                <label width="80">Reflectance:</label>
+                <label width="50" alignright="1">0.25</label>
+                <slider dataBindings="PBR1.x">
+                    <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR1.x">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" /> <!-- Allow going to 0 from the textbox -->
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Roughness:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="PBR1.y">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR1.y">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Metalness:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="PBR1.z">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR1.z">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+        <label />
+        
+        <group horizontal="0" label="Zone 2 - VC Blue 40%">
+            <group horizontal="1">
+                <label width="40">Color:</label>
+                <button dataBindings="DiffuseColor2" />
+                <label width="50" alignright="1">Wear:</label>
+                <button dataBindings="WearColor2" />
+            </group>
+            <group horizontal="1" enable_if="PBR2.z&lt;1">
+                <label width="80">Reflectance:</label>
+                <label width="50" alignright="1">0.25</label>
+                <slider dataBindings="PBR2.x">
+                    <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR2.x">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" /> <!-- Allow going to 0 from the textbox -->
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Roughness:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="PBR2.y">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR2.y">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Metalness:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="PBR2.z">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR2.z">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+        <label />
+        
+        <group horizontal="0" label="Zone 3 - VC Blue 60%">
+            <group horizontal="1">
+                <label width="40">Color:</label>
+                <button dataBindings="DiffuseColor3" />
+                <label width="50" alignright="1">Wear:</label>
+                <button dataBindings="WearColor3" />
+            </group>
+            <group horizontal="1" enable_if="PBR3.z&lt;1">
+                <label width="80">Reflectance:</label>
+                <label width="50" alignright="1">0.25</label>
+                <slider dataBindings="PBR3.x">
+                    <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR3.x">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" /> <!-- Allow going to 0 from the textbox -->
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Roughness:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="PBR3.y">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR3.y">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Metalness:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="PBR3.z">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR3.z">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+        <label />
+        
+        <group horizontal="0" label="Zone 4 - VC Blue 80%">
+            <group horizontal="1">
+                <label width="40">Color:</label>
+                <button dataBindings="DiffuseColor4" />
+                <label width="50" alignright="1">Wear:</label>
+                <button dataBindings="WearColor4" />
+            </group>
+            <group horizontal="1" enable_if="PBR4.z&lt;1">
+                <label width="80">Reflectance:</label>
+                <label width="50" alignright="1">0.25</label>
+                <slider dataBindings="PBR4.x">
+                    <dataBindings increment="0.01" minvalue="0.25" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR4.x">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1.0" /> <!-- Allow going to 0 from the textbox -->
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Roughness:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="PBR4.y">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR4.y">
+                    <dataBindings increment="0.01" minvalue="0.001" maxvalue="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1">
+                <label width="80">Metalness:</label>
+                <label width="50" alignright="1">0</label>
+                <slider dataBindings="PBR4.z">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </slider>
+                <label width="20">1</label>
+                <textbox databindings="PBR4.z">
+                    <dataBindings increment="0.01" minvalue="0.0" maxvalue="1.0" />
+                </textbox>
+            </group>
+        </group>
+        <label />
+        
+    </ui>
+</materialdescriptor>

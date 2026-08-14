@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<materialdescriptor xmlns:xi="#" name="WD2Clouds" pickingid="0" showinui="1" id="#(0x1e555616, 0x15231ae1)">
+            
+    <parameter name="HorizonTexture" type="sampler2D" tilingName="HorizonTextureTiling"  />
+    <parameter name="HorizonTextureTiling" type="float2" defaultvalue="1,1" />
+    <parameter name="HorizonTextureIntensity" type="float2" defaultvalue="1,1" />
+    <parameter name="HorizonTileIndex" type="int" defaultvalue="0" />
+    <parameter name="HorizonTileCount" type="int" defaultvalue="1" />
+    <parameter name="Scattering" type="float" defaultvalue="0.0223089" />
+    <parameter name="Extinction" type="float" defaultvalue="0.0065667" />
+    <parameter name="Phase" type="float" defaultvalue="0.8" />
+    <parameter name="ShadowCoef" type="float" defaultvalue="0.25" />
+    <parameter name="HorizonTextureGamma" type="float" defaultvalue="1.0" />
+
+    <parameterprovider parametersfilename="Clouds.fx">
+        <parameter name="HorizonTextureTiling" />
+        <parameter name="HorizonTexture"/>
+        <parameter name="HorizonTextureIntensity" />
+        <parameter name="HorizonTileIndex" />
+        <parameter name="HorizonTileCount" />
+        <parameter name="HorizonTextureGamma" />
+        <parameter name="Scattering" />
+        <parameter name="Extinction" />
+        <parameter name="Phase" />
+        <parameter name="ShadowCoef" />        
+    </parameterprovider>
+   
+    <ui defaultFilePath="graphics/_Texture/" >
+        
+        <xi:include href="UI/DataClasses.xml" />
+
+        <group label="Globlal parameters" horizontal="0">
+
+            <group horizontal="1" >
+                <label alignright="0" width="140">Phase function</label>
+                <textbox dataBindings="Phase">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1" displayvaluemul="1.0" />
+                </textbox>
+            </group>
+
+            <group horizontal="1" >
+                <label alignright="0" width="140">Scattering</label>
+                <textbox dataBindings="Scattering">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1" displayvaluemul="1.0" />
+                </textbox>
+            </group>
+            <group horizontal="1" >
+                <label alignright="0" width="140">Extinction</label>
+                <textbox dataBindings="Extinction">
+                    <dataBindings increment="0.001" minvalue="0.0" maxvalue="1" displayvaluemul="1.0" />
+                </textbox>
+            </group>
+
+            <group horizontal="1">
+                <label>Shadow</label>
+                <textbox dataBindings="ShadowCoef">
+                    <dataBindings increment="0.01" minvalue="0" maxvalue="1" displayvaluemul="1.0" />
+                </textbox>
+            </group>
+        </group>
+    
+        <group label="Horizon texture" horizontal="0">
+            <group horizontal="0">
+                <button dataBindings="HorizonTexture" fill="1" />
+                
+                <group>
+
+                    <group horizontal="1">
+                        <label>Intensity</label>
+                        <textbox dataBindings="HorizonTextureIntensity">
+                            <dataBindings increment="0.001" minvalue="0.0" maxvalue="1" displayvaluemul="1.0" />
+                        </textbox>
+                    </group>
+
+                    <group horizontal="1">
+                        <label>Gamma</label>
+                        <textbox dataBindings="HorizonTextureGamma">
+                            <dataBindings increment="0.01" minvalue="0.01" maxvalue="10" displayvaluemul="1.0" />
+                        </textbox>
+                    </group>
+                    
+                    <group horizontal="1">
+                        <label>Tiling U</label>
+                        <textbox dataBindings="HorizonTextureTiling.x">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+                    
+                    <group horizontal="1">
+                        <label>Scaling V</label>
+                        <textbox dataBindings="HorizonTextureTiling.y">
+                            <dataBindings class="Tiling" />
+                        </textbox>
+                    </group>
+
+                    <group horizontal="1">
+                        <label>Vertical tile index</label>
+                        <textbox dataBindings="HorizonTileIndex">
+                            <dataBindings increment="1" minvalue="0" maxvalue="16" displayvaluemul="1.0" />
+                        </textbox>
+                    </group>
+                    
+                    <group horizontal="1">
+                        <label>Vertical tile count</label>
+                        <textbox dataBindings="HorizonTileCount">
+                            <dataBindings increment="1" minvalue="1" maxvalue="16" displayvaluemul="1.0" />
+                        </textbox>
+                    </group>
+
+                </group>
+            </group>
+        
+        </group>
+
+    </ui>
+        
+</materialdescriptor>
