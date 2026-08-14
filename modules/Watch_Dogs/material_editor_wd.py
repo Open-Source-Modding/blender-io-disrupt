@@ -4,10 +4,14 @@ Maps .material.bin (TAM v7) parameters to standard Blender Principled BSDF
 materials for rendering.  Game-specific parameters (texture animation, vertex
 animation, channel packing, etc.) are preserved as material custom properties
 for export round-trip fidelity.
+
+Material descriptor XMLs defining the full parameter set per shader family
+are kept at:
+  https://github.com/open-source-modding/open-source-modding.github.io
+under reference/watch_dogs/materialdescriptors/
 """
 
 import os
-import xml.etree.ElementTree as ET
 
 try:
     import bpy
@@ -15,8 +19,6 @@ except ImportError:
     bpy = None
 
 from .material_bin import read_material_bin, write_material_bin
-
-_DESCRIPTOR_DIR = os.path.join(os.path.dirname(__file__), 'materialdescriptors')
 
 # ── Known direct PBR mappings ─────────────────────────────────────────────
 _PBR_MAP = {
@@ -42,24 +44,6 @@ _TEXTURE_PARAMS = {
     'AnimTexture1',
     'LayerMaskTexture1',
 }
-
-
-def load_descriptors():
-    descriptors = {}
-    if not os.path.isdir(_DESCRIPTOR_DIR):
-        return descriptors
-    for fn in sorted(os.listdir(_DESCRIPTOR_DIR)):
-        if not fn.endswith('.xml'):
-            continue
-        path = os.path.join(_DESCRIPTOR_DIR, fn)
-        try:
-            tree = ET.parse(path)
-            root = tree.getroot()
-            name = root.get('name', fn.replace('.xml', ''))
-            descriptors[name] = root
-        except Exception:
-            pass
-    return descriptors
 
 
 def material_from_bin(bin_path, assign_to_obj=None):
