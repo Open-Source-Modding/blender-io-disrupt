@@ -12,11 +12,11 @@ This file only assembles the pieces and registers them.
 """
 
 bl_info = {
-    "name": "Dunia Engine XBG Blender Importer",
+    "name": "Ubisoft Dunia/Disrupt Engine XBG Import/Export",
     "author": "Selene Bray-Hernandez, Quiet Joker, Jasper_Zebra",
-    "version": (3, 1, 0),
+    "version": (3, 1, 1),
     "blender": (5, 0, 0),
-    "location": "View3D > Sidebar > XBG Import",
+    "location": "View3D > Sidebar > XBG Import / File > Import",
     "description": "Import/edit/re-export models from Avatar: The Game, "
                    "Far Cry 1/2/3/4/5/Primal/Instincts and Watch Dogs 1/2/Legion",
     "category": "Import-Export",
