@@ -404,11 +404,6 @@ def parse_wdl_xbg(path):
             if tag_count == 0:
                 r.u32()
 
-            # Vehicle files (_unk_count != 0) have an extra u32 between
-            # the tag section and the next material's hash/string data.
-            if _unk_count != 0 and mi < mat_count - 1:
-                r.u32()
-
         for _ in range(tag_count):
             r.u32()
             r.str()
