@@ -170,4 +170,4 @@ The `0x18` field can also encode a link to a `_high` mip variant — the game ra
 
 Test by installing as a Blender addon (Edit → Preferences → Add-ons → Install, pick the repository root as a .zip). There is no headless test suite, no CI, no lint/typecheck config — this is a pure Blender Python addon.
 
-Branches: `main` (stable), `Dev` (work-in-progress). Remote: `git@github.com:Selene0623/blender-io-xbg.git`.
+Branches: `main` (stable). Remote: `git@github.com:Open-Source-Modding/blender-io-xbg.git`.
