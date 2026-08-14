@@ -5,7 +5,7 @@ Blender 5.0+ addon for importing, editing, and re-exporting 3D models from ten U
 ## Structure
 
 ```
-__init__.py         # Entry point, bl_info (v3.0.0, Blender 5.0.0+), register/unregister
+__init__.py         # Entry point, bl_info (v3.1.0, Blender 5.0.0+), register/unregister
 modules/
   Core/             # Shared settings, preferences, debug/verbose logging
   UI/               # Game-picker root panel + per-game panel files

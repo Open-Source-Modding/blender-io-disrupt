@@ -13,8 +13,8 @@ This file only assembles the pieces and registers them.
 
 bl_info = {
     "name": "Dunia Engine XBG Blender Importer",
-    "author": "Quiet Joker, Jasper_Zebra",
-    "version": (3, 0, 0),
+    "author": "Selene Bray-Hernandez, Quiet Joker, Jasper_Zebra",
+    "version": (3, 1, 0),
     "blender": (5, 0, 0),
     "location": "View3D > Sidebar > XBG Import",
     "description": "Import/edit/re-export models from Avatar: The Game, "
