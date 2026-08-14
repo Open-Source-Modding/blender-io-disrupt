@@ -388,7 +388,7 @@ def parse_wdl_xbg(path):
 
         materials = []
         tag_count = 0
-        for mi in range(mat_count):
+        for _ in range(mat_count):
             mat_hash = r.u32()
             mat_path = r.str()
             r.align(4)
@@ -405,15 +405,15 @@ def parse_wdl_xbg(path):
             if tag_count == 0:
                 r.u32()
 
-            # Vehicle files (_unk_count != 0) have an extra u32 between
-            # the tag section and the next material's hash/string data.
-            if _unk_count != 0 and mi < mat_count - 1:
-                r.u32()
-
         for _ in range(tag_count):
             r.u32()
             r.str()
             r.align(4)
+            r.u32()
+
+        # Vehicle files (_unk_count != 0) have an extra u32 between
+        # the tag section and the next material's hash/string data.
+        if _unk_count != 0 and mi < mat_count - 1:
             r.u32()
 
         r.align(4)
