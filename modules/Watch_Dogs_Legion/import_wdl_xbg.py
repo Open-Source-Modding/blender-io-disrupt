@@ -376,15 +376,14 @@ def parse_wdl_xbg(path):
         mat_count = r.u32()
         r.u32()
 
-        if mat_count > 200:
-            _mark = _buf.find(b'graphics\\_materials\\')
-            if _mark > 20:
-                _scan_mc = struct.unpack_from('<I', _buf, _mark - 16)[0]
-                if 0 < _scan_mc < 200:
-                    vlog.log(f"  [wdl-xbg] mat_count override: {mat_count} → {_scan_mc}")
-                    mat_count = _scan_mc
-                    r.seek(_pos_lod_end + _mark - 12)
-                    r.u32()
+        _mark = _buf.find(b'graphics\\_materials\\')
+        if _mark > 20:
+            _scan_mc = struct.unpack_from('<I', _buf, _mark - 16)[0]
+            if 0 < _scan_mc < 200 and (_scan_mc != mat_count or mat_count > 100):
+                vlog.log(f"  [wdl-xbg] mat_count override: {mat_count} → {_scan_mc}")
+                mat_count = _scan_mc
+                r.seek(_pos_lod_end + _mark - 12)
+                r.u32()
 
         materials = []
         tag_count = 0
