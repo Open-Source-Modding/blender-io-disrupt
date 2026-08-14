@@ -150,7 +150,7 @@ from .modules.Watch_Dogs.operators_wd import (
     XBG_OT_ImportWD, XBG_OT_ImportWDMab, XBG_OT_InjectWD,
     XBG_OT_WDPeekLODs, XBG_OT_WDSyncNormals,
     XBG_OT_ImportWDSkeleton, XBG_OT_ImportWDHkx)
-from .modules.Watch_Dogs_2.operators_wd2 import XBG_OT_ImportWD2, XBG_OT_ImportWD2XBG, XBG_OT_ExportWD2
+from .modules.Watch_Dogs_2.operators_wd2 import XBG_OT_ImportWD2, XBG_OT_ImportWD2XBG, XBG_OT_ExportWD2, XBG_OT_ImportWD2GLMFull
 from .modules.Watch_Dogs_Legion.operators_wdl import (
     XBG_OT_ImportWDL, XBG_OT_InjectWDL, XBG_OT_ImportWDLSkeleton,
     XBG_OT_ImportWDLMab)
@@ -333,6 +333,7 @@ classes = (
     # Watch Dogs 2 (import-only, own folder)
     XBG_OT_ImportWD2,
     XBG_OT_ExportWD2,
+    XBG_OT_ImportWD2GLMFull,
     # Watch Dogs Legion
     XBG_OT_ImportWDL,
     XBG_OT_InjectWDL,
@@ -403,6 +404,7 @@ def menu_func_import(self, ctx):
     for op_id, label in [
         ("xbg.import_wdl_model", "Watch Dogs Legion Model (.xbg)"),
         ("xbg.import_wdl_skeleton", "Watch Dogs Legion Skeleton (.skel)"),
+        ("xbg.import_wd2_glm_full", "Watch Dogs 2 Model - Full (.glm)"),
     ]:
         if not sep:
             self.layout.separator()

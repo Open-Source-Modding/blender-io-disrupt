@@ -107,6 +107,71 @@ class XBG_OT_ImportWD2XBG(bpy.types.Operator):
         return {'FINISHED'} if ok else {'CANCELLED'}
 
 
+class XBG_OT_ImportWD2GLMFull(bpy.types.Operator):
+    """Import a WD2 .glm with the full importer (skeleton, split parts, LODs,
+    vertex colors, custom normals, mirror-X)."""
+    bl_idname  = "xbg.import_wd2_glm_full"
+    bl_label   = "Import WD2 GLM (Full)"
+    bl_description = (
+        "Import a Watch Dogs 2 .glm with full fidelity: armature + skin "
+        "weights, per-part object split, all LODs, vertex colors, split "
+        "normals, and mirror-X for mirrored assets"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    files: bpy.props.CollectionProperty(type=bpy.types.OperatorFileListElement)
+    directory: bpy.props.StringProperty(subtype="DIR_PATH")
+    filter_glob: bpy.props.StringProperty(default="*.glm", options={'HIDDEN'})
+
+    mirror_x: bpy.props.BoolProperty(default=False)
+    flip_v: bpy.props.BoolProperty(default=False)
+    import_normals: bpy.props.BoolProperty(default=True)
+    import_colors: bpy.props.BoolProperty(default=True)
+    create_armature: bpy.props.BoolProperty(default=True)
+    split_parts: bpy.props.BoolProperty(default=True)
+
+    def invoke(self, ctx, ev):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        from .import_glm_full import import_glm
+        fs = []
+        if self.files:
+            for f in self.files:
+                if f.name.lower().endswith('.glm'):
+                    fs.append(os.path.join(self.directory, f.name))
+        elif self.filepath:
+            fs.append(self.filepath)
+        if not fs:
+            self.report({'ERROR'}, "No .glm file selected")
+            return {'CANCELLED'}
+
+        ok = 0
+        for fp in fs:
+            try:
+                res = import_glm(
+                    filepath=fp,
+                    flip_v=self.flip_v,
+                    import_custom_normals=self.import_normals,
+                    import_vertex_colors=self.import_colors,
+                    create_armature=self.create_armature,
+                    mirror_x=self.mirror_x,
+                    split_into_parts=self.split_parts,
+                    create_lod_collections=True,
+                    import_all_lods=True,
+                )
+                n = len(res['objects'])
+                self.report({'INFO'},
+                    f"{os.path.basename(fp)}: imported {n} objects")
+                ok += 1
+            except Exception as exc:
+                self.report({'ERROR'}, f"{os.path.basename(fp)}: {exc}")
+                import traceback; traceback.print_exc()
+        return {'FINISHED'} if ok else {'CANCELLED'}
+
+
 class XBG_OT_ExportWD2(bpy.types.Operator):
     """Export edited WD2 meshes back into a copy of the source .glm."""
     bl_idname  = "xbg.export_wd2_model"
