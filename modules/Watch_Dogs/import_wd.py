@@ -2,7 +2,7 @@
 
 Two formats, one entry point (`load_wd_model`):
 
-* Watch Dogs 1 ``.xbg`` — binary 'GEOM' container, version 97.50.  Sequential
+* Watch Dogs 1 ``.xbg`` — binary 'MOEG' / "GEOM 97.50" container.  Sequential
   serialized stream (NOT chunk-based like Avatar's MESH xbg).  This parser is
   a faithful Python port of DisruptEditor's xbgFile.cpp/IBinaryArchive
   (Jonathan Scott) with its PADDING_IBINARYARCHIVE alignment rules:
@@ -139,7 +139,7 @@ def parse_wd1_xbg(path, lod_select=0):
 
     # --- Header ---
     magic = r.u32()
-    if magic != 0x47454F4D:                       # 'GEOM'
+    if magic != 0x47454F4D:                       # b'MOEG' in file order
         raise ValueError("not a WD1 GEOM xbg (magic 0x%08X)" % magic)
     major, minor = r.u16(), r.u16()
     if (major, minor) != (97, 50):
