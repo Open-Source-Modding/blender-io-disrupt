@@ -64,6 +64,12 @@ class XBG_PT_WDImport(bpy.types.Panel):
             r2.scale_y = 1.3
             r2.operator("xbg.import_wd_skeleton",
                         text="Import WD1 Skeleton (.skeleton)", icon='ARMATURE_DATA')
+
+            l.separator()
+            r3 = l.row()
+            r3.scale_y = 1.5
+            r3.operator("xbg.export_wd1",
+                        text="Export WD1 Model (.xbg)", icon='EXPORT')
             r2 = l.row()
             r2.scale_y = 1.3
             r2.operator("xbg.import_wd_hkx",

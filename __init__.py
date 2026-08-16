@@ -149,7 +149,8 @@ from .modules.Far_Cry_Primal.operators_primal import (XBG_OT_ImportPrimal,
 from .modules.Watch_Dogs.operators_wd import (
     XBG_OT_ImportWD, XBG_OT_ImportWDMab, XBG_OT_InjectWD,
     XBG_OT_WDPeekLODs, XBG_OT_WDSyncNormals,
-    XBG_OT_ImportWDSkeleton, XBG_OT_ImportWDHkx)
+    XBG_OT_ImportWDSkeleton, XBG_OT_ImportWDHkx,
+    XBG_OT_ExportWD1)
 from .modules.Watch_Dogs_2.operators_wd2 import XBG_OT_ImportWD2, XBG_OT_ImportWD2XBG, XBG_OT_ExportWD2, XBG_OT_ImportWD2GLMFull
 from .modules.Watch_Dogs_Legion.operators_wdl import (
     XBG_OT_ImportWDL, XBG_OT_InjectWDL, XBG_OT_ImportWDLSkeleton,
@@ -330,6 +331,7 @@ classes = (
     XBG_OT_WDSyncNormals,
     XBG_OT_ImportWDSkeleton,
     XBG_OT_ImportWDHkx,
+    XBG_OT_ExportWD1,
     # Watch Dogs 2 (import-only, own folder)
     XBG_OT_ImportWD2,
     XBG_OT_ExportWD2,
@@ -412,7 +414,9 @@ def menu_func_import(self, ctx):
         self.layout.operator(op_id, text=label)
 
 def menu_func_export(self, ctx):
-    pass
+    self.layout.separator()
+    self.layout.operator("xbg.export_wd1",
+                         text="Watch Dogs 1 Model (.xbg)")
 
 def register():
     for c in classes:

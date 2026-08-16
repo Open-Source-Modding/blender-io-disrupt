@@ -392,6 +392,71 @@ class XBG_OT_WDPeekLODs(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class XBG_OT_ExportWD1(bpy.types.Operator):
+    """Export selected mesh objects as a fresh Watch Dogs 1 .xbg (GEOM 97.50).
+
+    Synthesises every section of the binary stream from Blender geometry —
+    no source .xbg needed.  Each selected mesh becomes a submesh of a single
+    LOD.  Position/UV are i16-quantised to the combined bounding box; the
+    non-geometry sections (materials/skeleton/physics) are emitted minimal
+    (empty physics/procedural, one material per object)."""
+    bl_idname  = "xbg.export_wd1"
+    bl_label   = "Export WD1 Model (.xbg)"
+    bl_description = (
+        "Write a fresh Watch Dogs 1 .xbg (GEOM 97.50) from the selected "
+        "mesh objects"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(default="*.xbg", options={'HIDDEN'})
+
+    lod_dists: bpy.props.StringProperty(
+        name="LOD Distances",
+        description="Comma-separated LOD distances; one submesh-set is written "
+                    "into the last (closest) LOD, matching the single-buffer "
+                    "layout the game expects.",
+        default="20, 30, 70, 300")
+
+    @classmethod
+    def poll(cls, ctx):
+        return any(o.type == 'MESH' for o in ctx.selected_objects)
+
+    def invoke(self, ctx, event):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def draw(self, ctx):
+        l = self.layout
+        box = l.box()
+        box.label(text="Export Options:", icon='PREFERENCES')
+        box.prop(self, "lod_dists")
+
+    def execute(self, ctx):
+        from .export_wd1 import export_wd1
+        objs = [o for o in ctx.selected_objects if o.type == 'MESH']
+        if not objs:
+            self.report({'ERROR'}, "no mesh objects selected")
+            return {'CANCELLED'}
+        try:
+            dists = [float(x.strip()) for x in self.lod_dists.split(',') if x.strip()]
+        except ValueError:
+            self.report({'ERROR'}, "LOD distances must be comma-separated numbers")
+            return {'CANCELLED'}
+        if not dists:
+            dists = [20.0, 30.0, 70.0, 300.0]
+        path = self.filepath
+        if not path.lower().endswith('.xbg'):
+            path += '.xbg'
+        try:
+            n = export_wd1(path, objs, lod_dists=dists)
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to export WD1 .xbg: {e}")
+            return {'CANCELLED'}
+        self.report({'INFO'}, f"Exported WD1 .xbg: {n} mesh(es) -> {path}")
+        return {'FINISHED'}
+
+
 class XBG_OT_WDSyncNormals(bpy.types.Operator):
     """Bake Blender geometry normals into xbg_normal so injection writes
     normals that match the sculpted/edited mesh shape."""
