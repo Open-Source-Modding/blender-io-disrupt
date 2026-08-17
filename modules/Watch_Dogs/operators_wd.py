@@ -410,12 +410,9 @@ class XBG_OT_ExportWD1(bpy.types.Operator):
 
     filepath: bpy.props.StringProperty(subtype="FILE_PATH")
     filter_glob: bpy.props.StringProperty(default="*.xbg", options={'HIDDEN'})
-
     lod_dists: bpy.props.StringProperty(
         name="LOD Distances",
-        description="Comma-separated LOD distances; one submesh-set is written "
-                    "into the last (closest) LOD, matching the single-buffer "
-                    "layout the game expects.",
+        description="Comma-separated LOD distances",
         default="20, 30, 70, 300")
 
     @classmethod
@@ -426,12 +423,6 @@ class XBG_OT_ExportWD1(bpy.types.Operator):
         ctx.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
 
-    def draw(self, ctx):
-        l = self.layout
-        box = l.box()
-        box.label(text="Export Options:", icon='PREFERENCES')
-        box.prop(self, "lod_dists")
-
     def execute(self, ctx):
         from .export_wd1 import export_wd1
         objs = [o for o in ctx.selected_objects if o.type == 'MESH']
@@ -441,8 +432,7 @@ class XBG_OT_ExportWD1(bpy.types.Operator):
         try:
             dists = [float(x.strip()) for x in self.lod_dists.split(',') if x.strip()]
         except ValueError:
-            self.report({'ERROR'}, "LOD distances must be comma-separated numbers")
-            return {'CANCELLED'}
+            dists = [20.0, 30.0, 70.0, 300.0]
         if not dists:
             dists = [20.0, 30.0, 70.0, 300.0]
         path = self.filepath
