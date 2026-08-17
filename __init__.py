@@ -523,7 +523,10 @@ def unregister():
     bpy.types.TOPBAR_MT_file_import.remove(menu_func_import)
     bpy.types.TOPBAR_MT_file_export.remove(menu_func_export)
     for c in reversed(classes):
-        bpy.utils.unregister_class(c)
+        try:
+            bpy.utils.unregister_class(c)
+        except RuntimeError:
+            pass
 
 
 if __name__ == "__main__":
