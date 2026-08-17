@@ -424,7 +424,6 @@ class XBG_OT_ExportWD1(bpy.types.Operator):
         return {'RUNNING_MODAL'}
 
     def execute(self, ctx):
-        from .export_wd1 import export_wd1
         objs = [o for o in ctx.selected_objects if o.type == 'MESH']
         if not objs:
             self.report({'ERROR'}, "no mesh objects selected")
@@ -439,7 +438,10 @@ class XBG_OT_ExportWD1(bpy.types.Operator):
         if not path.lower().endswith('.xbg'):
             path += '.xbg'
         try:
-            n = export_wd1(path, objs, lod_dists=dists)
+            import importlib
+            mod = importlib.import_module(
+                'blender-io-xbg.modules.Watch_Dogs.export_wd1')
+            n = mod.export_wd1(path, objs, lod_dists=dists)
         except Exception as e:
             self.report({'ERROR'}, f"Failed to export WD1 .xbg: {e}")
             return {'CANCELLED'}

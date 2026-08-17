@@ -308,14 +308,25 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
                 combined_max[i] = max(combined_max[i], co[i])
 
     # WD1 codec is `pos = i16*scale + off` with ONE scalar offset+scale for
-    # ALL three axes.  So `off` must be the global bbox minimum (across every
-    # axis) and `scale` the global bbox extent, or per-axis ranges that don't
-    # start at that shared offset overflow i16 and clamp.
-    pos_off = min(combined_min)
-    gmin = min(combined_min)
-    gmax = max(combined_max)
-    pos_scale = ((gmax - gmin) / 32767.0) or 1.0
-    uv_off, uv_scale = 0.0, 1.0 / 32767.0
+    # ALL three axes.  Use the original file's constants when available (imported
+    # mesh objects store them as obj['wd_scale'] = [pos_off, pos_scale,
+    # uv_off, uv_scale]); otherwise recompute from the bounding box.
+    wd_scale = None
+    for ob in mats:
+        if 'wd_scale' in ob and len(ob['wd_scale']) >= 4:
+            wd_scale = ob['wd_scale']
+            break
+    if wd_scale:
+        pos_off = float(wd_scale[0])
+        pos_scale = float(wd_scale[1])
+        uv_off = float(wd_scale[2])
+        uv_scale = float(wd_scale[3])
+    else:
+        pos_off = min(combined_min)
+        gmin = min(combined_min)
+        gmax = max(combined_max)
+        pos_scale = ((gmax - gmin) / 32767.0) or 1.0
+        uv_off, uv_scale = 0.0, 1.0 / 32767.0
 
     bsphere = _compute_bsphere(combined_min, combined_max)
     bbox = combined_min + combined_max
