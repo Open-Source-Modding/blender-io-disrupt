@@ -31,15 +31,17 @@ from ..Watch_Dogs.import_mab_wd import (
 )
 
 _WDL_MAB_MAGIC = 0x000046B4
+_WD2_MAB_MAGIC = 0x000046AF   # WD2 uses identical layout, different magic
+_SUPPORTED_MAGICS = {_WDL_MAB_MAGIC, _WD2_MAB_MAGIC}
 
 
 def parse_wdl_mab(path):
     d = open(path, 'rb').read()
     magic, = struct.unpack_from('<I', d, 0)
-    if magic != _WDL_MAB_MAGIC:
+    if magic not in _SUPPORTED_MAGICS:
         raise ValueError(
-            "not a WDL .mab (magic 0x%08X, expected 0x%08X)"
-            % (magic, _WDL_MAB_MAGIC))
+            "not a WDL/WD2 .mab (magic 0x%08X, expected 0x%08X or 0x%08X)"
+            % (magic, _WDL_MAB_MAGIC, _WD2_MAB_MAGIC))
 
     aNi = d.index(b'aNi')
     if aNi != 0x20:
