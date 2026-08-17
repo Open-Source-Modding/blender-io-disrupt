@@ -31,3 +31,11 @@ def wd1_dir():
         "XBG_WD1_DIR",
         "/home/selene/Documents/Modding/Watch Dogs/unpacked/windy_city/graphics",
     )
+
+
+@pytest.fixture(scope="session")
+def wd2_dir():
+    return os.environ.get(
+        "XBG_WD2_DIR",
+        "/home/selene/Documents/Modding/WD2/unpacked/graphics",
+    )

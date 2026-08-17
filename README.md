@@ -1,6 +1,6 @@
 # Dunia Engine XBG Importer for Blender
 
-A Blender 5.0 add-on for **importing, editing and re-exporting 3D models from ten
+A Blender 5.0 add-on for **importing, editing and re-exporting 3D models from eleven
 Ubisoft games** — grown from an Avatar-only importer into a full multi-game modding
 toolkit.
 
@@ -11,8 +11,8 @@ toolkit.
 
 ## Highlights
 
-- **Ten games, one add-on** — Avatar: The Game, Far Cry 1 / 2 / 3 / 4 / 5–New Dawn /
-  Primal / Instincts, Watch Dogs 1 & 2, each with its own self-contained module and a
+- **Eleven games, one add-on** — Avatar: The Game, Far Cry 1 / 2 / 3 / 4 / 5–New Dawn /
+  Primal / Instincts, Watch Dogs 1 / 2 / Legion, each with its own self-contained module and a
   clean game-picker UI.
 - **True editing freedom** — not just moving vertices: add and delete geometry, delete
   whole submeshes, join in foreign meshes, edit UVs and bone weights, then write it all
@@ -21,7 +21,8 @@ toolkit.
   (pose libraries + expression curves) for Avatar/FC2, and even **entire cinematic
   scenes** with their cameras, anchors and timeline markers.
 - **Skeletons & collision** — import standalone .skeleton rigs; import HKX collision
-  for five games and **export edited collision** (with MOPP rebuilding) for Avatar/FC2 —
+  for six games, **export edited collision** (with MOPP rebuilding) for Avatar/FC2, and
+  **inject displacement-only collision** for WD2 (bit-identical round-trips) —
   modify any model's collision shape.
 - **Custom materials** — bake Blender materials into game-ready texture (.xbt) and
   material (.xbm) files, with DXT compression, template inheritance, glass and glow
@@ -47,7 +48,7 @@ toolkit.
 | **Far Cry 1** | .cgf | ✅ (per-face materials) | ✅ .dds auto-load | — | — | — | — | — |
 | **Far Cry Instincts** (Xbox) | .xbg | ✅ | ✅ .xbt auto-decode | — | — | — | — | — |
 | **Watch Dogs 1** | .xbg | ✅ Full (+ streamed hi-detail LODs) | ⚠️ slot names only | ✅ | ✅ | ✅ .mab | ✅ import | ✅ import |
-| **Watch Dogs 2** | .glm | ✅ Full | ⚠️ slot names | ✅ **.glm export** | ✅ | — | — (rig from model) | — |
+| **Watch Dogs 2** | .glm | ✅ Full | ⚠️ slot names | ✅ **.glm export** | ✅ | — | — (rig from model) | ✅ import & **inject** (displacement-only) |
 | Watch Dogs Legion | .xbg | ✅ (compiled MOEG + .skel) | ⚠️ slot names only | ✅ in-place | ❌ Count changes | ✅ .mab | ✅ import (.skel) | — |
 | Far Cry 6 | — | 🔜 coming soon | | | | | | |
 
@@ -157,7 +158,7 @@ modules/
   Avatar/          # per-game format modules — fully self-contained per game
   Far_Cry_1/  Far_Cry_2/  Far_Cry_3/  Far_Cry_4/  Far_Cry_5/
   Far_Cry_Primal/  Far_Cry_Instincts/  Far_Cry_6/ (placeholder)
-  Watch_Dogs/  Watch_Dogs_2/
+  Watch_Dogs/  Watch_Dogs_2/  Watch_Dogs_Legion/
 ```
 
 Every game's code is deliberately isolated — no cross-game imports — so a fix or

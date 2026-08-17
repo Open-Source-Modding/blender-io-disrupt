@@ -28,6 +28,67 @@ Confirmed hkpConvexVerticesShape layout (Havok 2012, 64-bit, object-relative):
 
 hkFourVectors is SOA: [x0 x1 x2 x3][y0 y1 y2 y3][z0 z1 z2 z3] (48 bytes),
 holding 4 vertices each; the last block is padded to a multiple of 4.
+
+Static-compound format (buildings, verified against Havok 2012 SDK
+hkpStaticCompoundShape + this file 07_antique_hardware_base.hkx)
+--------------------------------------------------------------------
+A building collision is a single hkpStaticCompoundShape holding child shapes
+(hkpBoxShape + hkpConvexVerticesShape), each positioned by an Instance:
+
+    hkpStaticCompoundShape @0x60 (serialized, 64-bit):
+        +0x98  hkArray<Instance> m_instances   (ptr local-fixup, +0xa0 size)
+        +0xd0  hkArray<u16> m_instanceExtraInfos (ptr local-fixup)
+        +0xe0  hkcdStaticTree m_tree (48 bytes, baked AABB broadphase)
+
+    Instance (stride 0x50 = 80 bytes; serialized hkQsTransform is
+    TRANSLATION-first, unlike the C++ member order which is rotation-first):
+        +0x00  hkVector4 m_translation  (w = int24 bitfield: flags in low 7 bits,
+                                         shape-size bits 7-10; 0x3f000000 mask)
+        +0x10  hkVector4 m_rotation     (identity quat = 0,0,0,1)
+        +0x20  hkVector4 m_scale        (w = int24 bitfield for small-key states)
+        +0x30  const hkpShape* m_shape  (global fixup → child shape object)
+        +0x38  u32 m_filterInfo         (usually 0)
+        +0x3c  u32 m_childFilterInfoMask(usually 0xffffffff)
+        +0x40  u64 m_userData           (usually 0)
+    Flags: FLAG_IS_LEAF=1, FLAG_HAS_TRANSFORM=2, FLAG_HAS_SCALE=4, FLAG_HAS_FLIP=8,
+           FLAG_IS_DISABLED=0x10, FLAGS_ALL=0x7f.  Identity instances carry 0.
+    World position of a child = transform * child's local geometry (the child
+    shape's m_halfExtents / m_rotatedVertices are in its own local space).
+
+    hkpBoxShape (serialized, 64-bit):
+        +0x00  vtable slot (8, zeros) + hkReferencedObject memSize/flags(2)
+               + referenceCount(2) + hkcdShape type/dispatch/bits/codec(4)
+               + hkpShape::m_userData(u64) + 2×u32 (0x400 / 0x2f size-and-pad)
+        +0x20  f32  m_radius      (m_halfExtents rounded — small, ~0.006-0.03)
+        +0x30  hkVector4 m_halfExtents   ← patch to resize a box
+    (type enum: hkcdShapeType BOX=3, CONVEX_VERTICES=5, STATIC_COMPOUND=16)
+
+    hkpConvexVerticesShape: same base chain; the hull is
+        +0x50  hkArray<hkFourVectors> m_rotatedVertices  (SOA, ptr local-fixup,
+                                                          +0x58 count of 4-vec)
+        +0x60  u32  m_numVertices
+        +0x68  hkArray<hkVector4> m_planeEquations
+        +0x78  const hkpConvexVerticesConnectivity* m_connectivity (global fixup)
+
+    hkpConvexVerticesConnectivity @0xb30:
+        +0x10  hkArray<u16> m_vertexIndices    (face loops, index into
+                                                m_rotatedVertices; 48 entries
+                                                here = 10 faces of 16 verts)
+        +0x20  hkArray<u8>  m_numVerticesPerFace
+
+Injection model (WD1)
+---------------------
+Displacement-only, like WD2: keep vertex count/order and transform bytes, and
+only rewrite float data in place.
+- Convex hulls: patch the f32 values inside m_rotatedVertices SOA blocks
+  (arr + i*48).  Connectivity (vertex-INDEX based) stays valid automatically.
+- Boxes: patch m_halfExtents (+0x30).  m_radius (+0x20) is a derived shell; the
+  world box bounds must be recomputed so the baked m_tree AABB stays conservative.
+- The baked hkcdStaticTree broadphase (48 bytes @compound+0xe0) is a tight AABB
+  hierarchy; moving geometry beyond its stored boxes can make the engine MISS
+  the shape.  Keep edits small / within the original AABB, or rebuild the tree.
+- hkpBvCompressedMeshShape (vehicle detail) is BVH-quantised (11/11/10-bit) and
+  NOT patchable in place — read-only.
 """
 
 import os

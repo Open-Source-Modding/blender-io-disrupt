@@ -75,6 +75,17 @@ class XBG_PT_WDImport(bpy.types.Panel):
             r2.operator("xbg.import_wd_hkx",
                         text="Import WD1 HKX Collision (.hkx)", icon='MESH_ICOSPHERE')
 
+        if game == 'WD2':
+            l.separator()
+            r2 = l.row()
+            r2.scale_y = 1.3
+            r2.operator("xbg.import_wd2_hkx",
+                        text="Import WD2 HKX Collision (.hkx)", icon='MESH_ICOSPHERE')
+            col = l.column(align=True)
+            col.scale_y = 0.8
+            col.label(text="Disrupt serialized Havok — one object per", icon='INFO')
+            col.label(text="convex shape. Edit verts, then inject back.")
+
         if _adv(ctx) and game == 'WD1':
             l.separator()
             l.operator("xbg.wd_peek_lods",
@@ -182,6 +193,42 @@ class XBG_PT_WDInject(bpy.types.Panel):
             note.label(text="Materials/skeleton/physics blocks are", icon='INFO')
             note.label(text="kept byte-for-byte. Compile the output")
             note.label(text="with GLM2XBG to get a game .xbg.")
+
+            # ── WD2: collision (.hkx) injection ─────────────────────────
+            hkx_objs = [o for o in ctx.selected_objects
+                        if o.get('wd2_hkx_shape_index') is not None]
+            if hkx_objs:
+                l.separator()
+                box = l.box()
+                box.label(text="WD2 Collision (.hkx)", icon='MESH_ICOSPHERE')
+                box.label(text="VERTEX-DISPLACEMENT-ONLY:", icon='ERROR')
+                c = box.column(align=True)
+                c.scale_y = 0.8
+                c.label(text="move vertices; do NOT add/delete or the")
+                c.label(text="file will crash the game on collision.")
+                r = box.row()
+                r.scale_y = 1.4
+                r.operator("xbg.inject_wd2_hkx",
+                           text="Inject WD2 HKX Collision", icon='EXPORT')
+            return
+
+        # ── WD1: collision (.hkx) injection ──────────────────────────────
+        hkx1 = [o for o in ctx.selected_objects
+                if o.get('wd_hkx_shape_off') is not None
+                and not o.get('wd_hkx_is_hull_reconstruction')]
+        if hkx1:
+            l.separator()
+            box = l.box()
+            box.label(text="WD1 Collision (.hkx)", icon='MESH_ICOSPHERE')
+            box.label(text="VERTEX-DISPLACEMENT-ONLY:", icon='ERROR')
+            c = box.column(align=True)
+            c.scale_y = 0.8
+            c.label(text="move vertices; do NOT add/delete or the")
+            c.label(text="file will crash the game on collision.")
+            r = box.row()
+            r.scale_y = 1.4
+            r.operator("xbg.inject_wd_hkx",
+                       text="Inject WD1 HKX Collision", icon='EXPORT')
             return
 
         joined = [o for o in ctx.selected_objects if o.get('wd_joined')]

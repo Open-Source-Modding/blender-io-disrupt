@@ -87,6 +87,168 @@ class XBG_OT_ImportWDHkx(bpy.types.Operator):
             return {'CANCELLED'}
 
 
+class XBG_OT_ImportWD2Hkx(bpy.types.Operator):
+    """Import a Watch Dogs 2 .hkx collision file (Disrupt MOEG format)."""
+    bl_idname  = "xbg.import_wd2_hkx"
+    bl_label   = "Import WD2 HKX Collision"
+    bl_description = (
+        "Read a Watch Dogs 2 .hkx (Disrupt serialized Havok) and build one "
+        "mesh object per convex collision shape. Physics-critical data "
+        "round-trips bit-identically, so edited shapes can be injected back"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(default="*.hkx", options={'HIDDEN'})
+
+    def invoke(self, ctx, ev):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        from .import_hkx_wd2 import import_hkx_wd2
+        if not self.filepath or not os.path.isfile(self.filepath):
+            self.report({'ERROR'}, "No valid .hkx file selected")
+            return {'CANCELLED'}
+        try:
+            n_shapes, n_verts = import_hkx_wd2(ctx, self.filepath)
+            self.report({'INFO'},
+                f"WD2 HKX: {n_shapes} convex shapes "
+                f"({n_verts} verts) from {os.path.basename(self.filepath)}")
+            return {'FINISHED'} if n_shapes else {'CANCELLED'}
+        except Exception as exc:
+            self.report({'ERROR'}, f"Failed to import WD2 .hkx: {exc}")
+            import traceback; traceback.print_exc()
+            return {'CANCELLED'}
+
+
+class XBG_OT_InjectWD2Hkx(bpy.types.Operator):
+    """Write edited WD2 collision vertices back into a copy of the .hkx."""
+    bl_idname  = "xbg.inject_wd2_hkx"
+    bl_label   = "Inject WD2 HKX Collision"
+    bl_description = (
+        "Write edited vertices from selected imported WD2 collision shapes "
+        "back into a copy of the source .hkx. VERTEX-DISPLACEMENT-ONLY: "
+        "the vertex count (and order) must be preserved — move vertices, "
+        "do not add or delete. Topology/connectivity is never touched, so "
+        "the file stays game-safe"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(default="*.hkx", options={'HIDDEN'})
+    check_existing: bpy.props.BoolProperty(default=True, options={'HIDDEN'})
+
+    @classmethod
+    def poll(cls, ctx):
+        return any(o.get('wd2_hkx_shape_index') is not None
+                   for o in ctx.selected_objects)
+
+    def invoke(self, ctx, ev):
+        objs = [o for o in ctx.selected_objects
+                if o.get('wd2_hkx_shape_index') is not None]
+        if objs and not self.filepath:
+            src = objs[0]['wd2_hkx_src']
+            base, ext = os.path.splitext(src)
+            self.filepath = base + "_edited" + ext
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        from .import_hkx_wd2 import inject_hkx_wd2
+        objs = [o for o in ctx.selected_objects
+                if o.get('wd2_hkx_shape_index') is not None]
+        if not objs:
+            self.report({'ERROR'},
+                "Select imported WD2 collision shapes to inject")
+            return {'CANCELLED'}
+        srcs = {o['wd2_hkx_src'] for o in objs}
+        if len(srcs) != 1:
+            self.report({'ERROR'},
+                "All selected shapes must come from the same .hkx file")
+            return {'CANCELLED'}
+        src = objs[0]['wd2_hkx_src']
+        if not self.filepath:
+            self.report({'ERROR'}, "Choose an output .hkx path")
+            return {'CANCELLED'}
+        try:
+            injected = inject_hkx_wd2(ctx, src, objs, self.filepath)
+            self.report({'INFO'},
+                "WD2 HKX inject: %d shape(s), %d verts -> %s"
+                % (len(injected), sum(v for _, v in injected),
+                   os.path.basename(self.filepath)))
+            return {'FINISHED'}
+        except Exception as exc:
+            self.report({'ERROR'}, f"Failed to inject WD2 .hkx: {exc}")
+            import traceback; traceback.print_exc()
+            return {'CANCELLED'}
+
+
+class XBG_OT_InjectWDHkx(bpy.types.Operator):
+    """Write edited WD1 collision shapes back into a copy of the .hkx."""
+    bl_idname  = "xbg.inject_wd_hkx"
+    bl_label   = "Inject WD1 HKX Collision"
+    bl_description = (
+        "Write edited vertices from selected imported WD1 collision shapes "
+        "(convex hulls and boxes) back into a copy of the source .hkx. "
+        "VERTEX-DISPLACEMENT-ONLY: the vertex count (and order) must be "
+        "preserved — move vertices, do not add or delete. Connectivity and "
+        "transform bytes are never touched, so the file stays game-safe"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(default="*.hkx", options={'HIDDEN'})
+    check_existing: bpy.props.BoolProperty(default=True, options={'HIDDEN'})
+
+    @classmethod
+    def poll(cls, ctx):
+        return any(o.get('wd_hkx_shape_off') is not None
+                   and not o.get('wd_hkx_is_hull_reconstruction')
+                   for o in ctx.selected_objects)
+
+    def invoke(self, ctx, ev):
+        objs = [o for o in ctx.selected_objects
+                if o.get('wd_hkx_shape_off') is not None
+                and not o.get('wd_hkx_is_hull_reconstruction')]
+        if objs and not self.filepath:
+            src = objs[0]['wd_hkx_src']
+            base, ext = os.path.splitext(src)
+            self.filepath = base + "_edited" + ext
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        from .inject_hkx_wd import inject_hkx_wd
+        objs = [o for o in ctx.selected_objects
+                if o.get('wd_hkx_shape_off') is not None
+                and not o.get('wd_hkx_is_hull_reconstruction')]
+        if not objs:
+            self.report({'ERROR'},
+                "Select imported WD1 collision shapes to inject")
+            return {'CANCELLED'}
+        srcs = {o['wd_hkx_src'] for o in objs}
+        if len(srcs) != 1:
+            self.report({'ERROR'},
+                "All selected shapes must come from the same .hkx file")
+            return {'CANCELLED'}
+        src = objs[0]['wd_hkx_src']
+        if not self.filepath:
+            self.report({'ERROR'}, "Choose an output .hkx path")
+            return {'CANCELLED'}
+        try:
+            injected = inject_hkx_wd(ctx, src, objs, self.filepath)
+            self.report({'INFO'},
+                "WD1 HKX inject: %d shape(s), %d verts -> %s"
+                % (len(injected), sum(v for _, v in injected),
+                   os.path.basename(self.filepath)))
+            return {'FINISHED'}
+        except Exception as exc:
+            self.report({'ERROR'}, f"Failed to inject WD1 .hkx: {exc}")
+            import traceback; traceback.print_exc()
+            return {'CANCELLED'}
+
+
 class XBG_OT_ImportWD(bpy.types.Operator):
     """Import a Watch Dogs 1 .xbg (binary GEOM 97.50) model: skeleton,
     meshes, UVs, normals, skin weights."""
