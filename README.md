@@ -1,8 +1,7 @@
-# Dunia Engine XBG Importer for Blender
+# Disrupt Engine Importer/Exporter for Blender
 
-A Blender 5.0 add-on for **importing, editing and re-exporting 3D models from eleven
-Ubisoft games** — grown from an Avatar-only importer into a full multi-game modding
-toolkit.
+A Blender 5.0 add-on for **importing, editing and re-exporting 3D models from Ubisoft
+Disrupt engine games** — Watch Dogs 1, 2, and Legion.
 
 > Originally written for Blender 2.49b. Rewritten from the ground up for modern
 > Blender. **Expect bugs, things to fix, things to change and more features coming soon.**
@@ -11,17 +10,17 @@ toolkit.
 
 ## Highlights
 
-- **Eleven games, one add-on** — Avatar: The Game, Far Cry 1 / 2 / 3 / 4 / 5–New Dawn /
-  Primal / Instincts, Watch Dogs 1 / 2 / Legion, each with its own self-contained module and a
-  clean game-picker UI.
+- **Three games, one add-on** — Watch Dogs 1 (.xbg), 2 (.glm), and Legion (.xbg), each with
+  its own self-contained module and a clean game-picker UI.
 - **True editing freedom** — not just moving vertices: add and delete geometry, delete
   whole submeshes, join in foreign meshes, edit UVs and bone weights, then write it all
   back into a copy of the game file.
-- **Animations** — import skeletal animations (.mab) for six games, facial animation
-  (pose libraries + expression curves) for Avatar/FC2, and even **entire cinematic
+- **HKX collision support** — import collision shapes (convex hulls + boxes) for all three
+  games, inject displacement-only edits back with byte-identical round-trips. Format
+  documented in the reference docs.
+- **Animations** — import skeletal animations (.mab) for Watch Dogs games, and import
   scenes** with their cameras, anchors and timeline markers.
 - **Skeletons & collision** — import standalone .skeleton rigs; import HKX collision
-  for six games, **export edited collision** (with MOPP rebuilding) for Avatar/FC2, and
   **inject displacement-only collision** for WD2 (bit-identical round-trips) —
   modify any model's collision shape.
 - **Custom materials** — bake Blender materials into game-ready texture (.xbt) and
@@ -39,18 +38,9 @@ toolkit.
 
 | Game | Format | Model Import | Textures / Materials | Re-export (Inject) | Add/Delete Geometry | Animation | Skeleton File | Collision (HKX) |
 |---|---|---|---|---|---|---|---|---|
-| **Avatar: The Game** | .xbg | ✅ Full (LODs, skin, damage states) | ✅ auto-load + **custom material export** | ✅ | ✅ | ✅ .mab + facial + **full scenes** | ✅ import & export | ✅ import & **export** (MOPP) |
-| **Far Cry 2** | .xbg | ✅ Full | ✅ auto-load\* + **custom material export** | ✅ | ✅ | ✅ .mab + facial + scenes | ✅ import & export | ✅ import & **export** |
-| **Far Cry 3** | .xbg | ✅ Full | ⚠️ slot names only | ✅ | ✅ | ⚠️ Partial .mab support | ✅ import | ✅ import |
-| **Far Cry 4** | .xbg | ✅ Full | ⚠️ slot names only | ✅ | ✅ | ✅ .mab | — (rig from model) | ✅ import |
-| **Far Cry 5 / New Dawn** | .xbg | ✅ (8-influence skinning) | ⚠️ slot names only  | ✅ same-count | ❌ Not yet | ✅ .mab + root motion + prop rigs | — (rig from model) | — |
-| **Far Cry Primal** | .xbg | ✅ Full | ⚠️ slot names only  | ✅ | ✅ | 🔜 coming soon | — (rig from model) | — |
-| **Far Cry 1** | .cgf | ✅ (per-face materials) | ✅ .dds auto-load | — | — | — | — | — |
-| **Far Cry Instincts** (Xbox) | .xbg | ✅ | ✅ .xbt auto-decode | — | — | — | — | — |
-| **Watch Dogs 1** | .xbg | ✅ Full (+ streamed hi-detail LODs) | ⚠️ slot names only | ✅ | ✅ | ✅ .mab | ✅ import | ✅ import |
+| **Watch Dogs 1** | .xbg | ✅ Full (+ streamed hi-detail LODs) | ⚠️ slot names only | ✅ | ✅ | ✅ .mab | ✅ import | ✅ import & **inject** (displacement-only) |
 | **Watch Dogs 2** | .glm | ✅ Full | ⚠️ slot names | ✅ **.glm export** | ✅ | — | — (rig from model) | ✅ import & **inject** (displacement-only) |
-| Watch Dogs Legion | .xbg | ✅ (compiled MOEG + .skel) | ⚠️ slot names only | ✅ in-place | ❌ Count changes | ✅ .mab | ✅ import (.skel) | — |
-| Far Cry 6 | — | 🔜 coming soon | | | | | | |
+| **Watch Dogs Legion** | .xbg | ✅ (compiled MOEG + .skel) | ⚠️ slot names only | ✅ in-place | ❌ Count changes | ✅ .mab | ✅ import (.skel) | ✅ import |
 
 **Legend / footnotes**
 
@@ -64,9 +54,6 @@ toolkit.
   edits don't "revert" at close range.
 - WD2 export preserves materials/skeleton/physics blocks byte-for-byte and hands you a
   .glm ready for a GLM2XBG converter.
-- \*Far Cry 2 texture auto-load shares Avatar's single "Extracted Game Data" preference
-  field (there's no separate FC2 path setting yet) — point it at your FC2 data folder
-  when working on FC2 files.
 
 ---
 
@@ -74,7 +61,6 @@ toolkit.
 
 - **Blender 5.0** or newer
 - Game files for the game you want to mod (extracted where the game ships archives —
-  e.g. Avatar's `Data` folder, FC Instincts `.fat/.dat` dumps, Far Cry 1's `FCData`)
 
 ---
 
@@ -85,7 +71,6 @@ toolkit.
    **XBG Importer**.
 3. In the add-on preferences, set the data-folder path(s) for your game(s) — this is
    what powers automatic texture loading. 
-   > Temporarily only supported on Avatar.
 
 > **Upgrading from v2.x?** Do a fresh install from the zip (remove the old add-on
 > first) — v2.x's game modules are incompatible with v3.0.0's layout.
@@ -113,7 +98,6 @@ game**. Every game uses the same layout:
 | **Inject / Export** | advanced | Status of the linked source file, bounds check, the big inject button |
 | **Animation** | advanced | .mab import with resampling/helper options (games with animation) |
 | **Skeleton / HKX** | per game | Standalone skeleton import, collision import/export |
-| **Editors** | advanced | LOD distances, bounding volumes, jiggle bones, materials (Avatar/FC2) |
 | **Model Info / Debug** | advanced | What the importer captured; verbose logging controls |
 
 ### Typical workflow: edit a model and put it back in the game
@@ -136,10 +120,8 @@ game**. Every game uses the same layout:
 2. Advanced Mode → **Animation** → pick the `.mab`. Bones are matched automatically
    (by name hash or skeleton file, depending on the game); options cover smooth
    resampling, helper-bone emulation and twist baking.
-3. For Avatar/FC2 cinematics, use the **Scene Viewer** to bring in the whole scripted
    scene — cameras, anchors and timeline markers included.
 
-### Typical workflow: custom textures/materials (Avatar, FC2)
 
 1. Set up your material in Blender on the imported mesh.
 2. Advanced Mode → **Export Custom Materials** — choose a template (standard, glass,
@@ -155,7 +137,6 @@ __init__.py        # add-on entry point (registration, version)
 modules/
   Core/            # preferences, logging, shared settings
   UI/              # game picker + one panel file per game
-  Avatar/          # per-game format modules — fully self-contained per game
   Far_Cry_1/  Far_Cry_2/  Far_Cry_3/  Far_Cry_4/  Far_Cry_5/
   Far_Cry_Primal/  Far_Cry_Instincts/  Far_Cry_6/ (placeholder)
   Watch_Dogs/  Watch_Dogs_2/  Watch_Dogs_Legion/
@@ -181,10 +162,8 @@ experiment in one game can never break another.
 
 **Special thanks:** EncryptedStudios, Jasper_Zebra, legendhavoc175, and qstlijku
 
-**Original script:** Szkaradek123 for the Avatar modding community (Blender 2.49b era). 
 
 Rewritten and expanded for Blender 5.0 by Selene0623
 
 ## Want to help?
 
-If you want to help or support the project please leave any bug reports, upload broken files that the script doesn't support yet, feature suggestions or if you want to help improve the code, please don't be afraid to leave some pull requests. This is my gift to the entire Avatar/Far Cry/Watch Dogs community.
