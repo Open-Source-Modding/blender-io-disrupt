@@ -27,8 +27,8 @@ def test_wd1_hkx_import_and_roundtrip(wd1_dir, tmp_path):
     import bpy
 
     _import_modules()
-    from modules.Watch_Dogs.import_hkx_wd import import_hkx_wd
-    from modules.Watch_Dogs.inject_hkx_wd import inject_hkx_wd
+    from modules.Havok.import_hkx_wd import import_hkx_wd
+    from modules.Havok.inject_hkx_wd import inject_hkx_wd
 
     src = os.path.join(wd1_dir, HKX)
     if not os.path.isfile(src):

@@ -26,7 +26,7 @@ def test_wd2_hkx_import_and_roundtrip(wd2_dir, tmp_path):
     import bpy
 
     _import_modules()
-    from modules.Watch_Dogs.import_hkx_wd2 import (
+    from modules.Havok.import_hkx_wd2 import (
         import_hkx_wd2,
         inject_hkx_wd2,
     )
