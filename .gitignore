@@ -13,4 +13,5 @@ Thumbs.db
 *.swp
 *.swo
 *~
+.opencode/
 addonconfig.h
