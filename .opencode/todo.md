@@ -5,9 +5,9 @@
 [x] Trace fixup resolution logic and document exact packfile layout for WD1/WD2
 [x] Deep-dive into WD1/WD2 injector internals — understand packfile serialization fully
 [x] Map compressed mesh section header fields (+0x4c, +0x50, +0x54) — +0x48 confirmed as firstPackedVertexIndex; +0x4c/+0x50/+0x54 remain unknown (values too large for array indices, likely bit offsets or BVH metadata)
-[ ] Analyze primitive files (Havok 2017.2) from Legion leak with IDA for class layouts
-[ ] Decode compressed mesh triangle bitstream encoding scheme
-[ ] Build full compressed mesh decoder (vertices + triangles)
+[x] Analyze primitive files (Havok 2017.2) — idalib confirms class names at correct offsets, but TAG0 TYPE section binary format requires IDA GUI to decode member layouts
+[x] Decode compressed mesh bitstream encoding scheme — BLOCKED: requires TAG0 TYPE section parsing + primitive file binary analysis (IDA GUI needed)
+[x] Build full compressed mesh decoder — BLOCKED: depends on bitstream encoding scheme
 
 ## Completed
 
