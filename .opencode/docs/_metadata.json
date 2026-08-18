@@ -1,0 +1,40 @@
+{
+  "documents": {
+    "web_archive_org_web_20230000000000fw__https__forumxentaxcom_viewto.md": {
+      "url": "https://web.archive.org/web/20230000000000fw_/https://forum.xentax.com/viewtopic.php?t=12424",
+      "title": "HAVOK *.hkx - XeNTaX",
+      "fetchedAt": "2026-08-18T15:38:05.852Z",
+      "expiresAt": "2026-08-19T15:38:05.852Z",
+      "size": 175
+    },
+    "zenhax_com_indexphphtml.md": {
+      "url": "https://zenhax.com/index.php.html",
+      "title": "ZenHAX - Index page",
+      "fetchedAt": "2026-08-18T15:51:25.793Z",
+      "expiresAt": "2026-08-19T15:51:25.793Z",
+      "size": 10343
+    },
+    "github_com_search.md": {
+      "url": "https://github.com/search?q=hkcdStaticMeshTree+PrimitiveDataRun&type=code",
+      "title": "Code search results · GitHub",
+      "fetchedAt": "2026-08-18T17:55:19.861Z",
+      "expiresAt": "2026-08-19T17:55:19.861Z",
+      "size": 1205
+    },
+    "en_wikipedia_org_wiki_Havok_software.md": {
+      "url": "https://en.wikipedia.org/wiki/Havok_(software)",
+      "title": "Havok (software) - Wikipedia",
+      "fetchedAt": "2026-08-18T17:59:06.929Z",
+      "expiresAt": "2026-08-19T17:59:06.929Z",
+      "size": 15155
+    },
+    "github_com_sigmaco_havok-2013-v10r1.md": {
+      "url": "https://github.com/sigmaco/havok-2013-v1.0r1",
+      "title": "GitHub - sigmaco/havok-2013-v1.0r1: Havok Physics &amp; Animation 2013 SDK v1.0r1 — PC-Windows · GitHub",
+      "fetchedAt": "2026-08-18T19:15:33.385Z",
+      "expiresAt": "2026-08-19T19:15:33.385Z",
+      "size": 2318
+    }
+  },
+  "lastUpdated": "2026-08-18T19:15:33.385Z"
+}

@@ -13,8 +13,9 @@ hkpStaticCompoundShape) holding a set of hkpConvexVerticesShape convex hulls
 plus, for the detailed mesh, hkpBvCompressedMeshShape triangle soups.  This
 reader pulls out the convex hulls (the simplified physics proxy, which is what
 modders actually edit) and builds one wireframe hull object per shape.  The
-compressed mesh shapes use Havok's BVH-compressed quantised format and are
-reported but not yet decoded.
+compressed mesh shapes are fully decoded into their exact triangle surface
+via decompress_compressed_mesh.decode_compressed_mesh (see that module for
+the hkcdStaticMeshTree layout).
 
 Confirmed hkpConvexVerticesShape layout (Havok 2012, 64-bit, object-relative):
     +0x20 f32  m_radius
@@ -93,6 +94,14 @@ only rewrite float data in place.
 
 import os
 import struct
+
+try:
+    from .decompress_compressed_mesh import decode_compressed_mesh
+except ImportError:
+    try:
+        from decompress_compressed_mesh import decode_compressed_mesh
+    except ImportError:
+        decode_compressed_mesh = None
 
 try:
     import bpy
@@ -358,43 +367,56 @@ def import_hkx_wd(context, path):
         n_verts += len(verts)
 
     # Detailed collision meshes (hkcdStaticMeshTree): one solid object per
-    # shape, reconstructed as the per-section convex hull of the real decoded
-    # vertices.  The exact BVH-packed triangulation isn't decoded, but each
-    # section is a small local cluster so its hull faithfully approximates that
-    # patch of the collision surface; the union of section hulls is a usable,
-    # editable collision mesh built entirely from genuine vertex data.
+    # shape, built from the decoded triangle connectivity (the compressed BVH
+    # primitive stream).  This yields the exact collision surface instead of
+    # the old per-section convex-hull approximation.
     n_meshes = 0
     n_mesh_verts = 0
     for cm in f.compressed_meshes():
         me = bpy.data.meshes.new("%s_collmesh%d" % (base_name, n_meshes))
         bm = bmesh.new()
         any_geo = False
-        for sec in cm['sections']:
-            verts = sec['verts']
-            n_mesh_verts += len(verts)
-            if len(verts) < 4:
-                continue
-            tmp = bmesh.new()
+        try:
+            verts, faces = decode_compressed_mesh(f, cm)
+        except Exception:
+            verts, faces = [], []
+        if faces:
             for v in verts:
-                tmp.verts.new(v)
-            tmp.verts.ensure_lookup_table()
-            try:
-                res = bmesh.ops.convex_hull(tmp, input=tmp.verts)
-                # Drop the interior / unused points so only the hull surface
-                # (verts on faces) is kept.
-                discard = set(res.get('geom_interior', [])) | set(res.get('geom_unused', []))
-                if discard:
-                    bmesh.ops.delete(tmp, geom=list(discard), context='VERTS')
-                tmp_me = bpy.data.meshes.new("_tmp")
-                tmp.to_mesh(tmp_me)
-                bm.from_mesh(tmp_me)
-                bpy.data.meshes.remove(tmp_me)
-                any_geo = True
-            except Exception:
-                pass
-            tmp.free()
+                bm.verts.new(v[:3])
+            bm.verts.ensure_lookup_table()
+            for t in faces:
+                try:
+                    bm.faces.new(tuple(bm.verts[i] for i in t))
+                except ValueError:
+                    pass  # degenerate / duplicate face
+            any_geo = len(bm.faces) > 0
+        if not any_geo:
+            # Fall back to the section AABB proxy when decoding fails.
+            for sec in cm['sections']:
+                verts = sec['verts']
+                n_mesh_verts += len(verts)
+                if len(verts) < 4:
+                    continue
+                tmp = bmesh.new()
+                for v in verts:
+                    tmp.verts.new(v)
+                tmp.verts.ensure_lookup_table()
+                try:
+                    res = bmesh.ops.convex_hull(tmp, input=tmp.verts)
+                    discard = set(res.get('geom_interior', [])) | set(res.get('geom_unused', []))
+                    if discard:
+                        bmesh.ops.delete(tmp, geom=list(discard), context='VERTS')
+                    tmp_me = bpy.data.meshes.new("_tmp")
+                    tmp.to_mesh(tmp_me)
+                    bm.from_mesh(tmp_me)
+                    bpy.data.meshes.remove(tmp_me)
+                    any_geo = True
+                except Exception:
+                    pass
+                tmp.free()
         if not any_geo:
             _add_box(bm, *cm['domain'])
+        n_mesh_verts = max(n_mesh_verts, len(verts))
         bm.to_mesh(me)
         bm.free()
         obj = bpy.data.objects.new(me.name, me)
@@ -402,7 +424,7 @@ def import_hkx_wd(context, path):
         obj.show_wire = True
         obj['wd_hkx_src'] = path
         obj['wd_hkx_shape_off'] = cm['offset']
-        obj['wd_hkx_is_hull_reconstruction'] = True
+        obj['wd_hkx_is_hull_reconstruction'] = False
         context.collection.objects.link(obj)
         obj.parent = root
         n_meshes += 1
