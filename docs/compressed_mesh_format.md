@@ -39,10 +39,25 @@ Contains: AABB codec parameters, vertex/primitive/data-run indices and counts.
 - `m_count`: count of items (range 0–93)
 - These decode the bitstream into primitives
 
+### Confirmed Section Header Field Mapping (Havok 2012)
+| Offset | Field | Description |
+|--------|-------|-------------|
+| +0x08 | nv (u32) | Total vertices for this section |
+| +0x10..+0x27 | m_codecParms[6] (6 floats) | Quantization parameters (AABB min/max) |
+| +0x48 | m_firstPackedVertexIndex (u32) | Cumulative index into packedVertices array |
+| +0x58 | m_numPackedVertices (byte) | Count of packed vertices for this section |
+| +0x59 | m_numPrimitives (byte) | Count of primitives for this section |
+| +0x5a | m_numDataRuns (byte) | Count of data runs for this section |
+
+**Validation**: idx48 differences match +0x58 byte values exactly (e.g., section 0→1: 26-0=26, b58=26 ✓).
+
+**Still unknown**: +0x4c, +0x50, +0x54 (cumulative but don't match simple counts). These may be firstSharedVertexIndex, firstPrimitiveIndex, firstDataRunIndex — but the values don't match expected ranges.
+
 ### Key Insight
-The primitives are already decoded at 0x9030. The data runs are metadata about how the primitives were encoded. The encoding scheme is a triangle strip or similar connectivity representation using GLOBAL vertex indices (not per-section).
+The primitives are already decoded at 0x9030 (byte[4] with global vertex indices). The data runs are PrimitiveDataRun entries (value/index/count) that encode the bitstream.
 
 ### Remaining Work
 1. Determine exact encoding scheme (strip vs fan vs individual edges)
-2. Map data runs to sections
+2. Map +0x4c, +0x50, +0x54 to HKLib fields
 3. Reconstruct full triangle mesh from primitives + section transforms
+4. Use primitive files (Havok 2017.2) from Legion leak for class layout validation
