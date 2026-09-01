@@ -230,3 +230,38 @@ class XBG_OT_ImportWDLMab(bpy.types.Operator):
             self.report({'ERROR'}, f"Failed to import WDL .mab: {exc}")
             import traceback; traceback.print_exc()
             return {'CANCELLED'}
+
+
+class XBG_OT_ImportWDLHkx(bpy.types.Operator):
+    """Import a Watch Dogs Legion .hkx collision file (TAG0 compressed mesh)."""
+    bl_idname  = "xbg.import_wdl_hkx"
+    bl_label   = "Import WDL HKX Collision"
+    bl_description = (
+        "Read a Watch Dogs Legion .col.hkx (Disrupt TAG0 serialized Havok) "
+        "and build one mesh object per hkpBvCompressedMeshShape. "
+        "Physics-critical data round-trips bit-identically."
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(default="*.hkx", options={'HIDDEN'})
+
+    def invoke(self, ctx, ev):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        from .import_hkx_wdl import import_hkx_wdl
+        if not self.filepath or not os.path.isfile(self.filepath):
+            self.report({'ERROR'}, "No valid .hkx file selected")
+            return {'CANCELLED'}
+        try:
+            n_shapes, n_verts = import_hkx_wdl(ctx, self.filepath)
+            self.report({'INFO'},
+                f"WDL HKX: {n_shapes} shapes "
+                f"({n_verts} verts) from {os.path.basename(self.filepath)}")
+            return {'FINISHED'} if n_shapes else {'CANCELLED'}
+        except Exception as exc:
+            self.report({'ERROR'}, f"Failed to import WDL .hkx: {exc}")
+            import traceback; traceback.print_exc()
+            return {'CANCELLED'}

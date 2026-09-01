@@ -54,8 +54,9 @@ class XBG_OT_ImportWDHkx(bpy.types.Operator):
     bl_description = (
         "Read a Watch Dogs 1 .hkx Havok packfile (64-bit Havok 2012, e.g. "
         "vehicle physics) and build a wireframe convex-hull object for each "
-        "collision shape.  Compressed triangle-mesh shapes are reported but "
-        "not yet decoded"
+        "collision shape, plus an editable box mesh for each hkpBoxShape.  "
+        "Compressed triangle-mesh shapes are decoded into their exact "
+        "triangle surface"
     )
     bl_options = {'REGISTER', 'UNDO'}
 
@@ -67,20 +68,22 @@ class XBG_OT_ImportWDHkx(bpy.types.Operator):
         return {'RUNNING_MODAL'}
 
     def execute(self, ctx):
-        from .import_hkx_wd import import_hkx_wd
+        from ..Havok.import_hkx_wd import import_hkx_wd
         if not self.filepath or not os.path.isfile(self.filepath):
             self.report({'ERROR'}, "No valid .hkx file selected")
             return {'CANCELLED'}
         try:
-            n_hulls, n_verts, n_meshes = import_hkx_wd(ctx, self.filepath)
+            n_hulls, n_verts, n_meshes, n_boxes = import_hkx_wd(ctx, self.filepath)
             msg = (f"WD1 HKX: {n_hulls} convex hulls"
                    f" from {os.path.basename(self.filepath)}")
+            if n_boxes:
+                msg += f" + {n_boxes} box(es)"
             if n_meshes:
                 msg += (f" + {n_meshes} collision mesh(es) reconstructed "
                         f"per-section from decoded vertices")
             msg += f" ({n_verts} verts)"
             self.report({'INFO'}, msg)
-            return {'FINISHED'} if (n_hulls or n_meshes) else {'CANCELLED'}
+            return {'FINISHED'} if (n_hulls or n_meshes or n_boxes) else {'CANCELLED'}
         except Exception as exc:
             self.report({'ERROR'}, f"Failed to import WD1 .hkx: {exc}")
             import traceback; traceback.print_exc()

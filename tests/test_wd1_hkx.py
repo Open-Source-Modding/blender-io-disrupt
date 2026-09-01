@@ -36,13 +36,14 @@ def test_wd1_hkx_import_and_roundtrip(wd1_dir, tmp_path):
     orig = open(src, "rb").read()
 
     bpy.ops.wm.read_factory_settings(use_empty=True)
-    n_hulls, n_verts, n_meshes = import_hkx_wd(bpy.context, src)
-    # This file: 1 convex hull (16 verts) + no compressed meshes.  Boxes are
-    # part of the static compound and are NOT imported as objects (the
-    # importer only surfaces convex-hull and compressed-mesh shapes).
+    n_hulls, n_verts, n_meshes, n_boxes = import_hkx_wd(bpy.context, src)
+    # This file: 1 convex hull (16 verts), hkpBoxShape boxes from the static
+    # compound, and no compressed meshes.  Boxes are now imported as editable
+    # solid box meshes (8 verts, 6 quads each).
     assert n_hulls == 1
     assert n_verts == 16
     assert n_meshes == 0
+    assert n_boxes >= 1  # at least one hkpBoxShape in the building compound
 
     shape_objs = [o for o in bpy.context.scene.objects
                   if o.get("wd_hkx_shape_off") is not None

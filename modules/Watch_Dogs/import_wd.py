@@ -77,28 +77,28 @@ class _Reader:
 
     def u16(self):
         self.pad(2)
-        v = struct.unpack_from('<H', self.d, self.p)[0]; self.p += 2
-        return v
+        v = np.frombuffer(self.d, np.uint16, 1, self.p)[0]; self.p += 2
+        return int(v)
 
     def u32(self):
         self.pad(4)
-        v = struct.unpack_from('<I', self.d, self.p)[0]; self.p += 4
-        return v
+        v = np.frombuffer(self.d, np.uint32, 1, self.p)[0]; self.p += 4
+        return int(v)
 
     def f32(self):
         self.pad(4)
-        v = struct.unpack_from('<f', self.d, self.p)[0]; self.p += 4
-        return v
+        v = np.frombuffer(self.d, np.float32, 1, self.p)[0]; self.p += 4
+        return float(v)
 
     def vec(self, n):
         self.pad(4)
-        v = struct.unpack_from('<%df' % n, self.d, self.p); self.p += 4 * n
-        return v
+        v = np.frombuffer(self.d, np.float32, n, self.p); self.p += 4 * n
+        return tuple(v)
 
     def mat4(self):
         self.pad(16)
-        v = struct.unpack_from('<16f', self.d, self.p); self.p += 64
-        return v
+        v = np.frombuffer(self.d, np.float32, 16, self.p); self.p += 64
+        return tuple(v)
 
     def string(self):
         ln = self.u32()
@@ -338,6 +338,22 @@ def parse_wd1_xbg(path, lod_select=0):
         r.u32(); r.u32(); r.u32(); r.string()
 
     r.u32()                                       # clothWrinkle...
+
+    # --- Optional trailing data (ZModeler exports) ---
+    # ZModeler appends a size-prefixed JPEG preview image + 32 trailing
+    # bytes after clothWrinkle.  Skip if present.
+    if r.tell() < r.size():
+        remaining = r.size() - r.tell()
+        # Peek at the next u32 — if it looks like a JPEG size (reasonable
+        # value, and the JPEG data would land exactly at file end), skip it.
+        peek = int(np.frombuffer(r.d, np.uint32, 1, r.tell())[0])
+        if 8 <= peek <= remaining - 4 and r.tell() + 4 + peek <= r.size():
+            r.p += 4 + peek                        # skip size prefix + blob
+        # Skip any final trailing bytes (e.g. ZModeler preview metadata)
+        if r.tell() < r.size():
+            vlog.log("  [wd] skipping %d trailing bytes at 0x%X"
+                     % (r.size() - r.tell(), r.tell()))
+            r.p = r.size()
     if r.tell() != r.size():
         raise ValueError("WD1 parse desync: ended at 0x%X of 0x%X"
                          % (r.tell(), r.size()))
@@ -386,9 +402,9 @@ def parse_wd1_xbg(path, lod_select=0):
             try:
                 mdat = open(cand, 'rb').read()
                 if mdat[:4] == b'PIMG':
-                    mver, mzero, mbufs, mvsz = struct.unpack_from('<4I', mdat, 4)
+                    mver, mzero, mbufs, mvsz = np.frombuffer(mdat, np.uint32, 4, 4)
                     if mbufs == 1 and 20 + mvsz + 4 <= len(mdat):
-                        misz = struct.unpack_from('<I', mdat, 20 + mvsz)[0]
+                        misz = int(np.frombuffer(mdat, np.uint32, 1, 20 + mvsz)[0])
                         if 20 + mvsz + 4 + misz == len(mdat):
                             mvd = mdat[20:20 + mvsz]
                             mid = mdat[24 + mvsz:24 + mvsz + misz]
@@ -423,7 +439,7 @@ def parse_wd1_xbg(path, lod_select=0):
             continue
         vdata, idata = buffers[b]
         boff = buf_offsets[b] if b < len(buf_offsets) else 0
-        indices = struct.unpack_from('<%dH' % (len(idata) // 2), idata)
+        indices = np.frombuffer(idata, np.uint16)
         for mi, mesh in enumerate(lods[li]):
             dm = _decode_wd1_mesh(
                 mesh, mi, vdata, indices, off, bones, palettes, materials)
@@ -589,10 +605,10 @@ def _decode_wd1_mesh(mesh, mi, vdata, indices, off, bones, palettes, materials):
         k = start + vi * stride
         w_idx = 0.0
         if point:
-            verts.append(struct.unpack_from('<3f', vdata, k))
+            verts.append(tuple(np.frombuffer(vdata, np.float32, 3, k)))
             k += 12
         elif point_comp:
-            px, py, pz, pw = struct.unpack_from('<4h', vdata, k)
+            px, py, pz, pw = np.frombuffer(vdata, np.int16, 4, k)
             verts.append((px * off[1] + off[0], py * off[1] + off[0],
                           pz * off[1] + off[0]))
             w_idx = float(pw)
@@ -600,16 +616,16 @@ def _decode_wd1_mesh(mesh, mi, vdata, indices, off, bones, palettes, materials):
         else:
             verts.append((0.0, 0.0, 0.0))
         if uv_full:
-            tu, tv = struct.unpack_from('<2f', vdata, k)
-            uvs.append((tu, 1.0 - tv))
+            tu, tv = np.frombuffer(vdata, np.float32, 2, k)
+            uvs.append((float(tu), 1.0 - float(tv)))
             k += 8
         elif uv_comp:
-            tu, tv = struct.unpack_from('<2h', vdata, k)
-            uvs.append((tu * off[3] + off[2], 1.0 - (tv * off[3] + off[2])))
+            tu, tv = np.frombuffer(vdata, np.int16, 2, k)
+            uvs.append((float(tu * off[3] + off[2]), 1.0 - float(tv * off[3] + off[2])))
             k += 4
         if uv_comp2:
-            tu, tv = struct.unpack_from('<2h', vdata, k)
-            uvs2.append((tu * off[3] + off[2], 1.0 - (tv * off[3] + off[2])))
+            tu, tv = np.frombuffer(vdata, np.int16, 2, k)
+            uvs2.append((float(tu * off[3] + off[2]), 1.0 - float(tv * off[3] + off[2])))
             k += 4
         if uv_comp3:
             k += 4
@@ -647,7 +663,7 @@ def _decode_wd1_mesh(mesh, mi, vdata, indices, off, bones, palettes, materials):
                             _U8N_LUT[vdata[k]]))
             k += 4
         elif normal_full:
-            normals.append(struct.unpack_from('<3f', vdata, k))
+            normals.append(tuple(np.frombuffer(vdata, np.float32, 3, k)))
             k += 12
         if color:
             # D3DCOLOR B,G,R,A in memory -> present as R,G,B,A
@@ -675,9 +691,9 @@ def _decode_wd1_mesh(mesh, mi, vdata, indices, off, bones, palettes, materials):
     if mesh['prim_type'] == 0:
         s = dc['index_start']
         idx = indices[s:s + dc['index_count']]
-        base = dc['min_index'] if (idx and max(idx) >= count) else 0
+        base = dc['min_index'] if (len(idx) > 0 and int(idx.max()) >= count) else 0
         for t in range(0, len(idx) - 2, 3):
-            tris.append((idx[t] - base, idx[t + 2] - base, idx[t + 1] - base))
+            tris.append((int(idx[t]) - base, int(idx[t + 2]) - base, int(idx[t + 1]) - base))
 
     name = (mesh['ranges'][0]['name'] if mesh['ranges'] and
             mesh['ranges'][0]['name'] else 'mesh%02d' % mi)
@@ -798,24 +814,17 @@ def build_wd_model(context, model, import_mesh_only=False):
             ca = me.color_attributes.new('Col', 'FLOAT_COLOR', 'POINT')
             ca.data.foreach_set('color', np.asarray(colors, dtype=np.float64).ravel())
 
-        # Normals — keep the authored vectors AND mirror them into an
-        # xbg_normal attribute (Avatar-importer parity, survives edits)
-        loop_normals = mesh.get('loop_normals')
+        # Normals — store authored vectors as xbg_normal attribute for
+        # round-trip fidelity.  We intentionally SKIP normals_split_custom_set
+        # and normals_split_custom_set_from_vertices because both APIs can
+        # segfault in Blender 5.2 + Python 3.14 on certain mesh topologies
+        # (e.g. pistolpart.xbg's Clip mesh).  Blender auto-computes display
+        # normals from the geometry, which is visually correct for imports.
+        # The authored per-vertex normals survive in the xbg_normal attribute
+        # for re-export (inject_wd.py).
         per_vert_normals = mesh.get('normals')
         for poly in me.polygons:
             poly.use_smooth = True
-        try:
-            if loop_normals and len(loop_normals) == len(me.loops):
-                me.normals_split_custom_set(loop_normals)
-            elif per_vert_normals:
-                me.normals_split_custom_set_from_vertices(per_vert_normals)
-            # Blender <= 4.0: custom split normals only display with
-            # auto-smooth enabled (removed in 4.1+, hence the guard).
-            if hasattr(me, 'use_auto_smooth'):
-                me.use_auto_smooth = True
-        except Exception as exc:
-            vlog.log("  [wd] custom normals failed on %s: %s"
-                     % (mesh['name'], exc))
         if per_vert_normals:
             na = me.attributes.new('xbg_normal', 'FLOAT_VECTOR', 'POINT')
             na.data.foreach_set(

@@ -9,13 +9,14 @@ because every pointer/vtable slot is 8 bytes instead of 4.
 What we extract
 ---------------
 The vehicle collision is a hkpRigidBody → hkpListShape (or
-hkpStaticCompoundShape) holding a set of hkpConvexVerticesShape convex hulls
-plus, for the detailed mesh, hkpBvCompressedMeshShape triangle soups.  This
-reader pulls out the convex hulls (the simplified physics proxy, which is what
-modders actually edit) and builds one wireframe hull object per shape.  The
-compressed mesh shapes are fully decoded into their exact triangle surface
-via decompress_compressed_mesh.decode_compressed_mesh (see that module for
-the hkcdStaticMeshTree layout).
+hkpStaticCompoundShape) holding a set of hkpConvexVerticesShape convex hulls,
+hkpBoxShape boxes, plus, for the detailed mesh, hkpBvCompressedMeshShape
+triangle soups.  This reader pulls out the convex hulls (the simplified
+physics proxy, which is what modders actually edit) and builds one wireframe
+hull object per shape; hkpBoxShape boxes are built as editable solid box
+meshes (8 verts, 6 quads).  The compressed mesh shapes are fully decoded into
+their exact triangle surface via decompress_compressed_mesh.decode_compressed_mesh
+(see that module for the hkcdStaticMeshTree layout).
 
 Confirmed hkpConvexVerticesShape layout (Havok 2012, 64-bit, object-relative):
     +0x20 f32  m_radius
@@ -212,6 +213,18 @@ class WdHkxFile:
                 'verts': verts,
             }
 
+    def box_shapes(self):
+        """Yield dicts for every hkpBoxShape: offset, radius, half_extents."""
+        for o in sorted(self.objects):
+            if self.objects[o] != 'hkpBoxShape':
+                continue
+            yield {
+                'offset': o,
+                'radius': self.f32(o, 0x20),
+                'half_extents': struct.unpack_from(
+                    '<3f', self.d, self.base + o + 0x30),
+            }
+
     def _read_fourvectors(self, data_off, num):
         """Read num vertices from an SOA hkFourVectors array at data_off."""
         verts = []
@@ -318,12 +331,13 @@ def _add_box(bm, amin, amax):
 def import_hkx_wd(context, path):
     """Build wireframe collision objects for a WD1 .hkx collision file.
 
-    Creates a closed wireframe hull per hkpConvexVerticesShape, plus a
-    section-bounds proxy per hkpBvCompressedMeshShape (the detailed collision
-    mesh, represented by its tile of section AABBs until the quantised triangle
-    stream is decoded).
+    Creates a closed wireframe hull per hkpConvexVerticesShape, a solid
+    editable box per hkpBoxShape (8 verts, 6 quads), and a decoded
+    triangle surface per hkpBvCompressedMeshShape (the detailed collision
+    mesh).  Boxes carry ``wd_hkx_is_box=1`` so the injector can
+    distinguish them from convex-hull shapes.
 
-    Returns (n_hulls, n_total_hull_verts, n_compressed_meshes).
+    Returns (n_hulls, n_total_hull_verts, n_compressed_meshes, n_boxes).
     """
     if bpy is None:
         raise RuntimeError("bpy unavailable — run inside Blender")
@@ -365,6 +379,36 @@ def import_hkx_wd(context, path):
         obj.parent = root
         n_hulls += 1
         n_verts += len(verts)
+
+    # hkpBoxShape boxes — editable solid box meshes (8 verts, 6 quads).
+    n_boxes = 0
+    for shape in f.box_shapes():
+        hx, hy, hz = shape['half_extents']
+        me = bpy.data.meshes.new("%s_box%d" % (base_name, n_boxes))
+        bm = bmesh.new()
+        corners = [(-hx, -hy, -hz), (hx, -hy, -hz), (hx, hy, -hz), (-hx, hy, -hz),
+                   (-hx, -hy, hz),  (hx, -hy, hz),  (hx, hy, hz),  (-hx, hy, hz)]
+        vs = [bm.verts.new(c) for c in corners]
+        bm.verts.ensure_lookup_table()
+        quads = [(0, 1, 2, 3), (4, 5, 6, 7),  # bottom / top
+                 (0, 1, 5, 4), (2, 3, 7, 6),  # front / back
+                 (0, 3, 7, 4), (1, 2, 6, 5)]  # left / right
+        for q in quads:
+            try:
+                bm.faces.new(tuple(vs[i] for i in q))
+            except ValueError:
+                pass
+        bm.to_mesh(me)
+        bm.free()
+        obj = bpy.data.objects.new(me.name, me)
+        obj.display_type = 'WIRE'
+        obj.show_wire = True
+        obj['wd_hkx_src'] = path
+        obj['wd_hkx_shape_off'] = shape['offset']
+        obj['wd_hkx_is_box'] = 1
+        context.collection.objects.link(obj)
+        obj.parent = root
+        n_boxes += 1
 
     # Detailed collision meshes (hkcdStaticMeshTree): one solid object per
     # shape, built from the decoded triangle connectivity (the compressed BVH
@@ -429,4 +473,4 @@ def import_hkx_wd(context, path):
         obj.parent = root
         n_meshes += 1
 
-    return n_hulls, n_verts + n_mesh_verts, n_meshes
+    return n_hulls, n_verts + n_mesh_verts, n_meshes, n_boxes

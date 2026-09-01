@@ -6,27 +6,20 @@ tools; the back arrow returns to the picker.  The selection lives in
 ``Scene.xbg_active_game`` so it survives undo / file boundaries gracefully.
 
 Per-game tool panels are ordinary sub-panels parented to that game's root
-container panel (e.g. ``OBJECT_PT_xbg_avatar``), so a game's whole UI hides
+container panel (e.g. ``OBJECT_PT_xbg_wd``), so a game's whole UI hides
 with one poll check.
 """
 
 import bpy
 
+from ..Core.detect import detect_game_from_path
+
 
 # (identifier, button label, supported)
 GAMES = [
-    ('AVATAR', "Avatar: The Game", True),
-    ('FC1',    "Far Cry 1",        True),    # CryEngine 1 .cgf — leaked source, not reverse-engineered
-    ('FCI',    "Far Cry Instincts", True),   # Xbox 2005 — unrelated earlier .xbg format
-    ('FC2',    "Far Cry 2",        True),    # Dunia — shares the Avatar tools
-    ('FC3',    "Far Cry 3",        True),
-    ('FC4',    "Far Cry 4",        True),    # same GEOM path as FC3
-    ('FC5',    "Far Cry 5",        True),     # mesh RE in progress
-    ('PRIMAL', "Far Cry Primal",   True),     # FC4-family GEOM (0x0006003A)
-    ('FC6',    "Far Cry 6",        False),
-    ('WD1',    "Watch Dogs 1",     True),
-    ('WD2',    "Watch Dogs 2",     True),
-    ('WD3',    "Watch Dogs Legion", True),
+    ('WD1', "Watch Dogs 1",     True),
+    ('WD2', "Watch Dogs 2",     True),
+    ('WD3', "Watch Dogs Legion", True),
 ]
 
 GAME_LABELS = {gid: label for gid, label, _ in GAMES}
@@ -54,6 +47,34 @@ class XBG_OT_SelectGame(bpy.types.Operator):
         return {'FINISHED'}
 
 
+class XBG_OT_DetectGame(bpy.types.Operator):
+    """Open a file browser to auto-detect the game from a file's header."""
+    bl_idname = "xbg.detect_game"
+    bl_label = "Auto-detect Game from File"
+    bl_options = {'INTERNAL'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(
+        default="*.xbg;*.glm;*.hkx;*.mab;*.skel",
+        options={'HIDDEN'})
+
+    def invoke(self, ctx, ev):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        game = detect_game_from_path(self.filepath)
+        if game is None:
+            self.report({'WARNING'},
+                        "Could not detect game from file header. "
+                        "Please select manually.")
+            return {'CANCELLED'}
+        ctx.scene.xbg_active_game = game
+        label = GAME_LABELS.get(game, game)
+        self.report({'INFO'}, f"Detected: {label}")
+        return {'FINISHED'}
+
+
 class XBG_PT_Panel(bpy.types.Panel):
     """Root panel: game picker / per-game header."""
     bl_label = "XBG Importer"
@@ -78,13 +99,8 @@ class XBG_PT_Panel(bpy.types.Panel):
                     op = col.operator("xbg.select_game", text=label)
                     op.game = gid
             l.separator()
-            sub = l.column(align=True)
-            sub.scale_y = 1.1
-            sub.enabled = False
-            sub.label(text="Coming soon:")
-            for gid, label, supported in GAMES:
-                if not supported:
-                    sub.operator("xbg.select_game", text=label, icon='LOCKED')
+            op = l.operator("xbg.detect_game", text="Auto-detect from File...",
+                            icon='VIEWZOOM')
             return
 
         # ── A game is selected: back arrow + title ──────────────────────
@@ -92,148 +108,6 @@ class XBG_PT_Panel(bpy.types.Panel):
         op = row.operator("xbg.select_game", text="", icon='BACK')
         op.game = 'NONE'
         row.label(text=GAME_LABELS.get(game, game))
-
-        if game not in SUPPORTED:
-            box = l.box()
-            box.label(text="No tools for this game yet.", icon='INFO')
-            box.label(text="Support is planned — check for updates.")
-
-
-class XBG_PT_AvatarRoot(bpy.types.Panel):
-    """Container for the Avatar / Far Cry 2 (Dunia) toolset."""
-    bl_label = "Tools"
-    bl_idname = "OBJECT_PT_xbg_avatar"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "XBG Import"
-    bl_parent_id = "OBJECT_PT_xbg_import"
-    bl_options = {'HIDE_HEADER'}
-
-    @classmethod
-    def poll(cls, ctx):
-        return active_game(ctx) == 'AVATAR'
-
-    def draw(self, ctx):
-        l = self.layout
-        ds = ctx.scene.xbg_debug_settings
-        row = l.row()
-        row.scale_y = 1.3
-        icon = 'SETTINGS' if ds.advanced_mode else 'PREFERENCES'
-        row.prop(ds, "advanced_mode", text="Advanced Mode", icon=icon,
-                 toggle=True)
-
-
-class XBG_PT_FC1Root(bpy.types.Panel):
-    """Container for the Far Cry 1 toolset (panels in panels_fc1.py).
-
-    CryEngine 1 .cgf -- documented from the leaked engine source, not
-    reverse-engineered. Same root layout as Avatar (the master UI template):
-    an Advanced Mode toggle, even while FC1 has few advanced-only panels.
-    """
-    bl_label = "Tools"
-    bl_idname = "OBJECT_PT_xbg_fc1"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "XBG Import"
-    bl_parent_id = "OBJECT_PT_xbg_import"
-    bl_options = {'HIDE_HEADER'}
-
-    @classmethod
-    def poll(cls, ctx):
-        return active_game(ctx) == 'FC1'
-
-    def draw(self, ctx):
-        l = self.layout
-        ds = ctx.scene.xbg_debug_settings
-        row = l.row()
-        row.scale_y = 1.3
-        icon = 'SETTINGS' if ds.advanced_mode else 'PREFERENCES'
-        row.prop(ds, "advanced_mode", text="Advanced Mode", icon=icon,
-                 toggle=True)
-
-
-class XBG_PT_FCIRoot(bpy.types.Panel):
-    """Container for the Far Cry Instincts toolset (panels in panels_fci.py).
-
-    Instincts is an unrelated, earlier .xbg format (Xbox, 2005). Same root
-    layout as Avatar (the master UI template): an Advanced Mode toggle, even
-    while FCI has few advanced-only panels.
-    """
-    bl_label = "Tools"
-    bl_idname = "OBJECT_PT_xbg_fci"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "XBG Import"
-    bl_parent_id = "OBJECT_PT_xbg_import"
-    bl_options = {'HIDE_HEADER'}
-
-    @classmethod
-    def poll(cls, ctx):
-        return active_game(ctx) == 'FCI'
-
-    def draw(self, ctx):
-        l = self.layout
-        ds = ctx.scene.xbg_debug_settings
-        row = l.row()
-        row.scale_y = 1.3
-        icon = 'SETTINGS' if ds.advanced_mode else 'PREFERENCES'
-        row.prop(ds, "advanced_mode", text="Advanced Mode", icon=icon,
-                 toggle=True)
-
-
-class XBG_PT_FC2Root(bpy.types.Panel):
-    """Container for the Far Cry 2 toolset (independent Dunia-1 clone;
-    panels in panels_fc2.py)."""
-    bl_label = "Tools"
-    bl_idname = "OBJECT_PT_xbg_fc2"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "XBG Import"
-    bl_parent_id = "OBJECT_PT_xbg_import"
-    bl_options = {'HIDE_HEADER'}
-
-    @classmethod
-    def poll(cls, ctx):
-        return active_game(ctx) == 'FC2'
-
-    def draw(self, ctx):
-        l = self.layout
-        ds = ctx.scene.xbg_debug_settings
-        row = l.row()
-        row.scale_y = 1.3
-        icon = 'SETTINGS' if ds.advanced_mode else 'PREFERENCES'
-        row.prop(ds, "advanced_mode", text="Advanced Mode", icon=icon,
-                 toggle=True)
-
-
-class XBG_PT_FC3Root(bpy.types.Panel):
-    """Container for the Far Cry 3 / 4 / 5 / Primal toolset
-    (panels in panels_fc3.py)."""
-    bl_label = "Tools"
-    bl_idname = "OBJECT_PT_xbg_fc3"
-    bl_space_type = 'VIEW_3D'
-    bl_region_type = 'UI'
-    bl_category = "XBG Import"
-    bl_parent_id = "OBJECT_PT_xbg_import"
-    bl_options = {'HIDE_HEADER'}
-
-    @classmethod
-    def poll(cls, ctx):
-        return active_game(ctx) in ('FC3', 'FC4', 'FC5', 'PRIMAL')
-
-    def draw(self, ctx):
-        # Must draw SOMETHING: an empty HIDE_HEADER container can fail to
-        # render its child sub-panels, which left the FC3 tab blank (FC4 only
-        # worked because its Animation sub-panel anchored the group).  The
-        # Advanced Mode toggle doubles as that anchor, matching the Avatar
-        # master layout.
-        l = self.layout
-        ds = ctx.scene.xbg_debug_settings
-        row = l.row()
-        row.scale_y = 1.3
-        icon = 'SETTINGS' if ds.advanced_mode else 'PREFERENCES'
-        row.prop(ds, "advanced_mode", text="Advanced Mode", icon=icon,
-                 toggle=True)
 
 
 class XBG_PT_WDRoot(bpy.types.Panel):

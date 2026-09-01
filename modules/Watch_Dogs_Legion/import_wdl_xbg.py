@@ -259,47 +259,95 @@ def _read_skip_mess(r):
 
 
 def _read_mesh_list(r):
-    """Read mesh descriptor list for one LOD. Returns list of dicts."""
+    """Read mesh descriptor list for one LOD (WDL 0x95 layout).
+
+    Layout (verified against XbgParserD.cs + real character/vehicle files):
+      u32 meshCount
+      per mesh (0x84 = 132 bytes):
+        bbox            40B   (10 × f32)
+        u32 0           4B
+        params          44B   (22 × u16):
+          [2]  = matIndex
+          [3]  = uvFlag
+          [4]  = vertStride
+          [14] = faceCount   (NOTE: differs from WD2 0x89 where [10]=faceCount)
+          [16] = indexCount  (3 × faceCount for triangle lists)
+          [20] = vertexCount (NOTE: WD2 0x89 puts matSubCount here)
+        u32 packed      4B    (low16 = maxVertexIndex = vertexCount-1)
+        u32 matSubCount 4B    (always 1 in test files)
+        u32 meshIdx     4B    (1-based)
+        u32 0           4B
+        u32s(3)         12B   (vertex-buffer offsets; 0 for first mesh)
+        u32s(5)         20B   (repeat: faceCount, indexCount, 0, vertexCount, maxV)
+      then matSubCount material sub-entries, each:
+        bbox            40B   (repeat of parent bbox)
+        u32 hash        4B
+        u32 nameLen     4B
+        name            (nameLen bytes, null-padded to 4)
+        u16s(2)         4B    (0x0000, 0xffff)
+    """
     mesh_count = r.u32()
     meshes = []
 
     for _ in range(mesh_count):
-        r.skip_bytes(40)  # 10 f32s: bounding box / LOD distances
+        # 10 f32s: bounding box (min(3) + extent(3) + 4 padding/unused)
+        bbox = r.f32s(10)
+        bbox_min = tuple(bbox[0:3])
+        bbox_ext = tuple(bbox[3:6])
 
         params = r.u16s(22)
-        r.u32()
+        r.u32()  # packed maxVertexIndex (low16)
 
         vertStride = params[4]
-        vertCount = 1 + params[16] - params[15]
-        faceCount = params[10]
-        faceOffset = params[12]
-        totalVertCount = params[14]
+        vertCount = params[20]
+        faceCount = params[14]
+        indexCount = params[16]
+        faceOffset = 0
+        totalVertCount = vertCount
         matID = params[2]
         UVFlag = params[3]
-        matCount = params[20]
+
+        mat_sub_count = r.u32()   # real material sub-entry count
+        r.u32()                   # mesh index (1-based)
+        r.u32()                   # 0
+        r.u32s(3)                 # vertex-buffer offsets
+        r.u32s(5)                 # repeated counts block
 
         mat_names = []
-        for _ in range(matCount):
-            r.skip_bytes(34)
-            s = r.u32()
+        for sub_i in range(mat_sub_count):
+            r.skip_bytes(40)  # sub-entry bbox (repeat of parent)
+            r.u32()           # hash
+            s = r.u32()       # name length
             if 0 < s <= 128:
-                name = r.str()
+                raw = r.read(s)
+                end = raw.find(b'\x00')
+                if end >= 0:
+                    raw = raw[:end]
+                name = raw.decode('latin-1')
                 r.align(4)
                 r.u16s(2)
+                # Multi-part meshes (matSub > 1) carry a 32-byte data tail
+                # (3 vertex-buffer offsets + 5 counts) after every sub-entry
+                # EXCEPT the last one.
+                if mat_sub_count > 1 and sub_i < mat_sub_count - 1:
+                    r.skip_bytes(32)
                 mat_names.append(name)
             else:
-                r.seek(-72, 1)
+                break
 
         meshes.append({
             'vertStride': vertStride,
             'vertCount': vertCount,
             'faceCount': faceCount,
+            'indexCount': indexCount,
             'faceOffset': faceOffset,
             'totalVertCount': totalVertCount,
             'matID': matID,
             'UVFlag': UVFlag,
-            'matCount': matCount,
+            'matCount': mat_sub_count,
             'matNames': mat_names,
+            'bbox_min': bbox_min,
+            'bbox_ext': bbox_ext,
         })
 
     return meshes
@@ -470,33 +518,11 @@ def parse_wdl_xbg(path):
         for _ in range(lod_count):
             lod_meshes.append(_read_mesh_list(r))
 
-        # ── Skip to vertex data ────────────────────────────────────────
-        skip_14b = r.u32()
-
-        if skip_14b > 0:
-            file_size = os.path.getsize(path)
-            fp.seek(0)
-            big = fp.read()
-            start_off = 0
-            while True:
-                found_off = big.find(b'\xff\xff\xff\xff', start_off)
-                if found_off < file_size // 2:
-                    start_off = found_off + 4
-                else:
-                    break
-            found_off -= 36
-            fp.seek(found_off)
-        else:
-            skip_14c = r.u32()
-            if skip_14c > 0:
-                r.skip_bytes(skip_14c * 128)
-                r.align(16)
-
-        d_start = r.u32()
-        d_end = r.u32()
-
-        if d_start == 0 and d_end == 0:
-            d_end = 1
+        # ── LOD range for geometry region ──────────────────────────────
+        # WDL 0x95 geometry data begins immediately after mesh lists.
+        # No skip/d_start/d_end section (unlike WD2 0x89).
+        d_start = 0
+        d_end = lod_count
 
         # Store layout info for injection
         model['_layout'] = {
@@ -509,17 +535,35 @@ def parse_wdl_xbg(path):
         # ── Read vertex + face data per LOD ────────────────────────────
         for lod_idx in range(d_end):
             lod = lod_meshes[lod_idx + d_start] if (lod_idx + d_start) < len(lod_meshes) else []
-            _read_lod_geometry(r, model, lod, lod_idx, path, mat_count, materials)
+            try:
+                _read_lod_geometry(r, model, lod, lod_idx, path, mat_count, materials)
+            except Exception as exc:
+                vlog.warn(f"  [wdl-xbg] LOD{lod_idx} geometry read failed: {exc}")
+                break
 
     return model
 
 
 def _read_lod_geometry(r, model, mesh_params_list, lod_idx, xbg_path,
                        mat_count, materials):
-    """Read vertex and face data for one LOD, tracking file offsets."""
-    vert_sum = 0
-    running_face_count = 0
-    subtract_index = 0
+    """Read vertex and face data for one LOD (WDL 0x95 geometry layout).
+
+    WDL 0x95 geometry region layout (verified on character/vehicle files):
+      LOD header        32B   (u32 meshCount etc.)
+      mesh blocks       index + attribute data (per-mesh, quad-split indices
+                        and run-table encoded attributes; NOT in 0..N order)
+      position buffer   contiguous i16 positions, mesh order 0..N-1
+
+    Vertex positions (VERIFIED decode):
+      buffer at lod_start + 32 + sum(all indexCount)*2
+      per mesh at cumulative offset (voff += vertCount*vertStride)
+      pos[i] = i16 / 32768.0 * bbox_ext[i] + bbox_min[i]
+    """
+    lod_start = r.tell()
+
+    # Total index bytes across all meshes in this LOD -> position buffer start
+    total_idx_bytes = sum(mp['indexCount'] * 2 for mp in mesh_params_list)
+    pos_buf_start = lod_start + 32 + total_idx_bytes
 
     all_verts = []
     all_uvs = []
@@ -528,134 +572,150 @@ def _read_lod_geometry(r, model, mesh_params_list, lod_idx, xbg_path,
     mat_zones = []
     material_count = 0
 
-    # Pre-calculate the face block start
-    vert_block_size = 0
+    # --- Read positions from the contiguous position buffer (VERIFIED) ---
+    voff = pos_buf_start
+    mesh_positions = []
     for mp in mesh_params_list:
-        blocksize = 1 + (mp['vertCount'])
-        vert_block_size += blocksize * mp['vertStride']
+        vc = mp['vertCount']
+        stride = mp['vertStride']
+        bmin = mp.get('bbox_min', (0.0, 0.0, 0.0))
+        bext = mp.get('bbox_ext', (1.0, 1.0, 1.0))
+        verts = []
+        for i in range(vc):
+            x, y, z = _read_i16s(r, voff + i * stride, 3)
+            px = x / 32768.0 * bext[0] + bmin[0]
+            py = y / 32768.0 * bext[1] + bmin[1]
+            pz = z / 32768.0 * bext[2] + bmin[2]
+            verts.append((px, py, pz))
+        mesh_positions.append(verts)
+        voff += vc * stride
 
-    face_block_start = r.tell() + vert_block_size + 4
-    vert_block_offset = r.tell()
-
-    # Read face count
-    r.seek(face_block_start)
-    face_count = r.u32() // 2
-    face_block_start = r.tell()
-    r.seek(vert_block_offset)
+    # --- Faces (best-effort: quad-split index buffers in mesh blocks) ---
+    mesh_faces = _try_decode_faces(r, lod_start, mesh_params_list)
 
     for mp_idx, mp in enumerate(mesh_params_list):
-        r.seek(vert_block_offset)
-
         vert_stride = mp['vertStride']
         vert_count = mp['vertCount']
-        face_count_local = mp['faceCount']
-        face_offset = mp['faceOffset']
-        total_vert_count = mp['totalVertCount']
         mat_id = mp['matID']
 
-        # Record the file offset where this submesh's vertices start
-        submesh_vert_start = r.tell()
+        submesh_vert_start = lod_start
+        all_verts.extend(mesh_positions[mp_idx])
 
         if material_count == 0:
-            subtract_index = face_offset
-
+            subtract_index = 0
         mat_entry = {
             'matID': mat_id,
-            'start': (face_offset - subtract_index) // 3,
-            'end': ((face_offset - subtract_index) + face_count_local) // 3,
+            'start': 0,
+            'end': vert_count,
         }
         mat_zones.append(mat_entry)
         material_count += 1
 
-        for _ in range(vert_count):
-            tmp = r.i16s(8)
-            pos = (tmp[2] / 32768.0, tmp[3] / 32768.0, tmp[4] / 32768.0)
-            all_verts.append(pos)
+        all_uvs.extend([(0.5, 0.5)] * vert_count)
+        all_uvs2.extend([(0.5, 0.5)] * vert_count)
 
-            uvs = r.i16s(2)
-            uv = (uvs[0] / 65536.0 + 0.5, 1.0 - (uvs[1] / 65536.0 + 0.5))
-            all_uvs.append(uv)
+        faces = mesh_faces.get(mp_idx, [])
+        face_materials = [mp['matID']] * len(faces)
 
-            if vert_stride == 40:
-                r.skip_bytes(24)
-            elif vert_stride == 36:
-                extra = r.i16s(10)
-                all_uvs2.append((
-                    extra[0] / 65536.0 + 0.5,
-                    1.0 - (extra[1] / 65536.0 + 0.5),
-                ))
-            elif vert_stride == 32:
-                extra = r.i16s(8)
-                all_uvs2.append((
-                    extra[0] / 65536.0 + 0.5,
-                    1.0 - (extra[1] / 65536.0 + 0.5),
-                ))
-            elif vert_stride == 28:
-                r.skip_bytes(12)
-            elif vert_stride == 24:
-                r.skip_bytes(8)
-            elif vert_stride == 20:
-                r.skip_bytes(4)
+        slot_names = []
+        for mz in mat_zones:
+            mid = mz['matID']
+            if mid < len(materials):
+                slot_names.append(materials[mid]['name'])
             else:
-                vlog.warn(f"  [wdl-xbg] unknown vertStride {vert_stride}")
+                slot_names.append(f"mat_{mid}")
 
-        vert_sum += vert_count
-        running_face_count += face_count_local
-        vert_block_offset = r.tell()
+        mesh_name = f"{model['name']}-{lod_idx}-{mp_idx}"
+        mesh_entry = {
+            'name': mesh_name,
+            'verts': mesh_positions[mp_idx],
+            'tris': faces,
+            'uvs': None,
+            'uvs2': None,
+            'loop_uvs': None,
+            'normals': None,
+            'loop_normals': None,
+            'weights': {},
+            'material': None,
+            'face_materials': face_materials,
+            'material_slots': slot_names,
+            'vert_file_off': submesh_vert_start,
+            'vert_stride': vert_stride,
+            'vert_count': vert_count,
+        }
+        model['meshes'].append(mesh_entry)
 
-        if vert_sum == total_vert_count:
-            vert_sum = 0
 
-            r.seek(face_block_start)
-            faces = []
-            for _ in range(running_face_count // 3):
-                tri = r.u16s(3)
-                faces.append(tri)
-            face_block_start = r.tell()
+def _read_i16s(r, off, n):
+    """Read n int16 values at absolute file offset (does not disturb seek)."""
+    saved = r.tell()
+    r.seek(off)
+    vals = r.i16s(n)
+    r.seek(saved)
+    return vals
 
-            face_materials = [0] * len(faces)
-            if material_count > 0:
-                for mz in mat_zones:
-                    for j in range(mz['start'], mz['end']):
-                        if j < len(face_materials):
-                            face_materials[j] = mz['matID']
 
-            slot_names = []
-            for mz in mat_zones:
-                mid = mz['matID']
-                if mid < len(materials):
-                    slot_names.append(materials[mid]['name'])
-                else:
-                    slot_names.append(f"mat_{mid}")
+def _read_u32s(r, off, n):
+    """Read n uint32 values at absolute file offset (does not disturb seek)."""
+    saved = r.tell()
+    r.seek(off)
+    vals = r.u32s(n)
+    r.seek(saved)
+    return vals
 
-            mesh_name = f"{model['name']}-{lod_idx}-{len(model['meshes'])}"
-            mesh_entry = {
-                'name': mesh_name,
-                'verts': all_verts[:],
-                'tris': faces,
-                'uvs': all_uvs[:] if all_uvs else None,
-                'uvs2': all_uvs2[:] if all_uvs2 else None,
-                'loop_uvs': None,
-                'normals': None,
-                'loop_normals': None,
-                'weights': {},
-                'material': None,
-                'face_materials': face_materials,
-                'material_slots': slot_names,
-                'vert_file_off': submesh_vert_start,
-                'vert_stride': vert_stride,
-                'vert_count': vert_count,
-            }
-            model['meshes'].append(mesh_entry)
 
-            all_verts = []
-            all_uvs = []
-            all_uvs2 = []
-            all_faces = []
-            mat_zones = []
-            material_count = 0
-            running_face_count = 0
-            subtract_index = 0
+def _try_decode_faces(r, lod_start, mesh_params_list):
+    """Best-effort decode of quad-split index buffers in the mesh block region.
+
+    Returns {mesh_idx: [(a,b,c), ...]} with faces decoded per mesh where the
+    mesh's index block can be identified (plain u16 quad-split indices).
+    Meshes whose index data is run-table/compressed are left with no faces.
+
+    Each mesh block has the form:
+        [ic u16 quad-split indices] [32B header] [attribute bytes]
+    The blocks are stored in a non-sequential mesh order, so each block is
+    matched to a mesh by checking the index values are all < that mesh's
+    vertex count.
+    """
+    meshes = list(mesh_params_list)
+    result = {}
+    pos = lod_start + 32
+    max_pos = pos + sum(m['indexCount'] for m in meshes) * 2
+    remaining = {i: m for i, m in enumerate(meshes)}
+    while remaining and pos < max_pos:
+        matched_idx = None
+        matched = None
+        for i, m in remaining.items():
+            ic = m['indexCount']
+            try:
+                vals = _read_i16s(r, pos, ic)
+            except Exception:
+                continue
+            if vals and max(vals) < m['vertCount']:
+                matched_idx, matched = i, m
+                break
+        if matched is None:
+            break
+        ic = matched['indexCount']
+        vals = _read_i16s(r, pos, ic)
+        vc = matched['vertCount']
+        faces = []
+        for i in range(0, max(0, ic - 5), 6):
+            a, b, c, _, d, _ = vals[i:i + 6]
+            if a < vc and b < vc and c < vc and d < vc:
+                faces.append((a, b, c))
+                faces.append((c, d, a))
+        result[matched_idx] = faces
+        # advance: index bytes + 32B header + attribute bytes (header[1])
+        idx_end = pos + ic * 2
+        try:
+            hdr = _read_u32s(r, idx_end, 2)
+            attr = hdr[1]
+            pos = idx_end + 32 + attr
+        except Exception:
+            pos = idx_end + 32
+        del remaining[matched_idx]
+    return result
 
 
 # ── .skel file parser ─────────────────────────────────────────────────────
