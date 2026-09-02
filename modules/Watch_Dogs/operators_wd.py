@@ -647,3 +647,83 @@ class XBG_OT_WDSyncNormals(bpy.types.Operator):
                 "No WD1-imported meshes selected "
                 "(import a Watch Dogs .xbg first)")
         return {'FINISHED'}
+
+
+class XBG_OT_WDStampMetadata(bpy.types.Operator):
+    """Re-parse the source .xbg and fill in missing wd_* properties
+    on selected objects (preserves all geometry edits)."""
+    bl_idname  = "xbg.wd_stamp_metadata"
+    bl_label   = "Stamp Import Metadata"
+    bl_description = (
+        "For objects imported with an older addon version that are missing "
+        "wd_scale / wd_vb_off / etc: re-parses the source .xbg and stamps "
+        "all injection metadata so inject/rebuild works again. "
+        "Your geometry edits are NOT touched."
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    @classmethod
+    def poll(cls, ctx):
+        return any(o.type == 'MESH' and o.get('wd_src')
+                   for o in ctx.selected_objects)
+
+    def execute(self, ctx):
+        from .import_wd import parse_wd1_xbg
+
+        REQUIRED = ('wd_scale', 'wd_vb_off', 'wd_stride',
+                     'wd_format', 'wd_vcount', 'wd_mesh_index',
+                     'wd_buf0_off')
+        objs = [o for o in ctx.selected_objects
+                if o.type == 'MESH' and o.get('wd_src')]
+        if not objs:
+            self.report({'WARNING'},
+                "No WD1-imported meshes selected")
+            return {'CANCELLED'}
+
+        # group by source file
+        by_src = {}
+        for o in objs:
+            by_src.setdefault(o['wd_src'], []).append(o)
+
+        stamped = 0
+        for src, src_objs in by_src.items():
+            try:
+                model = parse_wd1_xbg(src)
+            except Exception as e:
+                self.report({'ERROR'},
+                    f"Failed to parse {os.path.basename(src)}: {e}")
+                continue
+            L = model['_layout']
+            off = list(L['scale'])
+            lod0 = L.get('lod0_meshes', [])
+
+            for ob in src_objs:
+                # already fully stamped?
+                if all(k in ob for k in REQUIRED):
+                    continue
+                mi = int(ob.get('wd_mesh_index', -1))
+                if 0 <= mi < len(lod0):
+                    mesh_info = lod0[mi]
+                    dc = mesh_info['drawcall']
+                    ob['wd_scale'] = off
+                    ob['wd_vb_off'] = dc['vb_offset']
+                    ob['wd_stride'] = mesh_info['stride']
+                    ob['wd_format'] = mesh_info['format']
+                    ob['wd_vcount'] = dc['vertex_count']
+                    ob['wd_mesh_index'] = mi
+                    ob['wd_buf0_off'] = L.get('vdata0_off', 0)
+                    stamped += 1
+                else:
+                    self.report({'WARNING'},
+                        f"{ob.name}: mesh_index {mi} not found "
+                        f"in {os.path.basename(src)} — skipped")
+
+        if stamped:
+            self.report({'INFO'},
+                f"Stamped import metadata on {stamped} object(s) "
+                f"({len(by_src)} source file(s))")
+        else:
+            self.report({'WARNING'},
+                "No objects needed stamping "
+                "(all already have metadata, or no matches found)")
+        return {'FINISHED'}

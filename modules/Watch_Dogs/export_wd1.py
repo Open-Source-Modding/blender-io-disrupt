@@ -429,7 +429,7 @@ def _mesh_bbox(verts):
 
 def _object_uvs(me):
     """Return per-vertex UV list (first UV layer), or None."""
-    if not me.uv_layers:
+    if len(me.uv_layers) == 0:
         return None
     uv = me.uv_layers[0]
     # per-corner; use loop average keyed by vertex index

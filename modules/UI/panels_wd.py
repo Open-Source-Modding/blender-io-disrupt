@@ -261,6 +261,11 @@ class XBG_PT_WDInject(bpy.types.Panel):
         sync_row.enabled = any(o.get('wd_src') for o in ctx.selected_objects)
         sync_row.operator("xbg.wd_sync_normals",
                           text="Sync Normals from Geometry", icon='NORMALS_FACE')
+        stamp_row = l.row()
+        stamp_row.enabled = any(o.get('wd_src') and 'wd_scale' not in o
+                                for o in ctx.selected_objects)
+        stamp_row.operator("xbg.wd_stamp_metadata",
+                           text="Stamp Import Metadata", icon='FILE_REFRESH')
         l.separator()
         r = l.row()
         r.scale_y = 1.8

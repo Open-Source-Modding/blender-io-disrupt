@@ -39,7 +39,7 @@ from .modules.Core.ops_log import (
 
 from .modules.Watch_Dogs.operators_wd import (
     XBG_OT_ImportWD, XBG_OT_ImportWDMab, XBG_OT_InjectWD,
-    XBG_OT_WDPeekLODs, XBG_OT_WDSyncNormals,
+    XBG_OT_WDPeekLODs, XBG_OT_WDSyncNormals, XBG_OT_WDStampMetadata,
     XBG_OT_ImportWDSkeleton, XBG_OT_ImportWDHkx,
     XBG_OT_InjectWDHkx, XBG_OT_ExportWD1)
 from .modules.Watch_Dogs_2.operators_wd2 import XBG_OT_ImportWD2, XBG_OT_ImportWD2XBG, XBG_OT_ExportWD2, XBG_OT_ImportWD2GLMFull
@@ -82,6 +82,7 @@ classes = (
     XBG_OT_InjectWD,
     XBG_OT_WDPeekLODs,
     XBG_OT_WDSyncNormals,
+    XBG_OT_WDStampMetadata,
     XBG_OT_ImportWDSkeleton,
     XBG_OT_ImportWDHkx,
     XBG_OT_InjectWDHkx,

@@ -255,6 +255,14 @@ def inject_wd1_objects(objects, out_path, source_path=None,
     if not tagged:
         raise RuntimeError("no WD1-imported meshes selected "
                            "(import a Watch Dogs .xbg first)")
+    # Require wd_scale on all tagged objects — without it we can't
+    # re-encode vertex positions.
+    missing = [o.name for o in tagged if 'wd_scale' not in o]
+    if missing:
+        raise RuntimeError(
+            "Selected mesh(es) %s have no wd_scale data — "
+            "re-import the .xbg with the current addon version"
+            % ", ".join(missing[:5]))
     src = source_path or tagged[0]['wd_src']
     tagged = [o for o in tagged if o['wd_src'] == src]
     buf = bytearray(open(src, 'rb').read())
