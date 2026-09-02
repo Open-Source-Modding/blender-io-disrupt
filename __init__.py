@@ -41,7 +41,11 @@ from .modules.Watch_Dogs.operators_wd import (
     XBG_OT_ImportWD, XBG_OT_ImportWDMab, XBG_OT_InjectWD,
     XBG_OT_WDPeekLODs, XBG_OT_WDSyncNormals, XBG_OT_WDStampMetadata,
     XBG_OT_ImportWDSkeleton, XBG_OT_ImportWDHkx,
-    XBG_OT_InjectWDHkx, XBG_OT_ExportWD1)
+    XBG_OT_InjectWDHkx, XBG_OT_ExportWD1,
+    XBG_OT_ImportWDMaterial, XBG_OT_ExportWDMaterial,
+    XBG_OT_ImportWDMac, XBG_OT_ImportWDMarkup)
+from .modules.Watch_Dogs.export_mac import (
+    MAC_OT_Export, MAC_OT_ExportMarkup)
 from .modules.Watch_Dogs_2.operators_wd2 import XBG_OT_ImportWD2, XBG_OT_ImportWD2XBG, XBG_OT_ExportWD2, XBG_OT_ImportWD2GLMFull
 from .modules.Watch_Dogs_Legion.operators_wdl import (
     XBG_OT_ImportWDL, XBG_OT_InjectWDL, XBG_OT_ImportWDLSkeleton,
@@ -87,6 +91,12 @@ classes = (
     XBG_OT_ImportWDHkx,
     XBG_OT_InjectWDHkx,
     XBG_OT_ExportWD1,
+    XBG_OT_ImportWDMaterial,
+    XBG_OT_ExportWDMaterial,
+    XBG_OT_ImportWDMac,
+    XBG_OT_ImportWDMarkup,
+    MAC_OT_Export,
+    MAC_OT_ExportMarkup,
     # Watch Dogs 2
     XBG_OT_ImportWD2,
     XBG_OT_ImportWD2XBG,
@@ -123,6 +133,7 @@ def menu_func_import(self, ctx):
         ("xbg.import_wdl_skeleton", "Watch Dogs Legion Skeleton (.skel)"),
         ("xbg.import_wdl_hkx", "Watch Dogs Legion Collision (.hkx)"),
         ("xbg.import_wd2_glm_full", "Watch Dogs 2 Model - Full (.glm)"),
+        ("xbg.import_wd_material", "Watch Dogs Material (.material.bin)"),
     ]:
         if not sep:
             self.layout.separator()
@@ -133,6 +144,12 @@ def menu_func_export(self, ctx):
     self.layout.separator()
     self.layout.operator("xbg.export_wd1",
                          text="Watch Dogs 1 Model (.xbg)")
+    self.layout.operator("mac.export_animation",
+                         text="Watch Dogs MAC Animation (.mac)")
+    self.layout.operator("mac.export_markup",
+                         text="Watch Dogs Markup Events (.markup)")
+    self.layout.operator("xbg.export_wd_material",
+                         text="Watch Dogs Material (.material.bin)")
 
 def register():
     for c in classes:

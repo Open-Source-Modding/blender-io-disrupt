@@ -561,10 +561,11 @@ class XBG_OT_ExportWD1(bpy.types.Operator):
     """Export selected mesh objects as a fresh Watch Dogs 1 .xbg (GEOM 97.50).
 
     Synthesises every section of the binary stream from Blender geometry —
-    no source .xbg needed.  Each selected mesh becomes a submesh of a single
-    LOD.  Position/UV are i16-quantised to the combined bounding box; the
-    non-geometry sections (materials/skeleton/physics) are emitted minimal
-    (empty physics/procedural, one material per object)."""
+    no source .xbg needed.  Each selected mesh becomes a submesh of a LOD.
+    Assign ``lod_level`` (0–3) custom property to objects for multi-LOD
+    export.  Position/UV are i16-quantised to the combined bounding box;
+    the non-geometry sections (materials/skeleton/physics) are emitted
+    minimal (empty physics/procedural, one material per object)."""
     bl_idname  = "xbg.export_wd1"
     bl_label   = "Export WD1 Model (.xbg)"
     bl_description = (
@@ -579,6 +580,10 @@ class XBG_OT_ExportWD1(bpy.types.Operator):
         name="LOD Distances",
         description="Comma-separated LOD distances",
         default="20, 30, 70, 300")
+    n_lods: bpy.props.IntProperty(
+        name="LOD Levels",
+        description="Number of LOD levels to write (1 = single LOD)",
+        default=1, min=1, max=4)
 
     @classmethod
     def poll(cls, ctx):
@@ -593,6 +598,20 @@ class XBG_OT_ExportWD1(bpy.types.Operator):
         if not objs:
             self.report({'ERROR'}, "no mesh objects selected")
             return {'CANCELLED'}
+        # Find armature: selected armature, or parent of first mesh
+        arm = None
+        for o in ctx.selected_objects:
+            if o.type == 'ARMATURE':
+                arm = o
+                break
+        if arm is None and objs:
+            # Walk up parents to find an armature
+            ob = objs[0]
+            while ob.parent:
+                if ob.parent.type == 'ARMATURE':
+                    arm = ob.parent
+                    break
+                ob = ob.parent
         try:
             dists = [float(x.strip()) for x in self.lod_dists.split(',') if x.strip()]
         except ValueError:
@@ -606,11 +625,15 @@ class XBG_OT_ExportWD1(bpy.types.Operator):
             import importlib
             mod = importlib.import_module(
                 'blender-io-disrupt.modules.Watch_Dogs.export_wd1')
-            n = mod.export_wd1(path, objs, lod_dists=dists)
+            n = mod.export_wd1(path, objs, lod_dists=dists, armature=arm,
+                               n_lods=self.n_lods)
         except Exception as e:
             self.report({'ERROR'}, f"Failed to export WD1 .xbg: {e}")
             return {'CANCELLED'}
-        self.report({'INFO'}, f"Exported WD1 .xbg: {n} mesh(es) -> {path}")
+        if arm:
+            self.report({'INFO'}, f"Exported WD1 .xbg: {n} mesh(es), skeleton from {arm.name} -> {path}")
+        else:
+            self.report({'INFO'}, f"Exported WD1 .xbg: {n} mesh(es) -> {path}")
         return {'FINISHED'}
 
 
@@ -726,4 +749,282 @@ class XBG_OT_WDStampMetadata(bpy.types.Operator):
             self.report({'WARNING'},
                 "No objects needed stamping "
                 "(all already have metadata, or no matches found)")
+        return {'FINISHED'}
+
+
+# ── Material import/export operators ────────────────────────────────────────
+
+
+class XBG_OT_ImportWDMaterial(bpy.types.Operator):
+    """Import a Watch Dogs .material.bin as a Blender Cycles/Eevee material."""
+    bl_idname  = "xbg.import_wd_material"
+    bl_label   = "Import WD Material (.material.bin)"
+    bl_description = (
+        "Parse a Disrupt engine .material.bin (TAM v7/v15): map known PBR "
+        "params to Principled BSDF inputs, store game-specific parameters "
+        "as custom properties for round-trip export"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(
+        default="*.material.bin", options={'HIDDEN'})
+
+    def invoke(self, ctx, ev):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        from .material_editor_wd import material_from_bin
+        if not self.filepath or not os.path.isfile(self.filepath):
+            self.report({'ERROR'}, "No valid .material.bin file selected")
+            return {'CANCELLED'}
+        try:
+            me, shader = material_from_bin(self.filepath)
+            if me is None:
+                self.report({'ERROR'}, "Failed to create material")
+                return {'CANCELLED'}
+            self.report({'INFO'},
+                f"Imported material '{me.name}' (shader: {shader})")
+            return {'FINISHED'}
+        except Exception as exc:
+            self.report({'ERROR'}, f"Material import failed: {exc}")
+            import traceback; traceback.print_exc()
+            return {'CANCELLED'}
+
+
+class XBG_OT_ExportWDMaterial(bpy.types.Operator):
+    """Export the active Blender material to a Watch Dogs .material.bin file."""
+    bl_idname  = "xbg.export_wd_material"
+    bl_label   = "Export WD Material (.material.bin)"
+    bl_description = (
+        "Write the active material's Principled BSDF values and custom "
+        "properties back to a Disrupt .material.bin (TAM v7) file"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(
+        default="*.material.bin", options={'HIDDEN'})
+
+    def invoke(self, ctx, ev):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        from .material_editor_wd import material_to_bin
+        mat = ctx.active_object.active_material if ctx.active_object else None
+        if mat is None:
+            self.report({'ERROR'}, "No active material to export")
+            return {'CANCELLED'}
+        try:
+            material_to_bin(mat, self.filepath)
+            self.report({'INFO'},
+                f"Exported material '{mat.name}' -> {os.path.basename(self.filepath)}")
+            return {'FINISHED'}
+        except Exception as exc:
+            self.report({'ERROR'}, f"Material export failed: {exc}")
+            import traceback; traceback.print_exc()
+            return {'CANCELLED'}
+
+
+# ── MAC / Markup Import ─────────────────────────────────────────────────────
+
+class XBG_OT_ImportWDMac(bpy.types.Operator):
+    """Import a Watch Dogs 1 .mac animation clip with optional .markup events."""
+    bl_idname  = "xbg.import_wd_mac"
+    bl_label   = "Import WD1 MAC Animation"
+    bl_description = (
+        "Parse a Watch Dogs 1 .mac (AnimationMarkupTool binary clip) and "
+        "build a Blender action with rotation/translation/scale curves on "
+        "the active armature.  Optionally loads the matching .markup XML "
+        "for game event markers"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(default="*.mac", options={'HIDDEN'})
+    load_markup: bpy.props.BoolProperty(
+        name="Load Markup",
+        description="Also load the matching .markup XML file if found",
+        default=True,
+    )
+
+    def invoke(self, ctx, ev):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        import os
+        from .parse_mac import parse_mac, parse_markup
+
+        if not self.filepath or not os.path.isfile(self.filepath):
+            self.report({'ERROR'}, "No valid .mac file selected")
+            return {'CANCELLED'}
+
+        try:
+            af = parse_mac(self.filepath)
+        except Exception as exc:
+            self.report({'ERROR'}, f"MAC parse failed: {exc}")
+            import traceback; traceback.print_exc()
+            return {'CANCELLED'}
+
+        # Find matching armature
+        arm_obj = None
+        if ctx.active_object and ctx.active_object.type == 'ARMATURE':
+            arm_obj = ctx.active_object
+        else:
+            for obj in ctx.selected_objects:
+                if obj.type == 'ARMATURE':
+                    arm_obj = obj
+                    break
+
+        if arm_obj is None:
+            self.report({'WARNING'},
+                f"MAC loaded: {af.type_id.value}, {len(af.skeleton.bones)} bones, "
+                f"{len(af.anim_parts)} parts — no armature selected, skipping action build")
+            return {'FINISHED'}
+
+        # Build action from skeleton curves
+        action = self._build_action(ctx, arm_obj, af)
+        if action is None:
+            self.report({'WARNING'},
+                f"MAC parsed but no bone curves matched armature '{arm_obj.name}'")
+            return {'FINISHED'}
+
+        # Optionally load markup
+        markup_doc = None
+        if self.load_markup:
+            markup_path = os.path.splitext(self.filepath)[0] + '.markup'
+            if os.path.isfile(markup_path):
+                try:
+                    markup_doc = parse_markup(markup_path)
+                except Exception:
+                    pass
+
+        n_events = len(markup_doc.events) if markup_doc else 0
+        self.report({'INFO'},
+            f"MAC: {af.type_id.value} | {len(af.skeleton.bones)} bones, "
+            f"{len(action.fcurves)} fcurves, {len(af.anim_parts)} parts"
+            + (f" | {n_events} markup events" if n_events else ""))
+        return {'FINISHED'}
+
+    def _build_action(self, ctx, arm_obj, af):
+        """Build a Blender Action from parsed MAC curves."""
+        import mathutils
+
+        if not af.skeleton.bones:
+            return None
+
+        # Map MAC bone names to armature pose bones
+        pb_map = {}
+        for bone in af.skeleton.bones:
+            name = bone.name.value
+            if name in arm_obj.pose.bones:
+                pb_map[bone.name.value] = (bone, arm_obj.pose.bones[name])
+
+        if not pb_map:
+            return None
+
+        # Create action
+        action_name = af.type_id.value or os.path.splitext(
+            os.path.basename(self.filepath))[0]
+        action = bpy.data.actions.new(name=action_name)
+        if arm_obj.animation_data is None:
+            arm_obj.animation_data_create()
+        arm_obj.animation_data.action = action
+
+        # Determine frame range from curve values
+        max_frames = 0
+        for bone, pb in pb_map.values():
+            for curve in bone.curves:
+                if curve.values:
+                    max_frames = max(max_frames, len(curve.values))
+
+        if max_frames == 0:
+            return action
+
+        # Build fcurves for each bone
+        # Curve type -> (property, index)
+        TYPE_MAP = {
+            0: ('rotation_euler', 0),   # RotX
+            1: ('rotation_euler', 1),   # RotY
+            2: ('rotation_euler', 2),   # RotZ
+            3: ('location', 0),         # TransX
+            4: ('location', 1),         # TransY
+            5: ('location', 2),         # TransZ
+            6: ('scale', 0),            # ScaleX
+            7: ('scale', 1),            # ScaleY
+            8: ('scale', 2),            # ScaleZ
+        }
+
+        for bone_name, (mac_bone, pb) in pb_map.items():
+            pb.rotation_mode = 'EULER'
+            base_path = f'pose.bones["{bone_name}"]'
+
+            for curve in mac_bone.curves:
+                if not curve.values:
+                    continue
+                prop_idx = TYPE_MAP.get(curve.curve_type)
+                if prop_idx is None:
+                    continue
+                prop, idx = prop_idx
+                fc = action.fcurves.new(f'{base_path}.{prop}', index=idx)
+                fc.keyframe_points.add(len(curve.values))
+                flat = []
+                for i, v in enumerate(curve.values):
+                    flat.append(float(i + 1))  # 1-based frames
+                    flat.append(v)
+                fc.keyframe_points.foreach_set('co', flat)
+                fc.update()
+
+        return action
+
+
+class XBG_OT_ImportWDMarkup(bpy.types.Operator):
+    """Import a Watch Dogs 1 .markup event file as markers on the timeline."""
+    bl_idname  = "xbg.import_wd_markup"
+    bl_label   = "Import WD1 Markup Events"
+    bl_description = (
+        "Parse a Watch Dogs 1 .markup XML and add timeline markers for "
+        "each game event (e.g. inPossession, IKPath, Anchor)"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(default="*.markup", options={'HIDDEN'})
+
+    def invoke(self, ctx, ev):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        import os
+        from .parse_mac import parse_markup
+
+        if not self.filepath or not os.path.isfile(self.filepath):
+            self.report({'ERROR'}, "No valid .markup file selected")
+            return {'CANCELLED'}
+
+        try:
+            doc = parse_markup(self.filepath)
+        except Exception as exc:
+            self.report({'ERROR'}, f"Markup parse failed: {exc}")
+            import traceback; traceback.print_exc()
+            return {'CANCELLED'}
+
+        if not doc.events:
+            self.report({'INFO'}, "Markup file has no events")
+            return {'FINISHED'}
+
+        scene = ctx.scene
+        fps = scene.render.fps or 30
+
+        # Add markers for each event
+        for ev in doc.events:
+            frame = int(round(ev.time * fps))
+            marker = scene.timeline_markers.new(name=ev.name, frame=frame)
+
+        self.report({'INFO'},
+            f"Markup: {len(doc.events)} events placed as timeline markers")
         return {'FINISHED'}

@@ -145,6 +145,29 @@ class XBG_PT_WDAnimation(bpy.types.Panel):
         r.operator("xbg.import_wd_mab",
                    text="Import WD1 MAB", icon='ARMATURE_DATA')
 
+        # ── MAC / Markup ────────────────────────────────────────────────
+        l.separator()
+        l.label(text="MAC Animation Markup:", icon='FILE_CACHE')
+        r2 = l.row()
+        r2.scale_y = 1.3
+        r2.operator("xbg.import_wd_mac",
+                    text="Import WD1 MAC (.mac)", icon='IMPORT')
+        r3 = l.row()
+        r3.scale_y = 1.1
+        r3.operator("xbg.import_wd_markup",
+                    text="Import WD1 Markup (.markup)", icon='TIME')
+
+        l.separator()
+        l.label(text="Export MAC / Markup:", icon='EXPORT')
+        r4 = l.row()
+        r4.scale_y = 1.3
+        r4.operator("mac.export_animation",
+                    text="Export MAC Animation (.mac)", icon='EXPORT')
+        r5 = l.row()
+        r5.scale_y = 1.1
+        r5.operator("mac.export_markup",
+                    text="Export Markup Events (.markup)", icon='TIME')
+
 
 # ── Edit & Inject ───────────────────────────────────────────────────────────
 

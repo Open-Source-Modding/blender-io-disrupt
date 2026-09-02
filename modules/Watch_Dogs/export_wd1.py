@@ -111,7 +111,7 @@ def _write_header(w, n_lods, lod_dists, bsphere, bbox, smem=0):
     w.u16(97); w.u16(50)                    # version 97.50
     w.u32(0); w.u32(0); w.u32(0)            # header unk1..3
     w.u32(smem); w.u32(smem)                # SMemoryNeed
-    w.f32(0.0)                              # unk1 float
+    w.f32(3.4028235e+38)                    # unk_float (FLT_MAX, verified from reference)
     w.boolean(False)                        # unk2 bool
 
 
@@ -134,8 +134,8 @@ def _write_params(w, n_lods, lod_dists, bsphere, bbox,
     for d in lod_dists:
         w.f32(d)
     w.f32(1000.0)                           # killDistance
-    w.boolean(True); w.boolean(True)        # 2 bools
-    w.u8(0)                                 # trailing u8
+    w.boolean(True); w.boolean(False)       # 2 bools (verified: True, False)
+    w.u8(0xFF)                              # trailing u8 (verified: 0xFF)
 
 
 def _write_materials(w, materials, n_lods):
@@ -281,7 +281,7 @@ def _write_geom_mips(w, mips=()):
 # ── Public entry point ──────────────────────────────────────────────────────
 
 def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
-               materials=None, name=None):
+               materials=None, name=None, armature=None, n_lods=1):
     """Write a fresh WD1 .xbg from a list of Blender mesh objects.
 
     Each object is treated as one submesh of a single LOD.  Position + UV use
@@ -289,7 +289,16 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
     combined bounding box so the file is self-contained (no external bounds
     expansion needed).
 
-    Returns the number of meshes written.
+    `armature`: optional Blender armature object. If provided, bone hierarchy
+    is extracted and written to SkelResources.
+
+    `n_lods`: number of LOD levels to write (1–4).  Objects are assigned to
+    LODs by their ``wd_lod_level`` custom property (default 0 = LOD0).
+    LOD distances come from ``lod_dists`` (trimmed to ``n_lods`` entries).
+    If only one LOD is requested, all objects go to LOD0 regardless of their
+    ``wd_lod_level`` tag.
+
+    Returns the number of meshes written (across all LODs).
     """
     if bpy is None:
         raise RuntimeError("bpy unavailable")
@@ -331,75 +340,207 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
     bsphere = _compute_bsphere(combined_min, combined_max)
     bbox = combined_min + combined_max
 
-    # per-object vertex pools: each object gets its own drawcall; all share
-    # one vertex+index buffer (a single LOD, one SGfxBuffer).
-    vdata = bytearray()
-    idata = bytearray()
+    # ── bones + palettes (needed before mesh loop for bone_map) ─────────
+    bones = _extract_bones(armature) if armature else []
+    palettes, bone_map = _build_palettes(mats, bones)
+    # Resolve palette bone names to indices
+    name2idx = {b['name']: i for i, b in enumerate(bones)} if bones else {}
+    palettes_idx = []
+    for pal in palettes:
+        palettes_idx.append([name2idx[n] for n in pal if n in name2idx])
+
+    # per-object vertex pools: each object gets its own drawcall; data is
+    # stored per-mesh for later LOD grouping, then assembled into buffers.
     meshes = []
-    idx_base = 0
     for ob in mats:
         me = ob.data
         me.calc_loop_triangles()
         verts = [(ob.matrix_world @ mathutils.Vector(v.co)) for v in me.vertices]
         normals = [tuple(v.normal) for v in me.vertices]
         uvs = _object_uvs(me)
+
+        # Second UV channel for uv_comp2 (lightmap / detail UVs)
+        uvs2 = None
+        if len(me.uv_layers) > 1:
+            uv2_layer = me.uv_layers[1]
+            uvs2 = [(0.0, 0.0)] * len(me.vertices)
+            cnt2 = [0] * len(me.vertices)
+            for li, loop in enumerate(me.loops):
+                vi = loop.vertex_index
+                u2, v2 = uv2_layer.data[li].uv
+                uvs2[vi] = (uvs2[vi][0] + u2, uvs2[vi][1] + v2)
+                cnt2[vi] += 1
+            for vi in range(len(uvs2)):
+                if cnt2[vi]:
+                    uvs2[vi] = (uvs2[vi][0] / cnt2[vi], uvs2[vi][1] / cnt2[vi])
+
+        # Vertex colors (first color layer) — averaged per-vertex from loops
+        color_layer = None
+        if hasattr(me, 'color_attributes') and me.color_attributes:
+            color_layer = me.color_attributes[0]
+        elif hasattr(me, 'vertex_colors') and me.vertex_colors:
+            color_layer = me.vertex_colors.active
+        per_vert_color = [(1.0, 1.0, 1.0, 1.0)] * len(verts)
+        if color_layer is not None:
+            ccnt = [0] * len(verts)
+            csum = [(0.0, 0.0, 0.0, 0.0)] * len(verts)
+            for li, loop in enumerate(me.loops):
+                vi = loop.vertex_index
+                try:
+                    rgba = color_layer.data[li].color
+                except Exception:
+                    continue
+                r, g, b = rgba[0], rgba[1], rgba[2]
+                a = rgba[3] if len(rgba) > 3 else 1.0
+                old = csum[vi]
+                csum[vi] = (old[0]+r, old[1]+g, old[2]+b, old[3]+a)
+                ccnt[vi] += 1
+            for vi in range(len(verts)):
+                if ccnt[vi]:
+                    n = ccnt[vi]
+                    per_vert_color[vi] = (csum[vi][0]/n, csum[vi][1]/n,
+                                          csum[vi][2]/n, csum[vi][3]/n)
+
+        # Tangents and binormals from UV-space computation
+        tangents, binormals, tangent_w, binormal_w = \
+            _compute_tangents_binormals(me, me.loop_triangles, verts,
+                                        uvs if uvs else [(0,0)]*len(verts),
+                                        normals)
+
         mats_named = _material_names(ob)
 
         vcount = len(verts)
-        fmt = 0x2 | 0x8 | 0x80          # i16 pos, i16 uv, u8 normal
-        stride = 8 + 4 + 4               # 16 bytes
-        vstart = len(vdata)
+        # point_comp(0x2) + uv_comp(0x8) + uv_comp2(0x1000) +
+        # normal_comp(0x80) + color(0x100) + tangent_comp(0x200) +
+        # binormal_comp(0x400) = 0x178A, stride = 8+4+4+4+4+4+4 = 32
+        fmt = 0x2 | 0x8 | 0x80 | 0x100 | 0x200 | 0x400 | 0x1000
+        stride = 8 + 4 + 4 + 4 + 4 + 4 + 4               # 32 bytes
+        mv = bytearray()
         for vi, co in enumerate(verts):
-            _enc_pos(vdata, co, pos_off, pos_scale)
-            _enc_uv(vdata, uvs[vi] if uvs else (0.0, 0.0), uv_off, uv_scale)
-            _enc_normal(vdata, normals[vi] if vi < len(normals) else (0, 0, 1))
+            # Component order matches import_wd.py _decode_wd1_mesh:
+            # Position → UV1 → UV2 → Normal → Color → Tangent → Binormal
+            _enc_pos(mv, co, pos_off, pos_scale)
+            _enc_uv(mv, uvs[vi] if uvs else (0.0, 0.0), uv_off, uv_scale)
+            if uvs2:
+                _enc_uv(mv, uvs2[vi], uv_off, uv_scale)
+            else:
+                mv += struct.pack('<hh', 0, 0)
+            _enc_normal(mv, normals[vi] if vi < len(normals) else (0, 0, 1))
+            _enc_color(mv, per_vert_color[vi])
+            _enc_tangent_comp(mv, tangents[vi], tangent_w[vi])
+            _enc_tangent_comp(mv, binormals[vi], binormal_w[vi])
         # indices (file winding = a,c,b for CCW Blender triangles)
         tri_count = 0
-        istart = len(idata) // 2
+        mi = bytearray()
         for lt in me.loop_triangles:
             a, b, c = lt.vertices
-            idata += struct.pack('<3H', idx_base + a, idx_base + c, idx_base + b)
+            mi += struct.pack('<3H', a, c, b)
             tri_count += 1
         drawcall = {
-            'vb_offset': vstart, 'prim_count': tri_count,
-            'index_count': tri_count * 3, 'index_start': istart,
+            'vb_offset': 0, 'prim_count': tri_count,
+            'index_count': tri_count * 3, 'index_start': 0,
             'vertex_count': vcount, 'min_index': 0,
             'max_index': vcount - 1, 'group_count': 0,
         }
         mat_id = _mesh_mat_id(ob, mats_named)
         bbox_m = _mesh_bbox(verts)
+        mesh_lod = int(ob.get('lod_level', 0)) if hasattr(ob, 'get') else 0
         meshes.append({
             'bbox': bbox_m, 'prim_type': 0, 'mat_id': mat_id,
-            'format': fmt, 'stride': stride, 'bone_map': 0,
+            'format': fmt, 'stride': stride,
+            'bone_map': bone_map.get(ob.name, 0),
+            'wd_lod_level': mesh_lod,
+            'vdata': bytes(mv), 'idata': bytes(mi),
             'drawcall': drawcall, 'ranges': [
                 {'drawcall': dict(drawcall),
                  'name': (ob.name or 'mesh%02d' % len(meshes))},
             ],
         })
-        idx_base += vcount
 
-    # ── sections 1-13 ──────────────────────────────────────────────────
-    # One LOD of geometry; n_lods must match len(lod_dists) or the params
-    # count disagrees with the LODs section and the reader desyncs.
-    # The single SGfxBuffer maps to the LAST LOD (parser: buffer[i] holds
-    # LOD[skip+i], skip = n_lods - n_buffers), so geometry goes in lods[-1].
-    n_lods = max(1, len(lod_dists))
-    lod_dists = list(lod_dists) + [0.0] * (n_lods - len(lod_dists))
-    lods = [[] for _ in range(n_lods - 1)] + [meshes]
-    buffers = [(bytes(vdata), bytes(idata))]
+    # ── LOD grouping ────────────────────────────────────────────────────
+    # Objects with ``lod_level`` custom property (int 0–4) are assigned
+    # to the matching LOD.  If only one LOD is requested, all objects go to
+    # LOD0.  Each LOD gets its own vertex+index buffer (SGfxBuffer).
+    if n_lods <= 1:
+        # Single-LOD mode: everything in LOD0
+        lod_map = {0: list(range(len(meshes)))}
+    else:
+        lod_map = {}
+        for mi, m in enumerate(meshes):
+            lod_l = int(m.get('wd_lod_level', 0))
+            lod_l = max(0, min(n_lods - 1, lod_l))
+            lod_map.setdefault(lod_l, []).append(mi)
+        # Fill empty LOD levels with empty lists
+        for i in range(n_lods):
+            lod_map.setdefault(i, [])
+
+    # Build per-LOD mesh lists and buffers
+    lods = []
+    buffers = []
+    for i in range(n_lods):
+        lod_indices = lod_map.get(i, [])
+        lod_meshes = [meshes[idx] for idx in lod_indices]
+        lods.append(lod_meshes)
+        if lod_meshes:
+            lv = bytearray()
+            li = bytearray()
+            voff = 0
+            ioff = 0
+            for m in lod_meshes:
+                mv_data = m['vdata']
+                mi_data = m['idata']
+                micount = m['drawcall']['index_count']
+                # Update drawcall to point into the assembled buffer
+                m['drawcall']['vb_offset'] = voff
+                m['drawcall']['index_start'] = ioff
+                # Rebase indices by voff//stride (vertex offset within LOD)
+                vstride = m['stride']
+                vbase = voff // vstride
+                rebased = bytearray()
+                for ti in range(0, len(mi_data), 2):
+                    idx = mi_data[ti] | (mi_data[ti + 1] << 8)
+                    rebased += struct.pack('<H', idx + vbase)
+                lv += mv_data
+                li += rebased
+                # Update ranges drawcalls too
+                for r in m['ranges']:
+                    r['drawcall']['vb_offset'] = voff
+                    r['drawcall']['index_start'] = ioff
+                voff += len(mv_data)
+                ioff += micount
+            buffers.append((bytes(lv), bytes(li)))
+        else:
+            buffers.append((b'', b''))
+
+    # If no buffers got data (shouldn't happen), fall back to single
+    if not any(b[0] for b in buffers):
+        n_lods = 1
+        lods = [meshes]
+        lv = bytearray()
+        li = bytearray()
+        for m in meshes:
+            lv += m['vdata']
+            li += m['idata']
+        buffers = [(bytes(lv), bytes(li))]
+
     mat_paths = materials or _collect_materials(mats)
+    actual_n_lods = n_lods
+    lod_dists_out = list(lod_dists[:actual_n_lods])
+    if len(lod_dists_out) < actual_n_lods:
+        while len(lod_dists_out) < actual_n_lods:
+            lod_dists_out.append(lod_dists_out[-1] * 2.0 if lod_dists_out else 20.0)
 
     w = _Writer()
-    _write_header(w, n_lods, list(lod_dists), bsphere, bbox)
-    _write_params(w, n_lods, list(lod_dists), bsphere, bbox,
+    _write_header(w, actual_n_lods, lod_dists_out, bsphere, bbox)
+    _write_params(w, actual_n_lods, lod_dists_out, bsphere, bbox,
                   pos_off, pos_scale, uv_off, uv_scale)
-    _write_materials(w, mat_paths, n_lods)
+    _write_materials(w, mat_paths, actual_n_lods)
     slots = [(os.path.splitext(os.path.basename(p.replace('\\', '/')))[0], i)
              for i, p in enumerate(mat_paths)]
     _write_slots(w, slots)
     _write_skins(w, [])
-    _write_palettes(w, [])
-    _write_skeleton(w, [])
+    _write_palettes(w, palettes_idx)
+    _write_skeleton(w, bones)
     _write_reflex(w)
     _write_smo(w)
     _write_procedural(w)
@@ -410,7 +551,7 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
 
     with open(path, 'wb') as f:
         f.write(bytes(w.b))
-    return len(meshes)
+    return sum(len(l) for l in lods)
 
 
 # ── helpers ────────────────────────────────────────────────────────────────
@@ -427,11 +568,11 @@ def _mesh_bbox(verts):
     return bmin + bmax
 
 
-def _object_uvs(me):
-    """Return per-vertex UV list (first UV layer), or None."""
-    if len(me.uv_layers) == 0:
+def _object_uvs(me, layer=0):
+    """Return per-vertex UV list (specified UV layer), or None."""
+    if len(me.uv_layers) <= layer:
         return None
-    uv = me.uv_layers[0]
+    uv = me.uv_layers[layer]
     # per-corner; use loop average keyed by vertex index
     out = [(0.0, 0.0)] * len(me.vertices)
     cnt = [0] * len(me.vertices)
@@ -443,6 +584,25 @@ def _object_uvs(me):
     for vi in range(len(out)):
         if cnt[vi]:
             out[vi] = (out[vi][0] / cnt[vi], out[vi][1] / cnt[vi])
+    return out
+
+
+def _object_vertex_colors(me):
+    """Return per-vertex RGBA color list (first color layer), or None."""
+    if not hasattr(me, 'color_attributes') or len(me.color_attributes) == 0:
+        return None
+    ca = me.color_attributes[0]
+    out = [(1.0, 1.0, 1.0, 1.0)] * len(me.vertices)
+    cnt = [0] * len(me.vertices)
+    for li in range(len(me.loops)):
+        vi = me.loops[li].vertex_index
+        c = ca.data[li].color
+        out[vi] = (out[vi][0] + c[0], out[vi][1] + c[1],
+                    out[vi][2] + c[2], out[vi][3] + c[3])
+        cnt[vi] += 1
+    for vi in range(len(out)):
+        if cnt[vi]:
+            out[vi] = tuple(x / cnt[vi] for x in out[vi])
     return out
 
 
@@ -490,6 +650,103 @@ def _enc_normal(buf, n):
     buf.append(0)
 
 
+def _enc_color(buf, rgba):
+    """Encode vertex color as D3DCOLOR BGRA."""
+    r, g, b, a = rgba[:4] if len(rgba) >= 4 else (rgba[0], rgba[1], rgba[2], 1.0)
+    buf.append(max(0, min(255, int(round(b * 255)))))  # B → byte0
+    buf.append(max(0, min(255, int(round(g * 255)))))  # G → byte1
+    buf.append(max(0, min(255, int(round(r * 255)))))  # R → byte2
+    buf.append(max(0, min(255, int(round(a * 255)))))  # A → byte3
+
+
+def _enc_tangent_comp(buf, t, w=1.0):
+    """Encode tangent/binormal as D3DCOLOR BGRA with w sign in alpha."""
+    buf.append(_enc_u8n(t[2]))                        # z → byte0 (B)
+    buf.append(_enc_u8n(t[1]))                        # y → byte1 (G)
+    buf.append(_enc_u8n(t[0]))                        # x → byte2 (R)
+    buf.append(255 if w >= 0 else 0)                   # w sign → alpha
+
+
+def _compute_tangents_binormals(me, loop_triangles, verts, uvs, normals):
+    """Compute per-vertex tangents and binormals from loop triangles.
+
+    Returns (tangents, binormals, tangent_w, binormal_w) where each is a list
+    of (x,y,z) tuples or float w-values, indexed by vertex index.
+    Uses the standard UV-space tangent algorithm (cross product of position
+    and UV deltas per triangle, accumulated per-vertex, then normalized).
+    """
+    nverts = len(verts)
+    tan = [[0.0, 0.0, 0.0] for _ in range(nverts)]
+    bit = [[0.0, 0.0, 0.0] for _ in range(nverts)]
+
+    if not uvs or not loop_triangles:
+        return ([(0.0, 0.0, 1.0)] * nverts,
+                [(0.0, 0.0, 1.0)] * nverts,
+                [1.0] * nverts, [1.0] * nverts)
+
+    for lt in loop_triangles:
+        i0, i1, i2 = lt.vertices
+        # Positions
+        p0, p1, p2 = verts[i0], verts[i1], verts[i2]
+        # UVs
+        uv0, uv1, uv2 = uvs[i0], uvs[i1], uvs[i2]
+
+        e1 = (p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2])
+        e2 = (p2[0] - p0[0], p2[1] - p0[1], p2[2] - p0[2])
+        duv1 = (uv1[0] - uv0[0], uv1[1] - uv0[1])
+        duv2 = (uv2[0] - uv0[0], uv2[1] - uv0[1])
+
+        det = duv1[0] * duv2[1] - duv1[1] * duv2[0]
+        if abs(det) < 1e-12:
+            continue
+        r = 1.0 / det
+
+        t = (r * (e1[0] * duv2[1] - e2[0] * duv1[1]),
+             r * (e1[1] * duv2[1] - e2[1] * duv1[1]),
+             r * (e1[2] * duv2[1] - e2[2] * duv1[1]))
+        b = (r * (e2[0] * duv1[0] - e1[0] * duv2[0]),
+             r * (e2[1] * duv1[0] - e1[1] * duv2[0]),
+             r * (e2[2] * duv1[0] - e1[2] * duv2[0]))
+
+        for i in (i0, i1, i2):
+            tan[i][0] += t[0]; tan[i][1] += t[1]; tan[i][2] += t[2]
+            bit[i][0] += b[0]; bit[i][1] += b[1]; bit[i][2] += b[2]
+
+    tangents = []
+    binormals = []
+    tangent_w = []
+    binormal_w = []
+    for vi in range(nverts):
+        n = normals[vi] if vi < len(normals) else (0.0, 0.0, 1.0)
+        t = tan[vi]
+        b = bit[vi]
+        # Gram-Schmidt orthogonalize against normal
+        dt = t[0]*n[0] + t[1]*n[1] + t[2]*n[2]
+        tg = (t[0] - dt*n[0], t[1] - dt*n[1], t[2] - dt*n[2])
+        tl = (tg[0]**2 + tg[1]**2 + tg[2]**2) ** 0.5
+        if tl > 1e-12:
+            tg = (tg[0]/tl, tg[1]/tl, tg[2]/tl)
+        else:
+            # Fallback: use normal
+            tg = n
+        # Recompute binormal as cross(normal, tangent) for orthonormal frame
+        bn = (n[1]*tg[2] - n[2]*tg[1],
+              n[2]*tg[0] - n[0]*tg[2],
+              n[0]*tg[1] - n[1]*tg[0])
+        # Sign: compute handiness via cross check
+        cross = (tg[1]*bn[2] - tg[2]*bn[1],
+                 tg[2]*bn[0] - tg[0]*bn[2],
+                 tg[0]*bn[1] - tg[1]*bn[0])
+        dot = cross[0]*n[0] + cross[1]*n[1] + cross[2]*n[2]
+        sign = 1.0 if dot >= 0.0 else -1.0
+        tangents.append(tg)
+        binormals.append(bn)
+        tangent_w.append(sign)
+        binormal_w.append(1.0)
+
+    return tangents, binormals, tangent_w, binormal_w
+
+
 def _clamp_i16(v):
     return max(-32768, min(32767, int(round(v))))
 
@@ -497,3 +754,88 @@ def _clamp_i16(v):
 def _enc_u8n(n):
     """(x-1)/127 - 1  inverse -> byte."""
     return max(0, min(255, int(round((n + 1.0) * 127.0)) + 1))
+
+
+def _build_palettes(mesh_objects, bones):
+    """Build bone palettes for skinned meshes.
+
+    Each mesh's vertex groups reference bones by name.  A palette is a list of
+    bone names (resolved to indices at write time) that covers every vertex
+    group the mesh uses.  Meshes with identical bone sets share a palette.
+
+    Returns (palettes, bone_map_per_mesh):
+      palettes     = list of lists of bone name strings
+      bone_map_per_mesh = dict mapping object name -> palette index
+    """
+    if not bones:
+        return [], {}
+    name2idx = {b['name']: i for i, b in enumerate(bones)}
+
+    # Collect unique bone sets per mesh
+    mesh_bone_sets = {}  # ob.name -> frozenset of bone names used
+    for ob in mesh_objects:
+        if ob.type != 'MESH':
+            continue
+        used = set()
+        for vg in ob.vertex_groups:
+            if vg.name in name2idx:
+                used.add(vg.name)
+        mesh_bone_sets[ob.name] = frozenset(used)
+
+    # Deduplicate: map bone-set -> palette index
+    seen = {}  # frozenset -> palette index
+    palettes = []  # list of lists of bone name strings
+    bone_map = {}  # ob.name -> palette index
+
+    for ob_name, bone_set in mesh_bone_sets.items():
+        if not bone_set:
+            bone_map[ob_name] = 0  # rigid mesh, use empty palette
+            continue
+        key = bone_set
+        if key not in seen:
+            seen[key] = len(palettes)
+            # Sort by bone index for consistency
+            pal_names = sorted(bone_set, key=lambda n: name2idx[n])
+            palettes.append(pal_names)
+        bone_map[ob_name] = seen[key]
+
+    return palettes, bone_map
+
+
+def _extract_bones(arm_obj):
+    """Extract bone hierarchy from a Blender armature for XBG export.
+
+    Returns list of dicts matching import_wd.py's bone format:
+    {name, parent (index or -1), pos (3 floats, local), quat (w,x,y,z), o2n}
+    o2n (obj2NodeMatInd) is 0 for all bones — identity matrix.
+    """
+    if arm_obj is None or arm_obj.type != 'ARMATURE':
+        return []
+    arm = arm_obj.data
+    bones_out = []
+    name_index = {}
+    # Collect bones in armature order (edit_bones sorted by hierarchy)
+    bpy.ops.object.mode_set(mode='EDIT')
+    ebs = list(arm.edit_bones)
+    for i, eb in enumerate(ebs):
+        name_index[eb.name] = i
+    for i, eb in enumerate(ebs):
+        # Local transform = parent.inverted() @ world if parented, else world
+        if eb.parent and eb.parent.name in name_index:
+            parent_idx = name_index[eb.parent.name]
+            parent_mat = eb.parent.matrix_local
+            local_mat = parent_mat.inverted() @ eb.matrix_local
+        else:
+            parent_idx = -1
+            local_mat = eb.matrix_local
+        pos = local_mat.to_translation()
+        quat = local_mat.to_quaternion()  # (w, x, y, z)
+        bones_out.append({
+            'name': eb.name,
+            'parent': parent_idx,
+            'pos': (pos.x, pos.y, pos.z),
+            'quat': (quat.w, quat.x, quat.y, quat.z),
+            'o2n': 0,
+        })
+    bpy.ops.object.mode_set(mode='OBJECT')
+    return bones_out
