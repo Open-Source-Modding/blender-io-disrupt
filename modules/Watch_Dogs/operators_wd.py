@@ -605,7 +605,7 @@ class XBG_OT_ExportWD1(bpy.types.Operator):
         try:
             import importlib
             mod = importlib.import_module(
-                'blender-io-xbg.modules.Watch_Dogs.export_wd1')
+                'blender-io-disrupt.modules.Watch_Dogs.export_wd1')
             n = mod.export_wd1(path, objs, lod_dists=dists)
         except Exception as e:
             self.report({'ERROR'}, f"Failed to export WD1 .xbg: {e}")
