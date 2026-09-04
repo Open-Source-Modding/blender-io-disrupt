@@ -28,6 +28,7 @@ for pos, 0x8 for UV) mirroring inject_wd.component_layout.
 
 import os
 import struct
+import math
 
 try:
     import bpy
@@ -116,11 +117,21 @@ def _write_header(w, n_lods, lod_dists, bsphere, bbox, smem=0):
 
 
 def _write_params(w, n_lods, lod_dists, bsphere, bbox,
-                  pos_off, pos_scale, uv_off, uv_scale):
+                  pos_off, pos_scale, uv_off, uv_scale,
+                  pos_off_raw=None):
     """Section 2.  Decompression constants pos = i16*scale+off (same as the
-    injector's `off` tuple).  bsphere = (cx,cy,cz,r), bbox=(min3,max3)."""
+    injector's `off` tuple).  bsphere = (cx,cy,cz,r), bbox=(min3,max3).
+
+    If *pos_off_raw* (the original u32 from import) is given, it is written
+    verbatim — the game reinterprets those bits as float (*(float*)&raw_u32).
+    """
     w.pad(4)
-    w.u32(int(pos_off))                     # gp_unk1 (pos offset, as raw int)
+    if pos_off_raw is not None:
+        w.u32(pos_off_raw)                      # original u32 from import
+    else:
+        # Fallback for fresh meshes: pack the float pos_off as a u32 so the
+        # game can reinterpret it via *(float*)&raw_u32.
+        w.u32(struct.unpack('I', struct.pack('f', pos_off))[0])
     w.f32(pos_scale)                        # gp_unk2
     w.f32(pos_scale)                        # gp_unk3 (scale, repeated)
     w.f32(uv_off)                           # gp_unk4 (uv offset)
@@ -307,6 +318,7 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
 
     # ── gather geometry ─────────────────────────────────────────────────
     mats = [m for m in mesh_objects]
+    mat_paths = materials or _collect_materials(mats)
     combined_min = [float('inf')] * 3
     combined_max = [float('-inf')] * 3
     for ob in mats:
@@ -317,24 +329,28 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
                 combined_max[i] = max(combined_max[i], co[i])
 
     # WD1 codec is `pos = i16*scale + off` with ONE scalar offset+scale for
-    # ALL three axes.  Use the original file's constants when available (imported
-    # mesh objects store them as obj['wd_scale'] = [pos_off, pos_scale,
-    # uv_off, uv_scale]); otherwise recompute from the bounding box.
+    # ALL three axes.  ALWAYS recompute from the actual geometry bounding box
+    # so the quantization range matches the current mesh — stale wd_scale
+    # values from import cause the model to appear tiny in-game.
+    pos_off = min(combined_min)
+    gmin = min(combined_min)
+    gmax = max(combined_max)
+    pos_scale = ((gmax - gmin) / 32767.0) or 1.0
+    # UV scale: prefer original import values if available, else default.
     wd_scale = None
+    pos_off_raw = None
     for ob in mats:
         if 'wd_scale' in ob and len(ob['wd_scale']) >= 4:
             wd_scale = ob['wd_scale']
             break
+    for ob in mats:
+        if 'wd_pos_off_raw' in ob:
+            pos_off_raw = int(ob['wd_pos_off_raw'])
+            break
     if wd_scale:
-        pos_off = float(wd_scale[0])
-        pos_scale = float(wd_scale[1])
         uv_off = float(wd_scale[2])
         uv_scale = float(wd_scale[3])
     else:
-        pos_off = min(combined_min)
-        gmin = min(combined_min)
-        gmax = max(combined_max)
-        pos_scale = ((gmax - gmin) / 32767.0) or 1.0
         uv_off, uv_scale = 0.0, 1.0 / 32767.0
 
     bsphere = _compute_bsphere(combined_min, combined_max)
@@ -355,55 +371,84 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
     for ob in mats:
         me = ob.data
         me.calc_loop_triangles()
-        verts = [(ob.matrix_world @ mathutils.Vector(v.co)) for v in me.vertices]
-        normals = [tuple(v.normal) for v in me.vertices]
-        uvs = _object_uvs(me)
+        world_verts = [(ob.matrix_world @ mathutils.Vector(v.co))
+                       for v in me.vertices]
 
-        # Second UV channel for uv_comp2 (lightmap / detail UVs)
-        uvs2 = None
-        if len(me.uv_layers) > 1:
-            uv2_layer = me.uv_layers[1]
-            uvs2 = [(0.0, 0.0)] * len(me.vertices)
-            cnt2 = [0] * len(me.vertices)
-            for li, loop in enumerate(me.loops):
-                vi = loop.vertex_index
-                u2, v2 = uv2_layer.data[li].uv
-                uvs2[vi] = (uvs2[vi][0] + u2, uvs2[vi][1] + v2)
-                cnt2[vi] += 1
-            for vi in range(len(uvs2)):
-                if cnt2[vi]:
-                    uvs2[vi] = (uvs2[vi][0] / cnt2[vi], uvs2[vi][1] / cnt2[vi])
-
-        # Vertex colors (first color layer) — averaged per-vertex from loops
+        # ── Per-loop data (preserves sharp edges + UV seams) ─────────
+        # Each loop (face corner) gets its own position+normal+UV+color.
+        # Where multiple loops share the same (pos, normal, UV, color),
+        # they collapse into one vertex in the buffer.  Otherwise a
+        # single Blender vertex splits into multiple buffer entries.
+        uv_layer = me.uv_layers.active
+        uv2_layer = me.uv_layers[1] if len(me.uv_layers) > 1 else None
         color_layer = None
+        color_is_point = False  # True if color attr is POINT domain (per-vertex)
         if hasattr(me, 'color_attributes') and me.color_attributes:
             color_layer = me.color_attributes[0]
+            color_is_point = getattr(color_layer, 'domain', 'CORNER') == 'POINT'
         elif hasattr(me, 'vertex_colors') and me.vertex_colors:
             color_layer = me.vertex_colors.active
-        per_vert_color = [(1.0, 1.0, 1.0, 1.0)] * len(verts)
-        if color_layer is not None:
-            ccnt = [0] * len(verts)
-            csum = [(0.0, 0.0, 0.0, 0.0)] * len(verts)
-            for li, loop in enumerate(me.loops):
-                vi = loop.vertex_index
-                try:
-                    rgba = color_layer.data[li].color
-                except Exception:
-                    continue
-                r, g, b = rgba[0], rgba[1], rgba[2]
-                a = rgba[3] if len(rgba) > 3 else 1.0
-                old = csum[vi]
-                csum[vi] = (old[0]+r, old[1]+g, old[2]+b, old[3]+a)
-                ccnt[vi] += 1
-            for vi in range(len(verts)):
-                if ccnt[vi]:
-                    n = ccnt[vi]
-                    per_vert_color[vi] = (csum[vi][0]/n, csum[vi][1]/n,
-                                          csum[vi][2]/n, csum[vi][3]/n)
 
-        # Tangents and binormals from UV-space computation
+        # Read custom split normals from xbg_normal attribute (set by
+        # importer) or from Blender's computed loop normals.
+        loop_normals = None
+        na = me.attributes.get('xbg_normal')
+        if na and len(na.data) == len(me.loops):
+            loop_normals = [tuple(d.vector) for d in na.data]
+        elif me.has_custom_normals:
+            loop_normals = [tuple(loop.normal) for loop in me.loops]
+
+        # Build per-loop vertex entries and deduplicate.
+        loop_to_vb = {}   # loop_index → vertex-buffer index
+        vb_positions = []  # position per VB entry
+        vb_normals = []
+        vb_uvs = []
+        vb_uvs2 = []
+        vb_colors = []
+
+        def _dedup(pos, normal, uv, uv2, color):
+            key = (pos, normal, uv, uv2, color)
+            idx = _dedup_cache.get(key)
+            if idx is not None:
+                return idx
+            idx = len(vb_positions)
+            _dedup_cache[key] = idx
+            vb_positions.append(pos)
+            vb_normals.append(normal)
+            vb_uvs.append(uv)
+            vb_uvs2.append(uv2)
+            vb_colors.append(color)
+            return idx
+
+        _dedup_cache = {}
+        for li, loop in enumerate(me.loops):
+            vi = loop.vertex_index
+            pos = tuple(world_verts[vi])
+            normal = (tuple(loop_normals[li])
+                      if loop_normals and li < len(loop_normals)
+                      else tuple(me.vertices[vi].normal))
+            uv = (tuple(uv_layer.data[li].uv)
+                   if uv_layer else (0.0, 0.0))
+            uv2 = (tuple(uv2_layer.data[li].uv)
+                    if uv2_layer else None)
+            color = (tuple(color_layer.data[vi if color_is_point else li].color[:3]) + (1.0,)
+                     if color_layer else (1.0, 1.0, 1.0, 1.0))
+            loop_to_vb[li] = _dedup(pos, normal, uv, uv2, color)
+
+        verts = vb_positions
+        normals = vb_normals
+        uvs = vb_uvs
+        uvs2 = vb_uvs2 if any(v is not None for v in vb_uvs2) else None
+        per_vert_color = vb_colors
+
+        # Second UV channel — fill None entries with (0,0)
+        if uvs2:
+            uvs2 = [(v if v is not None else (0.0, 0.0)) for v in uvs2]
+
+        # Tangents and binormals from UV-space computation (per-VB-entry)
         tangents, binormals, tangent_w, binormal_w = \
-            _compute_tangents_binormals(me, me.loop_triangles, verts,
+            _compute_tangents_binormals(me, me.loop_triangles, loop_to_vb,
+                                        verts,
                                         uvs if uvs else [(0,0)]*len(verts),
                                         normals)
 
@@ -433,7 +478,11 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
         tri_count = 0
         mi = bytearray()
         for lt in me.loop_triangles:
-            a, b, c = lt.vertices
+            # lt.loops = (la, lb, lc) are loop indices → map to VB indices
+            la, lb, lc = lt.loops
+            a = loop_to_vb[la]
+            b = loop_to_vb[lb]
+            c = loop_to_vb[lc]
             mi += struct.pack('<3H', a, c, b)
             tri_count += 1
         drawcall = {
@@ -442,7 +491,7 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
             'vertex_count': vcount, 'min_index': 0,
             'max_index': vcount - 1, 'group_count': 0,
         }
-        mat_id = _mesh_mat_id(ob, mats_named)
+        mat_id = _mesh_mat_id(ob, mats_named, mat_paths)
         bbox_m = _mesh_bbox(verts)
         mesh_lod = int(ob.get('lod_level', 0)) if hasattr(ob, 'get') else 0
         meshes.append({
@@ -502,6 +551,11 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
                     rebased += struct.pack('<H', idx + vbase)
                 lv += mv_data
                 li += rebased
+                # Update min/max_index so the importer can remap indices
+                # back to local vertex range during decode
+                vcount = m['drawcall']['vertex_count']
+                m['drawcall']['min_index'] = vbase
+                m['drawcall']['max_index'] = vbase + vcount - 1
                 # Update ranges drawcalls too
                 for r in m['ranges']:
                     r['drawcall']['vb_offset'] = voff
@@ -523,7 +577,6 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
             li += m['idata']
         buffers = [(bytes(lv), bytes(li))]
 
-    mat_paths = materials or _collect_materials(mats)
     actual_n_lods = n_lods
     lod_dists_out = list(lod_dists[:actual_n_lods])
     if len(lod_dists_out) < actual_n_lods:
@@ -533,7 +586,8 @@ def export_wd1(path, mesh_objects, *, lod_dists=(20.0, 30.0, 70.0, 300.0),
     w = _Writer()
     _write_header(w, actual_n_lods, lod_dists_out, bsphere, bbox)
     _write_params(w, actual_n_lods, lod_dists_out, bsphere, bbox,
-                  pos_off, pos_scale, uv_off, uv_scale)
+                  pos_off, pos_scale, uv_off, uv_scale,
+                  pos_off_raw=pos_off_raw)
     _write_materials(w, mat_paths, actual_n_lods)
     slots = [(os.path.splitext(os.path.basename(p.replace('\\', '/')))[0], i)
              for i, p in enumerate(mat_paths)]
@@ -592,11 +646,12 @@ def _object_vertex_colors(me):
     if not hasattr(me, 'color_attributes') or len(me.color_attributes) == 0:
         return None
     ca = me.color_attributes[0]
+    is_point = getattr(ca, 'domain', 'CORNER') == 'POINT'
     out = [(1.0, 1.0, 1.0, 1.0)] * len(me.vertices)
     cnt = [0] * len(me.vertices)
     for li in range(len(me.loops)):
         vi = me.loops[li].vertex_index
-        c = ca.data[li].color
+        c = ca.data[vi if is_point else li].color
         out[vi] = (out[vi][0] + c[0], out[vi][1] + c[1],
                     out[vi][2] + c[2], out[vi][3] + c[3])
         cnt[vi] += 1
@@ -614,9 +669,18 @@ def _material_names(ob):
     return out
 
 
-def _mesh_mat_id(ob, mat_names):
-    if mat_names:
+def _mesh_mat_id(ob, mat_names, mat_paths):
+    """Return the index of this object's primary material in *mat_paths*."""
+    if not mat_names or not mat_paths:
         return 0
+    # mat_paths has the stripped .material suffix; compare case-insensitively.
+    # Each submesh typically has one material — use the first slot's name.
+    name_lower = mat_names[0].lower()
+    for i, p in enumerate(mat_paths):
+        # mat_paths elements are full game-style paths; extract basename.
+        bn = os.path.splitext(os.path.basename(p.replace('\\', '/')))[0]
+        if bn.lower() == name_lower:
+            return i
     return 0
 
 
@@ -627,7 +691,13 @@ def _collect_materials(objects):
             if m not in seen:
                 seen.append(m)
     # emit as game-style paths (best-effort; the game resolves by name)
-    return ['graphics\\_materials\\%s.material.bin' % n for n in seen]
+    # Strip trailing .material if present (importer keeps it from the
+    # .material.bin basename) so we don't get double-suffix round-trips.
+    out = []
+    for n in seen:
+        base = n[:-9] if n.lower().endswith('.material') else n
+        out.append('graphics\\_materials\\%s.material.bin' % base)
+    return out
 
 
 def _enc_pos(buf, co, off, scale):
@@ -667,29 +737,31 @@ def _enc_tangent_comp(buf, t, w=1.0):
     buf.append(255 if w >= 0 else 0)                   # w sign → alpha
 
 
-def _compute_tangents_binormals(me, loop_triangles, verts, uvs, normals):
-    """Compute per-vertex tangents and binormals from loop triangles.
+def _compute_tangents_binormals(me, loop_triangles, loop_to_vb,
+                                vb_positions, vb_uvs, vb_normals):
+    """Compute per-VB-entry tangents and binormals from loop triangles.
 
-    Returns (tangents, binormals, tangent_w, binormal_w) where each is a list
-    of (x,y,z) tuples or float w-values, indexed by vertex index.
     Uses the standard UV-space tangent algorithm (cross product of position
-    and UV deltas per triangle, accumulated per-vertex, then normalized).
+    and UV deltas per triangle, accumulated per VB entry, then normalized).
+
+    ``loop_to_vb`` maps each Blender loop index to the deduplicated
+    VB index.  ``vb_positions``, ``vb_uvs``, ``vb_normals`` are the
+    per-VB-entry arrays.
     """
-    nverts = len(verts)
+    nverts = len(vb_positions)
     tan = [[0.0, 0.0, 0.0] for _ in range(nverts)]
     bit = [[0.0, 0.0, 0.0] for _ in range(nverts)]
 
-    if not uvs or not loop_triangles:
+    if not vb_uvs or not loop_triangles:
         return ([(0.0, 0.0, 1.0)] * nverts,
                 [(0.0, 0.0, 1.0)] * nverts,
                 [1.0] * nverts, [1.0] * nverts)
 
     for lt in loop_triangles:
-        i0, i1, i2 = lt.vertices
-        # Positions
-        p0, p1, p2 = verts[i0], verts[i1], verts[i2]
-        # UVs
-        uv0, uv1, uv2 = uvs[i0], uvs[i1], uvs[i2]
+        la, lb, lc = lt.loops
+        ai, bi, ci = loop_to_vb[la], loop_to_vb[lb], loop_to_vb[lc]
+        p0, p1, p2 = vb_positions[ai], vb_positions[bi], vb_positions[ci]
+        uv0, uv1, uv2 = vb_uvs[ai], vb_uvs[bi], vb_uvs[ci]
 
         e1 = (p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2])
         e2 = (p2[0] - p0[0], p2[1] - p0[1], p2[2] - p0[2])
@@ -708,7 +780,7 @@ def _compute_tangents_binormals(me, loop_triangles, verts, uvs, normals):
              r * (e2[1] * duv1[0] - e1[1] * duv2[0]),
              r * (e2[2] * duv1[0] - e1[2] * duv2[0]))
 
-        for i in (i0, i1, i2):
+        for i in (ai, bi, ci):
             tan[i][0] += t[0]; tan[i][1] += t[1]; tan[i][2] += t[2]
             bit[i][0] += b[0]; bit[i][1] += b[1]; bit[i][2] += b[2]
 
@@ -717,7 +789,7 @@ def _compute_tangents_binormals(me, loop_triangles, verts, uvs, normals):
     tangent_w = []
     binormal_w = []
     for vi in range(nverts):
-        n = normals[vi] if vi < len(normals) else (0.0, 0.0, 1.0)
+        n = vb_normals[vi] if vi < len(vb_normals) else (0.0, 0.0, 1.0)
         t = tan[vi]
         b = bit[vi]
         # Gram-Schmidt orthogonalize against normal
@@ -748,6 +820,8 @@ def _compute_tangents_binormals(me, loop_triangles, verts, uvs, normals):
 
 
 def _clamp_i16(v):
+    if not math.isfinite(v):
+        return 0
     return max(-32768, min(32767, int(round(v))))
 
 

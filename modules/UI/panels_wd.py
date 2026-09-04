@@ -404,3 +404,67 @@ class XBG_PT_WDModelInfo(bpy.types.Panel):
             comps.append("binormals")
         if comps:
             col.label(text="Captured: " + ", ".join(comps), icon='CHECKMARK')
+
+
+# ── TFOWC2 Material Settings ───────────────────────────────────────────────
+
+class XBG_PT_WDTFOWC2(bpy.types.Panel):
+    """TFOWC2 extended material system — specular channels, metalness, reflections."""
+    bl_label = "TFOWC2 Material"
+    bl_idname = "OBJECT_PT_xbg_wd_tfowc2"
+    bl_space_type = 'VIEW_3D'
+    bl_region_type = 'UI'
+    bl_category = "XBG Import"
+    bl_parent_id = "OBJECT_PT_xbg_wd"
+    bl_options = {'DEFAULT_CLOSED'}
+
+    @classmethod
+    def poll(cls, ctx):
+        o = ctx.active_object
+        return (o is not None and o.type == 'MESH'
+                and o.active_material is not None)
+
+    def draw_header(self, ctx):
+        mat = ctx.active_object.active_material
+        on = mat.get('wd_tfowc2', 0) == 1
+        self.layout.label(icon='CHECKMARK' if on else 'NONE')
+
+    def draw(self, ctx):
+        l = self.layout
+        mat = ctx.active_object.active_material
+        from ..Watch_Dogs.material_editor_wd import is_tfowc2
+        on = is_tfowc2(mat)
+
+        r = l.row()
+        r.scale_y = 1.4
+        r.operator("wdmat.toggle_tfowc2",
+                   text="TFOWC2: " + ("ON" if on else "OFF"),
+                   icon='CHECKMARK' if on else 'NONE')
+
+        if on:
+            box = l.box()
+            c = box.column(align=True)
+            c.scale_y = 0.8
+            c.label(text="Specular channels (RGBA):", icon='INFO')
+            c.label(text="  R = Glossiness (SpecularPower)")
+            c.label(text="  G = Colorize mask")
+            c.label(text="  B = Reflectance (F0)")
+            c.label(text="  A = Specular occlusion / wetness")
+            box.separator()
+            c2 = box.column(align=True)
+            c2.scale_y = 0.8
+            c2.label(text="Mask modes:", icon='MOD_MASK')
+            for pname in ('MaskRedChannelMode', 'MaskBlueChannelMode',
+                          'MaskAlphaChannelMode'):
+                val = mat.get(pname, 0)
+                c2.label(text=f"  {pname} = {val}")
+            box.separator()
+            c3 = box.column(align=True)
+            c3.scale_y = 0.8
+            c3.label(text="Flags:", icon='PREFERENCES')
+            for pname in ('SwapSpecularGlossAndOcclusion',
+                          'ColorizeDiffuse1Mode', 'InvertMaskForColorize',
+                          'UseColorizeDiffuse1'):
+                val = mat.get(pname, 0)
+                c3.label(text=f"  {pname} = {val}")
+            c3.label(text=f"  ReflectionType = {mat.get('ReflectionType', 0)}")

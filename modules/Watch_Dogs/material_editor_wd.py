@@ -20,6 +20,28 @@ except ImportError:
 
 from .material_bin import read_material_bin, write_material_bin
 
+# ── TFOWC2 (The Fall of Windy City 2) extended material system ───────────
+# TFOWC2 extends vanilla WD materials with specular texture channel masks,
+# metalness workflow, and additional reflection modes.  Detection is based
+# on the presence of TFOWC2-specific parameters in the .material.bin.
+
+_TFOWC2_PARAMS = frozenset({
+    'MaskRedChannelMode', 'MaskBlueChannelMode', 'MaskAlphaChannelMode',
+    'SwapSpecularGlossAndOcclusion', 'ColorizeDiffuse1Mode',
+    'InvertMaskForColorize', 'UseColorizeDiffuse1',
+})
+
+
+def is_tfowc2(material):
+    """Check if material uses TFOWC2 extended material system."""
+    return material.get('wd_tfowc2', 0) == 1
+
+
+def set_tfowc2(material, enabled=True):
+    """Toggle TFOWC2 mode on a material."""
+    material['wd_tfowc2'] = 1 if enabled else 0
+
+
 # ── Known direct PBR mappings ─────────────────────────────────────────────
 _PBR_MAP = {
     'DiffuseColor1':    ('Base Color', 'color3'),
@@ -59,11 +81,13 @@ def material_from_bin(bin_path, assign_to_obj=None):
 
     data = read_material_bin(bin_path)
     shader = data.pop('shader', '')
-    mat_name = data.pop('name', os.path.basename(bin_path))
+    bin_internal_name = data.pop('name', '')
+    mat_name = os.path.splitext(os.path.basename(bin_path))[0]
 
     me = bpy.data.materials.get(mat_name)
     if me is None:
         me = bpy.data.materials.new(mat_name)
+    me['xbg_mat_internal_name'] = bin_internal_name
     me.use_nodes = True
     tree = me.node_tree
 
@@ -101,6 +125,10 @@ def material_from_bin(bin_path, assign_to_obj=None):
                 me[k] = v
             except Exception:
                 pass
+
+    # Auto-detect TFOWC2 extended material system
+    if any(k in data for k in _TFOWC2_PARAMS):
+        set_tfowc2(me, True)
 
     # Stamp the shader family
     me['xbg_shader'] = shader
@@ -145,13 +173,42 @@ def material_to_bin(mat, output_path):
         if k.startswith('xbg_') or k.startswith('_'):
             continue
         if k in ('cycles', 'cycles_visibility', 'shadow_method',
-                 'blend_method', 'surface_render_method'):
+                 'blend_method', 'surface_render_method', 'wd_tfowc2'):
             continue
         params[k] = mat[k]
 
-    write_material_bin(output_path, {
-        'name': mat.name,
-        'shader': shader,
-        'parameters': params,
-    })
+    # TFOWC2: export extended specular channel / metalness params
+    if is_tfowc2(mat):
+        # Ensure critical TFOWC2 params are present with sane defaults
+        _tfowc2_defaults = {
+            'MaskRedChannelMode': 0,
+            'MaskBlueChannelMode': 0,
+            'MaskAlphaChannelMode': 0,
+            'SwapSpecularGlossAndOcclusion': 0,
+            'ColorizeDiffuse1Mode': 0,
+            'InvertMaskForColorize': 0,
+            'UseColorizeDiffuse1': 0,
+            'ReflectionType': 0,
+        }
+        for k, default in _tfowc2_defaults.items():
+            if k not in params:
+                params[k] = default
+
+    from .material_bin import MaterialBin, Param, crc32_name
+    mb = MaterialBin()
+    mb.name = mat.name
+    mb.shader = shader
+    for pname, pval in params.items():
+        if isinstance(pval, float):
+            ptype = 5  # TYPE_I32 stored as float bits
+        elif isinstance(pval, str):
+            ptype = 8  # TYPE_STR8
+        elif isinstance(pval, bool):
+            ptype = 6  # TYPE_BOOL
+        else:
+            ptype = 1  # TYPE_U32
+        h = crc32_name(pname)
+        mb.params.append(Param(type=ptype, name=pname, name_hash=h,
+                               value=pval if isinstance(pval, list) else [pval]))
+    mb.write(output_path)
     return output_path

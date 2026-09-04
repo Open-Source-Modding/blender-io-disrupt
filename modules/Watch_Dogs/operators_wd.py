@@ -628,6 +628,10 @@ class XBG_OT_ExportWD1(bpy.types.Operator):
             n = mod.export_wd1(path, objs, lod_dists=dists, armature=arm,
                                n_lods=self.n_lods)
         except Exception as e:
+            import traceback
+            from ..Core.debug import VerboseLogger
+            VerboseLogger.warn(f"[wd1-export] EXPORT FAILED: {e}")
+            VerboseLogger.warn(traceback.format_exc())
             self.report({'ERROR'}, f"Failed to export WD1 .xbg: {e}")
             return {'CANCELLED'}
         if arm:
@@ -729,12 +733,17 @@ class XBG_OT_WDStampMetadata(bpy.types.Operator):
                     mesh_info = lod0[mi]
                     dc = mesh_info['drawcall']
                     ob['wd_scale'] = off
-                    ob['wd_vb_off'] = dc['vb_offset']
+                    def _safe_int(v):
+                        """Store u32 values > INT_MAX as strings so Blender's
+                        ID property system (C int) doesn't reject them."""
+                        return str(v) if isinstance(v, int) and v > 0x7FFFFFFF else v
+                    ob['wd_pos_off_raw'] = _safe_int(L.get('pos_off_raw', 0))
+                    ob['wd_vb_off'] = _safe_int(dc['vb_offset'])
                     ob['wd_stride'] = mesh_info['stride']
                     ob['wd_format'] = mesh_info['format']
                     ob['wd_vcount'] = dc['vertex_count']
                     ob['wd_mesh_index'] = mi
-                    ob['wd_buf0_off'] = L.get('vdata0_off', 0)
+                    ob['wd_buf0_off'] = _safe_int(L.get('vdata0_off', 0))
                     stamped += 1
                 else:
                     self.report({'WARNING'},
@@ -826,6 +835,32 @@ class XBG_OT_ExportWDMaterial(bpy.types.Operator):
             self.report({'ERROR'}, f"Material export failed: {exc}")
             import traceback; traceback.print_exc()
             return {'CANCELLED'}
+
+
+# ── TFOWC2 Material Toggle ────────────────────────────────────────────────
+
+class WDMAT_OT_ToggleTFOWC2(bpy.types.Operator):
+    """Toggle TFOWC2 (The Fall of Windy City 2) extended material system on the active material."""
+    bl_idname  = "wdmat.toggle_tfowc2"
+    bl_label   = "Toggle TFOWC2"
+    bl_description = (
+        "Enable/disable TFOWC2 extended material system: specular texture "
+        "channels (R=glossiness, G=colorize, B=reflectance, A=specular "
+        "occlusion), mask modes, metalness workflow, and dynamic reflections"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    def execute(self, ctx):
+        from .material_editor_wd import is_tfowc2, set_tfowc2
+        mat = ctx.active_object.active_material if ctx.active_object else None
+        if mat is None:
+            self.report({'ERROR'}, "No active material")
+            return {'CANCELLED'}
+        current = is_tfowc2(mat)
+        set_tfowc2(mat, not current)
+        state = "ON" if not current else "OFF"
+        self.report({'INFO'}, f"TFOWC2: {state} for '{mat.name}'")
+        return {'FINISHED'}
 
 
 # ── MAC / Markup Import ─────────────────────────────────────────────────────
@@ -1028,3 +1063,48 @@ class XBG_OT_ImportWDMarkup(bpy.types.Operator):
         self.report({'INFO'},
             f"Markup: {len(doc.events)} events placed as timeline markers")
         return {'FINISHED'}
+
+
+class XBG_OT_ImportFaceFXPhonemes(bpy.types.Operator):
+    """Import a FaceFX phoneme .txt file and create viseme shape key
+    animations on the active mesh for lip-sync."""
+    bl_idname  = "xbg.import_facefx_phonemes"
+    bl_label   = "Import FaceFX Phoneme Data"
+    bl_description = (
+        "Parse a FaceFX Studio .txt export (phoneme timing + confidence) "
+        "and create viseme shape key FCurves on the active mesh for lip-sync"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(default="*.txt", options={'HIDDEN'})
+
+    confidence_threshold: bpy.props.FloatProperty(
+        name="Min Confidence",
+        description="Minimum phoneme confidence to include",
+        default=0.1, min=0.0, max=1.0,
+    )
+
+    def invoke(self, ctx, ev):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        from .facefx_phoneme_import import import_phoneme_txt
+        if not self.filepath or not os.path.isfile(self.filepath):
+            self.report({'ERROR'}, "No valid .txt file selected")
+            return {'CANCELLED'}
+        try:
+            result = import_phoneme_txt(
+                self.filepath,
+                confidence_threshold=self.confidence_threshold,
+            )
+            self.report({'INFO'},
+                f"FaceFX: {result['phonemes']} phonemes, "
+                f"{result['shape_keys']} visemes, "
+                f"frames {result['frames'][0]}-{result['frames'][1]}")
+            return {'FINISHED'}
+        except Exception as exc:
+            self.report({'ERROR'}, f"FaceFX import failed: {exc}")
+            import traceback; traceback.print_exc()
+            return {'CANCELLED'}

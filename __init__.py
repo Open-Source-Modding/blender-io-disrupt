@@ -43,13 +43,15 @@ from .modules.Watch_Dogs.operators_wd import (
     XBG_OT_ImportWDSkeleton, XBG_OT_ImportWDHkx,
     XBG_OT_InjectWDHkx, XBG_OT_ExportWD1,
     XBG_OT_ImportWDMaterial, XBG_OT_ExportWDMaterial,
-    XBG_OT_ImportWDMac, XBG_OT_ImportWDMarkup)
+    XBG_OT_ImportWDMac, XBG_OT_ImportWDMarkup,
+    WDMAT_OT_ToggleTFOWC2,
+    XBG_OT_ImportFaceFXPhonemes)
 from .modules.Watch_Dogs.export_mac import (
     MAC_OT_Export, MAC_OT_ExportMarkup)
 from .modules.Watch_Dogs_2.operators_wd2 import XBG_OT_ImportWD2, XBG_OT_ImportWD2XBG, XBG_OT_ExportWD2, XBG_OT_ImportWD2GLMFull
 from .modules.Watch_Dogs_Legion.operators_wdl import (
     XBG_OT_ImportWDL, XBG_OT_InjectWDL, XBG_OT_ImportWDLSkeleton,
-    XBG_OT_ImportWDLMab, XBG_OT_ImportWDLHkx)
+    XBG_OT_ImportWDLMab, XBG_OT_ImportWDLHkx, XBG_OT_ExportWDL)
 
 from .modules.UI.main import (
     XBG_OT_SelectGame,
@@ -64,6 +66,7 @@ from .modules.UI.panels_wd import (
     XBG_PT_WDInject,
     XBG_PT_WDDebug,
     XBG_PT_WDModelInfo,
+    XBG_PT_WDTFOWC2,
 )
 from .modules.UI.panels_wdl import (
     XBG_PT_WDLImport,
@@ -97,6 +100,8 @@ classes = (
     XBG_OT_ImportWDMarkup,
     MAC_OT_Export,
     MAC_OT_ExportMarkup,
+    WDMAT_OT_ToggleTFOWC2,
+    XBG_OT_ImportFaceFXPhonemes,
     # Watch Dogs 2
     XBG_OT_ImportWD2,
     XBG_OT_ImportWD2XBG,
@@ -108,6 +113,7 @@ classes = (
     XBG_OT_ImportWDLSkeleton,
     XBG_OT_ImportWDLMab,
     XBG_OT_ImportWDLHkx,
+    XBG_OT_ExportWDL,
     # UI (order matters: parents before children)
     XBG_OT_SelectGame,
     XBG_OT_DetectGame,
@@ -118,6 +124,7 @@ classes = (
     XBG_PT_WDInject,
     XBG_PT_WDDebug,
     XBG_PT_WDModelInfo,
+    XBG_PT_WDTFOWC2,
     XBG_PT_WDLRoot,
     XBG_PT_WDLImport,
     XBG_PT_WDLInject,
@@ -134,6 +141,7 @@ def menu_func_import(self, ctx):
         ("xbg.import_wdl_hkx", "Watch Dogs Legion Collision (.hkx)"),
         ("xbg.import_wd2_glm_full", "Watch Dogs 2 Model - Full (.glm)"),
         ("xbg.import_wd_material", "Watch Dogs Material (.material.bin)"),
+        ("xbg.import_facefx_phonemes", "FaceFX Phoneme Data (.txt)"),
     ]:
         if not sep:
             self.layout.separator()
@@ -144,6 +152,10 @@ def menu_func_export(self, ctx):
     self.layout.separator()
     self.layout.operator("xbg.export_wd1",
                          text="Watch Dogs 1 Model (.xbg)")
+    self.layout.operator("xbg.export_wd2_model",
+                         text="Watch Dogs 2 Model (.glm)")
+    self.layout.operator("xbg.export_wdl_model",
+                         text="Watch Dogs Legion Model (.xbg)")
     self.layout.operator("mac.export_animation",
                          text="Watch Dogs MAC Animation (.mac)")
     self.layout.operator("mac.export_markup",

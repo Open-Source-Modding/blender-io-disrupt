@@ -176,162 +176,15 @@ def _parse_glm_trimesh(block, slot_names):
 
 
 def build_wd_model(context, model, import_mesh_only=False):
-    """Create armature + meshes from the neutral model dict.  Returns
-    (armature_object_or_None, [created mesh objects]).
+    """Create armature + meshes from the neutral model dict.
 
-    `import_mesh_only` skips the armature and skin binding (geometry only)."""
-    if bpy is None:
-        raise RuntimeError("bpy unavailable")
-    Mat = mathutils.Matrix
-    Quat = mathutils.Quaternion
-    Vec = mathutils.Vector
-
-    mesh_objs = []
-    bones = model['bones']
-    arm_obj = None
-    if bones and not import_mesh_only:
-        ad = bpy.data.armatures.new(model['name'] + '_Armature')
-        arm_obj = bpy.data.objects.new(ad.name, ad)
-        context.collection.objects.link(arm_obj)
-        context.view_layer.objects.active = arm_obj
-        bpy.ops.object.mode_set(mode='EDIT')
-        world = [None] * len(bones)
-        ebs = []
-        for i, b in enumerate(bones):
-            local = (Mat.Translation(Vec(b['pos'])) @
-                     Quat(b['quat']).to_matrix().to_4x4())
-            p = b['parent']
-            world[i] = (world[p] @ local
-                        if 0 <= p < i and world[p] is not None else local)
-            eb = ad.edit_bones.new(b['name'])
-            head = world[i].to_translation()
-            eb.head = head
-            eb.tail = head + world[i].to_3x3() @ Vec((0.0, 0.05, 0.0))
-            ebs.append(eb)
-        for i, b in enumerate(bones):
-            if 0 <= b['parent'] < i:
-                ebs[i].parent = ebs[b['parent']]
-        bpy.ops.object.mode_set(mode='OBJECT')
-
-    for mesh in model['meshes']:
-        me = bpy.data.meshes.new(mesh['name'])
-        me.from_pydata(mesh['verts'], [], mesh['tris'])
-        me.update()
-        obj = bpy.data.objects.new(mesh['name'], me)
-        context.collection.objects.link(obj)
-        mesh_objs.append(obj)
-
-        # stamp the WD1 injection layout so the mesh can be edited and
-        # written back into the source .xbg (see inject_wd.py)
-        inj = mesh.get('inject')
-        if inj:
-            obj['wd_src'] = inj['src']
-            obj['wd_vb_off'] = inj['vb_off']          # offset within buffer 0
-            obj['wd_stride'] = inj['stride']
-            obj['wd_format'] = inj['format']
-            obj['wd_scale'] = inj['scale']
-            obj['wd_vcount'] = inj['vcount']
-            obj['wd_mesh_index'] = inj['mesh_index']
-            obj['wd_buf0_off'] = inj['buf0_off']      # file offset of buffer 0
-            n_bufs = len(model['_layout']['buf_frames'])
-            if n_bufs > 1:
-                obj['wd_multibuffer'] = True          # in-place only; rebuild would corrupt split LOD buffers
-
-        # UVs — bulk foreach_set (loop_uvs direct; per-vert gathered by loop).
-        loop_uvs = mesh.get('loop_uvs')
-        per_vert_uvs = mesh.get('uvs')
-        loop_vi = None
-        if loop_uvs or per_vert_uvs or mesh.get('uvs2'):
-            loop_vi = np.empty(len(me.loops), dtype=np.intp)
-            me.loops.foreach_get('vertex_index', loop_vi)
-
-        def _set_uv(layer_name, loop_data, per_vert_data):
-            uvl = me.uv_layers.new(name=layer_name)
-            if loop_data:
-                flat = np.asarray(loop_data, dtype=np.float64).ravel()
-            else:
-                flat = np.asarray(per_vert_data, dtype=np.float64)[loop_vi].ravel()
-            uvl.data.foreach_set('uv', flat)
-
-        if loop_uvs or per_vert_uvs:
-            _set_uv('UVMap', loop_uvs, per_vert_uvs)
-        per_vert_uvs2 = mesh.get('uvs2')
-        if per_vert_uvs2:
-            _set_uv('UVMap1', None, per_vert_uvs2)
-
-        # Vertex colors (authored RGBA — often a shader mask, like Avatar)
-        colors = mesh.get('colors')
-        if colors:
-            ca = me.color_attributes.new('Col', 'BYTE_COLOR', 'POINT')
-            ca.data.foreach_set('color', np.asarray(colors, dtype=np.float64).ravel())
-
-        # Normals — keep the authored vectors AND mirror them into an
-        # xbg_normal attribute (Avatar-importer parity, survives edits)
-        loop_normals = mesh.get('loop_normals')
-        per_vert_normals = mesh.get('normals')
-        for poly in me.polygons:
-            poly.use_smooth = True
-        try:
-            if loop_normals and len(loop_normals) == len(me.loops):
-                me.normals_split_custom_set(loop_normals)
-            elif per_vert_normals:
-                me.normals_split_custom_set_from_vertices(per_vert_normals)
-            # Blender <= 4.0: custom split normals only display with
-            # auto-smooth enabled (removed in 4.1+, hence the guard).
-            if hasattr(me, 'use_auto_smooth'):
-                me.use_auto_smooth = True
-        except Exception as exc:
-            vlog.log("  [wd] custom normals failed on %s: %s"
-                     % (mesh['name'], exc))
-        if per_vert_normals:
-            na = me.attributes.new('xbg_normal', 'FLOAT_VECTOR', 'POINT')
-            na.data.foreach_set(
-                'vector', [c for n in per_vert_normals for c in n])
-
-        # Tangent / binormal frames (Avatar attribute names for round-trip)
-        for vec_key, w_key, vec_attr, w_attr in (
-                ('tangents', 'tangents_w', 'xbg_tangent', 'xbg_tangent_w'),
-                ('binormals', 'binormals_w', 'xbg_binormal', 'xbg_binormal_w')):
-            vecs = mesh.get(vec_key)
-            if not vecs:
-                continue
-            va = me.attributes.new(vec_attr, 'FLOAT_VECTOR', 'POINT')
-            va.data.foreach_set('vector', [c for v in vecs for c in v])
-            ws = mesh.get(w_key)
-            if ws:
-                wa = me.attributes.new(w_attr, 'FLOAT', 'POINT')
-                wa.data.foreach_set('value', ws)
-
-        # Materials
-        slots = mesh.get('material_slots')
-        if slots:
-            for sn in slots:
-                mat = (bpy.data.materials.get(sn)
-                       or bpy.data.materials.new(sn))
-                me.materials.append(mat)
-            fmats = mesh.get('face_materials') or []
-            for pi, poly in enumerate(me.polygons):
-                if pi < len(fmats):
-                    poly.material_index = fmats[pi]
-        elif mesh.get('material'):
-            mat = (bpy.data.materials.get(mesh['material'])
-                   or bpy.data.materials.new(mesh['material']))
-            me.materials.append(mat)
-
-        # Skin weights
-        if mesh['weights'] and arm_obj:
-            groups = {}
-            for vi, wl in mesh['weights'].items():
-                for nm, w in wl:
-                    g = groups.get(nm)
-                    if g is None:
-                        g = groups[nm] = obj.vertex_groups.new(name=nm)
-                    g.add([vi], w, 'REPLACE')
-            obj.parent = arm_obj
-            mod = obj.modifiers.new('Armature', 'ARMATURE')
-            mod.object = arm_obj
-
-    return arm_obj, mesh_objs
+    Delegates to the shared ``disrupt_common.build_blender_scene`` for the
+    actual Blender object construction.  This wrapper exists for backward
+    compatibility — callers within ``Watch_Dogs_2/`` import it directly.
+    """
+    from ..Core.disrupt_common import build_blender_scene
+    return build_blender_scene(context, model,
+                               import_mesh_only=import_mesh_only)
 
 
 def load_wd2_model(context, filepath, separate_primitives=True):
@@ -351,17 +204,6 @@ def load_wd2_model(context, filepath, separate_primitives=True):
 
     # Avatar-parity: join submeshes into one object when separate prims is OFF.
     if bpy is not None and not separate_primitives and len(mesh_objs) > 1:
-        bpy.ops.object.select_all(action='DESELECT')
-        for o in mesh_objs:
-            o.select_set(True)
-        context.view_layer.objects.active = mesh_objs[0]
-        # join() leaves the absorbed objects' mesh datablocks orphaned — purge.
-        victim_meshes = [o.data for o in mesh_objs[1:]]
-        bpy.ops.object.join()
-        joined = context.active_object
-        joined.name = model['name']
-        joined['wd_joined'] = True
-        for m in victim_meshes:
-            if m.users == 0:
-                bpy.data.meshes.remove(m)
+        from ..Core.disrupt_common import join_submeshes
+        join_submeshes(context, mesh_objs, model['name'])
     return model, arm

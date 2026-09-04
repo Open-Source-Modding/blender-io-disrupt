@@ -95,21 +95,20 @@ class XBG_PT_WDLInject(bpy.types.Panel):
         r.enabled = any(o.get('wdl_src') for o in ctx.scene.objects)
         r.operator("xbg.inject_wdl_model",
                    text="   Inject WDL Mesh (.xbg)", icon='EXPORT')
+
+        # Full export button (writes new .xbg from scratch)
+        l.separator()
+        r2 = l.row()
+        r2.scale_y = 1.8
+        r2.operator("xbg.export_wdl_model",
+                    text="   Export WDL Model (.xbg)", icon='EXPORT')
         col = l.column(align=True)
         col.scale_y = 0.8
-        nsel = len([o for o in ctx.selected_objects if o.get('wdl_src')])
+        nsel = len([o for o in ctx.selected_objects if o.type == 'MESH'])
         if nsel:
-            col.label(text="SELECTION = keep-list: only selected", icon='RESTRICT_SELECT_OFF')
-            col.label(text="meshes are written; unselected ones are")
-            col.label(text="DROPPED (smaller file — e.g. select all")
-            col.label(text="but the eyes for an eyeless head).")
+            col.label(text=f"SELECTION = {nsel} mesh(es) exported", icon='RESTRICT_SELECT_OFF')
         else:
-            col.label(text="Nothing selected → ALL meshes written.", icon='INFO')
-            col.label(text="Select a subset to drop the rest.")
-        col.separator()
-        col.label(text="New object (2nd head)? Join it (Ctrl+J)", icon='INFO')
-        col.label(text="into an imported mesh first — a loose")
-        col.label(text="object has no place in the file.")
+            col.label(text="Select mesh objects to export.", icon='INFO')
 
 
 # ── Model Info ──────────────────────────────────────────────────────────────

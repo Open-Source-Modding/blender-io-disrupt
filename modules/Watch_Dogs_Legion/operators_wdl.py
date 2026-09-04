@@ -1,4 +1,4 @@
-"""Watch Dogs Legion — operators (import + inject; self-contained)."""
+"""Watch Dogs Legion — operators (import + inject + export; self-contained)."""
 import os
 
 import bpy
@@ -99,6 +99,64 @@ class XBG_OT_InjectWDL(bpy.types.Operator):
         self.report({'INFO'},
             f"WDL inject: {n_obj} meshes, {n_vtx} verts -> "
             f"{os.path.basename(self.filepath)}")
+        return {'FINISHED'}
+
+
+class XBG_OT_ExportWDL(bpy.types.Operator):
+    """Export selected mesh objects as a fresh Watch Dogs Legion .xbg (MOEG 0x95/0x46).
+
+    Synthesises every section of the binary stream from Blender geometry —
+    no source .xbg needed.  Each selected mesh becomes a submesh of a single
+    LOD.  Position/UV use the WDL i16 quantised codec; the non-geometry
+    sections (materials/skeleton/physics) are emitted minimal (empty physics/
+    procedural, one material per object)."""
+    bl_idname  = "xbg.export_wdl_model"
+    bl_label   = "Export WDL Model (.xbg)"
+    bl_description = (
+        "Write a fresh Watch Dogs Legion .xbg (MOEG 0x95/0x46) from the "
+        "selected mesh objects"
+    )
+    bl_options = {'REGISTER', 'UNDO'}
+
+    filepath: bpy.props.StringProperty(subtype="FILE_PATH")
+    filter_glob: bpy.props.StringProperty(default="*.xbg", options={'HIDDEN'})
+    lod_dists: bpy.props.StringProperty(
+        name="LOD Distances",
+        description="Comma-separated LOD distances",
+        default="30")
+
+    @classmethod
+    def poll(cls, ctx):
+        return any(o.type == 'MESH' for o in ctx.selected_objects)
+
+    def invoke(self, ctx, event):
+        ctx.window_manager.fileselect_add(self)
+        return {'RUNNING_MODAL'}
+
+    def execute(self, ctx):
+        objs = [o for o in ctx.selected_objects if o.type == 'MESH']
+        if not objs:
+            self.report({'ERROR'}, "no mesh objects selected")
+            return {'CANCELLED'}
+        try:
+            dists = [float(x.strip()) for x in self.lod_dists.split(',')
+                     if x.strip()]
+        except ValueError:
+            dists = [30.0]
+        if not dists:
+            dists = [30.0]
+        path = self.filepath
+        if not path.lower().endswith('.xbg'):
+            path += '.xbg'
+        try:
+            from .export_wdl import export_wdl
+            n = export_wdl(path, objs, lod_dists=dists)
+        except Exception as e:
+            self.report({'ERROR'}, f"Failed to export WDL .xbg: {e}")
+            import traceback; traceback.print_exc()
+            return {'CANCELLED'}
+        self.report({'INFO'},
+            f"Exported WDL .xbg: {n} mesh(es) -> {os.path.basename(path)}")
         return {'FINISHED'}
 
 

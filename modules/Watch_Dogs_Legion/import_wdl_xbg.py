@@ -797,8 +797,8 @@ def load_wdl_xbg(context, filepath, separate_primitives=True):
         model['bones'] = bones
 
     # Build in Blender
-    from ..Watch_Dogs_2.import_wd2 import build_wd_model
-    arm, mesh_objs = (build_wd_model(context, model) if bpy else (None, []))
+    from ..Core.disrupt_common import build_blender_scene, join_submeshes
+    arm, mesh_objs = (build_blender_scene(context, model) if bpy else (None, []))
 
     # Stamp source metadata on each mesh object
     for mi, obj in enumerate(mesh_objs):
@@ -807,17 +807,6 @@ def load_wdl_xbg(context, filepath, separate_primitives=True):
 
     # Join submeshes when separate_primitives is OFF
     if bpy is not None and not separate_primitives and len(mesh_objs) > 1:
-        bpy.ops.object.select_all(action='DESELECT')
-        for o in mesh_objs:
-            o.select_set(True)
-        context.view_layer.objects.active = mesh_objs[0]
-        victim_meshes = [o.data for o in mesh_objs[1:]]
-        bpy.ops.object.join()
-        joined = context.active_object
-        joined.name = model['name']
-        joined['wd_joined'] = True
-        for m in victim_meshes:
-            if m.users == 0:
-                bpy.data.meshes.remove(m)
+        join_submeshes(context, mesh_objs, model['name'])
 
     return model, arm

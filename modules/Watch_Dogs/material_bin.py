@@ -38,6 +38,7 @@ TYPE_STR8   = 8
 TYPE_STR9   = 9
 TYPE_STR10  = 10
 TYPE_U32_2  = 11
+TYPE_FLOAT  = TYPE_U32      # alias: floats stored as raw u32 bits
 
 TYPE_NAMES = {
     1:'u32', 2:'vec2', 3:'vec3', 4:'vec4', 5:'i32', 6:'bool',
@@ -235,6 +236,79 @@ class MaterialBin:
     def get_textures(self) -> dict[str, str]:
         return {p.name: p.value[0] for p in self.params if p.is_texture()}
 
+    # ── Dict-like interface (compatibility with material_editor_wd) ──────
+    def _param_to_value(self, p: Param):
+        """Extract a scalar-friendly value from a Param for dict-like access."""
+        if p.is_texture():
+            return p.value[0] if p.value else ''
+        if p.type in (TYPE_BOOL,):
+            return bool(p.value[0]) if p.value else False
+        if p.type == TYPE_I32:
+            return p.value[0] if p.value else 0
+        if p.type in (TYPE_U32, TYPE_VEC2, TYPE_VEC3, TYPE_VEC4, TYPE_ENUM, TYPE_U32_2):
+            if p.value and isinstance(p.value[0], float):
+                return p.value[0]
+            return p.as_float()
+        return p.value[0] if p.value else ''
+
+    def __contains__(self, key):
+        if key in ('shader', 'name'):
+            return True
+        return any(p.name == key for p in self.params)
+
+    def __getitem__(self, key):
+        if key == 'shader':
+            return self.shader
+        if key == 'name':
+            return self.name
+        p = self.get_param(key)
+        if p is None:
+            raise KeyError(key)
+        return self._param_to_value(p)
+
+    def get(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def pop(self, key, *args):
+        """Pop a value by key.  Only removes params; shader/name are read-only."""
+        if key == 'shader':
+            return self.shader
+        if key == 'name':
+            return self.name
+        for i, p in enumerate(self.params):
+            if p.name == key:
+                val = self._param_to_value(p)
+                self.params.pop(i)
+                return val
+        if args:
+            return args[0]
+        raise KeyError(key)
+
+    def items(self):
+        """Yield (key, value) pairs: shader, name, then all params."""
+        yield 'shader', self.shader
+        yield 'name', self.name
+        for p in self.params:
+            yield p.name, self._param_to_value(p)
+
+    def keys(self):
+        yield 'shader'
+        yield 'name'
+        for p in self.params:
+            yield p.name
+
+    def values(self):
+        yield self.shader
+        yield self.name
+        for p in self.params:
+            yield self._param_to_value(p)
+
+    def __iter__(self):
+        return self.keys()
+
     def summary(self) -> str:
         lines = [f"material: {self.name}", f"shader: {self.shader}",
                  f"version: {self.version}", f"params: {len(self.params)}",
@@ -357,6 +431,14 @@ class MaterialBin:
         chunks.append(self.trailing)
 
         return b''.join(chunks)
+
+
+# ── Legacy compatibility shims ─────────────────────────────────────────────
+def read_material_bin(path: str) -> MaterialBin:
+    return MaterialBin.from_file(path)
+
+def write_material_bin(path: str, mat: MaterialBin):
+    mat.write(path)
 
 
 # ── CLI ────────────────────────────────────────────────────────────────────
