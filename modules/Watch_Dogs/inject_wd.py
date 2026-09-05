@@ -4,7 +4,7 @@ The WD1 xbg is a sequential IBinaryArchive stream (see import_wd.py), so —
 unlike Avatar's chunk splicing — geometry edits are written by patching the
 vertex bytes IN PLACE inside the shared SGfxBuffers vertex block.  This
 keeps the file structure byte-identical everywhere except the vertices the
-user actually moved.
+user moved.
 
 PHASE 1 (this module): edit vertex POSITIONS / NORMALS / UVs / COLORS
 without changing the vertex or triangle COUNT.  That covers reshaping,

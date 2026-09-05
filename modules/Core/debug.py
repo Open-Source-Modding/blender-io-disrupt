@@ -689,10 +689,10 @@ def refresh_bounds_display(scene):
     show flag is off or its chunk is absent.
 
     The box/sphere are placed through `_bounds_display_frame` so they land
-    exactly where the referenced mesh actually is in the viewport, not at
-    the raw file-space coordinates (2026-06-30: "Fit to Selected" looked
-    like it "just fit it to the world origin" for models whose display
-    frame carries rotation/translation the gizmo never accounted for).
+    where the referenced mesh is in the viewport, not at the raw file-space
+    coordinates (2026-06-30: "Fit to Selected" looked like it fit the models
+    to the world origin when its display frame carries rotation/translation
+    the gizmo never accounted for).
     """
     if scene is None:
         return

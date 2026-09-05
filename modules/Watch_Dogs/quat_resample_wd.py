@@ -9,7 +9,7 @@ and looks choppy on sparse / 15 fps clips.
 
 This module reproduces the engine's smoothing: SQUAD (spherical cubic
 interpolation, the quaternion analogue of a Catmull-Rom / cubic spline) through
-the decoded key quaternions, sampled densely so Blender just plays the baked
+the decoded key quaternions, sampled densely so Blender plays the baked
 frames.  Pure-Python on (w, x, y, z) tuples so it's testable without Blender.
 
 Reference: Shoemake, "Animating Rotation with Quaternion Curves" (SIGGRAPH '85).

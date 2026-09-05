@@ -453,8 +453,8 @@ def parse_wd1_xbg(path, lod_select=0):
             dm['lod'] = b
             dc = mesh['drawcall']
             # injection: the decoded LOD lives wholly in its own buffer, so a
-            # vertex's file position is simply buf0_off + vb_off + vi*stride —
-            # no cross-buffer straddling (buf0_off = THIS LOD's buffer offset).
+            # vertex's file position is buf0_off + vb_off + vi*stride, no
+            # cross-buffer straddling (buf0_off = THIS LOD's buffer offset).
             from_mip = (mip_path is not None and b == 0)
             dm['inject'] = {
                 'src': path,

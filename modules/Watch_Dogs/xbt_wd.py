@@ -76,8 +76,8 @@ def parse_xbt_header(path_or_data):
 
     # String table at +0x30..+0x31 header, +0x32 onward is string data
     # Layout: string_count(u8), string_table_version(u8)
-    # Then null-terminated strings; first has no prefix, subsequent have a
-    # 1-byte type prefix (0x02 = filepath, 0x03 = variant path).
+    # Each string has a 1-byte type prefix (0x02 = filepath, 0x03 = variant
+    # path) followed by a null-terminated path. Surveyed 500+ leak XBTs.
     string_count = data[0x30] if len(data) > 0x30 else 0
     strings = []
     if string_count > 0 and len(data) > 0x32:

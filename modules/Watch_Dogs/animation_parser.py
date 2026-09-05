@@ -116,7 +116,7 @@ class AnimDiscreteCurve:
 
 @dataclass
 class AnimCurve:
-    """Simple curve — just reads and discards an i32."""
+    """Curve that reads and discards an i32."""
     data: int = 0
 
 

@@ -1,7 +1,7 @@
 # Disrupt Engine Importer/Exporter for Blender
 
 A Blender 5.0 add-on for **importing, editing and re-exporting 3D models from Ubisoft
-Disrupt engine games** — Watch Dogs 1, 2, and Legion.
+Disrupt engine games**: Watch Dogs 1, 2, and Legion.
 
 > **Expect bugs.** This is a community tool under active development.
 
@@ -9,19 +9,19 @@ Disrupt engine games** — Watch Dogs 1, 2, and Legion.
 
 ## Highlights
 
-- **Three games, one add-on** — Watch Dogs 1 (.xbg), 2 (.glm/.xbg), and Legion (.xbg), each with
-  its own self-contained module and a clean game-picker UI.
-- **Edit and inject** — move vertices, edit UVs, repaint vertex colors, assign weights, then write
+- **Three games, one add-on**: Watch Dogs 1 (.xbg), 2 (.glm/.xbg), and Legion (.xbg), each with
+  its own module and a game-picker UI.
+- **Edit and inject**: move vertices, edit UVs, repaint vertex colors, assign weights, then write
   it all back into a copy of the game file. WD1 supports full rebuild (add/delete geometry);
   WDL/WD2 support displacement-only edits.
-- **HKX collision** — import collision shapes for all three games. WD1 and WD2 support
+- **HKX collision**: import collision shapes for all three games. WD1 and WD2 support
   vertex-displacement injection back into a copy of the .hkx.
-- **Animation** — import .mab skeletal animations for WD1 and WDL. Import .mac animation clips
+- **Animation**: import .mab skeletal animations for WD1 and WDL. Import .mac animation clips
   and .markup event files for WD1.
-- **Materials** — import/export .material.bin files (TAM v7/v15) with Principled BSDF mapping.
+- **Materials**: import/export .material.bin files (TAM v7/v15) with Principled BSDF mapping.
   TFOWC2 extended material system supported.
-- **LOD control** (WD1) — import a chosen LOD or all of them, peek a file's LOD count before importing.
-- **FaceFX lip-sync** — import FaceFX phoneme .txt files as viseme shape key animations.
+- **LOD control** (WD1): import a chosen LOD or all of them, peek a file's LOD count before importing.
+- **FaceFX lip-sync**: import FaceFX phoneme .txt files as viseme shape key animations.
 
 ---
 
@@ -31,14 +31,14 @@ Disrupt engine games** — Watch Dogs 1, 2, and Legion.
 |---|---|---|---|---|---|---|
 | **Watch Dogs 1** | .xbg | Full (skeleton, weights, UVs, normals, tangents, vertex colors, LODs) | Rebuild (add/delete geometry) + in-place | .mab, .mac, .markup | .hkx import + inject | .material.bin import/export |
 | **Watch Dogs 2** | .glm / .xbg | Full (skeleton, weights, UVs) | .glm text export + .xbg inject (displacement-only) | — | .hkx import + inject | .material.bin import/export |
-| **Watch Dogs Legion** | .xbg | Full (MOEG binary + .skel) | Fresh .xbg export from Blender + inject (displacement-only) | .mab | .hkx import | .material.bin import/export |
+| **Watch Dogs Legion** | .xbg | Full (MOEG binary + .skel) | .xbg export from Blender + inject (displacement-only) | .mab | .hkx import | .material.bin import/export |
 
 **Notes:**
 
-- Inject always writes to a **new copy** — originals are never touched.
+- Inject always writes to a **new copy**, originals are untouched.
 - WD1 vehicles with split LOD buffers patch in place (no count changes).
 - WD2 .glm export preserves materials/skeleton/physics blocks byte-for-byte.
-- WDL export synthesises a minimal valid .xbg (static props — no physics/procedural).
+- WDL export produces a valid .xbg (static props, no physics/procedural).
 
 ---
 
@@ -55,13 +55,13 @@ Disrupt engine games** — Watch Dogs 1, 2, and Legion.
 2. In Blender: **Edit → Preferences → Add-ons → Install**, pick the zip, enable
    **XBG Importer**.
 
-> **Upgrading from v2.x?** Remove the old add-on first — v2.x modules are
+> **Upgrading from v2.x?** Remove the old add-on first, v2.x modules are
 > incompatible with v3.x layout.
 
 ### Updates
 
-Download the latest release `.zip` (or grab the `Dev` branch) and reinstall —
-remove the old add-on first. A previous auto-updater was removed in v3.0.0
+Download the latest release `.zip` (or grab the `Dev` branch) and reinstall,
+removing the old add-on first. A previous auto-updater was removed in v3.0.0
 because it could leave the add-on in a broken state.
 
 ---
@@ -73,7 +73,7 @@ game**.
 
 | Panel | Visible | What it does |
 |---|---|---|
-| **Import** | always | The big import button + LOD options (WD1) |
+| **Import** | always | The import button + LOD options (WD1) |
 | **Advanced Mode** | always (toggle) | Reveals Inject/Export, Animation, Debug |
 | **Inject / Export** | advanced | Inject edited meshes or export fresh .xbg (WDL) |
 | **Animation** | advanced | .mab / .mac import (WD1, WDL) |
