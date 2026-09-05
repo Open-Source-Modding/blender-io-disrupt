@@ -129,29 +129,24 @@ def _read_odd_table(r):
 def _read_skip_mess(r):
     """Read the ReflexSystem / secondary-motion / procedural-nodes blob.
 
-    This is a complex nested structure.  Volfin's code reads it by counting
-    entries and skipping fixed-size blocks per entry.  The structure differs
-    between two branches (type==2 vs else) but the net effect is the same:
-    skip past the entire block without extracting usable data.
+    Ported from Volfin's skipMess() (import_WD2.py lines 561-697).
+    Per-entry prefix: BI(2) + Bf(7) + BI(4) + BI(1) = 56 bytes, then
+    entry_type = BI(1).
+
+    entry_type == 2 → static-props branch (nested hash+string+float groups).
+    entry_type != 2 → character-model branch (hash+string+float groups with
+    different layout — Bf(4)*4+Bf(1), Bf(23), BH(6)+Bf(4), seek(44), etc.).
     """
     count = r.u32()
     if count == 0:
         return
 
-    # Probe the first entry's type byte to decide the branch.
-    start = r.tell()
-    # Read enough to determine the structure:
-    #   type==2 path:  two hash+string groups, four float groups, two byte groups
-    #   else path:     three hash+string groups, mixed data
-    #
-    # Rather than fully reverse-engineering this, we use Volfin's approach:
-    # read the counts and skip the data blocks.
-
     for _ in range(count):
-        r.skip_bytes(20)  # BH(2) + Bf(7) + BI(4) + BI(1)
+        r.skip_bytes(56)  # BI(2) + Bf(7) + BI(4) + BI(1)
         entry_type = r.u32()
 
         if entry_type == 2:
+            # ── Static-props branch ──────────────────────────────────────
             # Three groups of hash+string+skip
             for _group in range(3):
                 c = r.u32()
@@ -161,43 +156,43 @@ def _read_skip_mess(r):
                         sc = r.u32()
                         for _ in range(sc):
                             r.u32()  # hash
-                            s = r.u32()  # str length
+                            s = r.u32()
                             r.skip_bytes(s)
                             r.align(16)
-                            r.skip_bytes(17)
+                            r.skip_bytes(68)  # Bf(17) = 17 floats
                     c2 = r.u32()
                     for _ in range(c2):
                         r.u32()  # hash
                         s = r.u32()
                         r.skip_bytes(s)
                         r.align(16)
-                        r.skip_bytes(23)
+                        r.skip_bytes(92)  # Bf(23) = 23 floats
                 else:
                     for _ in range(c):
                         r.u32()  # hash
                         s = r.u32()
                         r.skip_bytes(s)
                         r.align(16)
-                        r.skip_bytes(23)
+                        r.skip_bytes(92)  # Bf(23) = 23 floats
 
             # Byte groups
             c = r.u32()
             for _ in range(c):
                 cv = r.u32()
                 c2 = r.u32()
-                r.skip_bytes(c2 * 5)
+                r.skip_bytes(c2 * 20)  # Bf(5) = 5 floats
 
             c = r.u32()
             for _ in range(c):
                 cv = r.u32()
                 c2 = r.u32()
-                r.skip_bytes(c2 * 9)
+                r.skip_bytes(c2 * 36)  # Bf(9) = 9 floats
 
             c = r.u32()
             for _ in range(c):
                 cv = r.u32()
                 c2 = r.u32()
-                r.skip_bytes(c2 * 9)
+                r.skip_bytes(c2 * 36)  # Bf(9) = 9 floats
 
             # String groups
             c = r.u32()
@@ -206,7 +201,7 @@ def _read_skip_mess(r):
                 s = r.u32()
                 r.skip_bytes(s)
                 r.align(4)
-                r.skip_bytes(4)
+                r.skip_bytes(16)  # Bf(4) = 4 floats
 
             c = r.u32()
             for _ in range(c):
@@ -221,15 +216,15 @@ def _read_skip_mess(r):
             r.u32()
             r.u32()
         else:
-            # else branch
-            chunk = r.u32()  # chunk type
+            # ── Character-model branch (Volfin lines 638-697) ────────────
+            r.u32()  # chunk type
             c = r.u32()
             for _ in range(c):
                 r.u32()  # hash
                 s = r.u32()
                 r.skip_bytes(s)
                 r.align(16)
-                r.skip_bytes(17)
+                r.skip_bytes(68)  # Bf(4)*4 + Bf(1) = 68 bytes
 
             c = r.u32()
             for _ in range(c):
@@ -237,7 +232,7 @@ def _read_skip_mess(r):
                 s = r.u32()
                 r.skip_bytes(s)
                 r.align(16)
-                r.skip_bytes(23)
+                r.skip_bytes(92)  # Bf(23) = 92 bytes
 
             c = r.u32()
             for _ in range(c):
@@ -245,15 +240,15 @@ def _read_skip_mess(r):
                 s = r.u32()
                 r.skip_bytes(s)
                 r.align(16)
-                r.skip_bytes(23)
+                r.skip_bytes(92)  # Bf(23) = 92 bytes
 
-            chunk = r.u32()
+            r.u32()  # chunk
             c = r.u32()
             for _ in range(c):
                 r.skip_bytes(12)  # BH(6) = 12 bytes
-                r.skip_bytes(4)   # Bf(1)
+                r.skip_bytes(16)  # Bf(4) = 16 bytes
 
-            chunk = r.u32()
+            r.u32()  # chunk
             c = r.u32()
             for _ in range(c):
                 r.skip_bytes(44)  # seek(44, 1)
@@ -264,7 +259,7 @@ def _read_skip_mess(r):
                 s = r.u32()
                 r.skip_bytes(s)
                 r.align(4)
-                r.skip_bytes(4)
+                r.skip_bytes(16)  # Bf(4) = 16 bytes
 
             c = r.u32()
             for _ in range(c):
@@ -277,20 +272,22 @@ def _read_skip_mess(r):
             r.skip_bytes(c * 6)  # BH(3) = 6 bytes
             r.align(4)
 
-            chunk = r.u32()
+            r.u32()  # chunk
             c = r.u32()
-            r.skip_bytes(c * 6)
+            r.skip_bytes(c * 6)  # BH(3) = 6 bytes
 
-            chunk = r.u32()
+            r.u32()  # chunk
             r.align(4)
 
 
 def _read_mesh_list(r):
     """Read the mesh descriptor list for one LOD level.
 
+    Ported from Volfin's MeshList() (import_WD2.py lines 699-724).
+
     Returns a list of dicts, one per submesh, with keys:
         vertStride, vertCount, faceCount, faceOffset,
-        totalVertCount, matID, UVFlag, matCount
+        totalVertCount, matID, UVFlag, matCount, matNames
     """
     mesh_count = r.u32()
     meshes = []
@@ -313,12 +310,16 @@ def _read_mesh_list(r):
         matCount = params[20]
 
         # Read material name entries for this submesh
+        # Volfin's MeshList(): BI(17) + len=BI(1)[0] + file_str(len) + align(4) + BH(2)
         mat_names = []
         for _ in range(matCount):
-            r.skip_bytes(34)  # BI(17) = 68 bytes
-            s = r.u32()
+            r.skip_bytes(68)  # BI(17) = 68 bytes
+            s = r.u32()       # string length — must NOT use r.str() here
+                              # because r.str() reads its own u32 length,
+                              # doubling the read
             if 0 < s <= 128:
-                name = r.str()
+                data = r.read(s)
+                name = data.decode('latin-1').rstrip('\x00')
                 r.align(4)
                 r.u16s(2)
                 mat_names.append(name)
@@ -544,11 +545,17 @@ def _read_lod_geometry(r, model, mesh_params_list, lod_idx, xbg_path,
     mat_zones = []
     material_count = 0
 
+    # Volfin's import_mesh() starts with BH(1) + alignPosition(4) before
+    # vertex data.  This u16 + alignment exists per-LOD.
+    r.u16()            # BH(1) — unknown u16, possibly LOD index or flag
+    pos = r.tell()
+    r.seek((pos + 3) & ~3)  # alignPosition(4)
+
     # Pre-calculate the face block start
+    # vertCount = 1 + (params[16] - params[15]) — already includes the +1
     vert_block_size = 0
     for mp in mesh_params_list:
-        blocksize = 1 + (mp['vertCount'])
-        vert_block_size += blocksize * mp['vertStride']
+        vert_block_size += mp['vertCount'] * mp['vertStride']
 
     face_block_start = r.tell() + vert_block_size + 4  # skip leading dword
     vert_block_offset = r.tell()
@@ -581,17 +588,16 @@ def _read_lod_geometry(r, model, mesh_params_list, lod_idx, xbg_path,
         material_count += 1
 
         for _ in range(vert_count):
-            # First 8 i16: 4 unused + position(x,y,z) as i16
+            # First 8 i16: [0-1] unused, [2-4] position(x,y,z), [6-7] UV1
+            # Matches Volfin's Bh(8) — UVs come from the same read, not separate
             tmp = r.i16s(8)
             pos = (tmp[2] / 32768.0, tmp[3] / 32768.0, tmp[4] / 32768.0)
             all_verts.append(pos)
 
-            # UV1: 2 i16
-            uvs = r.i16s(2)
-            uv = (uvs[0] / 65536.0 + 0.5, 1.0 - (uvs[1] / 65536.0 + 0.5))
+            uv = (tmp[6] / 65536.0 + 0.5, 1.0 - (tmp[7] / 65536.0 + 0.5))
             all_uvs.append(uv)
 
-            # Remaining data depends on stride
+            # Remaining data depends on stride (stride = 16 bytes already read + remainder)
             if vert_stride == 40:
                 r.skip_bytes(24)  # 12 i16
             elif vert_stride == 36:
